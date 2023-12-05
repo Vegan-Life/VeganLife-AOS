@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- fontFamily -->
+    <style name="Bold">
+        <item name="fontFamily">@font/noto_sans_kr_bold</item>
+    </style>
+
+    <style name="Medium">
+        <item name="fontFamily">@font/noto_sans_kr_medium</item>
+    </style>
+
+    <style name="Regular">
+        <item name="fontFamily">@font/noto_sans_kr_regular</item>
+    </style>
+
+    <style name="Light">
+        <item name="fontFamily">@font/noto_sans_kr_light</item>
+    </style>
+
+    <!-- title -->
+    <style name="Bold.Title1" parent="Bold">
+        <item name="android:textSize">24sp</item>
+    </style>
+
+    <!-- body -->
+    <style name="Light.Body1" parent="Light">
+        <item name="android:textSize">48sp</item>
+    </style>
+
+    <style name="Light.Body2" parent="Light">
+        <item name="android:textSize">24sp</item>
+    </style>
+
+    <style name="Medium.Body3" parent="Medium">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="Bold.Body4" parent="Bold">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="Regular.Body5" parent="Regular">
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="Bold.Body6" parent="Bold">
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="Regular.Body7" parent="Regular">
+        <item name="android:textSize">8sp</item>
+    </style>
+
+    <style name="Bold.Body8" parent="Bold">
+        <item name="android:textSize">8sp</item>
+    </style>
+
+</resources>
