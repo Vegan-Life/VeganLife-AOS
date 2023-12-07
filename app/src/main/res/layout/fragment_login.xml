@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Login.LoginFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="40dp">
+
+        <ImageView
+            android:id="@+id/img_login_left_top"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/login_left_top"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/img_login_right_top"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/login_right_top"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/img_login_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="168dp"
+            android:src="@drawable/all_logo_big"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/img_login_vegan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:src="@drawable/all_txt_vegan"
+            app:layout_constraintEnd_toEndOf="@id/img_login_logo"
+            app:layout_constraintStart_toStartOf="@id/img_login_logo"
+            app:layout_constraintTop_toBottomOf="@id/img_login_logo" />
+
+        <ImageView
+            android:id="@+id/img_login_life"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:src="@drawable/all_txt_life"
+            app:layout_constraintEnd_toEndOf="@id/img_login_vegan"
+            app:layout_constraintStart_toStartOf="@id/img_login_vegan"
+            app:layout_constraintTop_toBottomOf="@id/img_login_vegan" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/btn_login_naver"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="84dp"
+            android:background="@drawable/login_naver"
+            app:layout_constraintEnd_toEndOf="@id/img_login_life"
+            app:layout_constraintStart_toStartOf="@id/img_login_life"
+            app:layout_constraintTop_toBottomOf="@id/img_login_life" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/btn_login_kakao"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/login_kakao"
+            app:layout_constraintEnd_toEndOf="@id/btn_login_naver"
+            app:layout_constraintStart_toStartOf="@id/btn_login_naver"
+            app:layout_constraintTop_toBottomOf="@id/btn_login_naver" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>
