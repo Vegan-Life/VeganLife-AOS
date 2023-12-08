@@ -1,4 +1,4 @@
-package com.project.veganlife.Login
+package com.project.veganlife.login
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
