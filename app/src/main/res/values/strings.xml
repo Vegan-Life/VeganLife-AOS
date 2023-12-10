@@ -1,3 +1,195 @@
 <resources>
     <string name="app_name">VeganLife</string>
+
+    <!-- All -->
+    <string name="all_rest">오늘의 잔여 칼로리는  입니다</string>
+    <string name="all_carbohydrate">탄수화물</string>
+    <string name="all_protein">단백질</string>
+    <string name="all_fat">지방</string>
+
+    <string name="all_upload_photo">사진 업로드</string>
+
+    <string name="all_dialog_cancel">취소</string>
+    <string name="all_dialog_confirm">확인</string>
+
+    <string name="all_button_modify">수정하기</string>
+
+    <string name="all_vegan">비건</string>
+    <string name="all_lacto">락토</string>
+    <string name="all_ovo">오보</string>
+    <string name="all_lacto_ovo">락토오보</string>
+    <string name="all_pesco">페스코</string>
+
+    <string name="all_kcal">kcal</string>
+
+    <string name="all_count_carbohydrate">0g/0g</string>
+    <string name="all_count_protein">0g/0g</string>
+    <string name="all_count_fat">0g/0g</string>
+
+    <string name="all_count_photo">(0/5)</string>
+
+    <string name="all_total_capacity_hint">총 내용량을 입력해주세요</string>
+
+    <string name="all_button_feed_upload">업로드</string>
+
+    <!-- Signup -->
+    <string name="signup_toolbar_title_vegan_type">채식타입 선택</string>
+
+    <string name="signup_vegan_eng">Vegan</string>
+    <string name="signup_lacto_eng">Lacto</string>
+    <string name="signup_ovo_eng">Ovo</string>
+    <string name="signup_lacto_ovo_eng">Lacto Ovo</string>
+    <string name="signup_pesco_eng">Pesco</string>
+
+    <string name="signup_description">지향하는 채식타입을\n선택해주세요</string>
+
+    <string name="signup_toolbar_title_additional">추가정보 입력</string>
+    <string name="signup_nickname">닉네임</string>
+    <string name="signup_nickname_hint">닉네임(2자 이상 10자 이하)</string>
+    <string name="signup_nickname_fail">이미 사용하고 있는 닉네임 입니다</string>
+    <string name="signup_nickname_success">사용가능한 닉네임입니다.</string>
+    <string name="signup_height">키 (cm)</string>
+    <string name="signup_height_hint">키를 입력해주세요</string>
+    <string name="signup_weight">몸무게 (kg)</string>
+    <string name="signup_weight_hint">몸무게를 입력해주세요</string>
+    <string name="signup_age">나이 (만)</string>
+    <string name="signup_age_hint">나이를 입력해주세요</string>
+
+    <string name="signup_next">다음</string>
+    <string name="signup_complete">완료</string>
+    <string name="signup_complete_description">환영합니다\n회원가입이 완료되었습니다</string>
+
+    <!-- Home -->
+    <string name="home_welcome">오늘도 건강한 채식하세요!</string>
+    <string name="home_recipe">님을 위한 추천 레시피</string>
+    <string name="home_recipe_empty">등록된 레시피가 없습니다.</string>
+    <string name="home_notice">매일밤 자정 님을 위한 추천 레시피가 업데이트 됩니다</string>
+
+    <!-- Alarm -->
+    <string name="alram_comment">님이 님의 피드에\n 댓글을 달았습니다!</string>
+    <string name="alram_recipe">님을 위한 오늘의 추천 레시피가\n업데이트 되었습니다!</string>
+    <string name="alram_like_comments">님이 님의 댓글에\n 좋아요를 눌렀습니다!</string>
+    <string name="alram_over_kcal">오늘의 칼로리 섭취량을\n 초과했습니다</string>
+
+    <!-- Community -->
+    <string name="community_toolbar_title">피드</string>
+    <string name="community_tag_all">#전체</string>
+    <string name="community_tag_worry">#고민있어요</string>
+    <string name="community_tag_together">#챌린지 같이해요</string>
+    <string name="community_tag_recipe">#채식레시피</string>
+    <string name="community_new_feed">Vegan LIFE의\n첫 피드를 작성해주세요</string>
+    <string name="community_button_write">글쓰기</string>
+    <string name="community_button_feed">피드 작성</string>
+    <string name="community_button_recipe">레시피 작성</string>
+
+    <string name="community_search_tag_famous">인기 태그</string>
+    <string name="community_search_word">검색어를 입력해주세요</string>
+
+    <string name="community_feed_toolbar_title_create">피드 작성</string>
+    <string name="community_feed_keyword">키워드</string>
+    <string name="community_feed_title_hint">제목을 입력하세요</string>
+    <string name="community_feed_content_hint">내용을 입력하세요</string>
+
+    <string name="community_dialog_upload_title">피드 업로드</string>
+    <string name="community_dialog_upload_content">작성한 피드를 업로드합니다</string>
+
+    <string name="community_popup_upload">피드가 업로드 되었습니다</string>
+
+    <string name="community_feed_toolbar_title_daily">일상</string>
+    <string name="community_popup_like_comment">댓글에 좋아요를 눌렀습니다</string>
+    <string name="community_popup_like_feed">피드에 좋아요를 눌렀습니다</string>
+
+    <string name="community_dialog_delete_title">피드 삭제</string>
+    <string name="community_dialog_delete_content">정말로 삭제하시겠습니까?</string>
+    <string name="community_popup_delete">피드가 삭제되었습니다</string>
+
+    <string name="community_modify_feed">피드 수정</string>
+
+    <string name="community_dialog_modify_content">정말로 수정하시겠습니까?</string>
+    <string name="community_popup_modify">피드가 수정 되었습니다</string>
+
+    <!-- Life Check -->
+    <string name="lifecheck_toolbar_title">라이프체크</string>
+    <string name="lifecheck_monday">월요일</string>
+    <string name="lifecheck_tuesday">화요일 </string>
+    <string name="lifecheck_wednesday">수요일</string>
+    <string name="lifecheck_thursday">목요일</string>
+    <string name="lifecheck_friday">금요일</string>
+    <string name="lifecheck_saturday">토요일</string>
+    <string name="lifecheck_sunday">일요일</string>
+
+    <string name="lifecheck_day">일</string>
+    <string name="lifecheck_week">주</string>
+    <string name="lifecheck_month">월</string>
+    <string name="lifecheck_year">년</string>
+
+    <string name="lifecheck_morning">아침</string>
+    <string name="lifecheck_noon">점심</string>
+    <string name="lifecheck_evening">저녁</string>
+    <string name="lifecheck_snack">간식</string>
+
+    <string name="lifecheck_daily_average">일 평균</string>
+    <string name="lifecheck_button_add_meal">식사추가</string>
+
+    <string name="lifecheck_type_meal">식사 종류</string>
+    <string name="lifecheck_breakfast">아침 식사</string>
+    <string name="lifecheck_lunch">점심 식사</string>
+    <string name="lifecheck_dinner">저녁 식사</string>
+    <string name="lifecheck_morning_snack">오전 간식</string>
+    <string name="lifecheck_afternoon_snack">오후 간식</string>
+    <string name="lifecheck_dinner_snack">저녁 간식</string>
+
+    <string name="lifecheck_all">전체</string>
+    <string name="lifecheck_registered_menu">내가 등록한 메뉴</string>
+    <string name="lifecheck_register_menu">메뉴 등록</string>
+
+    <string name="lifecheck_intake_setting_toolbar_title">섭취량 설정</string>
+    <string name="lifecheck_kcal">칼로리</string>
+    <string name="lifecheck_add_diet">식사 추가하기</string>
+    <string name="lifecheck_total_kcal">총 칼로리</string>
+    <string name="lifecheck_input_meal">식사입력</string>
+
+    <string name="lifecheck_dialog_input">입력</string>
+
+    <string name="lifecheck_popup_content">식단이 입력되었습니다</string>
+
+    <string name="lifecheck_food">음식</string>
+    <string name="lifecheck_button_delete">삭제하기</string>
+
+    <string name="lifecheck_input_toolbar_title">메뉴 등록</string>
+    <string name="lifecheck_menu_name">메뉴명</string>
+    <string name="lifecheck_menu_name_hint">메뉴 이름을 입력해주세요</string>
+    <string name="lifecheck_total_capacity">총 내용량</string>
+    <string name="lifecheck_ingredients">영양성분</string>
+    <string name="lifecheck_reference_quantity">기준량</string>
+    <string name="lifecheck_intake_amount">섭취량</string>
+
+    <!-- mypage -->
+    <string name="mypage_toolbar_title">마이페이지</string>
+    <string name="mypage_modify_information">회원 정보 수정</string>
+    <string name="mypage_wroted_feed">내가 쓴 게시글</string>
+    <string name="mypage_wroted_comments">내가 쓴 댓글</string>
+    <string name="mypage_picked_recipe">찜한 레시피</string>
+    <string name="mypage_notice">공지사항</string>
+    <string name="mypage_logout">로그아웃</string>
+    <string name="mypage_withdrawal_membership">회원탈퇴</string>
+
+    <string name="mypage_id">ID</string>
+    <string name="mypage_button_modify">수정</string>
+    <string name="mypage_popup_content">수정되었습니다</string>
+
+    <string name="mypage_picked_recipe_list">레시피 스크랩 목록</string>
+
+    <!-- Recipe -->
+    <string name="recipe_recipe">레시피</string>
+    <string name="recipe_search_recipe_hint">레시피를 검색해주세요</string>
+    <string name="recipe_ingedients">재료</string>
+    <string name="recipe_ingedients_for_one">(1인분 기준)</string>
+
+    <string name="recipe_possible_vegan_type">섭취 가능한 채식 타입</string>
+    <string name="recipe_possible_vegan_type_hint">2개까지 선택 가능</string>
+    <string name="recipe_input_name_hint">레시피 이름을 입력해주세요</string>
+    <string name="recipe_input_measure">단위</string>
+    <string name="recipe_input_recipe_hint">레시피를 입력해주세요</string>
+    <string name="recipe_popup_content">레시피를 찜했습니다\n찜한 레시피는 마이페이지 > 찜한 레시피\n에서 확인할 수 있습니다</string>
 </resources>
