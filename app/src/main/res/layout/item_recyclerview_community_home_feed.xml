@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="4dp"
+    android:background="@color/gray1"
+    android:paddingHorizontal="24dp"
+    android:paddingBottom="22dp">
+
+    <TextView
+        android:id="@+id/tv_communityhomefeed_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:layout_marginEnd="16dp"
+        android:ellipsize="end"
+        android:includeFontPadding="false"
+        android:maxLines="1"
+        android:text="피드 제목입니다 피드 제목입니다 피드 제목입니다"
+        android:textAppearance="@style/Bold.Body4"
+        android:textColor="@color/gray5"
+        app:layout_constraintEnd_toStartOf="@id/iv_communityhomefeed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_communityhomefeed_description"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:ellipsize="end"
+        android:includeFontPadding="false"
+        android:maxLines="2"
+        android:text="피드 내용입니다 피드 내용입니다 피드 내용입니다 피드 내용입니다 피드 내용입니다 피드 내용입니다 피드 내용입니다"
+        android:textAppearance="@style/Regular.Body5"
+        android:textColor="@color/gray5"
+        app:layout_constraintEnd_toEndOf="@id/tv_communityhomefeed_title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_communityhomefeed_title" />
+
+    <TextView
+        android:id="@+id/tv_communityhomefeed_datetime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        android:includeFontPadding="false"
+        android:text="0000-00-00  오후 00:00"
+        android:textAppearance="@style/Regular.Body7"
+        android:textColor="@color/sub_gray3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_communityhomefeed_description" />
+
+    <ImageView
+        android:id="@+id/iv_communityhomefeed"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="14dp"
+        android:src="@color/sub_gray1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
