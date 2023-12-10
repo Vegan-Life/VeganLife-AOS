@@ -16,7 +16,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:menu="@menu/menu_community"
-        app:title="피드"
+        app:title="@string/community_toolbar_title"
         app:titleCentered="true"
         app:titleTextAppearance="@style/Bold.Body4" />
 
@@ -53,7 +53,7 @@
         android:backgroundTint="@color/base1"
         android:includeFontPadding="false"
         android:paddingHorizontal="38dp"
-        android:text="글쓰기"
+        android:text="@string/community_toolbar_title"
         android:elevation="0dp"
         android:textAppearance="@style/Medium.Body3"
         android:textColor="@color/white"
@@ -91,7 +91,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
         android:includeFontPadding="false"
-        android:text="Vegan LIFE의\n첫 피드를 작성해주세요"
+        android:text="@string/community_new_feed"
         android:textAlignment="center"
         android:textAppearance="@style/Bold.Body4"
         android:textColor="@color/gray3"
