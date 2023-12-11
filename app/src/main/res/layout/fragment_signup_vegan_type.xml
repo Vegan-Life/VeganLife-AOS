@@ -20,7 +20,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:navigationIcon="@drawable/all_back"
-            app:title="@string/signup_toolbar_tilte"
+            app:title="@string/signup_toolbar_title_vegan_type"
             app:titleCentered="true" />
 
         <ImageView
