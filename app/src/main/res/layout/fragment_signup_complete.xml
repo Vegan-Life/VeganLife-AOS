@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".signup.SignupCompleteFragment">
+
+    <ImageView
+        android:id="@+id/iv_signup_right_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/all_right_top"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/iv_signup_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="172dp"
+        android:src="@drawable/all_logo_big"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/iv_signup_vegan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:src="@drawable/all_txt_vegan"
+        app:layout_constraintEnd_toEndOf="@id/iv_signup_logo"
+        app:layout_constraintStart_toStartOf="@id/iv_signup_logo"
+        app:layout_constraintTop_toBottomOf="@id/iv_signup_logo" />
+
+    <ImageView
+        android:id="@+id/iv_signup_life"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:src="@drawable/all_txt_life"
+        app:layout_constraintEnd_toEndOf="@id/iv_signup_vegan"
+        app:layout_constraintStart_toStartOf="@id/iv_signup_vegan"
+        app:layout_constraintTop_toBottomOf="@id/iv_signup_vegan" />
+
+    <TextView
+        android:id="@+id/tv_signup_welcome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:includeFontPadding="false"
+        android:text="@string/signup_complete_description_first"
+        android:textAppearance="@style/Bold.Body4"
+        android:textColor="@color/base3"
+        app:layout_constraintEnd_toEndOf="@id/iv_signup_life"
+        app:layout_constraintStart_toStartOf="@id/iv_signup_life"
+        app:layout_constraintTop_toBottomOf="@id/iv_signup_life" />
+
+    <TextView
+        android:id="@+id/tv_signup_complete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:includeFontPadding="false"
+        android:text="@string/signup_complete_description_second"
+        android:textAppearance="@style/Bold.Body4"
+        android:textColor="@color/base3"
+        app:layout_constraintEnd_toEndOf="@id/tv_signup_welcome"
+        app:layout_constraintStart_toStartOf="@id/tv_signup_welcome"
+        app:layout_constraintTop_toBottomOf="@id/tv_signup_welcome" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_signup_complete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="24dp"
+        android:background="@color/base3"
+        android:includeFontPadding="false"
+        android:text="@string/signup_complete"
+        android:textAppearance="@style/Medium.Body3"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_signup_complete" />
+
+    <ImageView
+        android:id="@+id/iv_signup_left_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/all_left_bottom"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
