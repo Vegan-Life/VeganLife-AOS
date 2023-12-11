@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/sub_gray1"
+    tools:context=".community.CommunityHomeFragment">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar_communityhome"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/gray1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:menu="@menu/menu_community"
+        app:title="@string/community_toolbar_title"
+        app:titleCentered="true"
+        app:titleTextAppearance="@style/Bold.Body4" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_communityhome_popularity_tag"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/gray1"
+        android:orientation="horizontal"
+        android:paddingStart="24dp"
+        android:paddingEnd="0dp"
+        android:paddingBottom="12dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_communityhome"
+        tools:listitem="@layout/item_recyclerview_community_home_popularity_tag" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_communityhome_feed"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rv_communityhome_popularity_tag"
+        tools:listitem="@layout/item_recyclerview_community_home_feed" />
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/efab_communityhome_write"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginBottom="20dp"
+        android:backgroundTint="@color/base1"
+        android:includeFontPadding="false"
+        android:paddingHorizontal="38dp"
+        android:elevation="0dp"
+        android:text="@string/community_toolbar_title"
+        android:textAppearance="@style/Medium.Body3"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlayExtended" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/ib_communityhome_go_to_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="14dp"
+        android:layout_marginBottom="10dp"
+        android:backgroundTint="#00FFFFFF"
+        android:src="@drawable/community_up"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <ImageView
+        android:id="@+id/iv_communityhome_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/all_logo_gray"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_communityhome_first_feed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:includeFontPadding="false"
+        android:text="@string/community_new_feed"
+        android:textAlignment="center"
+        android:textAppearance="@style/Bold.Body4"
+        android:textColor="@color/gray3"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@id/iv_communityhome_logo"
+        app:layout_constraintStart_toStartOf="@id/iv_communityhome_logo"
+        app:layout_constraintTop_toBottomOf="@id/iv_communityhome_logo" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

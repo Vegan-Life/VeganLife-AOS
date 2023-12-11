@@ -6,4 +6,10 @@
     </style>
 
     <style name="Theme.VeganLife" parent="Base.Theme.VeganLife" />
+
+    <style name="ShapeAppearanceOverlayExtended">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">100dp</item>
+    </style>
+
 </resources>
