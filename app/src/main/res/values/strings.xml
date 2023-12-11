@@ -2,6 +2,22 @@
     <string name="app_name">VeganLife</string>
 
     <!-- All -->
+    <string name="all_nickname">닉네임</string>
+    <string name="all_nickname_hint">닉네임(2자 이상 10자 이하)</string>
+    <string name="all_nickname_fail">이미 사용하고 있는 닉네임 입니다</string>
+
+    <string name="all_height">키 (cm)</string>
+    <string name="all_height_hint">키를 입력해주세요</string>
+    <string name="all_number_type_error">숫자만 입력해주세요</string>
+    <string name="all_weight">몸무게 (kg)</string>
+    <string name="all_weight_hint">몸무게를 입력해주세요</string>
+    <string name="all_age">출생연도</string>
+    <string name="all_age_hint">출생연도를 입력해주세요</string>
+    <string name="all_sex">성별</string>
+    <string name="all_male">남자</string>
+    <string name="all_female">여자</string>
+    <string name="all_sex_error">성별을 선택해주세요</string>
+
     <string name="all_rest">오늘의 잔여 칼로리는  입니다</string>
     <string name="all_carbohydrate">탄수화물</string>
     <string name="all_protein">단백질</string>
@@ -50,20 +66,12 @@
     <string name="signup_pesco_description">어류를 포함하여 유제품과 난류는 섭취하나,\n기타 고기는 배제한 식단</string>
 
     <string name="signup_toolbar_title_additional">추가정보 입력</string>
-    <string name="signup_nickname">닉네임</string>
-    <string name="signup_nickname_hint">닉네임(2자 이상 10자 이하)</string>
-    <string name="signup_nickname_fail">이미 사용하고 있는 닉네임 입니다</string>
     <string name="signup_nickname_success">사용가능한 닉네임입니다.</string>
-    <string name="signup_height">키 (cm)</string>
-    <string name="signup_height_hint">키를 입력해주세요</string>
-    <string name="signup_weight">몸무게 (kg)</string>
-    <string name="signup_weight_hint">몸무게를 입력해주세요</string>
-    <string name="signup_age">나이 (만)</string>
-    <string name="signup_age_hint">나이를 입력해주세요</string>
 
     <string name="signup_next">다음</string>
     <string name="signup_complete">완료</string>
-    <string name="signup_complete_description">환영합니다\n회원가입이 완료되었습니다</string>
+    <string name="signup_complete_description_first">환영합니다</string>
+    <string name="signup_complete_description_second">회원가입이 완료되었습니다</string>
 
     <!-- Home -->
     <string name="home_welcome">오늘도 건강한 채식하세요!</string>
