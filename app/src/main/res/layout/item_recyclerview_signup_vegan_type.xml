@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp"
+    android:background="@drawable/signup_vegan_type"
+    android:paddingBottom="8dp">
+
+    <ImageView
+        android:id="@+id/iv_signup_image"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="14dp"
+        android:layout_marginBottom="14dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@drawable/all_vegan_type_vegan" />
+
+    <TextView
+        android:id="@+id/tv_signup_vegan_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="36dp"
+        android:includeFontPadding="false"
+        android:textAppearance="@style/Bold.Body4"
+        android:textColor="@color/base3"
+        app:layout_constraintStart_toEndOf="@id/iv_signup_image"
+        app:layout_constraintTop_toTopOf="@id/iv_signup_image"
+        tools:text="@string/all_vegan" />
+
+    <TextView
+        android:id="@+id/tv_signup_vegan_type_eng"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:includeFontPadding="false"
+        android:textAppearance="@style/Bold.Body4"
+        android:textColor="@color/base3"
+        app:layout_constraintStart_toEndOf="@id/tv_signup_vegan_type"
+        app:layout_constraintTop_toTopOf="@id/tv_signup_vegan_type"
+        tools:text="@string/signup_vegan_eng" />
+
+    <TextView
+        android:id="@+id/tv_signup_vegan_type_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:includeFontPadding="false"
+        android:textAppearance="@style/Regular.Body5"
+        android:textColor="@color/base2"
+        app:layout_constraintStart_toStartOf="@id/tv_signup_vegan_type"
+        app:layout_constraintTop_toBottomOf="@id/tv_signup_vegan_type"
+        tools:text="@string/signup_vegan_description" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
