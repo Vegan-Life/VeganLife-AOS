@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="4dp"
+    android:background="@color/white">
+
+    <ImageView
+        android:id="@+id/iv_alarm_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="18dp"
+        android:paddingBottom="18dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@drawable/alarm_message" />
+
+    <TextView
+        android:id="@+id/tv_alarm_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:includeFontPadding="false"
+        android:textAppearance="@style/Regular.Body5"
+        app:layout_constraintStart_toEndOf="@id/iv_alarm_image"
+        app:layout_constraintTop_toTopOf="@id/iv_alarm_image"
+        tools:text="@string/alarm_comment" />
+
+    <TextView
+        android:id="@+id/tv_alarm_day"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:includeFontPadding="false"
+        android:textAppearance="@style/Regular.Body7"
+        app:layout_constraintStart_toStartOf="@id/tv_alarm_message"
+        app:layout_constraintTop_toBottomOf="@id/tv_alarm_message"
+        tools:text="@string/alarm_day" />
+
+    <TextView
+        android:id="@+id/tv_alarm_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:includeFontPadding="false"
+        android:textAppearance="@style/Regular.Body7"
+        app:layout_constraintStart_toEndOf="@id/tv_alarm_day"
+        app:layout_constraintTop_toTopOf="@id/tv_alarm_day"
+        tools:text="@string/alarm_time" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
