@@ -80,10 +80,13 @@
     <string name="home_notice">매일밤 자정 님을 위한 추천 레시피가 업데이트 됩니다</string>
 
     <!-- Alarm -->
-    <string name="alram_comment">님이 님의 피드에\n 댓글을 달았습니다!</string>
-    <string name="alram_recipe">님을 위한 오늘의 추천 레시피가\n업데이트 되었습니다!</string>
-    <string name="alram_like_comments">님이 님의 댓글에\n 좋아요를 눌렀습니다!</string>
-    <string name="alram_over_kcal">오늘의 칼로리 섭취량을\n 초과했습니다</string>
+    <string name="alarm_toolbar_title">알림</string>
+    <string name="alarm_comment">님이 님의 피드에 댓글을 달았습니다!</string>
+    <string name="alarm_recipe">님을 위한 오늘의 추천 레시피가\n업데이트 되었습니다!</string>
+    <string name="alarm_like_comments">님이 님의 댓글에\n 좋아요를 눌렀습니다!</string>
+    <string name="alarm_over_kcal">오늘의 칼로리 섭취량을\n 초과했습니다</string>
+    <string name="alarm_day">2023-12-31</string>
+    <string name="alarm_time">오후12:30</string>
 
     <!-- Community -->
     <string name="community_toolbar_title">피드</string>
