@@ -1,302 +1,311 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".signup.SignupAddInfoFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/mt_signup_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="40dp">
+        android:includeFontPadding="false"
+        android:textAppearance="@style/Bold.Body4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/all_back"
+        app:title="@string/signup_toolbar_title_additional"
+        app:titleCentered="true" />
 
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/mt_signup_toolbar"
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/mt_signup_toolbar">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:includeFontPadding="false"
-            android:textAppearance="@style/Bold.Body4"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:navigationIcon="@drawable/all_back"
-            app:title="@string/signup_toolbar_title_additional"
-            app:titleCentered="true" />
+            android:paddingBottom="120dp">
 
-        <ImageView
-            android:id="@+id/iv_signup_indicator"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/signup_indicator_second"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/mt_signup_toolbar" />
+            <ImageView
+                android:id="@+id/iv_signup_indicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/signup_indicator_second"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/tv_signup_nickname"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="26dp"
-            android:includeFontPadding="false"
-            android:text="@string/all_nickname"
-            android:textAppearance="@style/Medium.Body3"
-            android:textColor="@color/base3"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/iv_signup_indicator" />
+            <TextView
+                android:id="@+id/tv_signup_nickname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="26dp"
+                android:includeFontPadding="false"
+                android:text="@string/all_nickname"
+                android:textAppearance="@style/Medium.Body3"
+                android:textColor="@color/base3"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/iv_signup_indicator" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/til_signup_nickname"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="24dp"
-            android:hint="@string/all_nickname_hint"
-            android:includeFontPadding="false"
-            android:textColorHint="@color/gray3"
-            app:boxStrokeColor="@color/gray3"
-            app:counterEnabled="true"
-            app:counterMaxLength="10"
-            app:endIconMode="clear_text"
-            app:hintTextAppearance="@style/Medium.Body3"
-            app:layout_constraintStart_toStartOf="@id/tv_signup_nickname"
-            app:layout_constraintTop_toBottomOf="@id/tv_signup_nickname">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/tiet_signup_nickname"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_signup_nickname"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text" />
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="24dp"
+                android:hint="@string/all_nickname_hint"
+                android:includeFontPadding="false"
+                android:textColorHint="@color/gray3"
+                app:boxStrokeColor="@color/gray3"
+                app:counterEnabled="true"
+                app:counterMaxLength="10"
+                app:endIconMode="clear_text"
+                app:hintTextAppearance="@style/Medium.Body3"
+                app:layout_constraintStart_toStartOf="@id/tv_signup_nickname"
+                app:layout_constraintTop_toBottomOf="@id/tv_signup_nickname">
 
-        </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/tiet_signup_nickname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text" />
 
-        <TextView
-            android:id="@+id/tv_signup_nickname_error"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="80dp"
-            android:includeFontPadding="false"
-            android:textAppearance="@style/Regular.Body5"
-            android:textColor="@color/no"
-            app:layout_constraintStart_toStartOf="@id/tv_signup_nickname"
-            app:layout_constraintTop_toBottomOf="@id/tv_signup_nickname"
-            tools:text="@string/all_nickname_fail" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-        <TextView
-            android:id="@+id/tv_signup_height"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:includeFontPadding="false"
-            android:text="@string/all_height"
-            android:textAppearance="@style/Medium.Body3"
-            android:textColor="@color/base3"
-            app:layout_constraintStart_toStartOf="@id/tv_signup_nickname"
-            app:layout_constraintTop_toBottomOf="@id/til_signup_nickname" />
+            <TextView
+                android:id="@+id/tv_signup_nickname_error"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="80dp"
+                android:includeFontPadding="false"
+                android:textAppearance="@style/Regular.Body5"
+                android:textColor="@color/no"
+                app:layout_constraintStart_toStartOf="@id/tv_signup_nickname"
+                app:layout_constraintTop_toBottomOf="@id/tv_signup_nickname"
+                tools:text="@string/all_nickname_fail" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/til_signup_height"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="24dp"
-            android:hint="@string/all_height_hint"
-            android:includeFontPadding="false"
-            android:textColorHint="@color/gray3"
-            app:boxStrokeColor="@color/gray3"
-            app:hintTextAppearance="@style/Medium.Body3"
-            app:layout_constraintStart_toStartOf="@id/tv_signup_height"
-            app:layout_constraintTop_toBottomOf="@id/tv_signup_height">
+            <TextView
+                android:id="@+id/tv_signup_height"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:includeFontPadding="false"
+                android:text="@string/all_height"
+                android:textAppearance="@style/Medium.Body3"
+                android:textColor="@color/base3"
+                app:layout_constraintStart_toStartOf="@id/tv_signup_nickname"
+                app:layout_constraintTop_toBottomOf="@id/til_signup_nickname" />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/tiet_signup_height"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_signup_height"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="numberDecimal" />
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="24dp"
+                android:hint="@string/all_height_hint"
+                android:includeFontPadding="false"
+                android:textColorHint="@color/gray3"
+                app:boxStrokeColor="@color/gray3"
+                app:hintTextAppearance="@style/Medium.Body3"
+                app:layout_constraintStart_toStartOf="@id/tv_signup_height"
+                app:layout_constraintTop_toBottomOf="@id/tv_signup_height">
 
-        </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/tiet_signup_height"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal" />
 
-        <TextView
-            android:id="@+id/tv_signup_height_error"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:includeFontPadding="false"
-            android:textAppearance="@style/Regular.Body5"
-            android:textColor="@color/no"
-            app:layout_constraintStart_toStartOf="@id/tv_signup_height"
-            app:layout_constraintTop_toBottomOf="@id/til_signup_height"
-            tools:text="@string/all_number_type_error" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-        <TextView
-            android:id="@+id/tv_signup_weight"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="36dp"
-            android:includeFontPadding="false"
-            android:text="@string/all_weight"
-            android:textAppearance="@style/Medium.Body3"
-            android:textColor="@color/base3"
-            app:layout_constraintStart_toStartOf="@id/tv_signup_height"
-            app:layout_constraintTop_toBottomOf="@id/til_signup_height" />
+            <TextView
+                android:id="@+id/tv_signup_height_error"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:includeFontPadding="false"
+                android:textAppearance="@style/Regular.Body5"
+                android:textColor="@color/no"
+                app:layout_constraintStart_toStartOf="@id/tv_signup_height"
+                app:layout_constraintTop_toBottomOf="@id/til_signup_height"
+                tools:text="@string/all_number_type_error" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/til_signup_weight"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="24dp"
-            android:hint="@string/all_weight_hint"
-            android:includeFontPadding="false"
-            android:textColorHint="@color/gray3"
-            app:boxStrokeColor="@color/gray3"
-            app:hintTextAppearance="@style/Medium.Body3"
-            app:layout_constraintStart_toStartOf="@id/tv_signup_weight"
-            app:layout_constraintTop_toBottomOf="@id/tv_signup_weight">
+            <TextView
+                android:id="@+id/tv_signup_weight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="36dp"
+                android:includeFontPadding="false"
+                android:text="@string/all_weight"
+                android:textAppearance="@style/Medium.Body3"
+                android:textColor="@color/base3"
+                app:layout_constraintStart_toStartOf="@id/tv_signup_height"
+                app:layout_constraintTop_toBottomOf="@id/til_signup_height" />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/tiet_signup_weight"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_signup_weight"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="numberDecimal" />
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="24dp"
+                android:hint="@string/all_weight_hint"
+                android:includeFontPadding="false"
+                android:textColorHint="@color/gray3"
+                app:boxStrokeColor="@color/gray3"
+                app:hintTextAppearance="@style/Medium.Body3"
+                app:layout_constraintStart_toStartOf="@id/tv_signup_weight"
+                app:layout_constraintTop_toBottomOf="@id/tv_signup_weight">
 
-        </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/tiet_signup_weight"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal" />
 
-        <TextView
-            android:id="@+id/tv_signup_weight_error"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:includeFontPadding="false"
-            android:textAppearance="@style/Regular.Body5"
-            android:textColor="@color/no"
-            app:layout_constraintStart_toStartOf="@id/tv_signup_weight"
-            app:layout_constraintTop_toBottomOf="@id/til_signup_weight"
-            tools:text="@string/all_number_type_error" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-        <TextView
-            android:id="@+id/tv_signup_age"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="36dp"
-            android:includeFontPadding="false"
-            android:text="@string/all_age"
-            android:textAppearance="@style/Medium.Body3"
-            android:textColor="@color/base3"
-            app:layout_constraintStart_toStartOf="@id/tv_signup_weight"
-            app:layout_constraintTop_toBottomOf="@id/til_signup_weight" />
+            <TextView
+                android:id="@+id/tv_signup_weight_error"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:includeFontPadding="false"
+                android:textAppearance="@style/Regular.Body5"
+                android:textColor="@color/no"
+                app:layout_constraintStart_toStartOf="@id/tv_signup_weight"
+                app:layout_constraintTop_toBottomOf="@id/til_signup_weight"
+                tools:text="@string/all_number_type_error" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/til_signup_age"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="24dp"
-            android:hint="@string/all_age_hint"
-            android:includeFontPadding="false"
-            android:textColorHint="@color/gray3"
-            app:boxStrokeColor="@color/gray3"
-            app:hintTextAppearance="@style/Medium.Body3"
-            app:layout_constraintStart_toStartOf="@id/tv_signup_age"
-            app:layout_constraintTop_toBottomOf="@id/tv_signup_age">
+            <TextView
+                android:id="@+id/tv_signup_age"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="36dp"
+                android:includeFontPadding="false"
+                android:text="@string/all_age"
+                android:textAppearance="@style/Medium.Body3"
+                android:textColor="@color/base3"
+                app:layout_constraintStart_toStartOf="@id/tv_signup_weight"
+                app:layout_constraintTop_toBottomOf="@id/til_signup_weight" />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/tiet_signup_age"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_signup_age"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="numberDecimal" />
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="24dp"
+                android:hint="@string/all_age_hint"
+                android:includeFontPadding="false"
+                android:textColorHint="@color/gray3"
+                app:boxStrokeColor="@color/gray3"
+                app:hintTextAppearance="@style/Medium.Body3"
+                app:layout_constraintStart_toStartOf="@id/tv_signup_age"
+                app:layout_constraintTop_toBottomOf="@id/tv_signup_age">
 
-        </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/tiet_signup_age"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal" />
 
-        <TextView
-            android:id="@+id/tv_signup_age_error"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:includeFontPadding="false"
-            android:textAppearance="@style/Regular.Body5"
-            android:textColor="@color/no"
-            app:layout_constraintStart_toStartOf="@id/tv_signup_age"
-            app:layout_constraintTop_toBottomOf="@id/til_signup_age"
-            tools:text="@string/all_number_type_error" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-        <TextView
-            android:id="@+id/tv_signup_sex"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="36dp"
-            android:includeFontPadding="false"
-            android:text="@string/all_sex"
-            android:textAppearance="@style/Medium.Body3"
-            android:textColor="@color/base3"
-            app:layout_constraintStart_toStartOf="@id/tv_signup_age"
-            app:layout_constraintTop_toBottomOf="@id/til_signup_age" />
+            <TextView
+                android:id="@+id/tv_signup_age_error"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:includeFontPadding="false"
+                android:textAppearance="@style/Regular.Body5"
+                android:textColor="@color/no"
+                app:layout_constraintStart_toStartOf="@id/tv_signup_age"
+                app:layout_constraintTop_toBottomOf="@id/til_signup_age"
+                tools:text="@string/all_number_type_error" />
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_signup_female"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/signup_vegan_type"
-            android:text="@string/all_female"
-            android:textAppearance="@style/Medium.Body3"
-            android:textColor="@color/gray3"
-            app:layout_constraintBottom_toBottomOf="@id/btn_signup_male"
-            app:layout_constraintEnd_toStartOf="@id/btn_signup_male"
-            app:layout_constraintHorizontal_chainStyle="spread"
-            app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_signup_sex" />
+            <TextView
+                android:id="@+id/tv_signup_sex"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="36dp"
+                android:includeFontPadding="false"
+                android:text="@string/all_sex"
+                android:textAppearance="@style/Medium.Body3"
+                android:textColor="@color/base3"
+                app:layout_constraintStart_toStartOf="@id/tv_signup_age"
+                app:layout_constraintTop_toBottomOf="@id/til_signup_age" />
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_signup_male"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="24dp"
-            android:background="@drawable/signup_vegan_type"
-            android:text="@string/all_male"
-            android:textAppearance="@style/Medium.Body3"
-            android:textColor="@color/gray3"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_chainStyle="spread"
-            app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintStart_toEndOf="@id/btn_signup_female"
-            app:layout_constraintTop_toTopOf="@id/btn_signup_female" />
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_signup_female"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/signup_vegan_type"
+                android:text="@string/all_female"
+                android:textAppearance="@style/Medium.Body3"
+                android:textColor="@color/gray3"
+                app:layout_constraintBottom_toBottomOf="@id/btn_signup_male"
+                app:layout_constraintEnd_toStartOf="@id/btn_signup_male"
+                app:layout_constraintHorizontal_chainStyle="spread"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_signup_sex" />
 
-        <TextView
-            android:id="@+id/tv_signup_sex_error"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:includeFontPadding="false"
-            android:textAppearance="@style/Regular.Body5"
-            android:textColor="@color/no"
-            app:layout_constraintStart_toStartOf="@id/btn_signup_female"
-            app:layout_constraintTop_toBottomOf="@id/btn_signup_female"
-            tools:text="@string/all_sex_error" />
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_signup_male"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:background="@drawable/signup_vegan_type"
+                android:text="@string/all_male"
+                android:textAppearance="@style/Medium.Body3"
+                android:textColor="@color/gray3"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_chainStyle="spread"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintStart_toEndOf="@id/btn_signup_female"
+                app:layout_constraintTop_toTopOf="@id/btn_signup_female" />
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_signup_next"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="128dp"
-            android:layout_marginEnd="24dp"
-            android:background="@color/gray3"
-            android:includeFontPadding="false"
-            android:text="@string/signup_next"
-            android:textAppearance="@style/Medium.Body3"
-            android:textColor="@color/white"
-            app:layout_constraintTop_toBottomOf="@id/btn_signup_female" />
+            <TextView
+                android:id="@+id/tv_signup_sex_error"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:includeFontPadding="false"
+                android:textAppearance="@style/Regular.Body5"
+                android:textColor="@color/no"
+                app:layout_constraintStart_toStartOf="@id/btn_signup_female"
+                app:layout_constraintTop_toBottomOf="@id/btn_signup_female"
+                tools:text="@string/all_sex_error" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_signup_next"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="128dp"
+                android:layout_marginEnd="24dp"
+                android:background="@color/gray3"
+                android:includeFontPadding="false"
+                android:text="@string/signup_next"
+                android:textAppearance="@style/Medium.Body3"
+                android:textColor="@color/white"
+                app:layout_constraintTop_toBottomOf="@id/btn_signup_female" />
 
-</ScrollView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

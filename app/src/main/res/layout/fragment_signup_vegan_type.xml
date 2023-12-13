@@ -1,89 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".signup.SignupVeganTypeFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/mt_signup_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="134dp">
+        android:includeFontPadding="false"
+        android:textAppearance="@style/Bold.Body4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/all_back"
+        app:title="@string/signup_toolbar_title_vegan_type"
+        app:titleCentered="true" />
 
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/mt_signup_toolbar"
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/mt_signup_toolbar">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:includeFontPadding="false"
-            android:textAppearance="@style/Bold.Body4"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:navigationIcon="@drawable/all_back"
-            app:title="@string/signup_toolbar_title_vegan_type"
-            app:titleCentered="true" />
+            android:paddingBottom="134dp">
 
-        <ImageView
-            android:id="@+id/iv_signup_indicator"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/signup_indicator_first"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/mt_signup_toolbar" />
+            <ImageView
+                android:id="@+id/iv_signup_indicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/signup_indicator_first"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_signup_vegan_type"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="24dp"
-            tools:listitem="@layout/item_recyclerview_signup_vegan_type"
-            app:layout_constraintEnd_toEndOf="@id/iv_signup_indicator"
-            app:layout_constraintStart_toStartOf="@id/iv_signup_indicator"
-            app:layout_constraintTop_toBottomOf="@id/iv_signup_indicator" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_signup_vegan_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="24dp"
+                app:layout_constraintEnd_toEndOf="@id/iv_signup_indicator"
+                app:layout_constraintStart_toStartOf="@id/iv_signup_indicator"
+                app:layout_constraintTop_toBottomOf="@id/iv_signup_indicator"
+                tools:listitem="@layout/item_recyclerview_signup_vegan_type" />
 
-        <TextView
-            android:id="@+id/tv_signup_description"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="80dp"
-            android:includeFontPadding="false"
-            android:text="@string/signup_description"
-            android:textAppearance="@style/Bold.Body4"
-            app:layout_constraintStart_toStartOf="@id/rv_signup_vegan_type"
-            app:layout_constraintTop_toBottomOf="@id/rv_signup_vegan_type" />
+            <TextView
+                android:id="@+id/tv_signup_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="80dp"
+                android:includeFontPadding="false"
+                android:text="@string/signup_description"
+                android:textAppearance="@style/Bold.Body4"
+                app:layout_constraintStart_toStartOf="@id/rv_signup_vegan_type"
+                app:layout_constraintTop_toBottomOf="@id/rv_signup_vegan_type" />
 
-        <ImageView
-            android:id="@+id/iv_signup_spoon_fork_small"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="44dp"
-            android:src="@drawable/all_spoon_fork_small"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/tv_signup_description" />
+            <ImageView
+                android:id="@+id/iv_signup_spoon_fork_small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="44dp"
+                android:src="@drawable/all_spoon_fork_small"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tv_signup_description" />
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_signup_next"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="24dp"
-            android:background="@color/gray3"
-            android:includeFontPadding="false"
-            android:text="@string/signup_next"
-            android:textAppearance="@style/Medium.Body3"
-            android:textColor="@color/white"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_signup_description" />
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_signup_next"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="24dp"
+                android:background="@color/gray3"
+                android:includeFontPadding="false"
+                android:text="@string/signup_next"
+                android:textAppearance="@style/Medium.Body3"
+                android:textColor="@color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_signup_description" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-</ScrollView>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
