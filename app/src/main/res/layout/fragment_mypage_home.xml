@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray2"
+    tools:context=".mypage.MypageHomeFragment">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar_mypage_toolbar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/gray1"
+        android:includeFontPadding="false"
+        android:textAppearance="@style/Bold.Body4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="@string/mypage_toolbar_title"
+        app:titleCentered="true" />
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_mypage_toolbar">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="120dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_mypage_profile"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@color/gray1"
+                android:paddingBottom="30dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/iv_mypage_profile"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="44dp"
+                    android:layout_marginTop="20dp"
+                    android:src="@drawable/all_profile_basic"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_mypage_nickname"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="4dp"
+                    android:includeFontPadding="false"
+                    android:textAppearance="@style/Bold.Title1"
+                    android:textColor="@color/gray5"
+                    app:layout_constraintStart_toEndOf="@id/iv_mypage_profile"
+                    app:layout_constraintTop_toTopOf="@id/iv_mypage_profile"
+                    tools:text="@string/all_nickname" />
+
+                <TextView
+                    android:id="@+id/tv_mypage_email"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="2dp"
+                    android:includeFontPadding="false"
+                    android:textAppearance="@style/Regular.Body5"
+                    android:textColor="@color/gray4"
+                    app:layout_constraintStart_toStartOf="@id/tv_mypage_nickname"
+                    app:layout_constraintTop_toBottomOf="@id/tv_mypage_nickname"
+                    tools:text="@string/mypage_email" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/btn_mypage_modify_info"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:background="@color/gray1"
+                android:clickable="true"
+                android:gravity="start|center_vertical"
+                android:includeFontPadding="false"
+                android:paddingStart="24dp"
+                android:paddingTop="13dp"
+                android:paddingBottom="13dp"
+                android:text="@string/mypage_modify_information"
+                android:textAppearance="@style/Bold.Body4"
+                android:textColor="@color/gray5"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cl_mypage_profile"
+                tools:layout_editor_absoluteX="0dp" />
+
+            <ImageView
+                android:id="@+id/iv_mypage_setting"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="24dp"
+                android:background="@drawable/mypage_setting"
+                app:layout_constraintBottom_toBottomOf="@id/btn_mypage_modify_info"
+                app:layout_constraintEnd_toEndOf="@id/btn_mypage_modify_info"
+                app:layout_constraintTop_toTopOf="@id/btn_mypage_modify_info" />
+
+            <TextView
+                android:id="@+id/btn_mypage_wrote_feed"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:background="@color/gray1"
+                android:clickable="true"
+                android:gravity="start|center_vertical"
+                android:includeFontPadding="false"
+                android:paddingStart="24dp"
+                android:paddingTop="13dp"
+                android:paddingBottom="13dp"
+                android:text="@string/mypage_posted_feed"
+                android:textAppearance="@style/Medium.Body3"
+                android:textColor="@color/gray5"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btn_mypage_modify_info" />
+
+            <TextView
+                android:id="@+id/btn_mypage_wrote_comments"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:background="@color/gray1"
+                android:clickable="true"
+                android:gravity="start|center_vertical"
+                android:includeFontPadding="false"
+                android:paddingStart="24dp"
+                android:paddingTop="13dp"
+                android:paddingBottom="13dp"
+                android:text="@string/mypage_wroted_comments"
+                android:textAppearance="@style/Medium.Body3"
+                android:textColor="@color/gray5"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btn_mypage_wrote_feed" />
+
+            <TextView
+                android:id="@+id/btn_mypage_picked_recipe"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:background="@color/gray1"
+                android:clickable="true"
+                android:gravity="start|center_vertical"
+                android:includeFontPadding="false"
+                android:paddingStart="24dp"
+                android:paddingTop="13dp"
+                android:paddingBottom="13dp"
+                android:text="@string/mypage_picked_recipe"
+                android:textAppearance="@style/Medium.Body3"
+                android:textColor="@color/gray5"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btn_mypage_wrote_comments" />
+
+            <TextView
+                android:id="@+id/btn_mypage_notice"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:background="@color/gray1"
+                android:clickable="true"
+                android:gravity="start|center_vertical"
+                android:includeFontPadding="false"
+                android:paddingStart="24dp"
+                android:paddingTop="13dp"
+                android:paddingBottom="13dp"
+                android:text="@string/mypage_notice"
+                android:textAppearance="@style/Medium.Body3"
+                android:textColor="@color/gray5"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btn_mypage_picked_recipe" />
+
+            <TextView
+                android:id="@+id/btn_mypage_logout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:background="@color/gray1"
+                android:clickable="true"
+                android:gravity="start|center_vertical"
+                android:includeFontPadding="false"
+                android:paddingStart="24dp"
+                android:paddingTop="13dp"
+                android:paddingBottom="13dp"
+                android:text="@string/mypage_logout"
+                android:textAppearance="@style/Medium.Body3"
+                android:textColor="@color/gray5"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btn_mypage_notice" />
+
+            <TextView
+                android:id="@+id/btn_mypage_withdrawal_membership"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:background="@color/gray1"
+                android:clickable="true"
+                android:gravity="start|center_vertical"
+                android:includeFontPadding="false"
+                android:paddingStart="24dp"
+                android:paddingTop="13dp"
+                android:paddingBottom="13dp"
+                android:text="@string/mypage_withdrawal_membership"
+                android:textAppearance="@style/Medium.Body3"
+                android:textColor="@color/gray5"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btn_mypage_logout" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
