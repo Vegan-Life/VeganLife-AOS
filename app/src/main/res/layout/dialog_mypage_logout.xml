@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/gray1"
+    android:paddingBottom="10dp">
+
+    <TextView
+        android:id="@+id/tv_mypage_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:includeFontPadding="false"
+        android:text="@string/mypage_logout"
+        android:textAppearance="@style/Bold.Body4"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_mypage_content"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:includeFontPadding="false"
+        android:text="@string/mypage_dialog_logout_content"
+        android:textAppearance="@style/Medium.Body3"
+        app:layout_constraintStart_toStartOf="@id/tv_mypage_title"
+        app:layout_constraintTop_toBottomOf="@id/tv_mypage_title" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_mypage_cancel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="18dp"
+        android:layout_marginEnd="4dp"
+        android:background="@color/gray4"
+        android:includeFontPadding="false"
+        android:text="@string/all_dialog_cancel"
+        android:textAppearance="@style/Bold.Body4"
+        android:textColor="@color/gray1"
+        app:layout_constraintEnd_toStartOf="@id/btn_mypage_confirm"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_mypage_content" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_mypage_confirm"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="20dp"
+        android:background="@color/base3"
+        android:includeFontPadding="false"
+        android:text="@string/all_dialog_confirm"
+        android:textAppearance="@style/Bold.Body4"
+        android:textColor="@color/gray1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintHorizontal_weight="2"
+        app:layout_constraintStart_toEndOf="@id/btn_mypage_cancel"
+        app:layout_constraintTop_toTopOf="@id/btn_mypage_cancel" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
