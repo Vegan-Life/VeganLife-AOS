@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/iv_mypage_image"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@drawable/mypage_vegan_type_vegan_gray" />
+
+    <TextView
+        android:id="@+id/tv_mypage_vegan_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/selector_mypage_vegan_background"
+        android:includeFontPadding="false"
+        android:textAppearance="@style/Regular.Body5"
+        android:textColor="@color/gray2"
+        app:layout_constraintEnd_toEndOf="@id/iv_mypage_image"
+        app:layout_constraintStart_toStartOf="@id/iv_mypage_image"
+        app:layout_constraintTop_toBottomOf="@id/iv_mypage_image"
+        tools:text="@string/all_vegan" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

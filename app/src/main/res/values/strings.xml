@@ -48,6 +48,9 @@
 
     <string name="all_button_feed_upload">업로드</string>
 
+    <string name="all_day_time">0000-00-00 오후 00:00</string>
+
+    <string name="all_recipe_name">비건탕수육</string>
     <!-- Signup -->
     <string name="signup_toolbar_title_vegan_type">채식타입 선택</string>
 
@@ -183,8 +186,9 @@
 
     <!-- mypage -->
     <string name="mypage_toolbar_title">마이페이지</string>
+    <string name="mypage_email">veganlife@naver.com</string>
     <string name="mypage_modify_information">회원 정보 수정</string>
-    <string name="mypage_wroted_feed">내가 쓴 게시글</string>
+    <string name="mypage_posted_feed">내가 쓴 피드</string>
     <string name="mypage_wroted_comments">내가 쓴 댓글</string>
     <string name="mypage_picked_recipe">찜한 레시피</string>
     <string name="mypage_notice">공지사항</string>
@@ -192,8 +196,13 @@
     <string name="mypage_withdrawal_membership">회원탈퇴</string>
 
     <string name="mypage_id">ID</string>
+    <string name="mypage_vegan_type">채식타입</string>
     <string name="mypage_button_modify">수정</string>
-    <string name="mypage_popup_content">수정되었습니다</string>
+    <string name="mypage_popup_modify_content">수정되었습니다</string>
+    <string name="mypage_dialog_logout_content">정말로 로그아웃 하시겠습니까?</string>
+    <string name="mypage_popup_logout_content">로그아웃이 완료되었습니다</string>
+    <string name="mypage_dialog_withdrawal_content">정말로 회원탈퇴 하시겠습니까?</string>
+    <string name="mypage_popup_withdrawal_content">회원탈퇴가 완료되었습니다</string>
 
     <string name="mypage_picked_recipe_list">레시피 스크랩 목록</string>
 
