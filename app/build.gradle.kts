@@ -101,4 +101,7 @@ dependencies {
 
     // Expandable Layout
     implementation("com.github.skydoves:expandablelayout:1.0.7")
+
+    // Dots Indicator
+    implementation("com.tbuonomo:dotsindicator:5.0")
 }
