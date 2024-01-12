@@ -212,6 +212,22 @@
 
     </ScrollView>
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/tv_community_detail_feed_mentions"
+        android:layout_width="0dp"
+        android:layout_height="150dp"
+        android:background="@color/sub_gray1"
+        android:paddingHorizontal="28dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="8dp"
+        android:visibility="gone"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toTopOf="@id/include_community_detail_feed_comment_input_box"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:listitem="@layout/item_recyclerview_community_detail_feed_mentions"
+        tools:visibility="visible" />
+
     <include
         android:id="@+id/include_community_detail_feed_comment_input_box"
         layout="@layout/layout_community_detail_feed_comment_input_box"
