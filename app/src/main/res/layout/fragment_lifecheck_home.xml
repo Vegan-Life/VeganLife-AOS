@@ -218,7 +218,8 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/btn_lifecheck_home_diet_add"
-                    app:spanCount="2" />
+                    app:spanCount="2"
+                    tools:listitem="@layout/item_recyclerview_lifecheck_home_diet" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
