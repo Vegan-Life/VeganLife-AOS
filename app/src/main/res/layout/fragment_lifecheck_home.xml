@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray1"
+    tools:context=".lifecheck.LifeCheckHomeFragment">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar_lifecheck_home"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/gray1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:menu="@menu/menu_lifecheck_home"
+        app:title="@string/lifecheck_toolbar_title"
+        app:titleCentered="true"
+        app:titleTextAppearance="@style/Bold.Body4" />
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_lifecheck_home">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_lifecheck_home_top"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@color/sub_gray1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/btn_lifecheck_home_date_left"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="32dp"
+                    android:background="@color/sub_gray1"
+                    android:src="@drawable/lifecheck_left"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_lifecheck_home_day"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="26dp"
+                    android:layout_marginTop="14dp"
+                    android:includeFontPadding="false"
+                    android:paddingHorizontal="10dp"
+                    android:paddingTop="6dp"
+                    android:text="@string/lifecheck_friday"
+                    android:textAppearance="@style/Bold.Body4"
+                    android:textColor="@color/base3"
+                    app:layout_constraintStart_toEndOf="@id/btn_lifecheck_home_date_left"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_lifecheck_home_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:includeFontPadding="false"
+                    android:paddingHorizontal="10dp"
+                    android:paddingTop="2dp"
+                    android:paddingBottom="6dp"
+                    android:text="2023-12-12"
+                    android:textAppearance="@style/Regular.Body5"
+                    android:textColor="@color/gray4"
+                    app:layout_constraintStart_toStartOf="@id/tv_lifecheck_home_day"
+                    app:layout_constraintTop_toBottomOf="@id/tv_lifecheck_home_day" />
+
+                <TextView
+                    android:id="@+id/tv_lifecheck_home_calorie"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="38dp"
+                    android:layout_marginTop="7dp"
+                    android:layout_marginEnd="4dp"
+                    android:gravity="end"
+                    android:includeFontPadding="false"
+                    android:text="250"
+                    android:textAppearance="@style/Light.Body1"
+                    android:textColor="@color/gray4"
+                    app:layout_constraintEnd_toStartOf="@id/tv_lifecheck_home_kcal"
+                    app:layout_constraintStart_toEndOf="@+id/tv_lifecheck_home_day"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_lifecheck_home_kcal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginTop="45dp"
+                    android:layout_marginEnd="30dp"
+                    android:includeFontPadding="false"
+                    android:text="@string/all_kcal"
+                    android:textAppearance="@style/Bold.Body6"
+                    android:textColor="@color/gray3"
+                    app:layout_constraintEnd_toStartOf="@id/btn_lifecheck_home_date_right"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_lifecheck_home_period"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:includeFontPadding="false"
+                    android:text="2023-11-05 ~ 11--11"
+                    android:textAppearance="@style/Bold.Title1"
+                    android:textColor="@color/base3"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="@+id/btn_lifecheck_home_date_left"
+                    app:layout_constraintEnd_toStartOf="@id/btn_lifecheck_home_date_right"
+                    app:layout_constraintStart_toEndOf="@+id/btn_lifecheck_home_date_left"
+                    app:layout_constraintTop_toTopOf="@+id/btn_lifecheck_home_date_left" />
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/btn_lifecheck_home_date_right"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    android:layout_marginEnd="24dp"
+                    android:background="@color/sub_gray1"
+                    android:src="@drawable/lifecheck_right"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/tablayout_lifecheck_home"
+                    android:layout_width="0dp"
+                    android:layout_height="32dp"
+                    android:layout_marginHorizontal="24dp"
+                    android:layout_marginTop="16dp"
+                    android:includeFontPadding="false"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_lifecheck_home_calorie"
+                    app:tabBackground="@drawable/selector_lifecheck_home_tablayout"
+                    app:tabIndicatorColor="@color/base1"
+                    app:tabSelectedTextColor="@color/gray1"
+                    app:tabTextAppearance="@style/Bold.Body6"
+                    app:tabTextColor="@color/gray4">
+
+                    <com.google.android.material.tabs.TabItem
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/lifecheck_day" />
+
+                    <com.google.android.material.tabs.TabItem
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/lifecheck_week" />
+
+                    <com.google.android.material.tabs.TabItem
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/lifecheck_month" />
+
+                    <com.google.android.material.tabs.TabItem
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/lifecheck_year" />
+
+                </com.google.android.material.tabs.TabLayout>
+
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/vp_lifecheck_home"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="28dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tablayout_lifecheck_home" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_lifecheck_home"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="28dp"
+                android:background="@color/gray1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cl_lifecheck_home_top">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_lifecheck_home_diet_add"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="24dp"
+                    android:background="@color/base3"
+                    android:includeFontPadding="false"
+                    android:text="@string/lifecheck_button_add_meal"
+                    android:textAppearance="@style/Medium.Body3"
+                    android:textColor="@color/white"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="24dp"
+                    android:background="@color/gray1"
+                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/btn_lifecheck_home_diet_add"
+                    app:spanCount="2" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

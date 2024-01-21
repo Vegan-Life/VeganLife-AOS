@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/menu_lifecheck_home_alarm"
+        android:enabled="true"
+        android:icon="@drawable/all_alarm"
+        android:title="알림"
+        app:showAsAction="ifRoom" />
+
+</menu>
