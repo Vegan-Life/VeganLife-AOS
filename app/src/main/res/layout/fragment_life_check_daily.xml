@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/gray2"
+    tools:context=".lifecheck.LifeCheckDailyFragment">
+
+    <TextView
+        android:id="@+id/tv_lifecheck_daily_kcal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:includeFontPadding="false"
+        android:text="오늘의 잔여 칼로리는 250kcal 입니다"
+        android:textAppearance="@style/Regular.Body5"
+        android:textColor="@color/gray4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.anychart.AnyChartView
+        android:id="@+id/anychart_lifecheck_daily_carbohydrate"
+        android:layout_width="110dp"
+        android:layout_height="110dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginBottom="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/anychart_lifecheck_daily_protein"
+        app:layout_constraintStart_toStartOf="@id/tv_lifecheck_daily_kcal"
+        app:layout_constraintTop_toBottomOf="@id/tv_lifecheck_daily_kcal" />
+
+    <ImageView
+        android:id="@+id/iv_lifecheck_daily_carbohydrate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/all_carbohydrate"
+        app:layout_constraintBottom_toTopOf="@id/tv_lifecheck_daily_carbohydrate"
+        app:layout_constraintEnd_toEndOf="@id/tv_lifecheck_daily_carbohydrate"
+        app:layout_constraintStart_toStartOf="@id/tv_lifecheck_daily_carbohydrate" />
+
+    <TextView
+        android:id="@+id/tv_lifecheck_daily_carbohydrate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:includeFontPadding="false"
+        android:text="@string/all_carbohydrate"
+        android:textAppearance="@style/Bold.Body4"
+        android:textColor="@color/gray1"
+        app:layout_constraintBottom_toBottomOf="@id/anychart_lifecheck_daily_carbohydrate"
+        app:layout_constraintEnd_toEndOf="@id/anychart_lifecheck_daily_carbohydrate"
+        app:layout_constraintStart_toStartOf="@id/anychart_lifecheck_daily_carbohydrate"
+        app:layout_constraintTop_toTopOf="@id/anychart_lifecheck_daily_carbohydrate" />
+
+    <TextView
+        android:id="@+id/tv_lifecheck_daily_carbohydrate_intake"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:includeFontPadding="false"
+        android:text="150g"
+        android:textAppearance="@style/Bold.Body6"
+        android:textColor="@color/gray1"
+        app:layout_constraintEnd_toStartOf="@id/tv_lifecheck_daily_carbohydrate_recommend"
+        app:layout_constraintStart_toStartOf="@id/tv_lifecheck_daily_carbohydrate"
+        app:layout_constraintTop_toBottomOf="@id/tv_lifecheck_daily_carbohydrate" />
+
+    <TextView
+        android:id="@+id/tv_lifecheck_daily_carbohydrate_recommend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:includeFontPadding="false"
+        android:text="/200g"
+        android:textAppearance="@style/Regular.Body7"
+        android:textColor="@color/gray1"
+        app:layout_constraintBottom_toBottomOf="@id/tv_lifecheck_daily_carbohydrate_intake"
+        app:layout_constraintEnd_toEndOf="@id/tv_lifecheck_daily_carbohydrate"
+        app:layout_constraintStart_toEndOf="@id/tv_lifecheck_daily_carbohydrate_intake"
+        app:layout_constraintTop_toTopOf="@id/tv_lifecheck_daily_carbohydrate_intake" />
+
+    <com.anychart.AnyChartView
+        android:id="@+id/anychart_lifecheck_daily_protein"
+        android:layout_width="110dp"
+        android:layout_height="110dp"
+        app:layout_constraintBottom_toBottomOf="@id/anychart_lifecheck_daily_carbohydrate"
+        app:layout_constraintEnd_toStartOf="@id/anychart_lifecheck_daily_fat"
+        app:layout_constraintStart_toEndOf="@id/anychart_lifecheck_daily_carbohydrate"
+        app:layout_constraintTop_toTopOf="@id/anychart_lifecheck_daily_carbohydrate" />
+
+    <ImageView
+        android:id="@+id/iv_lifecheck_daily_protein"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/all_protein"
+        app:layout_constraintBottom_toTopOf="@id/tv_lifecheck_daily_protein"
+        app:layout_constraintEnd_toEndOf="@id/tv_lifecheck_daily_protein"
+        app:layout_constraintStart_toStartOf="@id/tv_lifecheck_daily_protein" />
+
+    <TextView
+        android:id="@+id/tv_lifecheck_daily_protein"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:includeFontPadding="false"
+        android:text="@string/all_fat"
+        android:textAppearance="@style/Bold.Body4"
+        android:textColor="@color/gray1"
+        app:layout_constraintBottom_toBottomOf="@id/anychart_lifecheck_daily_protein"
+        app:layout_constraintEnd_toEndOf="@id/anychart_lifecheck_daily_protein"
+        app:layout_constraintStart_toStartOf="@id/anychart_lifecheck_daily_protein"
+        app:layout_constraintTop_toTopOf="@id/anychart_lifecheck_daily_protein" />
+
+    <TextView
+        android:id="@+id/tv_lifecheck_daily_protein_intake"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:includeFontPadding="false"
+        android:text="150g"
+        android:textAppearance="@style/Bold.Body6"
+        android:textColor="@color/gray1"
+        app:layout_constraintEnd_toStartOf="@id/tv_lifecheck_daily_protein_recommend"
+        app:layout_constraintStart_toStartOf="@id/tv_lifecheck_daily_protein"
+        app:layout_constraintTop_toBottomOf="@id/tv_lifecheck_daily_protein" />
+
+    <TextView
+        android:id="@+id/tv_lifecheck_daily_protein_recommend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:includeFontPadding="false"
+        android:text="/200g"
+        android:textAppearance="@style/Regular.Body7"
+        android:textColor="@color/gray1"
+        app:layout_constraintBottom_toBottomOf="@id/tv_lifecheck_daily_protein_intake"
+        app:layout_constraintEnd_toEndOf="@id/tv_lifecheck_daily_protein"
+        app:layout_constraintStart_toEndOf="@id/tv_lifecheck_daily_protein_intake"
+        app:layout_constraintTop_toTopOf="@id/tv_lifecheck_daily_protein_intake" />
+
+    <com.anychart.AnyChartView
+        android:id="@+id/anychart_lifecheck_daily_fat"
+        android:layout_width="110dp"
+        android:layout_height="110dp"
+        app:layout_constraintBottom_toBottomOf="@id/anychart_lifecheck_daily_carbohydrate"
+        app:layout_constraintEnd_toEndOf="@id/tv_lifecheck_daily_kcal"
+        app:layout_constraintStart_toEndOf="@id/anychart_lifecheck_daily_protein"
+        app:layout_constraintTop_toTopOf="@id/anychart_lifecheck_daily_carbohydrate" />
+
+    <ImageView
+        android:id="@+id/iv_lifecheck_daily_fat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/all_fat"
+        app:layout_constraintBottom_toTopOf="@id/tv_lifecheck_daily_fat"
+        app:layout_constraintEnd_toEndOf="@id/tv_lifecheck_daily_fat"
+        app:layout_constraintStart_toStartOf="@id/tv_lifecheck_daily_fat" />
+
+    <TextView
+        android:id="@+id/tv_lifecheck_daily_fat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:includeFontPadding="false"
+        android:text="@string/all_fat"
+        android:textAppearance="@style/Bold.Body4"
+        android:textColor="@color/gray1"
+        app:layout_constraintBottom_toBottomOf="@id/anychart_lifecheck_daily_fat"
+        app:layout_constraintEnd_toEndOf="@id/anychart_lifecheck_daily_fat"
+        app:layout_constraintStart_toStartOf="@id/anychart_lifecheck_daily_fat"
+        app:layout_constraintTop_toTopOf="@id/anychart_lifecheck_daily_fat" />
+
+    <TextView
+        android:id="@+id/tv_lifecheck_daily_fat_intake"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:includeFontPadding="false"
+        android:text="150g"
+        android:textAppearance="@style/Bold.Body6"
+        android:textColor="@color/gray1"
+        app:layout_constraintEnd_toStartOf="@id/tv_lifecheck_daily_fat_recommend"
+        app:layout_constraintStart_toStartOf="@id/tv_lifecheck_daily_fat"
+        app:layout_constraintTop_toBottomOf="@id/tv_lifecheck_daily_fat" />
+
+    <TextView
+        android:id="@+id/tv_lifecheck_daily_fat_recommend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:includeFontPadding="false"
+        android:text="/200g"
+        android:textAppearance="@style/Regular.Body7"
+        android:textColor="@color/gray1"
+        app:layout_constraintBottom_toBottomOf="@id/tv_lifecheck_daily_fat_intake"
+        app:layout_constraintEnd_toEndOf="@id/tv_lifecheck_daily_fat"
+        app:layout_constraintStart_toEndOf="@id/tv_lifecheck_daily_fat_intake"
+        app:layout_constraintTop_toTopOf="@id/tv_lifecheck_daily_fat_intake" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
