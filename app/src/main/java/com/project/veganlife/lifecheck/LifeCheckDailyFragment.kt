@@ -32,6 +32,11 @@ class LifeCheckDailyFragment : Fragment() {
         setupFatChart()
     }
 
+    override fun onResume() {
+        super.onResume()
+        binding.root.requestLayout()
+    }
+
     private fun setupCarbohydrateChart() {
         // AnyChartView를 활성화
         APIlib.getInstance().setActiveAnyChartView(binding.anychartLifecheckDailyCarbohydrate)
