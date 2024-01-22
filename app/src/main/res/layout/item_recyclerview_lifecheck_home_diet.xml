@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="4dp"
+    android:background="@color/gray1">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/mcv_lifecheckhomediet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        app:cardCornerRadius="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/iv_lifecheckhomediet"
+            android:layout_width="148dp"
+            android:layout_height="148dp"
+            android:src="@color/gray3" />
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <TextView
+        android:id="@+id/tv_lifecheckhomediet_kcal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="20dp"
+        android:includeFontPadding="false"
+        android:text="322kcal"
+        android:textColor="@color/gray5"
+        android:textAppearance="@style/Bold.Body6"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@id/mcv_lifecheckhomediet"
+        app:layout_constraintTop_toBottomOf="@id/mcv_lifecheckhomediet" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="39dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:cardCornerRadius="35.19dp"
+        android:backgroundTint="@color/base2"
+        app:layout_constraintEnd_toEndOf="@id/mcv_lifecheckhomediet"
+        app:layout_constraintTop_toBottomOf="@id/mcv_lifecheckhomediet">
+
+        <TextView
+            android:id="@+id/tv_lifecheckhomediet_tag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:includeFontPadding="false"
+            android:text="@string/lifecheck_morning"
+            android:layout_gravity="center"
+            android:textColor="@color/gray1"
+            android:textAppearance="@style/Bold.Body6" />
+
+    </com.google.android.material.card.MaterialCardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

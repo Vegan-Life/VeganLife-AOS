@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/gray2"
+    tools:context=".lifecheck.LifeCheckYearlyFragment">
+
+    <TextView
+        android:id="@+id/tv_lifecheck_yearly_total_kcal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:includeFontPadding="false"
+        android:text="15870"
+        android:textAppearance="@style/Light.Body1"
+        android:textColor="@color/base1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.35"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_lifecheck_yearly_avg_kcal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:includeFontPadding="false"
+        android:text="월 평균: 2267"
+        android:textAppearance="@style/Bold.Body6"
+        android:textColor="@color/gray4"
+        app:layout_constraintBottom_toBottomOf="@id/tv_lifecheck_yearly_total_kcal"
+        app:layout_constraintStart_toEndOf="@id/tv_lifecheck_yearly_total_kcal"
+        app:layout_constraintTop_toTopOf="@id/tv_lifecheck_yearly_total_kcal"
+        app:layout_constraintVertical_bias="0.45" />
+
+    <TextView
+        android:id="@+id/tv_lifecheck_yearly_kcal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:includeFontPadding="false"
+        android:text="@string/all_kcal"
+        android:textAppearance="@style/Bold.Body6"
+        android:textColor="@color/gray3"
+        app:layout_constraintStart_toStartOf="@id/tv_lifecheck_yearly_avg_kcal"
+        app:layout_constraintTop_toBottomOf="@id/tv_lifecheck_yearly_avg_kcal" />
+
+    <com.github.mikephil.charting.charts.BarChart
+        android:id="@+id/barchart_lifecheck_yearly"
+        android:layout_width="0dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_lifecheck_yearly_total_kcal" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
