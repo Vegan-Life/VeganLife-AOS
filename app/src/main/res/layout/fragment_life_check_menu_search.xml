@@ -78,7 +78,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/et_lifecheck_menu_search_box" />
+        app:layout_constraintTop_toBottomOf="@id/et_lifecheck_menu_search_box"
+        tools:listitem="@layout/item_recyclerview_lifecheck_menu_search"/>
 
     <TextView
         android:id="@+id/tv_lifecheck_menu_search_menu_input"
@@ -93,5 +94,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-    
+
 </androidx.constraintlayout.widget.ConstraintLayout>
