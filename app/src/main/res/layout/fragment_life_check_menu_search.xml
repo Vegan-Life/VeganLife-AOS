@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray1"
+    tools:context=".lifecheck.LifeCheckMenuSearchFragment">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar_lifecheck_menu_search_toolbar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/gray1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/all_back"
+        app:title="@string/lifecheck_morning"
+        app:titleCentered="true"
+        app:titleTextAppearance="@style/Bold.Body4" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_lifecheck_menu_search_all_menu"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="4dp"
+        android:background="@drawable/lifecheck_menu_search_rect_gray1_base3"
+        android:includeFontPadding="false"
+        android:text="@string/lifecheck_all"
+        android:textAppearance="@style/Medium.Body3"
+        android:textColor="@color/base3"
+        app:layout_constraintEnd_toStartOf="@+id/btn_lifecheck_menu_search_my_menu"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_lifecheck_menu_search_toolbar" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_lifecheck_menu_search_my_menu"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="24dp"
+        android:background="@drawable/lifecheck_menu_search_rect_gray1_subgray2"
+        android:includeFontPadding="false"
+        android:text="@string/lifecheck_registered_menu"
+        android:textAppearance="@style/Medium.Body3"
+        android:textColor="@color/sub_gray2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/btn_lifecheck_menu_search_all_menu"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_lifecheck_menu_search_toolbar" />
+
+    <EditText
+        android:id="@+id/et_lifecheck_menu_search_box"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/sub_gray1"
+        android:drawableEnd="@drawable/all_search"
+        android:includeFontPadding="false"
+        android:paddingVertical="8dp"
+        android:paddingStart="16dp"
+        android:textAppearance="@style/Medium.Body3"
+        android:textColor="@color/gray5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_lifecheck_menu_search_all_menu"
+        tools:ignore="RtlSymmetry" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_lifecheck_menu_search"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="32dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/et_lifecheck_menu_search_box"
+        tools:listitem="@layout/item_recyclerview_lifecheck_menu_search"/>
+
+    <TextView
+        android:id="@+id/tv_lifecheck_menu_search_menu_input"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="72dp"
+        android:background="@drawable/lifecheck_menu_search_menu_input_background"
+        android:includeFontPadding="false"
+        android:text="@string/lifecheck_register_menu"
+        android:textAppearance="@style/Medium.Body3"
+        android:textColor="@color/gray1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
