@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <com.github.mikephil.charting.charts.PieChart
+        android:id="@+id/pc_home_protein"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/gray3"
+        android:contextClickable="false"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/iv_home_protein"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/all_protein"
+        app:layout_constraintEnd_toEndOf="@id/pc_home_protein"
+        app:layout_constraintStart_toStartOf="@id/pc_home_protein"
+        app:layout_constraintTop_toTopOf="@id/pc_home_protein" />
+
+    <TextView
+        android:id="@+id/tv_home_protein"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:includeFontPadding="false"
+        android:text="@string/all_protein"
+        android:textAppearance="@style/Bold.Body4"
+        android:textColor="@color/gray1"
+        app:layout_constraintEnd_toEndOf="@id/pc_home_protein"
+        app:layout_constraintStart_toStartOf="@id/pc_home_protein"
+        app:layout_constraintTop_toBottomOf="@id/iv_home_protein" />
+
+    <TextView
+        android:id="@+id/tv_home_protein_rest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:includeFontPadding="false"
+        tools:text="@string/all_count_rest_protein"
+        android:textAppearance="@style/Bold.Body4"
+        android:textColor="@color/gray1"
+        app:layout_constraintEnd_toStartOf="@id/tv_home_protein_total"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="@id/tv_home_protein"
+        app:layout_constraintTop_toBottomOf="@id/tv_home_protein" />
+
+    <TextView
+        android:id="@+id/tv_home_protein_total"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="5dp"
+        android:includeFontPadding="false"
+        tools:text="@string/all_count_total_protein"
+        android:textAppearance="@style/Regular.Body7"
+        android:textColor="@color/gray1"
+        app:layout_constraintBottom_toBottomOf="@id/tv_home_protein_rest"
+        app:layout_constraintEnd_toEndOf="@id/tv_home_protein"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toEndOf="@id/tv_home_protein_rest"
+        app:layout_constraintTop_toTopOf="@id/tv_home_protein_rest" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
