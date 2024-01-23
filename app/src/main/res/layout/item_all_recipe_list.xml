@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cv_all_cardview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/iv_all_thumbnail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/all_recipe_thumbnail" />
+
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/tv_all_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:includeFontPadding="false"
+        android:text="@string/all_recipe_name"
+        android:textAppearance="@style/Bold.Body4"
+        android:textColor="@color/gray5"
+        app:layout_constraintStart_toStartOf="@id/cv_all_cardview"
+        app:layout_constraintTop_toBottomOf="@id/cv_all_cardview" />
+
+    <TextView
+        android:id="@+id/tv_all_vegan_type_one"
+        style="@style/LactoOvoTag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        app:layout_constraintStart_toStartOf="@id/tv_all_name"
+        app:layout_constraintTop_toBottomOf="@id/tv_all_name" />
+
+    <TextView
+        android:id="@+id/tv_all_vegan_type_two"
+        style="@style/OvoTag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        app:layout_constraintStart_toEndOf="@id/tv_all_vegan_type_one"
+        app:layout_constraintTop_toTopOf="@id/tv_all_vegan_type_one" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
