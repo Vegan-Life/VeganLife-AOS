@@ -18,6 +18,7 @@
     <color name="sub_gray3">#545454</color>
 
     <color name="base1">#7DAC66</color>
+    <color name="base1_60">#997DAC66</color>
     <color name="base2">#B9CFBA</color>
     <color name="base3">#50A56F</color>
     <color name="base3_80">#CC50A56F</color>
@@ -25,6 +26,9 @@
 
     <color name="sub1">#D9E3DA</color>
     <color name="sub2">#51A66F</color>
+
+    <color name="gredient_start">#90DA7D</color>
+    <color name="gredient_end">#50A56F</color>
 
     <color name="ok">#1BB554</color>
     <color name="no">#F0743E</color>

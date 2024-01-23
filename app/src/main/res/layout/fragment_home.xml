@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray1"
+    tools:context=".home.HomeFragment">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/tb_home_toolbar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/gray1"
+        android:includeFontPadding="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:menu="@menu/menu_all"
+        app:navigationIcon="@drawable/all_logo_small"
+        app:title="@string/app_name"
+        app:titleMarginBottom="10dp"
+        app:titleTextAppearance="@style/Light.Body9"
+        app:titleTextColor="@color/base1" />
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tb_home_toolbar">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/iv_home_profile"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="44dp"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/all_profile_basic"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_home_nickname"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="4dp"
+                android:includeFontPadding="false"
+                android:textAppearance="@style/Bold.Title1"
+                android:textColor="@color/gray5"
+                app:layout_constraintStart_toEndOf="@id/iv_home_profile"
+                app:layout_constraintTop_toTopOf="@id/iv_home_profile"
+                tools:text="@string/home_nickname" />
+
+            <TextView
+                android:id="@+id/tv_home_welcome"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
+                android:includeFontPadding="false"
+                android:text="@string/home_welcome"
+                android:textAppearance="@style/Medium.Body3"
+                android:textColor="@color/gray5"
+                app:layout_constraintStart_toStartOf="@id/tv_home_nickname"
+                app:layout_constraintTop_toBottomOf="@id/tv_home_nickname" />
+
+            <com.project.veganlife.home.CustomProgressbar
+                android:id="@+id/cp_home_progressbar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@id/cl_home_kcal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_home_kcal"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="42dp"
+                android:background="@color/gray2"
+                android:paddingBottom="30dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_home_welcome">
+
+                <TextView
+                    android:id="@+id/tv_home_rest_kcal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:includeFontPadding="false"
+                    android:textAppearance="@style/Regular.Body5"
+                    android:textColor="@color/gray4"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="@string/all_rest_kcal" />
+
+                <include
+                    android:id="@+id/pc_home_carbohydrate"
+                    layout="@layout/layout_all_carbohydrate"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginEnd="5dp"
+                    android:contextClickable="false"
+                    app:layout_constraintDimensionRatio="1:1"
+                    app:layout_constraintEnd_toStartOf="@id/pc_home_protein"
+                    app:layout_constraintHorizontal_chainStyle="spread"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_home_rest_kcal" />
+
+                <include
+                    android:id="@+id/pc_home_protein"
+                    layout="@layout/layout_all_protein"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:contextClickable="false"
+                    app:layout_constraintBottom_toBottomOf="@id/pc_home_carbohydrate"
+                    app:layout_constraintDimensionRatio="1:1"
+                    app:layout_constraintEnd_toStartOf="@id/pc_home_fat"
+                    app:layout_constraintHorizontal_chainStyle="spread"
+                    app:layout_constraintStart_toEndOf="@id/pc_home_carbohydrate"
+                    app:layout_constraintTop_toTopOf="@id/pc_home_carbohydrate" />
+
+                <include
+                    android:id="@+id/pc_home_fat"
+                    layout="@layout/layout_all_fat"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="40dp"
+                    android:contextClickable="false"
+                    app:layout_constraintBottom_toBottomOf="@id/pc_home_protein"
+                    app:layout_constraintDimensionRatio="1:1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_chainStyle="spread"
+                    app:layout_constraintStart_toEndOf="@id/pc_home_protein"
+                    app:layout_constraintTop_toTopOf="@id/pc_home_protein" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/tv_home_recipe_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="26dp"
+                android:layout_marginTop="38dp"
+                android:includeFontPadding="false"
+                android:textAppearance="@style/Medium.Body3"
+                android:textColor="@color/gray5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cl_home_kcal"
+                tools:text="@string/all_nickname" />
+
+            <TextView
+                android:id="@+id/tv_home_recipe_for"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:includeFontPadding="false"
+                android:text="@string/home_for_recipe"
+                android:textAppearance="@style/Medium.Body3"
+                app:layout_constraintBottom_toBottomOf="@id/tv_home_recipe_name"
+                app:layout_constraintEnd_toStartOf="@id/tv_home_recipe_recommend"
+                app:layout_constraintStart_toEndOf="@id/tv_home_recipe_name"
+                app:layout_constraintTop_toTopOf="@id/tv_home_recipe_name" />
+
+            <TextView
+                android:id="@+id/tv_home_recipe_recommend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:includeFontPadding="false"
+                android:text="@string/home_recommend_recipe"
+                android:textAppearance="@style/Bold.Body4"
+                app:layout_constraintBottom_toBottomOf="@id/tv_home_recipe_for"
+                app:layout_constraintStart_toEndOf="@id/tv_home_recipe_for"
+                app:layout_constraintTop_toTopOf="@id/tv_home_recipe_for" />
+
+            <ImageView
+                android:id="@+id/iv_home_pork_spoon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:src="@drawable/home_spoon_fork_small"
+                app:layout_constraintStart_toEndOf="@id/tv_home_recipe_recommend"
+                app:layout_constraintTop_toTopOf="@id/tv_home_recipe_recommend" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_home_recommend_recipe"
+                android:layout_width="0dp"
+                android:layout_height="424dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="18dp"
+                android:layout_marginEnd="24dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_home_recipe_recommend"
+                tools:listitem="@layout/item_home_empty_recipe" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_home_notice"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@color/gray2"
+                android:paddingTop="20dp"
+                android:paddingBottom="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/rv_home_recommend_recipe">
+
+                <TextView
+                    android:id="@+id/tv_home_recipe_information_notice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:includeFontPadding="false"
+                    android:text="@string/home_notice"
+                    android:textAppearance="@style/Regular.Body7"
+                    android:textColor="@color/gray4"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

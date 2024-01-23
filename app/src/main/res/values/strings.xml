@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">VeganLife</string>
+    <string name="app_name">Vegan Life</string>
 
     <!-- All -->
     <string name="all_nickname">닉네임</string>
@@ -18,7 +18,7 @@
     <string name="all_female">여자</string>
     <string name="all_sex_error">성별을 선택해주세요</string>
 
-    <string name="all_rest">오늘의 잔여 칼로리는  입니다</string>
+    <string name="all_rest_kcal">오늘의 잔여 칼로리는  입니다</string>
     <string name="all_carbohydrate">탄수화물</string>
     <string name="all_protein">단백질</string>
     <string name="all_fat">지방</string>
@@ -38,9 +38,12 @@
 
     <string name="all_kcal">kcal</string>
 
-    <string name="all_count_carbohydrate">0g/0g</string>
-    <string name="all_count_protein">0g/0g</string>
-    <string name="all_count_fat">0g/0g</string>
+    <string name="all_count_rest_carbohydrate">0g</string>
+    <string name="all_count_total_carbohydrate">/0g</string>
+    <string name="all_count_rest_protein">0g</string>
+    <string name="all_count_total_protein">/0g</string>
+    <string name="all_count_rest_fat">0g</string>
+    <string name="all_count_total_fat">/0g</string>
 
     <string name="all_count_photo">(0/5)</string>
 
@@ -51,6 +54,7 @@
     <string name="all_day_time">0000-00-00 오후 00:00</string>
 
     <string name="all_recipe_name">비건탕수육</string>
+
     <!-- Signup -->
     <string name="signup_toolbar_title_vegan_type">채식타입 선택</string>
 
@@ -77,8 +81,10 @@
     <string name="signup_complete_description_second">회원가입이 완료되었습니다</string>
 
     <!-- Home -->
+    <string name="home_nickname">닉네임,</string>
     <string name="home_welcome">오늘도 건강한 채식하세요!</string>
-    <string name="home_recipe">님을 위한 추천 레시피</string>
+    <string name="home_for_recipe">님을 위한</string>
+    <string name="home_recommend_recipe">\t추천 레시피</string>
     <string name="home_recipe_empty">등록된 레시피가 없습니다.</string>
     <string name="home_notice">매일밤 자정 님을 위한 추천 레시피가 업데이트 됩니다</string>
 
