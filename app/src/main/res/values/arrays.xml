@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <array name="lifecheck_capacity_unit">
+        <item>g</item>
+        <item>ml</item>
+        <item>직접입력</item>
+    </array>
+
+</resources>
