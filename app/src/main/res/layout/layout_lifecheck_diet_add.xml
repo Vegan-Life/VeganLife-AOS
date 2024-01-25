@@ -181,7 +181,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/view_lifecheck_line_dot2"
         app:layout_constraintTop_toTopOf="@id/tv_lifecheck_diet_add_menu_protein" />
-    
+
     <FrameLayout
         android:id="@+id/fl_lifecheck_diet_add_menu_fat"
         android:layout_width="wrap_content"
