@@ -1,8 +1,222 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/gray1"
     tools:context=".lifecheck.LifeCheckDietAddFragment">
-    
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar_lifecheck_diet_add"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/gray1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/all_back"
+        app:title="@string/lifecheck_intake_setting_toolbar_title"
+        app:titleCentered="true"
+        app:titleTextAppearance="@style/Bold.Body4" />
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_lifecheck_diet_add">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <include
+                android:id="@+id/include_lifecheck_diet_add"
+                layout="@layout/layout_lifecheck_diet_add"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_lifecheck_diet_add_diet_plus"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@color/sub_gray1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/include_lifecheck_diet_add">
+
+                <ImageView
+                    android:id="@+id/iv_lifecheck_diet_add_diet_plus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/all_plus"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="24dp"
+                    android:includeFontPadding="false"
+                    android:text="@string/lifecheck_add_diet"
+                    android:textAppearance="@style/Regular.Body7"
+                    android:textColor="@color/base1"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_lifecheck_diet_add_total_kcal"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@color/gray2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cl_lifecheck_diet_add_diet_plus">
+
+                <TextView
+                    android:id="@+id/tv_lifecheck_diet_add_total_kcal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="20dp"
+                    android:layout_marginStart="28dp"
+                    android:includeFontPadding="false"
+                    android:text="@string/lifecheck_total_kcal"
+                    android:textAppearance="@style/Bold.Body4"
+                    android:textColor="@color/base3"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_lifecheck_diet_add_total_kcal_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp"
+                    android:includeFontPadding="false"
+                    android:text="250"
+                    android:textAppearance="@style/Light.Body1"
+                    android:textColor="@color/gray4"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/tv_lifecheck_diet_add_total_kcal_unit"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_lifecheck_diet_add_total_kcal_unit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="24dp"
+                    android:layout_marginBottom="12dp"
+                    android:includeFontPadding="false"
+                    android:text="@string/all_kcal"
+                    android:textAppearance="@style/Bold.Body6"
+                    android:textColor="@color/gray3"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/tv_lifecheck_diet_add_upload_photo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="26dp"
+                android:layout_marginTop="32dp"
+                android:includeFontPadding="false"
+                android:text="@string/all_upload_photo"
+                android:textAppearance="@style/Bold.Body4"
+                android:textColor="@color/gray5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cl_lifecheck_diet_add_total_kcal" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:includeFontPadding="false"
+                android:text="@string/all_count_photo"
+                android:textAppearance="@style/Regular.Body5"
+                android:textColor="@color/gray4"
+                app:layout_constraintBottom_toBottomOf="@id/tv_lifecheck_diet_add_upload_photo"
+                app:layout_constraintStart_toEndOf="@id/tv_lifecheck_diet_add_upload_photo"
+                app:layout_constraintTop_toTopOf="@id/tv_lifecheck_diet_add_upload_photo" />
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/ib_lifecheck_diet_add_upload_photo"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/sub_gray1"
+                android:src="@drawable/community_camera"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_lifecheck_diet_add_upload_photo" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_lifecheck_diet_add_photo"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="8dp"
+                android:orientation="horizontal"
+                android:visibility="gone"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toBottomOf="@id/ib_lifecheck_diet_add_upload_photo"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/ib_lifecheck_diet_add_upload_photo"
+                app:layout_constraintTop_toTopOf="@id/ib_lifecheck_diet_add_upload_photo"
+                tools:itemCount="5"
+                tools:listitem="@layout/item_recyclerview_lifecheck_diet_add_photo"
+                tools:visibility="visible" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_lifecheck_diet_add_cancel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="44dp"
+                android:layout_marginEnd="6dp"
+                android:layout_marginBottom="56dp"
+                android:background="@drawable/lifecheck_rect_gray4"
+                android:includeFontPadding="false"
+                android:text="@string/all_dialog_cancel"
+                android:textAppearance="@style/Medium.Body3"
+                android:textColor="@color/gray1"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/btn_lifecheck_diet_add_import"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/ib_lifecheck_diet_add_upload_photo" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_lifecheck_diet_add_import"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:layout_marginTop="44dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginBottom="56dp"
+                android:background="@drawable/lifecheck_rect_base3"
+                android:includeFontPadding="false"
+                android:text="@string/lifecheck_input_meal"
+                android:textAppearance="@style/Medium.Body3"
+                android:textColor="@color/gray1"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/btn_lifecheck_diet_add_cancel"
+                app:layout_constraintTop_toBottomOf="@id/ib_lifecheck_diet_add_upload_photo" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
