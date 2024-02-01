@@ -1,4 +1,4 @@
-package com.project.veganlife.community
+package com.project.veganlife.community.ui.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.project.veganlife.R
 
-class CommunityEditFeedFragment : Fragment() {
+class CommunityWriteFeedFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/sub_gray1"
-    tools:context=".community.CommunityHomeFragment">
+    tools:context=".community.ui.view.CommunityHomeFragment">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar_communityhome"

@@ -1,4 +1,4 @@
-package com.project.veganlife.community
+package com.project.veganlife.community.ui.view
 
 import android.os.Bundle
 import android.view.LayoutInflater

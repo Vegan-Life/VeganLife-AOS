@@ -1,4 +1,4 @@
-package com.project.veganlife.community
+package com.project.veganlife.community.ui.view
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,12 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import com.project.veganlife.R
 
-class CommunitySearchFragment : Fragment() {
+class CommunityDetailFeedFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_community_search, container, false)
+        return inflater.inflate(R.layout.fragment_community_detail_feed, container, false)
     }
-
 }
