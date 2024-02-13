@@ -238,5 +238,6 @@
     <string name="recipe_input_ingredient_hint">재료를 입력해주세요</string>
     <string name="recipe_input_recipe_hint">레시피를 입력해주세요</string>
     <string name="recipe_popup_content">레시피를 찜했습니다\n찜한 레시피는 <B>마이페이지 > 찜한 레시피</B>\n에서 확인할 수 있습니다</string>
+    <string name="recipe_popup_content_delete">레시피가 삭제되었습니다</string>
 
 </resources>
