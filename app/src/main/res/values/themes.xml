@@ -17,44 +17,75 @@
         <item name="android:layout_height">6dp</item>
     </style>
 
+    <style name="ToolbarTheme">
+
+        <item name="titleTextAppearance">@style/Bold.Body4</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="background">@color/gray1</item>
+        <item name="titleCentered">true</item>
+
+    </style>
+
+    <style name="AllTag">
+
+        <item name="android:text">@string/recipe_all</item>
+        <item name="android:textColor">@color/gray1</item>
+        <item name="android:textAppearance">@style/Regular.Body5</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:background">@drawable/all_vegan_type_pesco_background</item>
+
+    </style>
+
     <style name="VeganTag">
+
         <item name="android:text">@string/all_vegan</item>
         <item name="android:textColor">@color/base3</item>
         <item name="android:textAppearance">@style/Regular.Body5</item>
         <item name="android:includeFontPadding">false</item>
         <item name="android:background">@drawable/all_vegan_type_vegan_background</item>
+
     </style>
 
     <style name="LactoTag">
+
         <item name="android:text">@string/all_lacto</item>
         <item name="android:textColor">@color/gray1</item>
         <item name="android:textAppearance">@style/Regular.Body5</item>
         <item name="android:includeFontPadding">false</item>
         <item name="android:background">@drawable/all_vegan_type_lacto_background</item>
+
     </style>
 
     <style name="OvoTag">
+
         <item name="android:text">@string/all_ovo</item>
         <item name="android:textColor">@color/gray1</item>
         <item name="android:textAppearance">@style/Regular.Body5</item>
         <item name="android:includeFontPadding">false</item>
         <item name="android:background">@drawable/all_vegan_type_ovo_background</item>
+
     </style>
 
     <style name="LactoOvoTag">
+
         <item name="android:text">@string/all_lacto_ovo</item>
         <item name="android:textColor">@color/gray1</item>
         <item name="android:textAppearance">@style/Regular.Body5</item>
         <item name="android:includeFontPadding">false</item>
         <item name="android:background">@drawable/all_vegan_type_lacto_ovo_background</item>
+
     </style>
 
     <style name="PescoTag">
+
         <item name="android:text">@string/all_pesco</item>
         <item name="android:textColor">@color/gray1</item>
         <item name="android:textAppearance">@style/Regular.Body5</item>
         <item name="android:includeFontPadding">false</item>
         <item name="android:background">@drawable/all_vegan_type_pesco_background</item>
+
     </style>
 
 </resources>
