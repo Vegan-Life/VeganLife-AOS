@@ -214,15 +214,30 @@
 
     <!-- Recipe -->
     <string name="recipe_recipe">레시피</string>
-    <string name="recipe_search_recipe_hint">레시피를 검색해주세요</string>
-    <string name="recipe_ingedients">재료</string>
-    <string name="recipe_ingedients_for_one">(1인분 기준)</string>
 
-    <string name="recipe_possible_vegan_type">섭취 가능한 채식 타입</string>
-    <string name="recipe_possible_vegan_type_hint">2개까지 선택 가능</string>
+    <string name="recipe_all">전체</string>
+
+    <string name="recipe_empty_feed">Vegan LIFE의\n첫 레시피를 작성해주세요</string>
+
+    <string name="recipe_button_recipe">레시피 작성</string>
+
+    <string name="recipe_toolbar_title_recipe_search">레시피 검색</string>
+
+    <string name="recipe_dialog_delete_title">레시피 삭제</string>
+    <string name="recipe_dialog_delete_content">정말로 삭제하시겠습니까?</string>
+
+    <string name="recipe_button_modify">수정</string>
+    <string name="recipe_button_delete">삭제</string>
+    <string name="recipe_able_vegan_type">섭취 가능한 채식 타입</string>
+    <string name="recipe_ingredients">재료</string>
+    <string name="recipe_ingredients_for_one">(1인분 기준)</string>
+
+    <string name="recipe_able_vegan_type_hint">2개까지 선택 가능</string>
     <string name="recipe_input_name_hint">레시피 이름을 입력해주세요</string>
     <string name="recipe_input_measure">단위</string>
+    <string name="recipe_input_ingredient_hint">재료를 입력해주세요</string>
     <string name="recipe_input_recipe_hint">레시피를 입력해주세요</string>
-    <string name="recipe_popup_content">레시피를 찜했습니다\n찜한 레시피는 마이페이지 > 찜한 레시피\n에서 확인할 수 있습니다</string>
+    <string name="recipe_popup_content">레시피를 찜했습니다\n찜한 레시피는 <B>마이페이지 > 찜한 레시피</B>\n에서 확인할 수 있습니다</string>
+    <string name="recipe_popup_content_delete">레시피가 삭제되었습니다</string>
 
 </resources>
