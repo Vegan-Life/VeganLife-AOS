@@ -81,6 +81,7 @@
     <string name="signup_complete_description_second">회원가입이 완료되었습니다</string>
 
     <!-- Home -->
+    <string name="home">홈</string>
     <string name="home_nickname">닉네임,</string>
     <string name="home_welcome">오늘도 건강한 채식하세요!</string>
     <string name="home_for_recipe">님을 위한</string>
@@ -98,6 +99,7 @@
     <string name="alarm_time">오후12:30</string>
 
     <!-- Community -->
+    <string name="community">커뮤니티</string>
     <string name="community_toolbar_title">피드</string>
     <string name="community_tag_all">#전체</string>
     <string name="community_tag_worry">#고민있어요</string>

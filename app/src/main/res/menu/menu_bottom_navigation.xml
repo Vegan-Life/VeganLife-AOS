@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/lifecheck"
+        android:icon="@drawable/bottom_lifecheck"
+        android:title="@string/lifecheck_toolbar_title"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/recipe"
+        android:icon="@drawable/bottom_recipe"
+        android:title="@string/recipe_recipe"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/home"
+        android:icon="@drawable/bottom_home"
+        android:title="@string/home"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/community"
+        android:icon="@drawable/bottom_community"
+        android:title="@string/community"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/mypage"
+        android:icon="@drawable/bottom_mypage"
+        android:title="@string/mypage_toolbar_title"
+        app:showAsAction="ifRoom"/>
+
+</menu>

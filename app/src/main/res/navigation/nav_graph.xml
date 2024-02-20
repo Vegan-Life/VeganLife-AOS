@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/loginFragment">
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.project.veganlife.login.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login">
+        <action
+            android:id="@+id/action_loginFragment_to_signupVeganTypeFragment"
+            app:destination="@id/signup_graph" />
+        <action
+            android:id="@+id/action_loginFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.project.veganlife.home.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_homeFragment_to_alarmFragment"
+            app:destination="@id/alarmFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/alarmFragment"
+        android:name="com.project.veganlife.alarm.AlarmFragment"
+        android:label="fragment_alarm"
+        tools:layout="@layout/fragment_alarm">
+        <action
+            android:id="@+id/action_alarmFragment_to_recipeHomeFragment"
+            app:destination="@id/recipeHomeFragment" />
+        <action
+            android:id="@+id/action_alarmFragment_to_lifeCheckHomeFragment"
+            app:destination="@id/lifecheck_graph" />
+        <action
+            android:id="@+id/action_alarmFragment_to_recipeDetailInfoFragment2"
+            app:destination="@id/recipe_graph" />
+        <action
+            android:id="@+id/action_alarmFragment_to_recipeSearchFragment2"
+            app:destination="@id/recipe_graph" />
+        <action
+            android:id="@+id/action_alarmFragment_to_recipeHomeFragment2"
+            app:destination="@id/recipe_graph" />
+    </fragment>
+    <navigation
+        android:id="@+id/mypage_graph"
+        app:startDestination="@id/mypageHomeFragment">
+        <fragment
+            android:id="@+id/mypageHomeFragment"
+            android:name="com.project.veganlife.mypage.MypageHomeFragment"
+            android:label="fragment_mypage_home"
+            tools:layout="@layout/fragment_mypage_home">
+            <action
+                android:id="@+id/action_mypageHomeFragment_to_loginFragment"
+                app:destination="@id/loginFragment" />
+            <action
+                android:id="@+id/action_mypageHomeFragment_to_mypageModifyFramgnet"
+                app:destination="@id/mypageModifyFramgnet" />
+            <action
+                android:id="@+id/action_mypageHomeFragment_to_mypagePostedFeedFragment"
+                app:destination="@id/mypagePostedFeedFragment" />
+            <action
+                android:id="@+id/action_mypageHomeFragment_to_mypagePostedCommentsFragment"
+                app:destination="@id/mypagePostedCommentsFragment" />
+            <action
+                android:id="@+id/action_mypageHomeFragment_to_mypageScrapsRecipeFragment"
+                app:destination="@id/mypageScrapsRecipeFragment" />
+            <action
+                android:id="@+id/action_mypageHomeFragment_to_mypageNoticeFragment"
+                app:destination="@id/mypageNoticeFragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/mypageModifyFramgnet"
+            android:name="com.project.veganlife.mypage.MypageModifyFramgnet"
+            android:label="fragment_mypage_modify_framgnet"
+            tools:layout="@layout/fragment_mypage_modify_framgnet">
+            <action
+                android:id="@+id/action_mypageModifyFramgnet_to_mypageHomeFragment"
+                app:destination="@id/mypageHomeFragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/mypagePostedFeedFragment"
+            android:name="com.project.veganlife.mypage.MypagePostedFeedFragment"
+            android:label="fragment_mypage_posted_feed"
+            tools:layout="@layout/fragment_mypage_posted_feed">
+            <action
+                android:id="@+id/action_mypagePostedFeedFragment_to_mypageHomeFragment"
+                app:destination="@id/mypageHomeFragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/mypagePostedCommentsFragment"
+            android:name="com.project.veganlife.mypage.MypagePostedCommentsFragment"
+            android:label="fragment_mypage_posted_comments"
+            tools:layout="@layout/fragment_mypage_posted_comments">
+            <action
+                android:id="@+id/action_mypagePostedCommentsFragment_to_mypageHomeFragment"
+                app:destination="@id/mypageHomeFragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/mypageNoticeFragment"
+            android:name="com.project.veganlife.mypage.MypageNoticeFragment"
+            android:label="fragment_mypage_notice"
+            tools:layout="@layout/fragment_mypage_notice">
+            <action
+                android:id="@+id/action_mypageNoticeFragment_to_mypageHomeFragment"
+                app:destination="@id/mypageHomeFragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/mypageScrapsRecipeFragment"
+            android:name="com.project.veganlife.mypage.MypageScrapsRecipeFragment"
+            android:label="fragment_mypage_scraps_recipe"
+            tools:layout="@layout/fragment_mypage_scraps_recipe">
+            <action
+                android:id="@+id/action_mypageScrapsRecipeFragment_to_mypageHomeFragment"
+                app:destination="@id/mypageHomeFragment" />
+        </fragment>
+    </navigation>
+    <navigation
+        android:id="@+id/community_graph"
+        app:startDestination="@id/communityHomeFragment">
+        <fragment
+            android:id="@+id/communityHomeFragment"
+            android:name="com.project.veganlife.community.CommunityHomeFragment"
+            android:label="fragment_community_home"
+            tools:layout="@layout/fragment_community_home">
+            <action
+                android:id="@+id/action_communityHomeFragment_to_communitySearchFragment"
+                app:destination="@id/communitySearchFragment" />
+            <action
+                android:id="@+id/action_communityHomeFragment_to_communityWriteFeedFragment"
+                app:destination="@id/communityWriteFeedFragment" />
+            <action
+                android:id="@+id/action_communityHomeFragment_to_communityDetailFeedFragment"
+                app:destination="@id/communityDetailFeedFragment" />
+            <action
+                android:id="@+id/action_communityHomeFragment_to_alarmFragment"
+                app:destination="@id/alarmFragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/communitySearchFragment"
+            android:name="com.project.veganlife.community.CommunitySearchFragment"
+            android:label="fragment_community_search"
+            tools:layout="@layout/fragment_community_search">
+            <action
+                android:id="@+id/action_communitySearchFragment_to_communityHomeFragment"
+                app:destination="@id/communityHomeFragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/communityWriteFeedFragment"
+            android:name="com.project.veganlife.community.CommunityWriteFeedFragment"
+            android:label="fragment_community_write_edit_feed"
+            tools:layout="@layout/fragment_community_write_edit_feed">
+            <action
+                android:id="@+id/action_communityWriteFeedFragment_to_communityHomeFragment"
+                app:destination="@id/communityHomeFragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/communityDetailFeedFragment"
+            android:name="com.project.veganlife.community.CommunityDetailFeedFragment"
+            android:label="fragment_community_detail_feed"
+            tools:layout="@layout/fragment_community_detail_feed">
+            <action
+                android:id="@+id/action_communityDetailFeedFragment_to_communityHomeFragment"
+                app:destination="@id/communityHomeFragment" />
+            <action
+                android:id="@+id/action_communityDetailFeedFragment_to_communityEditFeedFragment"
+                app:destination="@id/communityEditFeedFragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/communityEditFeedFragment"
+            android:name="com.project.veganlife.community.CommunityEditFeedFragment"
+            android:label="CommunityEditFeedFragment">
+            <action
+                android:id="@+id/action_communityEditFeedFragment_to_communityDetailFeedFragment"
+                app:destination="@id/communityDetailFeedFragment" />
+        </fragment>
+    </navigation>
+    <navigation
+        android:id="@+id/recipe_graph"
+        app:startDestination="@id/recipeHomeFragment">
+        <fragment
+            android:id="@+id/recipeDetailInfoFragment"
+            android:name="com.project.veganlife.recipe.RecipeDetailInfoFragment"
+            android:label="fragment_recipe_detail_info"
+            tools:layout="@layout/fragment_recipe_detail_info">
+            <action
+                android:id="@+id/action_recipeDetailInfoFragment_to_recipeHomeFragment"
+                app:destination="@id/recipeHomeFragment" />
+            <action
+                android:id="@+id/action_recipeDetailInfoFragment_to_alarmFragment"
+                app:destination="@id/alarmFragment" />
+            <action
+                android:id="@+id/action_recipeDetailInfoFragment_to_recipeWriteFragment"
+                app:destination="@id/recipeWriteFragment" />
+            <action
+                android:id="@+id/action_recipeDetailInfoFragment_to_recipeSearchFragment"
+                app:destination="@id/recipeSearchFragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/recipeHomeFragment"
+            android:name="com.project.veganlife.recipe.RecipeHomeFragment"
+            android:label="fragment_recipe_home"
+            tools:layout="@layout/fragment_recipe_home">
+            <action
+                android:id="@+id/action_recipeHomeFragment_to_recipeDetailInfoFragment"
+                app:destination="@id/recipeDetailInfoFragment" />
+            <action
+                android:id="@+id/action_recipeHomeFragment_to_recipeWriteFragment"
+                app:destination="@id/recipeWriteFragment" />
+            <action
+                android:id="@+id/action_recipeHomeFragment_to_recipeSearchFragment"
+                app:destination="@id/recipeSearchFragment" />
+            <action
+                android:id="@+id/action_recipeHomeFragment_to_alarmFragment"
+                app:destination="@id/alarmFragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/recipeWriteFragment"
+            android:name="com.project.veganlife.recipe.RecipeWriteFragment"
+            android:label="fragment_recipe_write"
+            tools:layout="@layout/fragment_recipe_write">
+            <action
+                android:id="@+id/action_recipeWriteFragment_to_recipeDetailInfoFragment"
+                app:destination="@id/recipeDetailInfoFragment" />
+            <action
+                android:id="@+id/action_recipeWriteFragment_to_recipeHomeFragment"
+                app:destination="@id/recipeHomeFragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/recipeSearchFragment"
+            android:name="com.project.veganlife.recipe.RecipeSearchFragment"
+            android:label="fragment_recipe_search"
+            tools:layout="@layout/fragment_recipe_search">
+            <action
+                android:id="@+id/action_recipeSearchFragment_to_recipeHomeFragment"
+                app:destination="@id/recipeHomeFragment" />
+            <action
+                android:id="@+id/action_recipeSearchFragment_to_alarmFragment"
+                app:destination="@id/alarmFragment" />
+            <action
+                android:id="@+id/action_recipeSearchFragment_to_recipeDetailInfoFragment"
+                app:destination="@id/recipeDetailInfoFragment" />
+        </fragment>
+    </navigation>
+    <navigation
+        android:id="@+id/lifecheck_graph"
+        app:startDestination="@id/lifeCheckHomeFragment">
+        <fragment
+            android:id="@+id/lifeCheckDietAddFragment"
+            android:name="com.project.veganlife.lifecheck.LifeCheckDietAddFragment"
+            android:label="fragment_life_check_diet_add"
+            tools:layout="@layout/fragment_life_check_diet_add">
+            <action
+                android:id="@+id/action_lifeCheckDietAddFragment_to_lifeCheckMenuSearchFragment"
+                app:destination="@id/lifeCheckMenuSearchFragment" />
+            <action
+                android:id="@+id/action_lifeCheckDietAddFragment_to_lifeCheckHomeFragment"
+                app:destination="@id/lifeCheckHomeFragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/lifeCheckMenuSearchFragment"
+            android:name="com.project.veganlife.lifecheck.LifeCheckMenuSearchFragment"
+            android:label="fragment_life_check_menu_search"
+            tools:layout="@layout/fragment_life_check_menu_search">
+            <action
+                android:id="@+id/action_lifeCheckMenuSearchFragment_to_lifeCheckHomeFragment"
+                app:destination="@id/lifeCheckHomeFragment" />
+            <action
+                android:id="@+id/action_lifeCheckMenuSearchFragment_to_lifeCheckMenuAddFragment"
+                app:destination="@id/lifeCheckMenuAddFragment" />
+            <action
+                android:id="@+id/action_lifeCheckMenuSearchFragment_to_lifeCheckDietAddFragment"
+                app:destination="@id/lifeCheckDietAddFragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/lifeCheckDietDetailFragment"
+            android:name="com.project.veganlife.lifecheck.LifeCheckDietDetailFragment"
+            android:label="fragment_life_check_diet_detail"
+            tools:layout="@layout/fragment_life_check_diet_detail">
+            <action
+                android:id="@+id/action_lifeCheckDietDetailFragment_to_lifeCheckHomeFragment"
+                app:destination="@id/lifeCheckHomeFragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/lifeCheckMenuAddFragment"
+            android:name="com.project.veganlife.lifecheck.LifeCheckMenuAddFragment"
+            android:label="fragment_life_check_menu_add"
+            tools:layout="@layout/fragment_life_check_menu_add">
+            <action
+                android:id="@+id/action_lifeCheckMenuAddFragment_to_lifeCheckMenuSearchFragment"
+                app:destination="@id/lifeCheckMenuSearchFragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/lifeCheckHomeFragment"
+            android:name="com.project.veganlife.lifecheck.LifeCheckHomeFragment"
+            android:label="fragment_lifecheck_home"
+            tools:layout="@layout/fragment_lifecheck_home">
+            <action
+                android:id="@+id/action_lifeCheckHomeFragment_to_alarmFragment"
+                app:destination="@id/alarmFragment" />
+            <action
+                android:id="@+id/action_lifeCheckHomeFragment_to_lifeCheckMenuSearchFragment"
+                app:destination="@id/lifeCheckMenuSearchFragment" />
+            <action
+                android:id="@+id/action_lifeCheckHomeFragment_to_lifeCheckDietDetailFragment"
+                app:destination="@id/lifeCheckDietDetailFragment" />
+        </fragment>
+    </navigation>
+    <navigation android:id="@+id/signup_graph"
+        app:startDestination="@id/signupVeganTypeFragment">
+        <fragment
+            android:id="@+id/signupVeganTypeFragment"
+            android:name="com.project.veganlife.signup.SignupVeganTypeFragment"
+            android:label="fragment_signup_vegan_type"
+            tools:layout="@layout/fragment_signup_vegan_type">
+            <action
+                android:id="@+id/action_signupVeganTypeFragment_to_signupAddInfoFragment"
+                app:destination="@id/signupAddInfoFragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/signupAddInfoFragment"
+            android:name="com.project.veganlife.signup.SignupAddInfoFragment"
+            android:label="fragment_signup_add_info"
+            tools:layout="@layout/fragment_signup_add_info">
+            <action
+                android:id="@+id/action_signupAddInfoFragment_to_signupCompleteFragment"
+                app:destination="@id/signupCompleteFragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/signupCompleteFragment"
+            android:name="com.project.veganlife.signup.SignupCompleteFragment"
+            android:label="fragment_signup_complete"
+            tools:layout="@layout/fragment_signup_complete">
+            <action
+                android:id="@+id/action_signupCompleteFragment_to_loginFragment"
+                app:destination="@id/loginFragment" />
+        </fragment>
+    </navigation>
+</navigation>
