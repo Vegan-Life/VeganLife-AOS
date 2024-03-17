@@ -1,6 +1,5 @@
 package com.project.veganlife.login.data.model.remote
 
-import com.project.veganlife.login.data.model.LoginProvider
 import com.project.veganlife.login.data.model.LoginRequest
 import com.project.veganlife.login.data.model.LoginResponse
 import retrofit2.Response
