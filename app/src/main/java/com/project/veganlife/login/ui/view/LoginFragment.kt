@@ -11,9 +11,6 @@ import com.project.veganlife.R
 import com.project.veganlife.databinding.FragmentLoginBinding
 import com.project.veganlife.login.ui.view.viewmodel.LoginViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class LoginFragment : Fragment() {
@@ -63,10 +60,7 @@ class LoginFragment : Fragment() {
         }
     }
 
-    @OptIn(DelicateCoroutinesApi::class)
     private fun login(provider: String) {
-        GlobalScope.launch {
-            context?.let { loginViewModel.login(provider, it) }
-        }
+        context?.let { loginViewModel.login(provider, it) }
     }
 }
