@@ -5,12 +5,11 @@ import android.os.Bundle
 import android.Manifest
 import android.view.View
 import androidx.activity.OnBackPressedCallback
-import androidx.lifecycle.lifecycleScope
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import com.project.veganlife.databinding.ActivityMainBinding
-import kotlinx.coroutines.launch
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     lateinit var activityMainBinding: ActivityMainBinding
 
