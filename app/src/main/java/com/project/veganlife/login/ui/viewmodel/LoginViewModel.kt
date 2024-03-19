@@ -14,7 +14,6 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val loginUseCase: LoginUsecase,
-    private val userUsecase: UserUsecase,
 ) : ViewModel() {
     private val _loginResponse = MutableLiveData<LoginResponse?>()
     val loginResponse get() = _loginResponse
@@ -23,10 +22,6 @@ class LoginViewModel @Inject constructor(
         viewModelScope.launch {
             val getAccessToken = loginUseCase(provider,context)
             _loginResponse.value = getAccessToken
-
-            if (getAccessToken != null) {
-                userUsecase(getAccessToken)
-            }
         }
     }
 }
