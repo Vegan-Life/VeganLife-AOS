@@ -315,7 +315,7 @@
         app:startDestination="@id/signupVeganTypeFragment">
         <fragment
             android:id="@+id/signupVeganTypeFragment"
-            android:name="com.project.veganlife.signup.SignupVeganTypeFragment"
+            android:name="com.project.veganlife.signup.ui.view.SignupVeganTypeFragment"
             android:label="fragment_signup_vegan_type"
             tools:layout="@layout/fragment_signup_vegan_type">
             <action
@@ -324,7 +324,7 @@
         </fragment>
         <fragment
             android:id="@+id/signupAddInfoFragment"
-            android:name="com.project.veganlife.signup.SignupAddInfoFragment"
+            android:name="com.project.veganlife.signup.ui.view.SignupAddInfoFragment"
             android:label="fragment_signup_add_info"
             tools:layout="@layout/fragment_signup_add_info">
             <action
@@ -333,7 +333,7 @@
         </fragment>
         <fragment
             android:id="@+id/signupCompleteFragment"
-            android:name="com.project.veganlife.signup.SignupCompleteFragment"
+            android:name="com.project.veganlife.signup.ui.view.SignupCompleteFragment"
             android:label="fragment_signup_complete"
             tools:layout="@layout/fragment_signup_complete">
             <action
