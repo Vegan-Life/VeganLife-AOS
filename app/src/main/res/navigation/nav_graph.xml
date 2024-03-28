@@ -311,7 +311,8 @@
                 app:destination="@id/lifeCheckDietDetailFragment" />
         </fragment>
     </navigation>
-    <navigation android:id="@+id/signup_graph"
+    <navigation
+        android:id="@+id/signup_graph"
         app:startDestination="@id/signupVeganTypeFragment">
         <fragment
             android:id="@+id/signupVeganTypeFragment"
@@ -337,8 +338,8 @@
             android:label="fragment_signup_complete"
             tools:layout="@layout/fragment_signup_complete">
             <action
-                android:id="@+id/action_signupCompleteFragment_to_loginFragment"
-                app:destination="@id/loginFragment" />
+                android:id="@+id/action_signupCompleteFragment_to_homeFragment"
+                app:destination="@id/homeFragment" />
         </fragment>
     </navigation>
 </navigation>
