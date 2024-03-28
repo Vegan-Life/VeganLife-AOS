@@ -8,8 +8,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.project.veganlife.R
@@ -17,9 +15,6 @@ import com.project.veganlife.databinding.FragmentSignupVeganTypeBinding
 import com.project.veganlife.signup.ui.adapter.SignupAdapter
 import com.project.veganlife.signup.ui.viewmodel.SignupVeganTypeViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class SignupVeganTypeFragment : Fragment() {
