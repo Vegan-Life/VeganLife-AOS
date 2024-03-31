@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -5,9 +7,16 @@ plugins {
     id("com.google.dagger.hilt.android")
 }
 
+var properties: Properties = Properties()
+properties.load(project.rootProject.file("local.properties").inputStream())
+
 android {
     namespace = "com.project.veganlife"
     compileSdk = 34
+
+    buildFeatures {
+        buildConfig = true
+    }
 
     defaultConfig {
         applicationId = "com.project.veganlife"
@@ -17,6 +26,12 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        manifestPlaceholders["KAKAO_API_KEY"] = properties.getProperty("TEST_KAKAO_NATIVE_KEY")
+
+        buildConfigField("String", "KAKAO_API_KEY", properties.getProperty("TEST_KAKAO_API_KEY"))
+        buildConfigField("String", "NAVER_CLIENT_ID", properties.getProperty("NAVER_CLIENT_ID"))
+        buildConfigField("String", "NAVER_CLIENT_SECRET_KEY", properties.getProperty("NAVER_CLIENT_SECRET_KEY"))
     }
 
     buildTypes {
@@ -71,9 +86,9 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0")
 
     // Navigation
-    implementation("androidx.navigation:navigation-runtime-ktx:2.7.6")
-    implementation("androidx.navigation:navigation-fragment-ktx:2.7.6")
-    implementation("androidx.navigation:navigation-ui-ktx:2.7.6")
+    implementation("androidx.navigation:navigation-runtime-ktx:2.7.7")
+    implementation("androidx.navigation:navigation-fragment-ktx:2.7.7")
+    implementation("androidx.navigation:navigation-ui-ktx:2.7.7")
 
     // Splash
     implementation("androidx.core:core-splashscreen:1.0.1")
@@ -97,11 +112,15 @@ dependencies {
     implementation("com.kakao.sdk:v2-user:2.19.0")
 
     // Naver Login
-    implementation("com.navercorp.nid:oauth-jdk8:5.9.0") // jdk 8
+    implementation("com.navercorp.nid:oauth:5.1.0") // jdk 11
 
     // Expandable Layout
     implementation("com.github.skydoves:expandablelayout:1.0.7")
 
     // Dots Indicator
     implementation("com.tbuonomo:dotsindicator:5.0")
+
+    // EncryptedSharedPreference
+    implementation ("androidx.security:security-crypto:1.1.0-alpha06")
+
 }
