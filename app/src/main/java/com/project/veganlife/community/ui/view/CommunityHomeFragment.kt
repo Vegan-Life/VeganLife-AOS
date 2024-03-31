@@ -19,7 +19,7 @@ class CommunityHomeFragment : Fragment() {
 
     private val feedsGetViewModel: FeedsGetViewModel by viewModels()
     private lateinit var feedsAdapter: FeedsAdapter
-    private var accessToken = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJrY2s4NTA3NUBuYXZlci5jb20iLCJleHAiOjE3MDY4MjAyNjUsImlhdCI6MTcwNjgxMzA2NX0.JGWL_LBvau2l-ypmedIhCXWsYVI6UOJ1z7Ig4BC4qZw"
+    private var accessToken = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjaGxya2R1czM1QG5hdGUuY29tIiwiZXhwIjoxNzEyNTAyNzk1LCJpYXQiOjE3MTE4OTc5OTV9.7IPaGTNM6V2HDHWRaNU5Z-kzx9njeUGDgF3dE8XzJkM"
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,6 +41,13 @@ class CommunityHomeFragment : Fragment() {
             feedsAdapter.submitList(response.content)
         }
         initFeedsRecyclerView()
+        setWriteButton()
+    }
+
+    private fun setWriteButton() {
+        binding.efabCommunityhomeWrite.setOnClickListener {
+            //피드 작성, 레시피 작성 두 버튼 뜨기
+        }
     }
 
     private fun initFeedsRecyclerView() {

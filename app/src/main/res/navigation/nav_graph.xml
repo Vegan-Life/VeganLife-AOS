@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_loginFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_community_graph"
+            app:destination="@id/community_graph" />
     </fragment>
     <fragment
         android:id="@+id/homeFragment"
@@ -125,7 +128,7 @@
         app:startDestination="@id/communityHomeFragment">
         <fragment
             android:id="@+id/communityHomeFragment"
-            android:name="com.project.veganlife.community.CommunityHomeFragment"
+            android:name="com.project.veganlife.community.ui.view.CommunityHomeFragment"
             android:label="fragment_community_home"
             tools:layout="@layout/fragment_community_home">
             <action
@@ -143,7 +146,7 @@
         </fragment>
         <fragment
             android:id="@+id/communitySearchFragment"
-            android:name="com.project.veganlife.community.CommunitySearchFragment"
+            android:name="com.project.veganlife.community.ui.view.CommunitySearchFragment"
             android:label="fragment_community_search"
             tools:layout="@layout/fragment_community_search">
             <action
@@ -152,7 +155,7 @@
         </fragment>
         <fragment
             android:id="@+id/communityWriteFeedFragment"
-            android:name="com.project.veganlife.community.CommunityWriteFeedFragment"
+            android:name="com.project.veganlife.community.ui.view.CommunityWriteFeedFragment"
             android:label="fragment_community_write_edit_feed"
             tools:layout="@layout/fragment_community_write_edit_feed">
             <action
@@ -161,7 +164,7 @@
         </fragment>
         <fragment
             android:id="@+id/communityDetailFeedFragment"
-            android:name="com.project.veganlife.community.CommunityDetailFeedFragment"
+            android:name="com.project.veganlife.community.ui.view.CommunityDetailFeedFragment"
             android:label="fragment_community_detail_feed"
             tools:layout="@layout/fragment_community_detail_feed">
             <action
@@ -173,7 +176,7 @@
         </fragment>
         <fragment
             android:id="@+id/communityEditFeedFragment"
-            android:name="com.project.veganlife.community.CommunityEditFeedFragment"
+            android:name="com.project.veganlife.community.ui.view.CommunityEditFeedFragment"
             android:label="CommunityEditFeedFragment">
             <action
                 android:id="@+id/action_communityEditFeedFragment_to_communityDetailFeedFragment"
