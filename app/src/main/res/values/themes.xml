@@ -7,9 +7,9 @@
 
     <style name="Theme.VeganLife" parent="Base.Theme.VeganLife" />
 
-    <style name="ShapeAppearanceOverlayExtended">
-        <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">100dp</item>
+<!--  fab의 코너가 완벽한 원이 되도록 shape 재정의함  -->
+    <style name="OverrideRoundedFab">
+        <item name="cornerSize">50%</item>
     </style>
 
     <style name="HorizontalProgressBarStyle" parent="Widget.AppCompat.ProgressBar.Horizontal">

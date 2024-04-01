@@ -107,8 +107,8 @@
     <string name="community_tag_recipe">#채식레시피</string>
     <string name="community_new_feed">Vegan LIFE의\n첫 피드를 작성해주세요</string>
     <string name="community_button_write">글쓰기</string>
-    <string name="community_button_feed">피드 작성</string>
-    <string name="community_button_recipe">레시피 작성</string>
+    <string name="community_button_write_feed">피드 작성</string>
+    <string name="community_button_write_recipe">레시피 작성</string>
 
     <string name="community_search_tag_famous">인기 태그</string>
     <string name="community_search_word">검색어를 입력해주세요</string>
