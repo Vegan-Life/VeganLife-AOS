@@ -13,7 +13,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:navigationIcon="@drawable/all_back"
-        app:title="@string/signup_toolbar_title_additional"/>
+        app:title="@string/signup_toolbar_title_additional" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -111,6 +111,7 @@
                 android:includeFontPadding="false"
                 android:textColorHint="@color/gray3"
                 app:boxStrokeColor="@color/gray3"
+                app:counterMaxLength="3"
                 app:hintTextAppearance="@style/Medium.Body3"
                 app:layout_constraintStart_toStartOf="@id/tv_signup_height"
                 app:layout_constraintTop_toBottomOf="@id/tv_signup_height">
@@ -122,18 +123,6 @@
                     android:inputType="numberDecimal" />
 
             </com.google.android.material.textfield.TextInputLayout>
-
-            <TextView
-                android:id="@+id/tv_signup_height_error"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:includeFontPadding="false"
-                android:textAppearance="@style/Regular.Body5"
-                android:textColor="@color/no"
-                app:layout_constraintStart_toStartOf="@id/tv_signup_height"
-                app:layout_constraintTop_toBottomOf="@id/til_signup_height"
-                tools:text="@string/all_number_type_error" />
 
             <TextView
                 android:id="@+id/tv_signup_weight"
@@ -158,6 +147,7 @@
                 android:includeFontPadding="false"
                 android:textColorHint="@color/gray3"
                 app:boxStrokeColor="@color/gray3"
+                app:counterMaxLength="3"
                 app:hintTextAppearance="@style/Medium.Body3"
                 app:layout_constraintStart_toStartOf="@id/tv_signup_weight"
                 app:layout_constraintTop_toBottomOf="@id/tv_signup_weight">
@@ -169,18 +159,6 @@
                     android:inputType="numberDecimal" />
 
             </com.google.android.material.textfield.TextInputLayout>
-
-            <TextView
-                android:id="@+id/tv_signup_weight_error"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:includeFontPadding="false"
-                android:textAppearance="@style/Regular.Body5"
-                android:textColor="@color/no"
-                app:layout_constraintStart_toStartOf="@id/tv_signup_weight"
-                app:layout_constraintTop_toBottomOf="@id/til_signup_weight"
-                tools:text="@string/all_number_type_error" />
 
             <TextView
                 android:id="@+id/tv_signup_age"
@@ -205,6 +183,8 @@
                 android:includeFontPadding="false"
                 android:textColorHint="@color/gray3"
                 app:boxStrokeColor="@color/gray3"
+                app:counterMaxLength="4"
+
                 app:hintTextAppearance="@style/Medium.Body3"
                 app:layout_constraintStart_toStartOf="@id/tv_signup_age"
                 app:layout_constraintTop_toBottomOf="@id/tv_signup_age">
@@ -213,21 +193,9 @@
                     android:id="@+id/tiet_signup_age"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="numberDecimal" />
+                    android:inputType="date" />
 
             </com.google.android.material.textfield.TextInputLayout>
-
-            <TextView
-                android:id="@+id/tv_signup_age_error"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:includeFontPadding="false"
-                android:textAppearance="@style/Regular.Body5"
-                android:textColor="@color/no"
-                app:layout_constraintStart_toStartOf="@id/tv_signup_age"
-                app:layout_constraintTop_toBottomOf="@id/til_signup_age"
-                tools:text="@string/all_number_type_error" />
 
             <TextView
                 android:id="@+id/tv_signup_sex"
@@ -273,18 +241,6 @@
                 app:layout_constraintHorizontal_weight="1"
                 app:layout_constraintStart_toEndOf="@id/btn_signup_female"
                 app:layout_constraintTop_toTopOf="@id/btn_signup_female" />
-
-            <TextView
-                android:id="@+id/tv_signup_sex_error"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:includeFontPadding="false"
-                android:textAppearance="@style/Regular.Body5"
-                android:textColor="@color/no"
-                app:layout_constraintStart_toStartOf="@id/btn_signup_female"
-                app:layout_constraintTop_toBottomOf="@id/btn_signup_female"
-                tools:text="@string/all_sex_error" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_signup_next"
