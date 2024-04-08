@@ -6,14 +6,13 @@ import com.google.gson.Gson
 import com.project.veganlife.data.model.ConflictResponse
 import com.project.veganlife.signup.data.model.SignupRequest
 import com.project.veganlife.signup.data.remote.SignupApi
-import org.json.JSONObject
 import java.lang.Exception
 import javax.inject.Inject
 
-class SignupAddInfoDataSourceImpl @Inject constructor(
+class SignupAddInfoRemoteDataSourceImpl @Inject constructor(
     private val signupApi: SignupApi,
     private val accessToken: SharedPreferences,
-) : SignupAddInfoDataSource {
+) : SignupAddInfoRemoteDataSource {
     override suspend fun setSignup(signupRequest: SignupRequest): String? {
         try {
             val signupGetResponse = signupApi.getInformation(

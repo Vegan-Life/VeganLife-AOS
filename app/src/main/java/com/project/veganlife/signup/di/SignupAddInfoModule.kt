@@ -1,7 +1,7 @@
 package com.project.veganlife.signup.di
 
-import com.project.veganlife.signup.data.datasource.SignupAddInfoDataSource
-import com.project.veganlife.signup.data.datasource.SignupAddInfoDataSourceImpl
+import com.project.veganlife.signup.data.datasource.SignupAddInfoRemoteDataSource
+import com.project.veganlife.signup.data.datasource.SignupAddInfoRemoteDataSourceImpl
 import com.project.veganlife.signup.data.repositoryImpl.SignupAddInfoRepositoryImpl
 import com.project.veganlife.signup.domain.SignupAddInfoRepository
 import dagger.Module
@@ -25,8 +25,8 @@ object SignupAddInfoModule {
     @Provides
     @Singleton
     fun provideSignupAddInfoDataSource(
-        signupAddInfoDataSourceImpl: SignupAddInfoDataSourceImpl,
-    ): SignupAddInfoDataSource {
+        signupAddInfoDataSourceImpl: SignupAddInfoRemoteDataSourceImpl,
+    ): SignupAddInfoRemoteDataSource {
         return signupAddInfoDataSourceImpl
     }
 }
