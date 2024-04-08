@@ -19,7 +19,7 @@
     </fragment>
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.project.veganlife.home.HomeFragment"
+        android:name="com.project.veganlife.home.ui.view.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home">
         <action
@@ -28,7 +28,7 @@
     </fragment>
     <fragment
         android:id="@+id/alarmFragment"
-        android:name="com.project.veganlife.alarm.AlarmFragment"
+        android:name="com.project.veganlife.alarm.ui.view.AlarmFragment"
         android:label="fragment_alarm"
         tools:layout="@layout/fragment_alarm">
         <action
@@ -36,23 +36,20 @@
             app:destination="@id/recipeHomeFragment" />
         <action
             android:id="@+id/action_alarmFragment_to_lifeCheckHomeFragment"
-            app:destination="@id/lifecheck_graph" />
+            app:destination="@id/lifeCheckHomeFragment" />
         <action
-            android:id="@+id/action_alarmFragment_to_recipeDetailInfoFragment2"
-            app:destination="@id/recipe_graph" />
+            android:id="@+id/action_alarmFragment_to_recipeDetailInfoFragment"
+            app:destination="@id/recipeHomeFragment" />
         <action
-            android:id="@+id/action_alarmFragment_to_recipeSearchFragment2"
-            app:destination="@id/recipe_graph" />
-        <action
-            android:id="@+id/action_alarmFragment_to_recipeHomeFragment2"
-            app:destination="@id/recipe_graph" />
+            android:id="@+id/action_alarmFragment_to_recipeSearchFragment"
+            app:destination="@id/recipeHomeFragment" />
     </fragment>
     <navigation
         android:id="@+id/mypage_graph"
         app:startDestination="@id/mypageHomeFragment">
         <fragment
             android:id="@+id/mypageHomeFragment"
-            android:name="com.project.veganlife.mypage.MypageHomeFragment"
+            android:name="com.project.veganlife.mypage.ui.view.MypageHomeFragment"
             android:label="fragment_mypage_home"
             tools:layout="@layout/fragment_mypage_home">
             <action
@@ -76,7 +73,7 @@
         </fragment>
         <fragment
             android:id="@+id/mypageModifyFramgnet"
-            android:name="com.project.veganlife.mypage.MypageModifyFramgnet"
+            android:name="com.project.veganlife.mypage.ui.view.MypageModifyFramgnet"
             android:label="fragment_mypage_modify_framgnet"
             tools:layout="@layout/fragment_mypage_modify_framgnet">
             <action
@@ -85,25 +82,32 @@
         </fragment>
         <fragment
             android:id="@+id/mypagePostedFeedFragment"
-            android:name="com.project.veganlife.mypage.MypagePostedFeedFragment"
+            android:name="com.project.veganlife.mypage.ui.view.MypagePostedFeedFragment"
             android:label="fragment_mypage_posted_feed"
             tools:layout="@layout/fragment_mypage_posted_feed">
             <action
                 android:id="@+id/action_mypagePostedFeedFragment_to_mypageHomeFragment"
                 app:destination="@id/mypageHomeFragment" />
+
+            <action
+                android:id="@+id/action_mypagePostedFeedFragment_to_communityDetailFeedFragment"
+                app:destination="@id/communityDetailFeedFragment" />
         </fragment>
         <fragment
             android:id="@+id/mypagePostedCommentsFragment"
-            android:name="com.project.veganlife.mypage.MypagePostedCommentsFragment"
+            android:name="com.project.veganlife.mypage.ui.view.MypagePostedCommentsFragment"
             android:label="fragment_mypage_posted_comments"
             tools:layout="@layout/fragment_mypage_posted_comments">
             <action
                 android:id="@+id/action_mypagePostedCommentsFragment_to_mypageHomeFragment"
                 app:destination="@id/mypageHomeFragment" />
+            <action
+                android:id="@+id/action_mypagePostedCommentsFragment_to_communityDetailFeedFragment"
+                app:destination="@+id/communityDetailFeedFragment" />
         </fragment>
         <fragment
             android:id="@+id/mypageNoticeFragment"
-            android:name="com.project.veganlife.mypage.MypageNoticeFragment"
+            android:name="com.project.veganlife.mypage.ui.view.MypageNoticeFragment"
             android:label="fragment_mypage_notice"
             tools:layout="@layout/fragment_mypage_notice">
             <action
@@ -112,12 +116,16 @@
         </fragment>
         <fragment
             android:id="@+id/mypageScrapsRecipeFragment"
-            android:name="com.project.veganlife.mypage.MypageScrapsRecipeFragment"
+            android:name="com.project.veganlife.mypage.ui.view.MypageScrapsRecipeFragment"
             android:label="fragment_mypage_scraps_recipe"
             tools:layout="@layout/fragment_mypage_scraps_recipe">
             <action
                 android:id="@+id/action_mypageScrapsRecipeFragment_to_mypageHomeFragment"
                 app:destination="@id/mypageHomeFragment" />
+
+            <action
+                android:id="@+id/action_mypageScrapsRecipeFragment_to_recipeDetailInfoFragment"
+                app:destination="@id/recipeDetailInfoFragment" />
         </fragment>
     </navigation>
     <navigation
@@ -125,7 +133,7 @@
         app:startDestination="@id/communityHomeFragment">
         <fragment
             android:id="@+id/communityHomeFragment"
-            android:name="com.project.veganlife.community.CommunityHomeFragment"
+            android:name="com.project.veganlife.community.ui.view.CommunityHomeFragment"
             android:label="fragment_community_home"
             tools:layout="@layout/fragment_community_home">
             <action
@@ -143,7 +151,7 @@
         </fragment>
         <fragment
             android:id="@+id/communitySearchFragment"
-            android:name="com.project.veganlife.community.CommunitySearchFragment"
+            android:name="com.project.veganlife.community.ui.view.CommunitySearchFragment"
             android:label="fragment_community_search"
             tools:layout="@layout/fragment_community_search">
             <action
@@ -152,7 +160,7 @@
         </fragment>
         <fragment
             android:id="@+id/communityWriteFeedFragment"
-            android:name="com.project.veganlife.community.CommunityWriteFeedFragment"
+            android:name="com.project.veganlife.community.ui.view.CommunityWriteFeedFragment"
             android:label="fragment_community_write_edit_feed"
             tools:layout="@layout/fragment_community_write_edit_feed">
             <action
@@ -161,7 +169,7 @@
         </fragment>
         <fragment
             android:id="@+id/communityDetailFeedFragment"
-            android:name="com.project.veganlife.community.CommunityDetailFeedFragment"
+            android:name="com.project.veganlife.community.ui.view.CommunityDetailFeedFragment"
             android:label="fragment_community_detail_feed"
             tools:layout="@layout/fragment_community_detail_feed">
             <action
@@ -173,7 +181,7 @@
         </fragment>
         <fragment
             android:id="@+id/communityEditFeedFragment"
-            android:name="com.project.veganlife.community.CommunityEditFeedFragment"
+            android:name="com.project.veganlife.community.ui.view.CommunityEditFeedFragment"
             android:label="CommunityEditFeedFragment">
             <action
                 android:id="@+id/action_communityEditFeedFragment_to_communityDetailFeedFragment"
@@ -185,7 +193,7 @@
         app:startDestination="@id/recipeHomeFragment">
         <fragment
             android:id="@+id/recipeDetailInfoFragment"
-            android:name="com.project.veganlife.recipe.RecipeDetailInfoFragment"
+            android:name="com.project.veganlife.recipe.ui.view.RecipeDetailInfoFragment"
             android:label="fragment_recipe_detail_info"
             tools:layout="@layout/fragment_recipe_detail_info">
             <action
@@ -203,7 +211,7 @@
         </fragment>
         <fragment
             android:id="@+id/recipeHomeFragment"
-            android:name="com.project.veganlife.recipe.RecipeHomeFragment"
+            android:name="com.project.veganlife.recipe.ui.view.RecipeHomeFragment"
             android:label="fragment_recipe_home"
             tools:layout="@layout/fragment_recipe_home">
             <action
@@ -221,7 +229,7 @@
         </fragment>
         <fragment
             android:id="@+id/recipeWriteFragment"
-            android:name="com.project.veganlife.recipe.RecipeWriteFragment"
+            android:name="com.project.veganlife.recipe.ui.view.RecipeWriteFragment"
             android:label="fragment_recipe_write"
             tools:layout="@layout/fragment_recipe_write">
             <action
@@ -233,7 +241,7 @@
         </fragment>
         <fragment
             android:id="@+id/recipeSearchFragment"
-            android:name="com.project.veganlife.recipe.RecipeSearchFragment"
+            android:name="com.project.veganlife.recipe.ui.view.RecipeSearchFragment"
             android:label="fragment_recipe_search"
             tools:layout="@layout/fragment_recipe_search">
             <action
@@ -252,7 +260,7 @@
         app:startDestination="@id/lifeCheckHomeFragment">
         <fragment
             android:id="@+id/lifeCheckDietAddFragment"
-            android:name="com.project.veganlife.lifecheck.LifeCheckDietAddFragment"
+            android:name="com.project.veganlife.lifecheck.ui.view.LifeCheckDietAddFragment"
             android:label="fragment_life_check_diet_add"
             tools:layout="@layout/fragment_life_check_diet_add">
             <action
@@ -264,7 +272,7 @@
         </fragment>
         <fragment
             android:id="@+id/lifeCheckMenuSearchFragment"
-            android:name="com.project.veganlife.lifecheck.LifeCheckMenuSearchFragment"
+            android:name="com.project.veganlife.lifecheck.ui.view.LifeCheckMenuSearchFragment"
             android:label="fragment_life_check_menu_search"
             tools:layout="@layout/fragment_life_check_menu_search">
             <action
@@ -279,7 +287,7 @@
         </fragment>
         <fragment
             android:id="@+id/lifeCheckDietDetailFragment"
-            android:name="com.project.veganlife.lifecheck.LifeCheckDietDetailFragment"
+            android:name="com.project.veganlife.lifecheck.ui.view.LifeCheckDietDetailFragment"
             android:label="fragment_life_check_diet_detail"
             tools:layout="@layout/fragment_life_check_diet_detail">
             <action
@@ -288,7 +296,7 @@
         </fragment>
         <fragment
             android:id="@+id/lifeCheckMenuAddFragment"
-            android:name="com.project.veganlife.lifecheck.LifeCheckMenuAddFragment"
+            android:name="com.project.veganlife.lifecheck.ui.view.LifeCheckMenuAddFragment"
             android:label="fragment_life_check_menu_add"
             tools:layout="@layout/fragment_life_check_menu_add">
             <action
@@ -297,7 +305,7 @@
         </fragment>
         <fragment
             android:id="@+id/lifeCheckHomeFragment"
-            android:name="com.project.veganlife.lifecheck.LifeCheckHomeFragment"
+            android:name="com.project.veganlife.lifecheck.ui.view.LifeCheckHomeFragment"
             android:label="fragment_lifecheck_home"
             tools:layout="@layout/fragment_lifecheck_home">
             <action

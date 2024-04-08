@@ -25,6 +25,8 @@
         android:background="@drawable/bottom_navigation_background"
         app:itemIconTint="@color/selector_bottom_navigation_selected_color"
         app:labelVisibilityMode="unlabeled"
+        app:itemRippleColor="@color/transparent"
+        app:itemActiveIndicatorStyle="@color/white"
         app:itemIconSize="33dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

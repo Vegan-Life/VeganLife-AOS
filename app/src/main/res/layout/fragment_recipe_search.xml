@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/gray1"
-    tools:context=".recipe.RecipeSearchFragment">
+    tools:context=".recipe.ui.view.RecipeSearchFragment">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar_recipe_search_toolbar"

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/gray1"
-    tools:context=".community.CommunityDetailFeedFragment">
+    tools:context=".community.ui.view.CommunityDetailFeedFragment">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_community_detail_feed"

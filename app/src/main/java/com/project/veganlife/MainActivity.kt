@@ -5,17 +5,16 @@ import android.os.Bundle
 import android.Manifest
 import android.view.View
 import androidx.activity.OnBackPressedCallback
+import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.NavigationUI
+import androidx.navigation.ui.setupWithNavController
 import com.project.veganlife.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     lateinit var activityMainBinding: ActivityMainBinding
-
-    companion object {
-        const val BASE_URL = "https://dev.konggogi.store/api/v1/"
-    }
 
     val permissionList =
         arrayOf(
@@ -43,6 +42,8 @@ class MainActivity : AppCompatActivity() {
 
         // 바텀 네비게이션의 표시 여부를 한 번에 관리
         activityMainBinding.bnvMainNavigation.apply {
+            setupWithNavController(navController)
+
             navController.addOnDestinationChangedListener { _, destination, _ ->
                 when (destination.id) {
                     R.id.homeFragment,

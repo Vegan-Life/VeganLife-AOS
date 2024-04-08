@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/gray2"
-    tools:context=".lifecheck.LifeCheckWeeklyFragment">
+    tools:context=".lifecheck.ui.view.LifeCheckWeeklyFragment">
 
     <TextView
         android:id="@+id/tv_lifecheck_weekly_total_kcal"
