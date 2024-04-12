@@ -1,5 +1,6 @@
 package com.project.veganlife.di
 
+import com.project.veganlife.data.remote.ProfileInfoGetApi
 import com.project.veganlife.signup.data.remote.SignupApi
 import dagger.Module
 import dagger.Provides
@@ -13,5 +14,10 @@ class AppApiModule {
     @Provides
     fun provideSignupApi(retrofit: Retrofit): SignupApi {
         return retrofit.create(SignupApi::class.java)
+    }
+
+    @Provides
+    fun provideHomeProfilePhotoApi(retrofit: Retrofit): ProfileInfoGetApi{
+        return retrofit.create(ProfileInfoGetApi::class.java)
     }
 }
