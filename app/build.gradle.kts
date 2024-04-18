@@ -126,4 +126,7 @@ dependencies {
     // Circle Imageview
     implementation ("de.hdodenhof:circleimageview:3.1.0")
 
+    // Kotlin-reflect
+    implementation ("org.jetbrains.kotlin:kotlin-reflect:1.9.10")
+
 }
