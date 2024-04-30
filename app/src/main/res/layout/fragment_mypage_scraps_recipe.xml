@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/gray1"
-    tools:context=".mypage.MypageScrapsRecipeFragment">
+    tools:context=".mypage.ui.view.MypageScrapsRecipeFragment">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar_mypage_toolbar"

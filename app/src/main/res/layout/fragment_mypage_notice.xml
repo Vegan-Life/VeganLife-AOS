@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/gray2"
-    tools:context=".mypage.MypageNoticeFragment">
+    tools:context=".mypage.ui.view.MypageNoticeFragment">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar_mypage_toolbar"

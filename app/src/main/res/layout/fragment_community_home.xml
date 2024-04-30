@@ -38,68 +38,30 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_communityhome_feed"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/rv_communityhome_popularity_tag"
-        app:layout_constraintBottom_toBottomOf="parent"
         tools:listitem="@layout/item_recyclerview_community_home_feed" />
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/efab_communityhome_write"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="16dp"
         android:backgroundTint="@color/base1"
+        android:elevation="0dp"
         android:includeFontPadding="false"
         android:paddingHorizontal="38dp"
-        android:text="@string/community_button_write"
+        android:text="@string/community_toolbar_title"
         android:textAppearance="@style/Medium.Body3"
         android:textColor="@color/white"
-        app:cornerRadius="100dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:shapeAppearance="@style/OverrideRoundedFab" />
-
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/efab_communityhome_write_feed"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:layout_marginBottom="100dp"
-        android:backgroundTint="@color/white"
-        app:strokeWidth="1dp"
-        app:strokeColor="@color/base1"
-        android:includeFontPadding="false"
-        android:paddingHorizontal="38dp"
-        android:text="@string/community_button_write_feed"
-        android:textAppearance="@style/Medium.Body3"
-        android:textColor="@color/base1"
-        app:cornerRadius="100dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:shapeAppearance="@style/OverrideRoundedFab" />
-
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/efab_communityhome_write_recipe"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:layout_marginBottom="150dp"
-        android:backgroundTint="@color/white"
-        app:strokeWidth="1dp"
-        app:strokeColor="@color/base1"
-        android:includeFontPadding="false"
-        android:paddingHorizontal="38dp"
-        android:text="@string/community_button_write_recipe"
-        android:textAppearance="@style/Medium.Body3"
-        android:textColor="@color/base1"
-        app:cornerRadius="100dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:shapeAppearance="@style/OverrideRoundedFab" />
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlayExtended" />
 
     <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/ib_communityhome_go_to_top"
