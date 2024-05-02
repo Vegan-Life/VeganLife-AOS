@@ -45,23 +45,63 @@
         app:layout_constraintTop_toBottomOf="@id/rv_communityhome_popularity_tag"
         tools:listitem="@layout/item_recyclerview_community_home_feed" />
 
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+    <Button
+        android:id="@+id/efab_communityhome_write_feed"
+        android:layout_width="120dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="@color/gray1"
+        android:includeFontPadding="false"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:padding="0dp"
+        android:text="@string/community_button_write_feed"
+        android:textAppearance="@style/Medium.Body3"
+        android:textColor="@color/base1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:shapeAppearanceOverlay="@style/OverrideRoundedButton"
+        app:strokeColor="@color/base1"
+        app:strokeWidth="1dp" />
+
+    <Button
+        android:id="@+id/efab_communityhome_write_recipe"
+        android:layout_width="120dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="@color/gray1"
+        android:includeFontPadding="false"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:padding="0dp"
+        android:text="@string/community_button_write_recipe"
+        android:textAppearance="@style/Medium.Body3"
+        android:textColor="@color/base1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:shapeAppearanceOverlay="@style/OverrideRoundedButton"
+        app:strokeColor="@color/base1"
+        app:strokeWidth="1dp" />
+
+    <Button
         android:id="@+id/efab_communityhome_write"
-        android:layout_width="wrap_content"
+        android:layout_width="120dp"
         android:layout_height="40dp"
         android:layout_marginBottom="16dp"
         android:backgroundTint="@color/base1"
-        android:elevation="0dp"
         android:includeFontPadding="false"
-        android:paddingHorizontal="38dp"
-        android:text="@string/community_toolbar_title"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:padding="0dp"
+        android:text="@string/community_button_write"
         android:textAppearance="@style/Medium.Body3"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlayExtended" />
+        app:shapeAppearanceOverlay="@style/OverrideRoundedButton" />
 
     <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/ib_communityhome_go_to_top"
