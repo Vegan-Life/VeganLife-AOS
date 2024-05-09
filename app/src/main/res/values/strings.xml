@@ -18,7 +18,9 @@
     <string name="all_female">여자</string>
     <string name="all_sex_error">성별을 선택해주세요</string>
 
-    <string name="all_rest_kcal">오늘의 잔여 칼로리는  입니다</string>
+    <string name="all_rest_kcal">오늘의 잔여 칼로리는</string>
+    <string name="all_over_rest_kcal">오늘의 초과 칼로리는</string>
+    <string name="all_rest_kcal_is">입니다</string>
     <string name="all_carbohydrate">탄수화물</string>
     <string name="all_protein">단백질</string>
     <string name="all_fat">지방</string>

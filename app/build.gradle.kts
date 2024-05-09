@@ -123,4 +123,6 @@ dependencies {
     // EncryptedSharedPreference
     implementation ("androidx.security:security-crypto:1.1.0-alpha06")
 
+    // Circle Imageview
+    implementation ("de.hdodenhof:circleimageview:3.1.0")
 }
