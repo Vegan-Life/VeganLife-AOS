@@ -9,7 +9,7 @@ import javax.inject.Inject
 class HomeDailyIntakeGetRepositoryImpl @Inject constructor(
     private val homeDailyIntakeGetDataSource: HomeDailyIntakeGetDataSource
 ): HomeDailyIntakeGetRepository{
-    override suspend fun getRecommendedIntake(): ApiResult<DailyIntakeResponse>? {
+    override suspend fun getDailyIntake(): ApiResult<DailyIntakeResponse>? {
         return homeDailyIntakeGetDataSource.getDailyIntake()
     }
 }
