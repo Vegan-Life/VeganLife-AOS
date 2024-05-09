@@ -2,13 +2,13 @@ package com.project.veganlife.home.domain.usecase
 
 import com.project.veganlife.data.model.ApiResult
 import com.project.veganlife.data.model.DailyIntakeResponse
-import com.project.veganlife.home.data.datasource.HomeDailyIntakeGetDataSource
+import com.project.veganlife.home.domain.repository.HomeDailyIntakeGetRepository
 import javax.inject.Inject
 
 class HomeDailyIntakeUsecase @Inject constructor(
-    val homeDailyIntakeGetDataSource: HomeDailyIntakeGetDataSource,
+    val homeDailyIntakeGetRepository: HomeDailyIntakeGetRepository,
 ) {
     suspend operator fun invoke(): ApiResult<DailyIntakeResponse>? {
-        return homeDailyIntakeGetDataSource.getDailyIntake()
+        return homeDailyIntakeGetRepository.getDailyIntake()
     }
 }
