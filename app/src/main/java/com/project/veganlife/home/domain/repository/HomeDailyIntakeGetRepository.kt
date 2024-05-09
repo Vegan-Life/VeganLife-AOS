@@ -4,6 +4,6 @@ import com.project.veganlife.data.model.ApiResult
 import com.project.veganlife.data.model.DailyIntakeResponse
 
 interface HomeDailyIntakeGetRepository {
-    suspend fun getRecommendedIntake(
+    suspend fun getDailyIntake(
     ): ApiResult<DailyIntakeResponse>?
 }
