@@ -6,6 +6,8 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.github.mikephil.charting.data.PieData
+import com.github.mikephil.charting.data.PieEntry
 import com.project.veganlife.R
 import com.project.veganlife.data.model.ApiResult
 import com.project.veganlife.data.model.DailyIntakeResponse
@@ -145,6 +147,15 @@ class HomeViewModel @Inject constructor(
     private val _fatBackgroundColor = MutableLiveData<Int>()
     val fatBackgroundColor: LiveData<Int> get() = _fatBackgroundColor
 
+    // 단백질
+    private val _proteinData = MutableLiveData<PieEntry>()
+    val proteinData: LiveData<PieEntry> get() = _proteinData
+
+    // 잔여 단백질
+    private val _restProteinData = MutableLiveData<PieEntry>()
+    val restProteinData: LiveData<PieEntry> get() = _restProteinData
+
+
     fun getNickName() {
         _nickname.value = sharedPreferences.getString("Nickname", "") + "님,"
         _recipeNickname.value = sharedPreferences.getString("Nickname", "")
@@ -176,6 +187,7 @@ class HomeViewModel @Inject constructor(
 
         if(recommendedProtein.value != null && protein.value != null) {
             _restProtein.value = recommendedProtein.value!! - protein.value!!
+            setRestProteinPieChartDataList(restProtein.value!!)
         }
 
         if(recommendedFat.value != null && fat.value != null) {
@@ -200,8 +212,17 @@ class HomeViewModel @Inject constructor(
         _protein.value = response.protein
         _fat.value = response.fat
 
+        setProteinPieChartDataList(response.protein)
         restIntakeCalculate()
         setIntakeColorState()
+    }
+
+    fun setProteinPieChartDataList(protein: Int) {
+        _proteinData.value = PieEntry(protein.toFloat(), "현재 섭취량")
+    }
+
+    fun setRestProteinPieChartDataList(rest_protein: Int) {
+        _proteinData.value = PieEntry(rest_protein.toFloat(), "남은 섭취량")
     }
 
     fun setRestCalorieColor() {
