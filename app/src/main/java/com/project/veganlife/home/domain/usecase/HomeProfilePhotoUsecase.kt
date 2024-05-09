@@ -1,12 +1,12 @@
 package com.project.veganlife.home.domain.usecase
 
-import com.project.veganlife.home.data.datasource.HomeProfilePhotoGetDataSource
+import com.project.veganlife.home.domain.repository.HomeProfilePhotoGetRepository
 import javax.inject.Inject
 
 class HomeProfilePhotoUsecase @Inject constructor(
-    val homeProfilePhotoGetDataSource: HomeProfilePhotoGetDataSource
+    val homeProfilePhotoGetRepository: HomeProfilePhotoGetRepository,
 ) {
     suspend operator fun invoke(): String? {
-        return homeProfilePhotoGetDataSource.getProfilePhoto()
+        return homeProfilePhotoGetRepository.getProfilePhoto()
     }
 }
