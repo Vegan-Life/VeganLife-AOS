@@ -6,7 +6,6 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieEntry
 import com.project.veganlife.R
 import com.project.veganlife.data.model.ApiResult
@@ -14,7 +13,7 @@ import com.project.veganlife.data.model.DailyIntakeResponse
 import com.project.veganlife.data.model.RecommendedIntakeResponse
 import com.project.veganlife.home.domain.usecase.HomeDailyIntakeUsecase
 import com.project.veganlife.home.domain.usecase.HomeProfilePhotoUsecase
-import com.project.veganlife.home.domain.usecase.HomeRecommededIntakeUsecase
+import com.project.veganlife.home.domain.usecase.HomeRecommenedIntakeUsecase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -22,7 +21,7 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val homeProfilePhotoUsecase: HomeProfilePhotoUsecase,
-    private val homeRecommededIntakeUsecase: HomeRecommededIntakeUsecase,
+    private val homeRecommenedIntakeUsecase: HomeRecommenedIntakeUsecase,
     private val homeDailyIntakeUsecase: HomeDailyIntakeUsecase,
     private val sharedPreferences: SharedPreferences,
 ) : ViewModel() {
@@ -170,7 +169,7 @@ class HomeViewModel @Inject constructor(
 
     fun getRecommendedIntake() {
         viewModelScope.launch {
-            _resultRecommendedIntake.value = homeRecommededIntakeUsecase.invoke()
+            _resultRecommendedIntake.value = homeRecommenedIntakeUsecase.invoke()
         }
     }
 
