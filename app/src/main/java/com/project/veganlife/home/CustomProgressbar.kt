@@ -2,6 +2,7 @@ package com.project.veganlife.home
 
 import android.content.Context
 import android.util.AttributeSet
+import android.util.Log
 import android.view.LayoutInflater
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -16,9 +17,12 @@ class CustomProgressbar @JvmOverloads constructor(
 ) :
     LinearLayout(context, attributeSet, defStyleAttr) {
 
-    // 임시 max값이고, 나중에 setMax 에서 값을 변경해준다
     var kcalMax = 100
+        private set
     var currentkcal = 0
+        private set
+
+    var currentKcalLength = 0
         private set
 
     val binding: LayoutHomeGredientProgressbarBinding =
@@ -33,13 +37,29 @@ class CustomProgressbar @JvmOverloads constructor(
     }
 
     fun setCurrentKcal(kcal: Int) {
-        // kcal가 20% 이상일 때 visible로 변경
         currentkcal = kcal
-        setTextView(currentkcal, binding.tvHomeNowKcal)
         binding.pbHomeProgressbar.progress = currentkcal
+        var leftMargine = 0
+        // 1 자리 까지 105 이지만 20%  -> 남자 4~500 , 여자 3~400
+        // 2 자리 120
+        // 3 자리 140
+        // 4 자리 160
+        when(currentKcalLength) {
+            in 0..1 -> {
+                leftMargine = getSizeProgress() * currentkcal  / kcalMax - 105
+            }
+            2 -> {
+                leftMargine = getSizeProgress() * currentkcal  / kcalMax - 120
+            }
+            3 -> {
+                leftMargine = getSizeProgress() * currentkcal  / kcalMax - 140
+            }
+            4 -> {
+                leftMargine = getSizeProgress() * currentkcal  / kcalMax - 160
+            }
+        }
 
-        val leftMargine = getSizeProgress() * currentkcal / kcalMax
-
+        Log.d("length",currentKcalLength.toString())
         binding.tvHomeNowKcal.updateLayoutParams<MarginLayoutParams> {
             this.marginStart = leftMargine
         }
@@ -58,9 +78,8 @@ class CustomProgressbar @JvmOverloads constructor(
         return binding.pbHomeProgressbar.width - binding.pbHomeProgressbar.paddingLeft - binding.pbHomeProgressbar.paddingRight
     }
 
-    // db에서 데이터 가져온 후 max 값 계산
-    fun setMaxKcal(kcal: Int) {
-        kcalMax = kcal
+    fun setCurrentKcalLength(kcal: Int) {
+        currentKcalLength = kcal.toString().length
     }
 
     fun setTextView(progress: Int, textview: TextView) {
