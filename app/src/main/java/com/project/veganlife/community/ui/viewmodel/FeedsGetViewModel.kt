@@ -1,5 +1,6 @@
 package com.project.veganlife.community.ui.viewmodel
 
+import android.content.SharedPreferences
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -13,12 +14,16 @@ import javax.inject.Inject
 class FeedsGetViewModel @Inject constructor(
     private val communityRepositoryImpl: CommunityRepositoryImpl,
 ) : ViewModel() {
-    private val _feedsGet = MutableLiveData<Feeds>()
-    val feedsGet get() = _feedsGet
+    private val _feeds = MutableLiveData<Feeds>()
+    val feeds get() = _feeds
 
-    fun getFeeds(accessToken: String) {
+    init {
+        getFeeds()
+    }
+
+    private fun getFeeds() {
         viewModelScope.launch {
-            _feedsGet.value = communityRepositoryImpl.getFeeds(accessToken)
+            _feeds.value = communityRepositoryImpl.getFeeds()
         }
     }
 }

@@ -35,11 +35,44 @@
         app:layout_constraintTop_toBottomOf="@id/toolbar_communityhome"
         tools:listitem="@layout/item_recyclerview_community_home_popularity_tag" />
 
+    <LinearLayout
+        android:id="@+id/linear_layout_no_contents"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rv_communityhome_popularity_tag">
+
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/all_logo_gray" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:includeFontPadding="false"
+            android:text="@string/community_new_feed"
+            android:textAlignment="center"
+            android:textAppearance="@style/Bold.Body4"
+            android:textColor="@color/gray3" />
+
+    </LinearLayout>
+
+
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_communityhome_feed"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:visibility="visible"
+        android:visibility="gone"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/rv_communityhome_popularity_tag"
@@ -49,7 +82,7 @@
         android:id="@+id/efab_communityhome_write_feed"
         android:layout_width="120dp"
         android:layout_height="40dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="20dp"
         android:backgroundTint="@color/gray1"
         android:includeFontPadding="false"
         android:insetTop="0dp"
@@ -69,7 +102,7 @@
         android:id="@+id/efab_communityhome_write_recipe"
         android:layout_width="120dp"
         android:layout_height="40dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="20dp"
         android:backgroundTint="@color/gray1"
         android:includeFontPadding="false"
         android:insetTop="0dp"
@@ -89,7 +122,7 @@
         android:id="@+id/efab_communityhome_write"
         android:layout_width="120dp"
         android:layout_height="40dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="20dp"
         android:backgroundTint="@color/base1"
         android:includeFontPadding="false"
         android:insetTop="0dp"
