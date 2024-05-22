@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_loginFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_community_graph"
+            app:destination="@id/community_graph" />
     </fragment>
     <fragment
         android:id="@+id/homeFragment"
