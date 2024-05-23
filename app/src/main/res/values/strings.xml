@@ -216,6 +216,8 @@
 
     <string name="mypage_picked_recipe_list">레시피 스크랩 목록</string>
 
+    <string name="mypage_completed_withdrawal_text">Vegan Life를 탈퇴했어요</string>
+
     <!-- Recipe -->
     <string name="recipe_recipe">레시피</string>
 
