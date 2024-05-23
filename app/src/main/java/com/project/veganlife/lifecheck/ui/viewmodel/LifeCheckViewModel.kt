@@ -20,10 +20,19 @@ class LifeCheckViewModel @Inject constructor(
     private val _dailyIntakeData = MutableLiveData<ApiResult<DailyIntakeResponse>>()
     val dailyIntakeData: LiveData<ApiResult<DailyIntakeResponse>> = _dailyIntakeData
 
+    // 조회 날짜
+    private val _selectedDate = MutableLiveData<String>()
+    val selectedDate: LiveData<String> = _selectedDate
+
     // 일일 섭취량 조회
     fun fetchDailyIntake(date: String) {
         viewModelScope.launch {
             _dailyIntakeData.value = lifeCheckGetDailyIntakeUseCase(date)
         }
     }
+
+    fun updateDate(date: String) {
+        _selectedDate.value = date
+    }
+
 }

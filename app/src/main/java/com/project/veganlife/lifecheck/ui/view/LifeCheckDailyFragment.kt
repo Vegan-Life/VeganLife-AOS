@@ -1,20 +1,29 @@
 package com.project.veganlife.lifecheck.ui.view
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import com.anychart.APIlib
 import com.anychart.AnyChart
 import com.anychart.chart.common.dataentry.DataEntry
 import com.anychart.chart.common.dataentry.ValueDataEntry
+import com.project.veganlife.data.model.ApiResult
+import com.project.veganlife.data.model.DailyIntakeResponse
 import com.project.veganlife.databinding.FragmentLifeCheckDailyBinding
+import com.project.veganlife.lifecheck.ui.viewmodel.LifeCheckViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class LifeCheckDailyFragment : Fragment() {
 
     private var _binding: FragmentLifeCheckDailyBinding? = null
     private val binding get() = _binding!!
+
+    private val viewModel: LifeCheckViewModel by viewModels({ requireParentFragment() })
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -27,9 +36,8 @@ class LifeCheckDailyFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupCarbohydrateChart()
-        setupProteinChart()
-        setupFatChart()
+        observeSelectedDate()
+        observeDailyIntakeData()
     }
 
     override fun onResume() {
@@ -37,13 +45,47 @@ class LifeCheckDailyFragment : Fragment() {
         binding.root.requestLayout()
     }
 
-    private fun setupCarbohydrateChart() {
+    private fun observeSelectedDate() {
+        viewModel.selectedDate.observe(viewLifecycleOwner) { date ->
+            viewModel.fetchDailyIntake(date)
+        }
+    }
+
+    private fun observeDailyIntakeData() {
+        viewModel.dailyIntakeData.observe(viewLifecycleOwner) { result ->
+            when (result) {
+                is ApiResult.Success -> {
+                    setupCarbohydrateChart(result.data)
+                    setupProteinChart(result.data)
+                    setupFatChart(result.data)
+                    updateIntakeTextView(result.data)
+                }
+
+                is ApiResult.Error ->
+                    Log.d("dailyIntakeData Error", result.description)
+
+                is ApiResult.Exception ->
+                    Log.d(
+                        "dailyIntakeData Exception",
+                        result.e.message ?: "No message available"
+                    )
+            }
+        }
+    }
+
+    private fun updateIntakeTextView(intakeData: DailyIntakeResponse) {
+        binding.tvLifecheckDailyCarbohydrateIntake.text = "${intakeData.carbs}g"
+        binding.tvLifecheckDailyProteinIntake.text = "${intakeData.protein}g"
+        binding.tvLifecheckDailyFatIntake.text = "${intakeData.fat}g"
+    }
+
+    private fun setupCarbohydrateChart(intakeData: DailyIntakeResponse) {
         // AnyChartView를 활성화
         APIlib.getInstance().setActiveAnyChartView(binding.anychartLifecheckDailyCarbohydrate)
 
         // 탄수화물의 권장 섭취량과 실제 섭취량
         val recommendCarbohydrates = 200f
-        val intakeCarbohydrates = 130f
+        val intakeCarbohydrates = intakeData.carbs.toFloat()
 
         // 차트에 표시할 데이터를 생성
         val dataCarbohydrate = mutableListOf<DataEntry>().apply {
@@ -75,11 +117,11 @@ class LifeCheckDailyFragment : Fragment() {
         binding.anychartLifecheckDailyCarbohydrate.setChart(carbohydratePieChart)
     }
 
-    private fun setupProteinChart() {
+    private fun setupProteinChart(intakeData: DailyIntakeResponse) {
         APIlib.getInstance().setActiveAnyChartView(binding.anychartLifecheckDailyProtein)
 
         val recommendProtein = 200f
-        val intakeProtein = 130f
+        val intakeProtein = intakeData.protein.toFloat()
 
         val dataProtein = mutableListOf<DataEntry>().apply {
             add(ValueDataEntry("현재 섭취량", intakeProtein))
@@ -101,11 +143,11 @@ class LifeCheckDailyFragment : Fragment() {
         binding.anychartLifecheckDailyProtein.setChart(proteinPieChart)
     }
 
-    private fun setupFatChart() {
+    private fun setupFatChart(intakeData: DailyIntakeResponse) {
         APIlib.getInstance().setActiveAnyChartView(binding.anychartLifecheckDailyFat)
 
         val recommendFat = 200f
-        val intakeFat = 130f
+        val intakeFat = intakeData.fat.toFloat()
 
         val dataFat = mutableListOf<DataEntry>().apply {
             add(ValueDataEntry("현재 섭취량", intakeFat))
