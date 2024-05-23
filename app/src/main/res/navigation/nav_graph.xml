@@ -70,6 +70,9 @@
             <action
                 android:id="@+id/action_mypageHomeFragment_to_mypageNoticeFragment"
                 app:destination="@id/mypageNoticeFragment" />
+            <action
+                android:id="@+id/action_mypageHomeFragment_to_mypageCompletedWithdrawalFragment"
+                app:destination="@id/mypageCompletedWithdrawalFragment" />
         </fragment>
         <fragment
             android:id="@+id/mypageModifyFramgnet"
@@ -127,6 +130,20 @@
                 android:id="@+id/action_mypageScrapsRecipeFragment_to_recipeDetailInfoFragment"
                 app:destination="@id/recipeDetailInfoFragment" />
         </fragment>
+
+        <fragment
+            android:id="@+id/mypageCompletedWithdrawalFragment"
+            android:name="com.project.veganlife.mypage.ui.view.MypageCompletedWithdrawalFragment"
+            android:label="fragment_mypage_completed_withdrawal"
+            tools:layout="@layout/fragment_mypage_completed_withdrawal">
+
+            <action
+                android:id="@+id/action_mypageCompleteWithdrawalFragment_to_LoginFragment"
+                app:destination="@id/loginFragment"/>
+
+        </fragment>
+
+
     </navigation>
     <navigation
         android:id="@+id/community_graph"
