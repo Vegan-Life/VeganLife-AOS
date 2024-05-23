@@ -12,7 +12,7 @@ class LoginUsecase @Inject constructor(val loginRepository: LoginRepository,val 
         val apiResponseResult = loginRepository.loginApi(loginProvider, LoginRequest(sdkAccessTokenResult))
 
         if (apiResponseResult != null) {
-            userUsecase(apiResponseResult)
+            userUsecase(loginProvider,apiResponseResult)
         }
 
         return apiResponseResult

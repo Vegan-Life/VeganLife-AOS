@@ -42,13 +42,15 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <ImageView
+                <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/iv_mypage_profile"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
                     android:layout_marginStart="44dp"
                     android:layout_marginTop="20dp"
                     android:src="@drawable/all_profile_basic"
+                    app:civ_border_color="@color/base3"
+                    app:civ_border_width="2dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -181,6 +183,7 @@
                 android:text="@string/mypage_notice"
                 android:textAppearance="@style/Medium.Body3"
                 android:textColor="@color/gray5"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/btn_mypage_picked_recipe" />

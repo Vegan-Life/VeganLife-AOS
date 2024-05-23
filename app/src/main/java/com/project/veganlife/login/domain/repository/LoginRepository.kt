@@ -12,4 +12,8 @@ interface LoginRepository {
     suspend fun login(
         provider: String,
     ): String
+
+    suspend fun logout(
+        provider: String
+    ): String
 }

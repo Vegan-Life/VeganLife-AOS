@@ -81,19 +81,25 @@ class KakaoLoginDataSource @Inject constructor(@ApplicationContext val context: 
         }
     }
 
-    override fun logout() {
+    override fun logout():String {
+        var result = ""
         UserApiClient.instance.logout { error ->
             if (error != null) {
                 Log.e(
                     "Logout-kakao",
                     "로그아웃 실패. SDK에서 토큰 삭제됨", error
                 )
+                result = "로그아웃 실패"
+                Log.d("kakao logout", result)
             } else {
                 Log.i(
                     "Login-kakao",
                     "로그아웃 성공. SDK에서 토큰 삭제됨"
                 )
+                result = "로그아웃"
+                Log.d("kakao logout", result)
             }
         }
+        return result
     }
 }
