@@ -1,0 +1,72 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".mypage.ui.view.MypageCompletedWithdrawalFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="40dp">
+
+        <ImageView
+            android:id="@+id/iv_completed_withdrawal_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="168dp"
+            android:src="@drawable/all_logo_big"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/iv_completed_withdrawal_vegan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:src="@drawable/all_txt_vegan"
+            app:layout_constraintEnd_toEndOf="@id/iv_completed_withdrawal_logo"
+            app:layout_constraintStart_toStartOf="@id/iv_completed_withdrawal_logo"
+            app:layout_constraintTop_toBottomOf="@id/iv_completed_withdrawal_logo" />
+
+        <ImageView
+            android:id="@+id/iv_completed_withdrawal_life"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:src="@drawable/all_txt_life"
+            app:layout_constraintEnd_toEndOf="@id/iv_completed_withdrawal_vegan"
+            app:layout_constraintStart_toStartOf="@id/iv_completed_withdrawal_vegan"
+            app:layout_constraintTop_toBottomOf="@id/iv_completed_withdrawal_vegan" />
+
+        <TextView
+            android:id="@+id/tv_completed_withdrawal_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="48dp"
+            android:includeFontPadding="false"
+            android:text="@string/mypage_completed_withdrawal_text"
+            android:textAppearance="@style/Bold.Body4"
+            android:textColor="@color/base3"
+            app:layout_constraintEnd_toEndOf="@id/iv_completed_withdrawal_life"
+            app:layout_constraintStart_toStartOf="@id/iv_completed_withdrawal_life"
+            app:layout_constraintTop_toBottomOf="@id/iv_completed_withdrawal_life" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_completed_withdrawal_next"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="52dp"
+            android:layout_marginEnd="24dp"
+            android:background="@color/base3"
+            android:includeFontPadding="false"
+            android:text="@string/signup_complete"
+            android:textAppearance="@style/Medium.Body3"
+            android:textColor="@color/white"
+            app:layout_constraintTop_toBottomOf="@id/tv_completed_withdrawal_text" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>
