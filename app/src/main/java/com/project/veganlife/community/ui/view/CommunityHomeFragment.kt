@@ -6,10 +6,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.project.veganlife.community.data.model.Feeds
 import com.project.veganlife.community.ui.adapter.FeedsAdapter
 import com.project.veganlife.community.ui.viewmodel.FeedsGetViewModel
+import com.project.veganlife.data.model.ApiResult
 import com.project.veganlife.databinding.FragmentCommunityHomeBinding
 import com.project.veganlife.utils.ui.DisplayUtils
 import dagger.hilt.android.AndroidEntryPoint
@@ -38,52 +41,90 @@ class CommunityHomeFragment : Fragment() {
 
         // scroll to top
         binding.ibCommunityhomeGoToTop.setOnClickListener {
-            binding.rvCommunityhomeFeed.smoothScrollToPosition(0)
+            rvScrollToTop()
         }
 
         //피드 데이터 넣어주기
-        feedsGetViewModel.feeds.observe(viewLifecycleOwner) {
-            //adapter에 it넣어주기
-            feedsAdapter.submitList(it.content)
-            Log.d("community", it.content.toString())
+        feedsGetViewModel.feeds.observe(viewLifecycleOwner) {apiResult ->
+            when(apiResult) {
+                is ApiResult.Error -> {
+                    val responseDesc = apiResult.description
+                    Log.d("daily Error", responseDesc)
+                }
 
-            //피드 게시글 여부에 따라 보여줄 화면 선택
-            if (it.content.isEmpty()) {
-                binding.linearLayoutNoContents.visibility = View.VISIBLE
-                binding.rvCommunityhomeFeed.visibility = View.GONE
-            } else {
-                binding.linearLayoutNoContents.visibility = View.GONE
-                binding.rvCommunityhomeFeed.visibility = View.VISIBLE
+                is ApiResult.Exception -> {
+                    Log.d("daily Exception", apiResult.e.message ?: "No message available")
+                }
+
+                is ApiResult.Success -> {
+                    val feeds = apiResult.data
+
+                    //adapter에 it넣어주기
+                    setFeedsAdapter(feeds)
+                    //피드 게시글 여부에 따라 보여줄 화면 선택   
+                    setFeedView(feeds)
+                }
             }
+
 
         }
 
         //글쓰기 버튼 누르면 피드/레시피 버튼 등장
         binding.efabCommunityhomeWrite.setOnClickListener {
 
-            //피드 - 레시피  -> 4dp
-            //레시피 - 글쓰기 -> 12dp
-            if (!fabOpen) {
-                ObjectAnimator.ofFloat(
-                    binding.efabCommunityhomeWriteRecipe,
-                    "translationY",
-                    -1 * DisplayUtils.dpToPx(requireContext(), 52f)
-                ).apply { start() }
-                ObjectAnimator.ofFloat(
-                    binding.efabCommunityhomeWriteFeed,
-                    "translationY",
-                    -1 * DisplayUtils.dpToPx(requireContext(), 96f)
-                ).apply { start() }
-            } else {
-                ObjectAnimator.ofFloat(binding.efabCommunityhomeWriteRecipe, "translationY", 0f)
-                    .apply { start() }
-                ObjectAnimator.ofFloat(binding.efabCommunityhomeWriteFeed, "translationY", 0f)
-                    .apply { start() }
-            }
+            setRecipeButton()
+            setFeedButton()
 
             fabOpen = !fabOpen
 
         }
+    }
+
+    private fun setFeedButton() {
+        if (!fabOpen) {
+            openButton(binding.efabCommunityhomeWriteFeed,96f)
+        } else {
+            closeButton(binding.efabCommunityhomeWriteFeed)
+        }
+    }
+    
+    private fun setRecipeButton() {
+        if (!fabOpen) {
+            openButton(binding.efabCommunityhomeWriteRecipe, 52f)
+        } else {
+            closeButton(binding.efabCommunityhomeWriteRecipe)
+        }
+    }
+
+    private fun closeButton(button: Button) {
+        ObjectAnimator.ofFloat(button, "translationY", 0f)
+            .apply { start() }
+    }
+
+    private fun openButton(button: Button, transitionY: Float) {
+        ObjectAnimator.ofFloat(
+            button,
+            "translationY",
+            -1 * DisplayUtils.dpToPx(requireContext(), transitionY)
+        ).apply { start() }
+    }
+
+    private fun rvScrollToTop() {
+        binding.rvCommunityhomeFeed.smoothScrollToPosition(0)
+    }
+
+    private fun setFeedView(feeds: Feeds) {
+        if (feeds.content.isEmpty()) {
+            binding.linearLayoutNoContents.visibility = View.VISIBLE
+            binding.rvCommunityhomeFeed.visibility = View.GONE
+        } else {
+            binding.linearLayoutNoContents.visibility = View.GONE
+            binding.rvCommunityhomeFeed.visibility = View.VISIBLE
+        }
+    }
+
+    private fun setFeedsAdapter(feeds: Feeds) {
+        feedsAdapter.submitList(feeds.content)
     }
 
     override fun onDestroyView() {

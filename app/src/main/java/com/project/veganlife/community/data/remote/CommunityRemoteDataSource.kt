@@ -1,36 +1,39 @@
 package com.project.veganlife.community.data.remote
 
 import android.util.Log
+import com.google.gson.GsonBuilder
 import com.project.veganlife.community.data.model.Feeds
+import com.project.veganlife.data.model.ApiResult
+import com.project.veganlife.data.model.ConflictResponse
 import org.json.JSONObject
 import javax.inject.Inject
 
 class CommunityRemoteDataSource @Inject constructor(
-    private val communityApiService: CommunityApi
+    private val communityApi: CommunityApi
 ) {
     suspend fun getFeeds(
         accessToken: String,
-    ): Feeds? {
+    ): ApiResult<Feeds> {
+        val gson = GsonBuilder().create()
+
         try {
-            val feedsGetResponse = communityApiService.getFeedAll(
+            val feedsGetResponse = communityApi.getFeedAll(
                 accessToken,
                 0,
                 30,
                 "createdAt,DESC",
             )
 
-            if (feedsGetResponse.code() != 200) {
-                val stringToJson = JSONObject(feedsGetResponse.errorBody()?.string()!!)
-                Log.d("FeedsGetFailure", feedsGetResponse.code().toString())
-                Log.d("FeedsGetFailure", "$stringToJson")
-                return null
+            if (!feedsGetResponse.isSuccessful) {
+                val errorBodyString = feedsGetResponse.errorBody()?.string()
+                val conflictResponse = gson.fromJson(errorBodyString, ConflictResponse::class.java)
+
+                return ApiResult.Error(conflictResponse.errorCode, conflictResponse.description)
             }
 
-            Log.d("FeedsGetSuccess", feedsGetResponse.code().toString())
-            return feedsGetResponse.body()
+            return ApiResult.Success(feedsGetResponse.body()!!)
         } catch (e: Exception) {
-            Log.e("FeedsGetException", e.toString())
-            return null
+            return ApiResult.Exception(e)
         }
     }
 }

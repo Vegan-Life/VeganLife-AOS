@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.project.veganlife.community.data.model.Feeds
 import com.project.veganlife.community.data.repositoryimpl.CommunityRepositoryImpl
+import com.project.veganlife.data.model.ApiResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -14,7 +15,7 @@ import javax.inject.Inject
 class FeedsGetViewModel @Inject constructor(
     private val communityRepositoryImpl: CommunityRepositoryImpl,
 ) : ViewModel() {
-    private val _feeds = MutableLiveData<Feeds>()
+    private val _feeds = MutableLiveData<ApiResult<Feeds>>()
     val feeds get() = _feeds
 
     init {
