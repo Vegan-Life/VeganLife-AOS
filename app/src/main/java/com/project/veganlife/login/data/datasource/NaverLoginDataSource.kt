@@ -51,8 +51,9 @@ class NaverLoginDataSource @Inject constructor(@ApplicationContext val context: 
         }
     }
 
-    override fun logout() {
-
+    override fun logout():String {
+        NaverIdLoginSDK.logout()
+        return "로그아웃"
     }
 
     override fun getUserInfo() {

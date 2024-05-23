@@ -8,7 +8,7 @@ import javax.inject.Inject
 class UserRepositoryImpl @Inject constructor(
     private val localUserDataSource: LocalUserDataSource,
 ) : UserRepository {
-    override suspend fun saveToken(token: LoginResponse) {
-        localUserDataSource.saveToken(token)
+    override suspend fun saveToken(provider: String, token: LoginResponse) {
+        localUserDataSource.saveToken(provider, token)
     }
 }

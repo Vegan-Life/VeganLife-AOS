@@ -1,5 +1,6 @@
 package com.project.veganlife.login.data.repositoryImpl
 
+import android.util.Log
 import com.project.veganlife.login.data.datasource.KakaoLoginDataSource
 import com.project.veganlife.login.data.datasource.NaverLoginDataSource
 import com.project.veganlife.login.data.model.LoginRequest
@@ -23,6 +24,19 @@ class LoginRepositoryImpl @Inject constructor(
             accessToken = naverLoginDataSource.login()
         }
         return accessToken
+    }
+
+    override suspend fun logout(provider: String): String {
+        Log.d("logout repository",provider)
+        return when (provider) {
+            "kakao" -> {
+                kakaoLoginDataSource.logout()
+            }
+
+            else -> {
+                naverLoginDataSource.logout()
+            }
+        }
     }
 
     override suspend fun loginApi(
