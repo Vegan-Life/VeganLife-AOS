@@ -5,9 +5,9 @@ import com.project.veganlife.community.data.model.Feeds
 import org.json.JSONObject
 import javax.inject.Inject
 
-class CommunityRemoteDataSource @Inject constructor() {
-    private val communityApiService = CommunityClient.communityApi
-
+class CommunityRemoteDataSource @Inject constructor(
+    private val communityApiService: CommunityApi
+) {
     suspend fun getFeeds(
         accessToken: String,
     ): Feeds? {
