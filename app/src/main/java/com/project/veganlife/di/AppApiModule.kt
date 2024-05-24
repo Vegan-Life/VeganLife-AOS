@@ -3,7 +3,6 @@ package com.project.veganlife.di
 import com.project.veganlife.data.remote.DailyIntakeGetApi
 import com.project.veganlife.data.remote.ProfileInfoGetApi
 import com.project.veganlife.data.remote.RecommendedIntakeGetApi
-import com.project.veganlife.mypage.data.remote.MypageGetUserInfoApi
 import com.project.veganlife.mypage.data.remote.MypageWithDrawalApi
 import com.project.veganlife.signup.data.remote.SignupApi
 import dagger.Module
@@ -34,11 +33,6 @@ class AppApiModule {
     @Provides
     fun provideDailyIntakeGetApi(retrofit: Retrofit): DailyIntakeGetApi{
         return retrofit.create(DailyIntakeGetApi::class.java)
-    }
-
-    @Provides
-    fun provideMypageGetUserInfoApi(retrofit: Retrofit): MypageGetUserInfoApi{
-        return retrofit.create(MypageGetUserInfoApi::class.java)
     }
 
     @Provides

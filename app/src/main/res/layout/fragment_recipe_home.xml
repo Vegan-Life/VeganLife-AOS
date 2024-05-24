@@ -51,7 +51,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlayExtended" />
+        app:shapeAppearanceOverlay="@style/OverrideRoundedButton" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/ib_recipe_scroll_up"
