@@ -41,8 +41,9 @@ class HomeFragment : Fragment() {
 
         // logic
         setToolbarMoveToAlarm()
-        setNickname()
-        setProfilePhoto()
+        // 프로필 정보 Get
+        getProfileInfo()
+        getProfileInfoValue()
 
         // 권장 섭취량
         getRecommendedIntake()
@@ -56,6 +57,8 @@ class HomeFragment : Fragment() {
         setIntakePieChart()
 
         // ui
+        setProfile()
+
         setRecommendedIntakeUi()
         setDailyIntakeUi()
 
@@ -75,21 +78,17 @@ class HomeFragment : Fragment() {
 
     }
 
-    private fun setNickname() {
+    private fun setProfile() {
         homeViewModel.apply {
-            getNickName()
-
             binding.apply {
-                tvHomeNickname.text = nickname.value
-                tvHomeRecipeName.text = recipeNickname.value
-            }
-        }
-    }
+                nickname.observe(viewLifecycleOwner) { nickname ->
+                    tvHomeNickname.text = nickname
+                }
 
-    private fun setProfilePhoto() {
-        homeViewModel.apply {
-            getProfilePhoto()
-            binding.apply {
+                recipeNickname.observe(viewLifecycleOwner) { recipeNickname ->
+                    tvHomeRecipeName.text = recipeNickname
+                }
+
                 profilePhoto.observe(viewLifecycleOwner) { photo ->
                     if (photo != null) {
                         Log.d("photo", profilePhoto.value.toString())
@@ -104,6 +103,31 @@ class HomeFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun getProfileInfoValue() {
+        homeViewModel.apply {
+            profile.observe(viewLifecycleOwner) { apiResult ->
+                when(apiResult) {
+                    is ApiResult.Error -> {
+                        val intakeResponse = apiResult.description
+                        Log.d("recommended Error", intakeResponse)
+                    }
+
+                    is ApiResult.Exception -> {
+                        Log.d("recommended Exception", apiResult.e.message ?: "No message available")
+                    }
+                    is ApiResult.Success -> {
+                        val response = apiResult.data
+                        getNickname_Photo(response)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun getProfileInfo() {
+        homeViewModel.getProfile()
     }
 
     private fun getRecommendedIntake() {

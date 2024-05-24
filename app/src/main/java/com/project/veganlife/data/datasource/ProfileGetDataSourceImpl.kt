@@ -1,23 +1,23 @@
-package com.project.veganlife.mypage.data.datasource
+package com.project.veganlife.data.datasource
 
 import android.content.SharedPreferences
 import com.google.gson.GsonBuilder
 import com.project.veganlife.data.model.ApiResult
 import com.project.veganlife.data.model.ConflictResponse
 import com.project.veganlife.data.model.ProfileResponse
-import com.project.veganlife.mypage.data.remote.MypageGetUserInfoApi
+import com.project.veganlife.data.remote.ProfileInfoGetApi
 import java.lang.Exception
 import javax.inject.Inject
 
-class MypageGetUserInfoDataSourceImpl @Inject constructor(
-    private val mypageGetUserInfoApi: MypageGetUserInfoApi,
+class ProfileGetDataSourceImpl @Inject constructor(
+    private val profileInfoGetApi: ProfileInfoGetApi,
     private val accessToken: SharedPreferences,
-): MypageGetUserInfoDataSource{
-    override suspend fun getUserInfo(): ApiResult<ProfileResponse> {
+): ProfileGetDataSource{
+    override suspend fun getInformation(): ApiResult<ProfileResponse> {
         val gson = GsonBuilder().create()
 
         return try {
-            val profileInfoGetResponse = mypageGetUserInfoApi.getUserInfo(
+            val profileInfoGetResponse = profileInfoGetApi.getInformation(
                 accessToken.getString("ApiAccessToken", null),
             )
             if (profileInfoGetResponse.isSuccessful == true) {
