@@ -51,13 +51,11 @@ class LoginFragment : Fragment() {
     private fun loginAfterMoveFragment() {
         loginViewModel.loginResponse.observe(viewLifecycleOwner) { loginResponse ->
             if (loginResponse != null) {
-                findNavController().navigate(R.id.action_loginFragment_to_community_graph)
-                //TODO: 로그인 다 만들어지면 다시 살리기
-                /*if (loginResponse.hasAdditionalInfo == true) {
+                if (loginResponse.hasAdditionalInfo == true) {
                     findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
                 } else {
                     findNavController().navigate(R.id.action_loginFragment_to_signupVeganTypeFragment)
-                }*/
+                }
             }
         }
     }

@@ -6,13 +6,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.project.veganlife.data.model.ApiResult
 import com.project.veganlife.data.model.ProfileResponse
-import com.project.veganlife.mypage.domain.usecase.MypageGetUserInfoUsecase
+import com.project.veganlife.domain.usecase.ProfileGetUsecase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 @HiltViewModel
 class MypageViewmodel @Inject constructor(
-    private val mypageGetUserInfoUsecase: MypageGetUserInfoUsecase,
+    private val profileGetUsecase: ProfileGetUsecase,
 ): ViewModel(){
     private val _resultUserInfo = MutableLiveData<ApiResult<ProfileResponse>>()
     val resultUserInfo: LiveData<ApiResult<ProfileResponse>> get() = _resultUserInfo
@@ -28,7 +28,7 @@ class MypageViewmodel @Inject constructor(
 
     fun getUserInfo() {
         viewModelScope.launch {
-            _resultUserInfo.value = mypageGetUserInfoUsecase.invoke()
+            _resultUserInfo.value = profileGetUsecase.invoke()
         }
     }
 
