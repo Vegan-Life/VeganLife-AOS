@@ -10,9 +10,10 @@ import com.github.mikephil.charting.data.PieEntry
 import com.project.veganlife.R
 import com.project.veganlife.data.model.ApiResult
 import com.project.veganlife.data.model.DailyIntakeResponse
+import com.project.veganlife.data.model.ProfileResponse
 import com.project.veganlife.data.model.RecommendedIntakeResponse
+import com.project.veganlife.domain.usecase.ProfileGetUsecase
 import com.project.veganlife.home.domain.usecase.HomeDailyIntakeUsecase
-import com.project.veganlife.home.domain.usecase.HomeProfilePhotoUsecase
 import com.project.veganlife.home.domain.usecase.HomeRecommenedIntakeUsecase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -20,11 +21,14 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val homeProfilePhotoUsecase: HomeProfilePhotoUsecase,
+    private val profileGetUsecase: ProfileGetUsecase,
     private val homeRecommenedIntakeUsecase: HomeRecommenedIntakeUsecase,
     private val homeDailyIntakeUsecase: HomeDailyIntakeUsecase,
     private val sharedPreferences: SharedPreferences,
 ) : ViewModel() {
+    private val _profile = MutableLiveData<ApiResult<ProfileResponse>>()
+    val profile: LiveData<ApiResult<ProfileResponse>> get() = _profile
+
     // 닉네임
     private val _nickname = MutableLiveData<String>()
     val nickname: LiveData<String> get() = _nickname
@@ -61,7 +65,8 @@ class HomeViewModel @Inject constructor(
             value = if (rest < 0) -rest else rest // 음수일 경우 절댓값으로 변환
         }
         addSource(dailyCalorie) { dCal ->
-            val recCal = recommendedCalorie.value ?: 0 // recommendedCalorie의 값이 null이 아니면 그 값을, null이면 0을 사용
+            val recCal =
+                recommendedCalorie.value ?: 0 // recommendedCalorie의 값이 null이 아니면 그 값을, null이면 0을 사용
             val rest = recCal - dCal!!
             value = if (rest < 0) -rest else rest // 음수일 경우 절댓값으로 변환
         }
@@ -78,7 +83,8 @@ class HomeViewModel @Inject constructor(
             }
         }
         addSource(dailyCalorie) { dCal ->
-            val recCal = recommendedCalorie.value ?: 1 // recommendedCalorie의 값이 null이 아니면 그 값을, null이면 1을 사용하여 0으로 나누는 오류를 방지
+            val recCal = recommendedCalorie.value
+                ?: 1 // recommendedCalorie의 값이 null이 아니면 그 값을, null이면 1을 사용하여 0으로 나누는 오류를 방지
             if (recCal != 0) {
                 if (dCal != null) {
                     value = (dCal * 100) / recCal
@@ -125,7 +131,6 @@ class HomeViewModel @Inject constructor(
     private val _restProtein = MutableLiveData<Int>()
     val restProtein: LiveData<Int> get() = _restProtein
 
-
     // 단백질 색상
     private val _proteinBackgroundColor = MutableLiveData<Int>()
     val proteinBackgroundColor: LiveData<Int> get() = _proteinBackgroundColor
@@ -146,24 +151,15 @@ class HomeViewModel @Inject constructor(
     private val _fatBackgroundColor = MutableLiveData<Int>()
     val fatBackgroundColor: LiveData<Int> get() = _fatBackgroundColor
 
-    // 단백질
-    private val _proteinData = MutableLiveData<PieEntry>()
-    val proteinData: LiveData<PieEntry> get() = _proteinData
-
-    // 잔여 단백질
-    private val _restProteinData = MutableLiveData<PieEntry>()
-    val restProteinData: LiveData<PieEntry> get() = _restProteinData
-
-
-    fun getNickName() {
-        _nickname.value = sharedPreferences.getString("Nickname", "") + "님,"
-        _recipeNickname.value = sharedPreferences.getString("Nickname", "")
+    fun getNickname_Photo(profile: ProfileResponse) {
+        _nickname.value = profile.nickname + "님,"
+        _recipeNickname.value = profile.nickname
+        _profilePhoto.value = profile.imageUrl
     }
 
-    fun getProfilePhoto() {
+    fun getProfile() {
         viewModelScope.launch {
-            _profilePhoto.value = homeProfilePhotoUsecase.invoke()
-            // JWT 토큰이 만료되었습니다. 시에 토큰 재발급 함수 생성
+            _profile.value = profileGetUsecase.invoke()
         }
     }
 
@@ -180,16 +176,16 @@ class HomeViewModel @Inject constructor(
     }
 
     fun restIntakeCalculate() {
-        if(recommendedCarbs.value != null && carbs.value != null) {
+        if (recommendedCarbs.value != null && carbs.value != null) {
             _restCarbs.value = recommendedCarbs.value!! - carbs.value!!
         }
 
-        if(recommendedProtein.value != null && protein.value != null) {
+        if (recommendedProtein.value != null && protein.value != null) {
             _restProtein.value = recommendedProtein.value!! - protein.value!!
-            setRestProteinPieChartDataList(restProtein.value!!)
+//            setRestProteinPieChartDataList(restProtein.value!!)
         }
 
-        if(recommendedFat.value != null && fat.value != null) {
+        if (recommendedFat.value != null && fat.value != null) {
             _restFat.value = recommendedFat.value!! - fat.value!!
         }
 
@@ -211,18 +207,11 @@ class HomeViewModel @Inject constructor(
         _protein.value = response.protein
         _fat.value = response.fat
 
-        setProteinPieChartDataList(response.protein)
+//        setProteinPieChartDataList(response.protein)
         restIntakeCalculate()
         setIntakeColorState()
     }
 
-    fun setProteinPieChartDataList(protein: Int) {
-        _proteinData.value = PieEntry(protein.toFloat(), "현재 섭취량")
-    }
-
-    fun setRestProteinPieChartDataList(rest_protein: Int) {
-        _proteinData.value = PieEntry(rest_protein.toFloat(), "남은 섭취량")
-    }
 
     fun setRestCalorieColor() {
         if (recommendedCalorie.value != null && dailyCalorie.value != null) {
@@ -237,24 +226,24 @@ class HomeViewModel @Inject constructor(
     }
 
     fun setIntakeColorState() {
-        if(restCarbs.value != null) {
-            if(restCarbs.value!! < 0) {
+        if (restCarbs.value != null) {
+            if (restCarbs.value!! < 0) {
                 _carbsBackgroundColor.value = R.color.no
             } else {
                 _carbsBackgroundColor.value = R.color.base3
             }
         }
 
-        if(restProtein.value != null) {
-            if(restProtein.value!! < 0) {
+        if (restProtein.value != null) {
+            if (restProtein.value!! < 0) {
                 _proteinBackgroundColor.value = R.color.no
             } else {
                 _proteinBackgroundColor.value = R.color.base1
             }
         }
 
-        if(restFat.value != null) {
-            if(restFat.value!! < 0) {
+        if (restFat.value != null) {
+            if (restFat.value!! < 0) {
                 _fatBackgroundColor.value = R.color.no
             } else {
                 _fatBackgroundColor.value = R.color.point1

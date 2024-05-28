@@ -5,7 +5,7 @@ import com.project.veganlife.login.domain.repository.UserRepository
 import javax.inject.Inject
 
 class UserUsecase @Inject constructor(val userRepository: UserRepository) {
-    suspend operator fun invoke(token: LoginResponse) {
-        userRepository.saveToken(token)
+    suspend operator fun invoke(provider: String, token: LoginResponse) {
+        userRepository.saveToken(provider, token)
     }
 }
