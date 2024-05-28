@@ -1,10 +1,14 @@
 package com.project.veganlife.lifecheck.ui.view
 
 import android.os.Bundle
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.anychart.APIlib
@@ -77,13 +81,13 @@ class LifeCheckDailyFragment : Fragment() {
 
     private fun observeRecommendedIntakeData(dailyIntake: DailyIntakeResponse) {
         viewModel.recommendedIntakeData.observe(viewLifecycleOwner) { result ->
-            Log.d("dailyRecommendedIntakeData", result.toString())
             when (result) {
                 is ApiResult.Success -> {
                     updateRecommendedIntakeTextView(result.data)
                     setupCarbohydrateChart(dailyIntake, result.data)
                     setupProteinChart(dailyIntake, result.data)
                     setupFatChart(dailyIntake, result.data)
+                    updateCalorieStatus(dailyIntake, result.data)
                 }
 
                 is ApiResult.Error ->
@@ -185,6 +189,46 @@ class LifeCheckDailyFragment : Fragment() {
         }
 
         chartView.setChart(pieChart)
+    }
+
+    private fun updateCalorieStatus(
+        dailyIntake: DailyIntakeResponse,
+        recommendedIntake: RecommendedIntakeResponse
+    ) {
+        dailyIntake.let { daily ->
+            recommendedIntake.let { recommend ->
+                val remainingCalories = recommend.dailyCalorie - daily.calorie
+                val statusText: String
+                val spannable: Spannable
+                val textColor: Int
+
+                if (remainingCalories >= 0) {
+                    statusText =
+                        getString(R.string.all_rest_kcal) + " ${remainingCalories}kcal" + getString(
+                            R.string.all_rest_kcal_is
+                        )
+                    textColor = ContextCompat.getColor(requireContext(), R.color.base3)
+                } else {
+                    statusText =
+                        getString(R.string.all_over_rest_kcal) + " ${-remainingCalories}kcal" + getString(
+                            R.string.all_rest_kcal_is
+                        )
+                    textColor = ContextCompat.getColor(requireContext(), R.color.no)
+                }
+
+                spannable = SpannableString(statusText)
+                val start = statusText.indexOf("${remainingCalories}kcal")
+                val end = start + "${remainingCalories}kcal".length
+                spannable.setSpan(
+                    ForegroundColorSpan(textColor),
+                    start,
+                    end,
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+
+                binding.tvLifecheckDailyKcal.text = spannable
+            }
+        }
     }
 
     override fun onDestroyView() {
