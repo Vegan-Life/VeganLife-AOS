@@ -60,6 +60,41 @@ class LifeCheckHomeFragment : Fragment() {
                 else -> "년"
             }
         }.attach()
+
+        // ViewPager 페이지 변경 이벤트 리스너 추가
+        binding.vpLifecheckHome.registerOnPageChangeCallback(object :
+            androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                when (position) {
+                    0 -> showDailyViews()
+                    else -> showPeriodViews()
+                }
+                setInitialDate()
+            }
+        })
+    }
+
+    // 일별 탭 UI
+    private fun showDailyViews() {
+        binding.run {
+            tvLifecheckHomeDay.visibility = View.VISIBLE
+            tvLifecheckHomeDate.visibility = View.VISIBLE
+            tvLifecheckHomeCalorie.visibility = View.VISIBLE
+            tvLifecheckHomeKcal.visibility = View.VISIBLE
+            tvLifecheckHomePeriod.visibility = View.GONE
+        }
+    }
+
+    // 주간, 월간, 연간 탭 UI
+    private fun showPeriodViews() {
+        binding.run {
+            tvLifecheckHomeDay.visibility = View.INVISIBLE
+            tvLifecheckHomeDate.visibility = View.INVISIBLE
+            tvLifecheckHomeCalorie.visibility = View.INVISIBLE
+            tvLifecheckHomeKcal.visibility = View.INVISIBLE
+            tvLifecheckHomePeriod.visibility = View.VISIBLE
+        }
     }
 
     private fun observeSelectedDate() {
@@ -95,6 +130,9 @@ class LifeCheckHomeFragment : Fragment() {
         binding.tvLifecheckHomeDate.setOnClickListener {
             showDatePickerDialog()
         }
+        binding.tvLifecheckHomePeriod.setOnClickListener {
+            showWeekPickerDialog()
+        }
     }
 
     // 초기 날짜를 오늘 날짜로 설정
@@ -109,6 +147,31 @@ class LifeCheckHomeFragment : Fragment() {
         binding.tvLifecheckHomeDate.text = todayDate
         binding.tvLifecheckHomeDay.text = todayDay
         viewModel.updateDate(todayDate)
+
+        // ViewPager의 현재 페이지에 따라 UI 업데이트
+        when (binding.vpLifecheckHome.currentItem) {
+            0 -> {
+                // "일" 탭
+                showDailyViews()
+            }
+
+            1 -> {
+                // "주" 탭
+                val startDate = getStartDateOfWeek(calendar)
+                val endDate = getEndDateOfWeek(calendar)
+                val startYear = startDate.substring(0, 4)
+                val endYear = endDate.substring(0, 4)
+                val endDateFormatted = if (startYear == endYear) endDate.substring(5) else endDate
+
+                val selectedWeekStr = "$startDate ~ $endDateFormatted"
+                binding.tvLifecheckHomePeriod.text = selectedWeekStr
+                showPeriodViews()
+
+                viewModel.updateWeeklyStartDate(startDate)
+                viewModel.updateWeeklyEndDate(endDate)
+                viewModel.fetchWeeklyCalorie(startDate, endDate)
+            }
+        }
     }
 
 
@@ -147,6 +210,69 @@ class LifeCheckHomeFragment : Fragment() {
         datePickerDialog.datePicker.maxDate = calendar.timeInMillis
 
         datePickerDialog.show()
+    }
+
+    // 주간 날짜 선택 달력 토출
+    private fun showWeekPickerDialog() {
+        val calendar = Calendar.getInstance()
+        val selectedStartDate = viewModel.selectedWeeklyStartDate.value
+        val selectedYear: Int
+        val selectedMonth: Int
+        val selectedDay: Int
+
+        if (!selectedStartDate.isNullOrEmpty()) {
+            val dateParts = selectedStartDate.split("-")
+            selectedYear = dateParts[0].toInt()
+            selectedMonth = dateParts[1].toInt() - 1 // Calendar 월은 0부터 시작
+            selectedDay = dateParts[2].toInt()
+        } else {
+            selectedYear = calendar.get(Calendar.YEAR)
+            selectedMonth = calendar.get(Calendar.MONTH)
+            selectedDay = calendar.get(Calendar.DAY_OF_MONTH)
+        }
+
+        val datePickerDialog = DatePickerDialog(
+            requireContext(),
+            { _, selectedYear, selectedMonth, selectedDay ->
+
+                calendar.set(selectedYear, selectedMonth, selectedDay)
+                val startDate = getStartDateOfWeek(calendar)
+                val endDate = getEndDateOfWeek(calendar)
+                val startYear = startDate.substring(0, 4)
+                val endYear = endDate.substring(0, 4)
+                val endDateFormatted = if (startYear == endYear) endDate.substring(5) else endDate
+
+                val selectedWeekStr = "$startDate ~ $endDateFormatted"
+                binding.tvLifecheckHomePeriod.text = selectedWeekStr
+                viewModel.updateWeeklyStartDate(startDate)
+                viewModel.updateWeeklyEndDate(endDate)
+                viewModel.fetchWeeklyCalorie(startDate, endDate)
+            },
+            selectedYear,
+            selectedMonth,
+            selectedDay
+        )
+        // 미래 날짜 선택 제한
+        datePickerDialog.datePicker.maxDate = calendar.timeInMillis
+
+        datePickerDialog.show()
+    }
+
+    // 주간 시작 날짜 계산
+    private fun getStartDateOfWeek(calendar: Calendar): String {
+        val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        calendar.time
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY)
+
+        return sdf.format(calendar.time)
+    }
+
+    // 주간 끝 날짜 계산
+    private fun getEndDateOfWeek(calendar: Calendar): String {
+        val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        calendar.time
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY)
+        return sdf.format(calendar.time)
     }
 
     // 특정 날짜의 요일을 구하기
