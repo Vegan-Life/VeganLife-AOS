@@ -1,6 +1,7 @@
 package com.project.veganlife
 
 import android.app.Application
+import androidx.appcompat.app.AppCompatDelegate
 import com.kakao.sdk.common.KakaoSdk
 import com.navercorp.nid.NaverIdLoginSDK
 import dagger.hilt.android.HiltAndroidApp
@@ -22,5 +23,8 @@ class GlobalApplication : Application() {
             BuildConfig.NAVER_CLIENT_SECRET_KEY,
             "Vegan Life"
         )
+
+        //다크모드 방지
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
     }
 }
