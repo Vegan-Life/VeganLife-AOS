@@ -133,6 +133,12 @@ class LifeCheckWeeklyFragment : Fragment() {
         )
 
         with(binding.barchartLifecheckWeekly) {
+            // 기존 데이터 초기화
+            data?.clearValues()
+            clear()
+            // 기존 LimitLine 제거
+            axisLeft.removeAllLimitLines()
+            
             // 바 차트에 데이터 설정
             data = barData
             description.isEnabled = false // 설명 제거
