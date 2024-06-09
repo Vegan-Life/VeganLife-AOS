@@ -4,10 +4,14 @@ import com.project.veganlife.lifecheck.data.datasource.LifeCheckDailyIntakeDataS
 import com.project.veganlife.lifecheck.data.datasource.LifeCheckDailyIntakeDataSourceImpl
 import com.project.veganlife.lifecheck.data.datasource.LifeCheckRecommendedIntakeDataSource
 import com.project.veganlife.lifecheck.data.datasource.LifeCheckRecommendedIntakeDataSourceImpl
+import com.project.veganlife.lifecheck.data.datasource.LifeCheckWeeklyCalorieDataSource
+import com.project.veganlife.lifecheck.data.datasource.LifeCheckWeeklyCalorieDataSourceImpl
 import com.project.veganlife.lifecheck.data.ropositoryImpl.LifeCheckDailyIntakeRepositoryImpl
 import com.project.veganlife.lifecheck.data.ropositoryImpl.LifeCheckRecommendedIntakeRepositoryImpl
+import com.project.veganlife.lifecheck.data.ropositoryImpl.LifeCheckWeeklyCalorieRepositoryImpl
 import com.project.veganlife.lifecheck.domain.repository.LifeCheckDailyIntakeRepository
 import com.project.veganlife.lifecheck.domain.repository.LifeCheckRecommendedIntakeRepository
+import com.project.veganlife.lifecheck.domain.repository.LifeCheckWeeklyCalorieRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -48,5 +52,21 @@ object LifeCheckModule {
         lifeCheckRecommendedIntakeDataSourceImpl: LifeCheckRecommendedIntakeDataSourceImpl
     ): LifeCheckRecommendedIntakeDataSource {
         return lifeCheckRecommendedIntakeDataSourceImpl
+    }
+
+    @Provides
+    @Singleton
+    fun provideLifeCheckWeeklyCalorieRepository(
+        lifeCheckWeeklyCalorieRepositoryImpl: LifeCheckWeeklyCalorieRepositoryImpl
+    ): LifeCheckWeeklyCalorieRepository {
+        return lifeCheckWeeklyCalorieRepositoryImpl
+    }
+
+    @Provides
+    @Singleton
+    fun provideLifeCheckWeeklyCalorieDataSource(
+        lifeCheckWeeklyCalorieDataSourceImpl: LifeCheckWeeklyCalorieDataSourceImpl
+    ): LifeCheckWeeklyCalorieDataSource {
+        return lifeCheckWeeklyCalorieDataSourceImpl
     }
 }
