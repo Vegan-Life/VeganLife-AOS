@@ -8,7 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.tabs.TabLayoutMediator
+import com.project.veganlife.R
 import com.project.veganlife.data.model.ApiResult
 import com.project.veganlife.databinding.FragmentLifecheckHomeBinding
 import com.project.veganlife.lifecheck.ui.viewmodel.LifeCheckViewModel
@@ -34,6 +36,7 @@ class LifeCheckHomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setToolbarMoveToAlarm()
         setupViewPager()
         setupDateSelection()
         if (savedInstanceState == null) {
@@ -303,10 +306,18 @@ class LifeCheckHomeFragment : Fragment() {
     // 날짜 전환 버튼 세팅
     private fun setupDateButtons() {
         binding.btnLifecheckHomeDateLeft.setOnClickListener {
-            changeDateBy(-1)
+            if (binding.vpLifecheckHome.currentItem == 0) {
+                changeDateBy(-1)
+            } else if (binding.vpLifecheckHome.currentItem == 1) {
+                changeWeeklyDateBy(-1)
+            }
         }
         binding.btnLifecheckHomeDateRight.setOnClickListener {
-            changeDateBy(1)
+            if (binding.vpLifecheckHome.currentItem == 0) {
+                changeDateBy(1)
+            } else if (binding.vpLifecheckHome.currentItem == 1) {
+                changeWeeklyDateBy(1)
+            }
         }
     }
 
@@ -334,12 +345,65 @@ class LifeCheckHomeFragment : Fragment() {
         }
     }
 
+    // 주간 날짜 전환
+    private fun changeWeeklyDateBy(weeks: Int) {
+        val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val calendar = Calendar.getInstance()
+
+        try {
+            val startDate = viewModel.selectedWeeklyStartDate.value ?: getCurrentDateString()
+            calendar.time = sdf.parse(startDate)!!
+            calendar.add(Calendar.WEEK_OF_YEAR, weeks)
+            val newStartDate = getStartDateOfWeek(calendar)
+            val newEndDate = getEndDateOfWeek(calendar)
+            val startYear = newStartDate.substring(0, 4)
+            val endYear = newEndDate.substring(0, 4)
+            val endDateFormatted = if (startYear == endYear) newEndDate.substring(5) else newEndDate
+
+            val selectedWeekStr = "$newStartDate ~ $endDateFormatted"
+            binding.tvLifecheckHomePeriod.text = selectedWeekStr
+            viewModel.updateWeeklyStartDate(newStartDate)
+            viewModel.updateWeeklyEndDate(newEndDate)
+            viewModel.fetchWeeklyCalorie(newStartDate, newEndDate)
+            updateRightButtonState()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
     // 미래 날짜로 이동을 제한
     private fun updateRightButtonState() {
         val today = getCurrentDateString()
-        val selectedDate = viewModel.selectedDate.value
 
-        binding.btnLifecheckHomeDateRight.isEnabled = selectedDate != today
+        if (binding.vpLifecheckHome.currentItem == 0) {
+            val selectedDate = viewModel.selectedDate.value
+            binding.btnLifecheckHomeDateRight.isEnabled = selectedDate != today
+        } else if (binding.vpLifecheckHome.currentItem == 1) {
+            val todayCalendar = Calendar.getInstance()
+            val selectedStartDate = viewModel.selectedWeeklyStartDate.value
+            if (selectedStartDate != null) {
+                val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                val calendar = Calendar.getInstance()
+                calendar.time = sdf.parse(selectedStartDate)!!
+
+                val todayWeekOfYear = todayCalendar.get(Calendar.WEEK_OF_YEAR)
+                val selectedWeekOfYear = calendar.get(Calendar.WEEK_OF_YEAR)
+
+                // 선택된 주가 오늘 주와 같다면 오른쪽 버튼 비활성화
+                binding.btnLifecheckHomeDateRight.isEnabled = selectedWeekOfYear != todayWeekOfYear
+            }
+        }
+    }
+
+    private fun setToolbarMoveToAlarm() {
+        binding.toolbarLifecheckHome.setOnMenuItemClickListener { menu ->
+            when (menu.itemId) {
+                R.id.menu_lifecheck_home_alarm -> {
+                    findNavController().navigate(R.id.action_lifeCheckHomeFragment_to_alarmFragment)
+                }
+            }
+            false
+        }
     }
 
     override fun onDestroyView() {
