@@ -19,6 +19,7 @@ import com.project.veganlife.data.model.ApiResult
 import com.project.veganlife.databinding.FragmentCommunityHomeBinding
 import com.project.veganlife.utils.ui.DisplayUtils
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 
 @AndroidEntryPoint
 class CommunityHomeFragment : Fragment() {
@@ -39,6 +40,9 @@ class CommunityHomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        //shimmer시작
+        binding.shimmerCommunityhomeFeed.startShimmer()
 
         // scroll to top
         binding.ibCommunityhomeGoToTop.setOnClickListener {
@@ -77,6 +81,8 @@ class CommunityHomeFragment : Fragment() {
                 is ApiResult.Success -> {
                     val feeds = apiResult.data
 
+                    binding.shimmerCommunityhomeFeed.stopShimmer()
+                    binding.shimmerCommunityhomeFeed.visibility = View.GONE
                     //adapter에 it넣어주기
                     setFeedsAdapter(feeds)
                     //피드 게시글 여부에 따라 보여줄 화면 선택   
