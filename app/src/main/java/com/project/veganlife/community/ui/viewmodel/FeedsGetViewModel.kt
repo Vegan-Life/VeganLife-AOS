@@ -1,6 +1,5 @@
 package com.project.veganlife.community.ui.viewmodel
 
-import android.content.SharedPreferences
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -22,9 +21,17 @@ class FeedsGetViewModel @Inject constructor(
         getFeeds()
     }
 
-    private fun getFeeds() {
+    fun getFeeds() {
         viewModelScope.launch {
             _feeds.value = communityRepositoryImpl.getFeeds()
         }
     }
+
+    fun getFeedsByTag(tag: String) {
+        //TODO: 필터링 된 피드 리스트를 갖고있따가, 새로 필터링한 값이 기존의 피드리스트랑 다르다면 업데이트, 다르지 않다면 업데이트 x 추가해줘야
+        viewModelScope.launch {
+            _feeds.value = communityRepositoryImpl.getFeedsByTag(tag)
+        }
+    }
+
 }

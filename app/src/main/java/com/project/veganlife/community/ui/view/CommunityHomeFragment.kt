@@ -9,6 +9,9 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.project.veganlife.R
 import com.project.veganlife.community.data.model.Feeds
 import com.project.veganlife.community.ui.adapter.FeedsAdapter
 import com.project.veganlife.community.ui.viewmodel.FeedsGetViewModel
@@ -31,8 +34,6 @@ class CommunityHomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentCommunityHomeBinding.inflate(inflater, container, false)
-        feedsAdapter = FeedsAdapter()
-        binding.rvCommunityhomeFeed.adapter = feedsAdapter
         return binding.root
     }
 
@@ -44,9 +45,26 @@ class CommunityHomeFragment : Fragment() {
             rvScrollToTop()
         }
 
+        //scroll위치 리스너 -> 맨 위면 fab안보이도록
+        binding.rvCommunityhomeFeed.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+                val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
+
+                if (firstVisibleItemPosition == 0) {
+                    binding.ibCommunityhomeGoToTop.visibility = View.GONE
+                } else {
+                    binding.ibCommunityhomeGoToTop.visibility = View.VISIBLE
+                }
+            }
+        })
+
+
         //피드 데이터 넣어주기
-        feedsGetViewModel.feeds.observe(viewLifecycleOwner) {apiResult ->
-            when(apiResult) {
+        feedsGetViewModel.feeds.observe(viewLifecycleOwner) { apiResult ->
+            when (apiResult) {
                 is ApiResult.Error -> {
                     val responseDesc = apiResult.description
                     Log.d("daily Error", responseDesc)
@@ -78,16 +96,37 @@ class CommunityHomeFragment : Fragment() {
             fabOpen = !fabOpen
 
         }
+
+        //태그 버튼에 따라 필터링
+        binding.radioGroupCommunityHomeTag.setOnCheckedChangeListener { radioGroup, i ->
+            when (i) {
+                R.id.btn_community_home_tag_all -> {
+                    feedsGetViewModel.getFeeds()
+                }
+
+                R.id.btn_community_home_tag_worry -> {
+                    feedsGetViewModel.getFeedsByTag(resources.getString(R.string.community_tag_worry_txt))
+                }
+
+                R.id.btn_community_home_tag_together -> {
+                    feedsGetViewModel.getFeedsByTag(resources.getString(R.string.community_tag_together_txt))
+                }
+
+                R.id.btn_community_home_tag_recipe -> {
+                    feedsGetViewModel.getFeedsByTag(resources.getString(R.string.community_tag_recipe_txt))
+                }
+            }
+        }
     }
 
     private fun setFeedButton() {
         if (!fabOpen) {
-            openButton(binding.efabCommunityhomeWriteFeed,96f)
+            openButton(binding.efabCommunityhomeWriteFeed, 96f)
         } else {
             closeButton(binding.efabCommunityhomeWriteFeed)
         }
     }
-    
+
     private fun setRecipeButton() {
         if (!fabOpen) {
             openButton(binding.efabCommunityhomeWriteRecipe, 52f)
@@ -124,6 +163,9 @@ class CommunityHomeFragment : Fragment() {
     }
 
     private fun setFeedsAdapter(feeds: Feeds) {
+        //새 어댑터로 교체해주기
+        feedsAdapter = FeedsAdapter()
+        binding.rvCommunityhomeFeed.adapter = feedsAdapter
         feedsAdapter.submitList(feeds.content)
     }
 

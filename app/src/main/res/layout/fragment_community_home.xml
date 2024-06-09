@@ -20,8 +20,8 @@
         app:titleCentered="true"
         app:titleTextAppearance="@style/Bold.Body4" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_communityhome_popularity_tag"
+    <LinearLayout
+        android:id="@+id/linear_layout_communityhome_popularity_tag"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@color/gray1"
@@ -29,11 +29,100 @@
         android:paddingStart="24dp"
         android:paddingEnd="0dp"
         android:paddingBottom="12dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar_communityhome"
-        tools:listitem="@layout/item_recyclerview_community_home_popularity_tag" />
+        app:layout_constraintTop_toBottomOf="@id/toolbar_communityhome">
+
+        <RadioGroup
+            android:id="@+id/radio_group_community_home_tag"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:checkedButton="@id/btn_community_home_tag_all"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/btn_community_home_tag_all"
+                style="@style/Widget.AppCompat.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/selector_community_popularity_tag_background"
+                android:button="@null"
+                android:includeFontPadding="false"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="2dp"
+                android:stateListAnimator="@null"
+                android:text="@string/community_tag_all"
+                android:textAppearance="@style/Regular.Body5"
+                android:textColor="@color/selector_community_popularity_tag" />
+
+            <RadioButton
+                android:id="@+id/btn_community_home_tag_worry"
+                style="@style/Widget.AppCompat.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/selector_community_popularity_tag_background"
+                android:button="@null"
+                android:includeFontPadding="false"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="2dp"
+                android:stateListAnimator="@null"
+                android:text="@string/community_tag_worry"
+                android:textAppearance="@style/Regular.Body5"
+                android:textColor="@color/selector_community_popularity_tag" />
+
+            <RadioButton
+                android:id="@+id/btn_community_home_tag_together"
+                style="@style/Widget.AppCompat.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/selector_community_popularity_tag_background"
+                android:button="@null"
+                android:includeFontPadding="false"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="2dp"
+                android:stateListAnimator="@null"
+                android:text="@string/community_tag_together"
+                android:textAppearance="@style/Regular.Body5"
+                android:textColor="@color/selector_community_popularity_tag" />
+
+            <RadioButton
+                android:id="@+id/btn_community_home_tag_recipe"
+                style="@style/Widget.AppCompat.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/selector_community_popularity_tag_background"
+                android:button="@null"
+                android:includeFontPadding="false"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="2dp"
+                android:stateListAnimator="@null"
+                android:text="@string/community_tag_recipe"
+                android:textAppearance="@style/Regular.Body5"
+                android:textColor="@color/selector_community_popularity_tag" />
+        </RadioGroup>
+
+
+    </LinearLayout>
+
 
     <LinearLayout
         android:id="@+id/linear_layout_no_contents"
@@ -44,7 +133,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/rv_communityhome_popularity_tag">
+        app:layout_constraintTop_toBottomOf="@id/linear_layout_communityhome_popularity_tag">
 
 
         <ImageView
@@ -66,16 +155,16 @@
     </LinearLayout>
 
 
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_communityhome_feed"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:visibility="gone"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/rv_communityhome_popularity_tag"
+        app:layout_constraintTop_toBottomOf="@id/linear_layout_communityhome_popularity_tag"
         tools:listitem="@layout/item_recyclerview_community_home_feed" />
 
     <Button

@@ -5,4 +5,7 @@ import com.project.veganlife.data.model.ApiResult
 
 interface CommunityRepository {
     suspend fun getFeeds(): ApiResult<Feeds>?
+    suspend fun getFeedsByTag(tag: String): ApiResult<Feeds>?
+
+    suspend fun searchFeedsByKeyword(keyword: String): ApiResult<Feeds>?
 }

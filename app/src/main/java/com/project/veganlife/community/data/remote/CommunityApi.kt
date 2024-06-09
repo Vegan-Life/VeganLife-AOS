@@ -14,4 +14,13 @@ interface CommunityApi {
         @Query("size") size: Int,
         @Query("sort") sort: String,
     ): Response<Feeds>
+
+    @GET("posts/search")
+    suspend fun searchFeedByKeyword(
+        @Header("Authorization") accessToken: String,
+        @Query("keyword") keyword: String,
+        @Query("page") page: Int,
+        @Query("size") size: Int,
+        @Query("sort") sort: String,
+    ): Response<Feeds>
 }
