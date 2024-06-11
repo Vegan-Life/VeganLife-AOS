@@ -188,7 +188,8 @@ class LifeCheckHomeFragment : Fragment() {
                 binding.tvLifecheckHomePeriod.text = thisMonth
                 showPeriodViews()
 
-                viewModel.fetchMonthlyCalorie(thisMonth)
+                val startDate = "$thisMonth-01"
+                viewModel.fetchMonthlyCalorie(startDate)
             }
         }
     }
@@ -309,7 +310,8 @@ class LifeCheckHomeFragment : Fragment() {
                 val selectedYear = yearPicker.value
                 val selectedMonthStr = String.format("%04d-%02d", selectedYear, selectedMonth)
                 binding.tvLifecheckHomePeriod.text = selectedMonthStr
-                viewModel.fetchMonthlyCalorie(selectedMonthStr)
+                val startDate = "$selectedMonthStr-01"
+                viewModel.fetchMonthlyCalorie(startDate)
             }
             .setNegativeButton("취소", null)
             .show()
@@ -443,7 +445,8 @@ class LifeCheckHomeFragment : Fragment() {
             calendar.add(Calendar.MONTH, month)
             val newDate = sdf.format(calendar.time)
             binding.tvLifecheckHomePeriod.text = newDate
-            viewModel.fetchMonthlyCalorie(newDate)
+            val startDate = "$newDate-01"
+            viewModel.fetchMonthlyCalorie(startDate)
             updateRightButtonState()
         } catch (e: Exception) {
             e.printStackTrace()
