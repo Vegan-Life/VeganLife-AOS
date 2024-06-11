@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="horizontal">
+
+    <NumberPicker
+        android:id="@+id/np_life_check_monthPicker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:includeFontPadding="false"
+        android:textAppearance="@style/Bold.Body4"
+        android:textColor="@color/base1" />
+
+    <NumberPicker
+        android:id="@+id/np_life_check_yearPicker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:includeFontPadding="false"
+        android:textAppearance="@style/Bold.Body4"
+        android:textColor="@color/base3" />
+</LinearLayout>

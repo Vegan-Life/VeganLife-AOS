@@ -1,11 +1,13 @@
 package com.project.veganlife.lifecheck.ui.view
 
+import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.NumberPicker
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -13,6 +15,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.project.veganlife.R
 import com.project.veganlife.data.model.ApiResult
 import com.project.veganlife.databinding.FragmentLifecheckHomeBinding
+import com.project.veganlife.databinding.PickerLifecheckYearMonthBinding
 import com.project.veganlife.lifecheck.ui.viewmodel.LifeCheckViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
@@ -134,7 +137,11 @@ class LifeCheckHomeFragment : Fragment() {
             showDatePickerDialog()
         }
         binding.tvLifecheckHomePeriod.setOnClickListener {
-            showWeekPickerDialog()
+            if (binding.vpLifecheckHome.currentItem == 1) {
+                showWeekPickerDialog()
+            } else if (binding.vpLifecheckHome.currentItem == 2) {
+                showMonthPickerDialog()
+            }
         }
     }
 
@@ -173,6 +180,15 @@ class LifeCheckHomeFragment : Fragment() {
                 viewModel.updateWeeklyStartDate(startDate)
                 viewModel.updateWeeklyEndDate(endDate)
                 viewModel.fetchWeeklyCalorie(startDate, endDate)
+            }
+
+            2 -> {
+                // "월" 탭
+                val thisMonth = String.format("%04d-%02d", year, month + 1)
+                binding.tvLifecheckHomePeriod.text = thisMonth
+                showPeriodViews()
+
+                viewModel.fetchMonthlyCalorie(thisMonth)
             }
         }
     }
@@ -261,6 +277,44 @@ class LifeCheckHomeFragment : Fragment() {
         datePickerDialog.show()
     }
 
+    // 월 선택 피커 토출
+    private fun showMonthPickerDialog() {
+        val calendar = Calendar.getInstance()
+        val selectedDate = binding.tvLifecheckHomePeriod.text.toString()
+        val currentYear = calendar.get(Calendar.YEAR)
+        val currentMonth = calendar.get(Calendar.MONTH)
+
+        val monthPickerBinding = PickerLifecheckYearMonthBinding.inflate(layoutInflater)
+        val monthPicker: NumberPicker = monthPickerBinding.npLifeCheckMonthPicker
+        val yearPicker: NumberPicker = monthPickerBinding.npLifeCheckYearPicker
+
+        yearPicker.minValue = 2020
+        yearPicker.maxValue = currentYear
+        yearPicker.value =
+            if (selectedDate.isNotEmpty()) selectedDate.split("-")[0].toInt() else currentYear
+
+        monthPicker.minValue = 1
+        monthPicker.maxValue = if (yearPicker.value == currentYear) currentMonth + 1 else 12
+        monthPicker.value =
+            if (selectedDate.isNotEmpty()) selectedDate.split("-")[1].toInt() else currentMonth + 1
+
+        yearPicker.setOnValueChangedListener { _, _, new ->
+            monthPicker.maxValue = if (new == currentYear) currentMonth + 1 else 12
+        }
+
+        AlertDialog.Builder(requireContext())
+            .setView(monthPickerBinding.root)
+            .setPositiveButton("확인") { _, _ ->
+                val selectedMonth = monthPicker.value
+                val selectedYear = yearPicker.value
+                val selectedMonthStr = String.format("%04d-%02d", selectedYear, selectedMonth)
+                binding.tvLifecheckHomePeriod.text = selectedMonthStr
+                viewModel.fetchMonthlyCalorie(selectedMonthStr)
+            }
+            .setNegativeButton("취소", null)
+            .show()
+    }
+
     // 주간 시작 날짜 계산
     private fun getStartDateOfWeek(calendar: Calendar): String {
         val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
@@ -310,6 +364,8 @@ class LifeCheckHomeFragment : Fragment() {
                 changeDateBy(-1)
             } else if (binding.vpLifecheckHome.currentItem == 1) {
                 changeWeeklyDateBy(-1)
+            } else if (binding.vpLifecheckHome.currentItem == 2) {
+                changeMonthlyDateBy(-1)
             }
         }
         binding.btnLifecheckHomeDateRight.setOnClickListener {
@@ -317,6 +373,8 @@ class LifeCheckHomeFragment : Fragment() {
                 changeDateBy(1)
             } else if (binding.vpLifecheckHome.currentItem == 1) {
                 changeWeeklyDateBy(1)
+            } else if (binding.vpLifecheckHome.currentItem == 2) {
+                changeMonthlyDateBy(1)
             }
         }
     }
@@ -371,6 +429,27 @@ class LifeCheckHomeFragment : Fragment() {
         }
     }
 
+    // 월 전환
+    private fun changeMonthlyDateBy(month: Int) {
+        val selectedDate = binding.tvLifecheckHomePeriod.text.toString()
+        val sdf = SimpleDateFormat("yyyy-MM", Locale.getDefault())
+        val calendar = Calendar.getInstance()
+
+        try {
+            val date = sdf.parse(selectedDate)
+            if (date != null) {
+                calendar.time = date
+            }
+            calendar.add(Calendar.MONTH, month)
+            val newDate = sdf.format(calendar.time)
+            binding.tvLifecheckHomePeriod.text = newDate
+            viewModel.fetchMonthlyCalorie(newDate)
+            updateRightButtonState()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
     // 미래 날짜로 이동을 제한
     private fun updateRightButtonState() {
         val today = getCurrentDateString()
@@ -391,6 +470,23 @@ class LifeCheckHomeFragment : Fragment() {
 
                 // 선택된 주가 오늘 주와 같다면 오른쪽 버튼 비활성화
                 binding.btnLifecheckHomeDateRight.isEnabled = selectedWeekOfYear != todayWeekOfYear
+            }
+        } else if (binding.vpLifecheckHome.currentItem == 2) {
+            val todayCalendar = Calendar.getInstance()
+            val selectedDate = binding.tvLifecheckHomePeriod.text.toString()
+            if (selectedDate.isNotEmpty()) {
+                val sdf = SimpleDateFormat("yyyy-MM", Locale.getDefault())
+                val calendar = Calendar.getInstance()
+                calendar.time = sdf.parse(selectedDate)!!
+
+                val todayYear = todayCalendar.get(Calendar.YEAR)
+                val todayMonth = todayCalendar.get(Calendar.MONTH)
+                val selectedYear = calendar.get(Calendar.YEAR)
+                val selectedMonth = calendar.get(Calendar.MONTH)
+
+                // 선택된 달이 이번 달과 같다면 오른쪽 버튼 비활성화
+                binding.btnLifecheckHomeDateRight.isEnabled =
+                    !(selectedYear == todayYear && selectedMonth == todayMonth)
             }
         }
     }
