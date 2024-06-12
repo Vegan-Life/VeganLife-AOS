@@ -2,10 +2,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cl_mypage_layout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="2dp"
-    android:layout_marginBottom="2dp"
+    android:layout_height="116dp"
+    android:layout_marginTop="4dp"
     android:background="@color/gray1"
     android:paddingBottom="10dp">
 
@@ -15,7 +15,9 @@
         android:layout_height="90dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="13dp"
+        android:layout_marginBottom="13dp"
         app:cardCornerRadius="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -23,6 +25,8 @@
             android:id="@+id/iv_recipe_thumbnail"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
             tools:src="@drawable/all_recipe_thumbnail" />
 
     </androidx.cardview.widget.CardView>
@@ -45,7 +49,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="4dp"
         android:includeFontPadding="false"
-        android:textAppearance="@style/Bold.Body4"
+        android:textAppearance="@style/Bold.Body6"
         app:layout_constraintBottom_toBottomOf="@id/tv_recipe_vegan_type"
         app:layout_constraintEnd_toStartOf="@id/tv_recipe_vegan_type"
         app:layout_constraintTop_toTopOf="@id/tv_recipe_vegan_type"
@@ -56,18 +60,19 @@
         style="@style/OvoTag"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="24dp"
         android:includeFontPadding="false"
         android:textAppearance="@style/Regular.Body5"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_recipe_name"
+        app:layout_constraintTop_toTopOf="@id/tv_recipe_name"
         tools:text="@string/all_ovo" />
 
     <TextView
         android:id="@+id/tv_recipe_able_vegan_type"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="46dp"
+        android:layout_marginTop="26dp"
         android:includeFontPadding="false"
         android:text="@string/recipe_able_vegan_type"
         android:textAppearance="@style/Regular.Body5"
@@ -99,10 +104,10 @@
         android:id="@+id/btn_recipe_like"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="37dp"
+        android:layout_marginTop="17dp"
         android:backgroundTint="@color/gray1"
-        android:src="@drawable/all_like_empty_recipe"
         app:layout_constraintStart_toStartOf="@id/tv_recipe_vegan_type"
-        app:layout_constraintTop_toBottomOf="@id/tv_recipe_vegan_type" />
+        app:layout_constraintTop_toBottomOf="@id/tv_recipe_vegan_type"
+        tools:src="@drawable/all_like_empty_recipe" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -9,23 +9,20 @@
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar_mypage_toolbar"
+        style="@style/ToolbarTheme"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@color/gray1"
-        android:includeFontPadding="false"
-        android:textAppearance="@style/Bold.Body4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:navigationIcon="@drawable/all_back"
-        app:title="@string/mypage_posted_feed"
-        app:titleCentered="true" />
+        app:title="@string/mypage_posted_feed" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_mypage_feed"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
