@@ -5,7 +5,9 @@ import com.project.veganlife.data.remote.ProfileInfoGetApi
 import com.project.veganlife.data.remote.RecipeLikeApi
 import com.project.veganlife.data.remote.RecipeLikeCancelApi
 import com.project.veganlife.data.remote.RecommendedIntakeGetApi
+import com.project.veganlife.lifecheck.data.remote.LifeCheckMonthlyCalorieGetApi
 import com.project.veganlife.lifecheck.data.remote.LifeCheckWeeklyCalorieGetApi
+import com.project.veganlife.lifecheck.data.remote.LifeCheckYearlyCalorieGetApi
 import com.project.veganlife.mypage.data.remote.MypageGetMyPostedCommentApi
 import com.project.veganlife.mypage.data.remote.MypageGetMyPostedFeedApi
 import com.project.veganlife.mypage.data.remote.MypageGetScrapedRecipeApi
@@ -73,5 +75,15 @@ class AppApiModule {
     @Provides
     fun provideScrapedRecipeLikeCancelApi(retrofit: Retrofit): RecipeLikeCancelApi {
         return retrofit.create(RecipeLikeCancelApi::class.java)
+    }
+
+    @Provides
+    fun provideLifeCheckMonthlyCalorieGetApi(retrofit: Retrofit): LifeCheckMonthlyCalorieGetApi {
+        return retrofit.create(LifeCheckMonthlyCalorieGetApi::class.java)
+    }
+
+    @Provides
+    fun provideLifeCheckYearlyCalorieGetApi(retrofit: Retrofit): LifeCheckYearlyCalorieGetApi {
+        return retrofit.create(LifeCheckYearlyCalorieGetApi::class.java)
     }
 }
