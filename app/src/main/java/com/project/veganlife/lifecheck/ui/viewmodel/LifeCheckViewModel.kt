@@ -12,6 +12,7 @@ import com.project.veganlife.lifecheck.domain.usecase.LifeCheckGetDailyIntakeUse
 import com.project.veganlife.lifecheck.domain.usecase.LifeCheckGetMonthlyCalorieUseCase
 import com.project.veganlife.lifecheck.domain.usecase.LifeCheckGetRecommendedIntakeUseCase
 import com.project.veganlife.lifecheck.domain.usecase.LifeCheckGetWeeklyCalorieUseCase
+import com.project.veganlife.lifecheck.domain.usecase.LifeCheckGetYearlyCalorieUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -22,6 +23,7 @@ class LifeCheckViewModel @Inject constructor(
     private val lifeCheckGetRecommendedIntakeUseCase: LifeCheckGetRecommendedIntakeUseCase,
     private val lifeCheckGetWeeklyCalorieUseCase: LifeCheckGetWeeklyCalorieUseCase,
     private val lifeCheckGetMonthlyCalorieUseCase: LifeCheckGetMonthlyCalorieUseCase,
+    private val lifeCheckGetYearlyCalorieUseCase: LifeCheckGetYearlyCalorieUseCase,
 ) : ViewModel() {
 
     // 일일 섭취량 조회
@@ -50,6 +52,10 @@ class LifeCheckViewModel @Inject constructor(
     // 월간 섭취 칼로리 조회
     private val _monthlyCalorieData = MutableLiveData<ApiResult<LifeCheckWeeklyCalorieResponse>>()
     val monthlyCalorieData: LiveData<ApiResult<LifeCheckWeeklyCalorieResponse>> = _monthlyCalorieData
+
+    // 연간 섭취 칼로리 조회
+    private val _yearlyCalorieData = MutableLiveData<ApiResult<LifeCheckWeeklyCalorieResponse>>()
+    val yearlyCalorieData: LiveData<ApiResult<LifeCheckWeeklyCalorieResponse>> = _yearlyCalorieData
 
     // 일일 섭취량 조회
     fun fetchDailyIntake(date: String) {
@@ -88,6 +94,13 @@ class LifeCheckViewModel @Inject constructor(
     fun fetchMonthlyCalorie(startDate: String) {
         viewModelScope.launch {
             _monthlyCalorieData.value = lifeCheckGetMonthlyCalorieUseCase(startDate)
+        }
+    }
+
+    // 연간 섭취 칼로리 조회
+    fun fetchYearlyCalorie(startDate: String) {
+        viewModelScope.launch {
+            _yearlyCalorieData.value = lifeCheckGetYearlyCalorieUseCase(startDate)
         }
     }
 
