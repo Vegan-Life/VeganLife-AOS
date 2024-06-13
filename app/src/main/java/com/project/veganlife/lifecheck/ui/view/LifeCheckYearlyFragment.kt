@@ -1,11 +1,13 @@
 package com.project.veganlife.lifecheck.ui.view
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.LimitLine
 import com.github.mikephil.charting.data.BarData
@@ -13,13 +15,20 @@ import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.project.veganlife.R
+import com.project.veganlife.data.model.ApiResult
 import com.project.veganlife.databinding.FragmentLifeCheckYearlyBinding
+import com.project.veganlife.lifecheck.data.model.LifeCheckWeeklyCalorieResponse
+import com.project.veganlife.lifecheck.ui.viewmodel.LifeCheckViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
 
+@AndroidEntryPoint
 class LifeCheckYearlyFragment : Fragment() {
 
     private var _binding: FragmentLifeCheckYearlyBinding? = null
     private val binding get() = _binding!!
+
+    private val viewModel: LifeCheckViewModel by viewModels({ requireParentFragment() })
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,7 +41,7 @@ class LifeCheckYearlyFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupBarChart()
+        observeYearlyCalorieData()
     }
 
     override fun onResume() {
@@ -40,29 +49,41 @@ class LifeCheckYearlyFragment : Fragment() {
         binding.root.requestLayout()
     }
 
-    private fun setupBarChart() {
+    private fun observeYearlyCalorieData() {
+        viewModel.yearlyCalorieData.observe(viewLifecycleOwner) { result ->
+            when (result) {
+                is ApiResult.Success -> {
+                    setupBarChart(result.data)
+                }
+
+                is ApiResult.Error ->
+                    Log.d("yearlyCalorieData Error", result.description)
+
+                is ApiResult.Exception ->
+                    Log.d(
+                        "yearlyCalorieData Exception",
+                        result.e.message ?: "No message available"
+                    )
+            }
+        }
+    }
+
+    private fun setupBarChart(yearlyData: LifeCheckWeeklyCalorieResponse) {
         // 데이터셋
         val barEntries: MutableList<BarEntry> = mutableListOf()
 
-        // 예시 데이터(1년)
-        val dataPoints = listOf(
-            floatArrayOf(150f, 800f, 200f, 70f), // 1월
-            floatArrayOf(100f, 300f, 500f, 110f), // 2월
-            floatArrayOf(200f, 400f, 400f, 40f), // 3월
-            floatArrayOf(130f, 600f, 600f, 50f), // 4월
-            floatArrayOf(530f, 600f, 600f, 150f), // 5월
-            floatArrayOf(250f, 500f, 200f, 60f), // 6월
-            floatArrayOf(150f, 400f, 300f, 160f), // 7월
-            floatArrayOf(250f, 200f, 400f, 60f), // 8월
-            floatArrayOf(200f, 500f, 500f, 260f), // 9월
-            floatArrayOf(200f, 100f, 600f, 60f), // 10월
-            floatArrayOf(220f, 500f, 700f, 360f), // 11월
-            floatArrayOf(230f, 300f, 800f, 260f) // 12월
-        )
-
-        // 데이터 포인트바 차트에 추가
-        dataPoints.forEachIndexed { index, floats ->
-            barEntries.add(BarEntry(index.toFloat(), floats))
+        yearlyData.periodicCalorie.forEachIndexed { index, data ->
+            barEntries.add(
+                BarEntry(
+                    index.toFloat(),
+                    floatArrayOf(
+                        data.breakfast.toFloat(),
+                        data.lunch.toFloat(),
+                        data.dinner.toFloat(),
+                        data.snack.toFloat()
+                    )
+                )
+            )
         }
 
         val set = BarDataSet(barEntries, "").apply {
@@ -84,39 +105,40 @@ class LifeCheckYearlyFragment : Fragment() {
         }
 
         // 전체 데이터 포인트의 합계 및 평균 계산
-        val totalSum = dataPoints.flatMap { it.toList() }.sum()
-        val totalDataPoints = dataPoints.size
-        val dailyAverage = totalSum / totalDataPoints
+        val totalSum = yearlyData.periodicCalorie.flatMap {
+            listOf(
+                it.breakfast,
+                it.lunch,
+                it.dinner,
+                it.snack
+            )
+        }.sum()
+        val dailyAverage = totalSum / 365
+
+        setKcalUI(totalSum, dailyAverage)
 
         // Y축에 평균 LimitLine 추가
-        val avgLimitLine = LimitLine(dailyAverage).apply {
+        val avgLimitLine = LimitLine(dailyAverage.toFloat()).apply {
             lineColor = ContextCompat.getColor(requireContext(), R.color.base1)
             lineWidth = 1f
             enableDashedLine(10f, 5f, 0f) // 점선으로 설정 (선 길이, 공간 길이, 페이즈)
         }
 
+        val xLabel = getYearlyLabels(yearlyData.periodicCalorie.size)
+
         with(binding.barchartLifecheckYearly) {
+            // 기존 데이터 초기화
+            data?.clearValues()
+            clear()
+            // 기존 LimitLine 제거
+            axisLeft.removeAllLimitLines()
+
             // 바 차트에 데이터 설정
             data = barData
             description.isEnabled = false // 설명 제거
             xAxis.apply {
                 // X축 포맷터 적용
-                valueFormatter = IndexAxisValueFormatter(
-                    arrayOf(
-                        "1월",
-                        "2월",
-                        "3월",
-                        "4월",
-                        "5월",
-                        "6월",
-                        "7월",
-                        "8월",
-                        "9월",
-                        "10월",
-                        "11월",
-                        "12월"
-                    )
-                )
+                valueFormatter = IndexAxisValueFormatter(xLabel)
                 // X축 위치 하단 설정
                 position = com.github.mikephil.charting.components.XAxis.XAxisPosition.BOTTOM
                 // X축 격자선 제거
@@ -174,6 +196,22 @@ class LifeCheckYearlyFragment : Fragment() {
             // 차트 새로고침
             invalidate()
         }
+    }
+
+    private fun setKcalUI(total: Int, average: Int) {
+        binding.run {
+            tvLifecheckYearlyTotalKcal.text = total.toString()
+            tvLifecheckYearlyAvgKcal.text = "일 평균: $average"
+        }
+    }
+
+    // 연간 라벨을 동적으로 생성
+    private fun getYearlyLabels(weeks: Int): Array<String> {
+        val labels = Array(weeks) { "" }
+        for (index in 0 until weeks) {
+            labels[index] = "${index + 1}월"
+        }
+        return labels
     }
 
     override fun onDestroyView() {
