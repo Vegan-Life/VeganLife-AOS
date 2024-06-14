@@ -57,6 +57,10 @@ class LifeCheckViewModel @Inject constructor(
     private val _yearlyCalorieData = MutableLiveData<ApiResult<LifeCheckWeeklyCalorieResponse>>()
     val yearlyCalorieData: LiveData<ApiResult<LifeCheckWeeklyCalorieResponse>> = _yearlyCalorieData
 
+    // 식사 종류 선택
+    private val _selectedDietType = MutableLiveData<String>()
+    val selectedDietType: LiveData<String> = _selectedDietType
+
     // 일일 섭취량 조회
     fun fetchDailyIntake(date: String) {
         viewModelScope.launch {
@@ -102,6 +106,11 @@ class LifeCheckViewModel @Inject constructor(
         viewModelScope.launch {
             _yearlyCalorieData.value = lifeCheckGetYearlyCalorieUseCase(startDate)
         }
+    }
+
+    // 식사 종류 선택
+    fun setSelectedDietType(dietType: String) {
+        _selectedDietType.value = dietType
     }
 
 }

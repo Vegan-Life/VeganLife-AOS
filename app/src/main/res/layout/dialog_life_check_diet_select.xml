@@ -32,7 +32,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <RadioGroup
-        android:id="@+id/radioGroup"
+        android:id="@+id/rg_lifecheck_diet_select_dialog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -46,7 +46,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_lifecheck_diet_select_dialog_diet_type">
 
         <RadioButton
-            android:id="@+id/radioButton1"
+            android:id="@+id/rb_lifecheck_diet_select_dialog_breakfast"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@null"
@@ -59,7 +59,7 @@
             android:textColor="@color/gray5" />
 
         <RadioButton
-            android:id="@+id/radioButton2"
+            android:id="@+id/rb_lifecheck_diet_select_dialog_lunch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@null"
@@ -72,7 +72,7 @@
             android:textColor="@color/gray5" />
 
         <RadioButton
-            android:id="@+id/radioButton3"
+            android:id="@+id/rb_lifecheck_diet_select_dialog_dinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@null"
@@ -85,7 +85,7 @@
             android:textColor="@color/gray5" />
 
         <RadioButton
-            android:id="@+id/radioButton4"
+            android:id="@+id/rb_lifecheck_diet_select_dialog_morning_snack"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@null"
@@ -98,7 +98,7 @@
             android:textColor="@color/gray5" />
 
         <RadioButton
-            android:id="@+id/radioButton5"
+            android:id="@+id/rb_lifecheck_diet_select_dialog_afternoon_snack"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@null"
@@ -111,7 +111,7 @@
             android:textColor="@color/gray5" />
 
         <RadioButton
-            android:id="@+id/radioButton6"
+            android:id="@+id/rb_lifecheck_diet_select_dialog_dinner_snack"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@null"

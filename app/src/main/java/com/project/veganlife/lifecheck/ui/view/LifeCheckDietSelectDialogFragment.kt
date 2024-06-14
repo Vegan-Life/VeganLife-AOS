@@ -11,12 +11,18 @@ import android.view.ViewGroup
 import android.view.WindowInsets
 import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
+import com.project.veganlife.R
 import com.project.veganlife.databinding.DialogLifeCheckDietSelectBinding
+import com.project.veganlife.lifecheck.ui.viewmodel.LifeCheckViewModel
 
 class LifeCheckDietSelectDialogFragment : DialogFragment() {
 
     private var _binding: DialogLifeCheckDietSelectBinding? = null
     private val binding get() = _binding!!
+
+    private val viewModel: LifeCheckViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -24,6 +30,33 @@ class LifeCheckDietSelectDialogFragment : DialogFragment() {
     ): View {
         _binding = DialogLifeCheckDietSelectBinding.inflate(inflater, container, false)
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.run {
+            btnLifecheckDietSelectDialogClose.setOnClickListener {
+                dismiss()
+            }
+
+            rgLifecheckDietSelectDialog.setOnCheckedChangeListener { _, i ->
+                val selectDietType =
+                    when (i) {
+                        R.id.rb_lifecheck_diet_select_dialog_breakfast -> "breakfast"
+                        R.id.rb_lifecheck_diet_select_dialog_lunch -> "lunch"
+                        R.id.rb_lifecheck_diet_select_dialog_dinner -> "dinner"
+                        R.id.rb_lifecheck_diet_select_dialog_morning_snack -> "snack"
+                        R.id.rb_lifecheck_diet_select_dialog_afternoon_snack -> "snack"
+                        R.id.rb_lifecheck_diet_select_dialog_dinner_snack -> "snack"
+                        else -> ""
+                    }
+                viewModel.setSelectedDietType(selectDietType)
+                findNavController().navigate(R.id.action_lifeCheckHomeFragment_to_lifeCheckMenuSearchFragment)
+                dismiss()
+            }
+        }
+
     }
 
     override fun onResume() {
