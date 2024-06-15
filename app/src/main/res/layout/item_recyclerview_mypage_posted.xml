@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cl_mypage_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="4dp"
@@ -17,12 +19,12 @@
         android:ellipsize="end"
         android:includeFontPadding="false"
         android:maxLines="1"
-        android:text="피드 제목입니다 피드 제목입니다 피드 제목입니다"
         android:textAppearance="@style/Bold.Body4"
         android:textColor="@color/gray5"
-        app:layout_constraintEnd_toStartOf="@id/iv_mypage"
+        app:layout_constraintEnd_toStartOf="@id/iv_mypage_thumbnail"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="피드 제목입니다 피드 제목입니다 피드 제목입니다" />
 
     <TextView
         android:id="@+id/tv_mypage_description"
@@ -32,12 +34,12 @@
         android:ellipsize="end"
         android:includeFontPadding="false"
         android:maxLines="2"
-        android:text="피드 내용입니다 피드 내용입니다 피드 내용입니다 피드 내용입니다 피드 내용입니다 피드 내용입니다 피드 내용입니다"
         android:textAppearance="@style/Regular.Body5"
         android:textColor="@color/gray5"
         app:layout_constraintEnd_toEndOf="@id/tv_mypage_title"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_mypage_title" />
+        app:layout_constraintTop_toBottomOf="@id/tv_mypage_title"
+        tools:text="피드 내용입니다 피드 내용입니다 피드 내용입니다 피드 내용입니다 피드 내용입니다 피드 내용입니다 피드 내용입니다" />
 
     <TextView
         android:id="@+id/tv_mypage_datetime"
@@ -52,7 +54,7 @@
         app:layout_constraintTop_toBottomOf="@id/tv_mypage_description" />
 
     <ImageView
-        android:id="@+id/iv_mypage"
+        android:id="@+id/iv_mypage_thumbnail"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_marginTop="14dp"

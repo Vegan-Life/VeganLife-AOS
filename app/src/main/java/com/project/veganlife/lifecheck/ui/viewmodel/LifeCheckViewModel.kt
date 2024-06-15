@@ -7,8 +7,12 @@ import androidx.lifecycle.viewModelScope
 import com.project.veganlife.data.model.ApiResult
 import com.project.veganlife.data.model.DailyIntakeResponse
 import com.project.veganlife.data.model.RecommendedIntakeResponse
+import com.project.veganlife.lifecheck.data.model.LifeCheckWeeklyCalorieResponse
 import com.project.veganlife.lifecheck.domain.usecase.LifeCheckGetDailyIntakeUseCase
+import com.project.veganlife.lifecheck.domain.usecase.LifeCheckGetMonthlyCalorieUseCase
 import com.project.veganlife.lifecheck.domain.usecase.LifeCheckGetRecommendedIntakeUseCase
+import com.project.veganlife.lifecheck.domain.usecase.LifeCheckGetWeeklyCalorieUseCase
+import com.project.veganlife.lifecheck.domain.usecase.LifeCheckGetYearlyCalorieUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -17,6 +21,9 @@ import javax.inject.Inject
 class LifeCheckViewModel @Inject constructor(
     private val lifeCheckGetDailyIntakeUseCase: LifeCheckGetDailyIntakeUseCase,
     private val lifeCheckGetRecommendedIntakeUseCase: LifeCheckGetRecommendedIntakeUseCase,
+    private val lifeCheckGetWeeklyCalorieUseCase: LifeCheckGetWeeklyCalorieUseCase,
+    private val lifeCheckGetMonthlyCalorieUseCase: LifeCheckGetMonthlyCalorieUseCase,
+    private val lifeCheckGetYearlyCalorieUseCase: LifeCheckGetYearlyCalorieUseCase,
 ) : ViewModel() {
 
     // 일일 섭취량 조회
@@ -30,6 +37,25 @@ class LifeCheckViewModel @Inject constructor(
     // 권장 섭취량 데이터
     private val _recommendedIntakeData = MutableLiveData<ApiResult<RecommendedIntakeResponse>>()
     val recommendedIntakeData: LiveData<ApiResult<RecommendedIntakeResponse>> = _recommendedIntakeData
+
+    // 주간 섭취 칼로리 조회
+    private val _weeklyCalorieData = MutableLiveData<ApiResult<LifeCheckWeeklyCalorieResponse>>()
+    val weeklyCalorieData: LiveData<ApiResult<LifeCheckWeeklyCalorieResponse>> = _weeklyCalorieData
+
+    // 조회 기간 설정
+    private val _selectedWeeklyStartDate = MutableLiveData<String>()
+    val selectedWeeklyStartDate: LiveData<String> = _selectedWeeklyStartDate
+
+    private val _selectedWeeklyEndDate = MutableLiveData<String>()
+    val selectedWeeklyEndDate: LiveData<String> = _selectedWeeklyEndDate
+
+    // 월간 섭취 칼로리 조회
+    private val _monthlyCalorieData = MutableLiveData<ApiResult<LifeCheckWeeklyCalorieResponse>>()
+    val monthlyCalorieData: LiveData<ApiResult<LifeCheckWeeklyCalorieResponse>> = _monthlyCalorieData
+
+    // 연간 섭취 칼로리 조회
+    private val _yearlyCalorieData = MutableLiveData<ApiResult<LifeCheckWeeklyCalorieResponse>>()
+    val yearlyCalorieData: LiveData<ApiResult<LifeCheckWeeklyCalorieResponse>> = _yearlyCalorieData
 
     // 일일 섭취량 조회
     fun fetchDailyIntake(date: String) {
@@ -46,6 +72,35 @@ class LifeCheckViewModel @Inject constructor(
     fun fetchRecommendedIntake() {
         viewModelScope.launch {
             _recommendedIntakeData.value = lifeCheckGetRecommendedIntakeUseCase()
+        }
+    }
+
+    // 주간 섭취 칼로리 조회
+    fun fetchWeeklyCalorie(startDate: String, endDate: String) {
+        viewModelScope.launch {
+            _weeklyCalorieData.value = lifeCheckGetWeeklyCalorieUseCase(startDate, endDate)
+        }
+    }
+
+    fun updateWeeklyStartDate(date: String) {
+        _selectedWeeklyStartDate.value = date
+    }
+
+    fun updateWeeklyEndDate(date: String) {
+        _selectedWeeklyEndDate.value = date
+    }
+
+    // 월간 섭취 칼로리 조회
+    fun fetchMonthlyCalorie(startDate: String) {
+        viewModelScope.launch {
+            _monthlyCalorieData.value = lifeCheckGetMonthlyCalorieUseCase(startDate)
+        }
+    }
+
+    // 연간 섭취 칼로리 조회
+    fun fetchYearlyCalorie(startDate: String) {
+        viewModelScope.launch {
+            _yearlyCalorieData.value = lifeCheckGetYearlyCalorieUseCase(startDate)
         }
     }
 
