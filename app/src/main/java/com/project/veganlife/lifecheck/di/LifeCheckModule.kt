@@ -11,11 +11,13 @@ import com.project.veganlife.lifecheck.data.datasource.LifeCheckWeeklyCalorieDat
 import com.project.veganlife.lifecheck.data.datasource.LifeCheckYearlyCalorieDataSource
 import com.project.veganlife.lifecheck.data.datasource.LifeCheckYearlyCalorieDataSourceImpl
 import com.project.veganlife.lifecheck.data.ropositoryImpl.LifeCheckDailyIntakeRepositoryImpl
+import com.project.veganlife.lifecheck.data.ropositoryImpl.LifeCheckMealDataRepositoryImpl
 import com.project.veganlife.lifecheck.data.ropositoryImpl.LifeCheckMonthlyCalorieRepositoryImpl
 import com.project.veganlife.lifecheck.data.ropositoryImpl.LifeCheckRecommendedIntakeRepositoryImpl
 import com.project.veganlife.lifecheck.data.ropositoryImpl.LifeCheckWeeklyCalorieRepositoryImpl
 import com.project.veganlife.lifecheck.data.ropositoryImpl.LifeCheckYearlyCalorieRepositoryImpl
 import com.project.veganlife.lifecheck.domain.repository.LifeCheckDailyIntakeRepository
+import com.project.veganlife.lifecheck.domain.repository.LifeCheckMealDataRepository
 import com.project.veganlife.lifecheck.domain.repository.LifeCheckMonthlyCalorieRepository
 import com.project.veganlife.lifecheck.domain.repository.LifeCheckRecommendedIntakeRepository
 import com.project.veganlife.lifecheck.domain.repository.LifeCheckWeeklyCalorieRepository
@@ -108,5 +110,13 @@ object LifeCheckModule {
         lifeCheckYearlyCalorieDataSourceImpl: LifeCheckYearlyCalorieDataSourceImpl
     ): LifeCheckYearlyCalorieDataSource {
         return lifeCheckYearlyCalorieDataSourceImpl
+    }
+
+    @Provides
+    @Singleton
+    fun provideLifeCheckMealDataRepository(
+        lifeCheckMealDataRepositoryImpl: LifeCheckMealDataRepositoryImpl
+    ): LifeCheckMealDataRepository {
+        return lifeCheckMealDataRepositoryImpl
     }
 }
