@@ -13,7 +13,6 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.project.veganlife.R
@@ -49,7 +48,7 @@ class CommunityHomeFragment : Fragment() {
         feedsGetViewModel.getFeeds()
 
         // Start shimmer animation
-        binding.shimmerCommunityhomeFeed.startShimmer()
+//        binding.shimmerCommunityhomeFeed.startShimmer()
 
         setupFeedList()
 
@@ -91,15 +90,17 @@ class CommunityHomeFragment : Fragment() {
         }
 
         binding.toolbarCommunityhome.setOnMenuItemClickListener { item ->
-            when(item.itemId) {
+            when (item.itemId) {
                 R.id.community_notification -> {
                     //todo: notification
                     true
                 }
+
                 R.id.community_search -> {
                     //todo: search동작
                     true
                 }
+
                 else -> false
             }
         }
@@ -147,31 +148,30 @@ class CommunityHomeFragment : Fragment() {
 
     private fun setupFeedList() {
 
-        communityFeedAdapter = CommunityFeedAdapter()
-        binding.rvCommunityhomeFeed.apply {
-            layoutManager = LinearLayoutManager(context)
-            adapter = communityFeedAdapter
-        }
-
-        communityFeedAdapter.addLoadStateListener {
-            if(it.append.endOfPaginationReached) {
-                binding.linearLayoutNoContents.isVisible = communityFeedAdapter.itemCount == 0
-            } else {
-                binding.linearLayoutNoContents.isVisible = false
-            }
-        }
+        setRecyclerViewAdapter()
 
         viewLifecycleOwner.lifecycleScope.launch {
-
             feedsGetViewModel.feedList.collectLatest { pagingData ->
                 pagingData?.let { feedPagingData ->
                     Log.i("##INFO", "observeFeeds: $pagingData")
 
-                    binding.shimmerCommunityhomeFeed.stopShimmer()
-                    binding.shimmerCommunityhomeFeed.visibility = View.GONE
+                    setRecyclerViewAdapter()
 
                     communityFeedAdapter.submitData(feedPagingData)
                 }
+            }
+        }
+    }
+
+    private fun setRecyclerViewAdapter() {
+        communityFeedAdapter = CommunityFeedAdapter()
+        binding.rvCommunityhomeFeed.adapter = communityFeedAdapter
+
+        communityFeedAdapter.addLoadStateListener {
+            if (it.append.endOfPaginationReached) {
+                binding.linearLayoutNoContents.isVisible = communityFeedAdapter.itemCount == 0
+            } else {
+                binding.linearLayoutNoContents.isVisible = false
             }
         }
     }

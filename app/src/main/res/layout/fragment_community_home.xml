@@ -163,7 +163,7 @@
         app:layout_constraintTop_toBottomOf="@id/linear_layout_communityhome_popularity_tag"
         tools:listitem="@layout/item_recyclerview_community_home_feed" />
 
-    <com.facebook.shimmer.ShimmerFrameLayout
+    <!--<com.facebook.shimmer.ShimmerFrameLayout
         android:id="@+id/shimmer_communityhome_feed"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -195,7 +195,7 @@
             <include layout="@layout/shimmer_item_recyclerview_community_home_feed" />
 
         </LinearLayout>
-    </com.facebook.shimmer.ShimmerFrameLayout>
+    </com.facebook.shimmer.ShimmerFrameLayout>-->
 
     <Button
         android:id="@+id/efab_communityhome_write_feed"
@@ -266,31 +266,5 @@
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
-
-    <ImageView
-        android:id="@+id/iv_communityhome_logo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/all_logo_gray"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/tv_communityhome_first_feed"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
-        android:includeFontPadding="false"
-        android:text="@string/community_new_feed"
-        android:textAlignment="center"
-        android:textAppearance="@style/Bold.Body4"
-        android:textColor="@color/gray3"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="@id/iv_communityhome_logo"
-        app:layout_constraintStart_toStartOf="@id/iv_communityhome_logo"
-        app:layout_constraintTop_toBottomOf="@id/iv_communityhome_logo" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
