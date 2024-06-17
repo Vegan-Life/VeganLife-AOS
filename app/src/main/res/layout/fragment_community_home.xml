@@ -120,9 +120,7 @@
                 android:textColor="@color/selector_community_popularity_tag" />
         </RadioGroup>
 
-
     </LinearLayout>
-
 
     <LinearLayout
         android:id="@+id/linear_layout_no_contents"
@@ -130,12 +128,11 @@
         android:layout_height="0dp"
         android:gravity="center"
         android:orientation="vertical"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/linear_layout_communityhome_popularity_tag"
-        android:visibility="gone">
-
+        app:layout_constraintTop_toBottomOf="@id/linear_layout_communityhome_popularity_tag">
 
         <ImageView
             android:id="@+id/imageView"
@@ -155,12 +152,10 @@
 
     </LinearLayout>
 
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_communityhome_feed"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:visibility="gone"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -172,6 +167,7 @@
         android:id="@+id/shimmer_communityhome_feed"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -182,21 +178,21 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <include layout="@layout/shimmer_item_recyclerview_community_home_feed"/>
+            <include layout="@layout/shimmer_item_recyclerview_community_home_feed" />
 
-            <include layout="@layout/shimmer_item_recyclerview_community_home_feed"/>
+            <include layout="@layout/shimmer_item_recyclerview_community_home_feed" />
 
-            <include layout="@layout/shimmer_item_recyclerview_community_home_feed"/>
+            <include layout="@layout/shimmer_item_recyclerview_community_home_feed" />
 
-            <include layout="@layout/shimmer_item_recyclerview_community_home_feed"/>
+            <include layout="@layout/shimmer_item_recyclerview_community_home_feed" />
 
-            <include layout="@layout/shimmer_item_recyclerview_community_home_feed"/>
+            <include layout="@layout/shimmer_item_recyclerview_community_home_feed" />
 
-            <include layout="@layout/shimmer_item_recyclerview_community_home_feed"/>
+            <include layout="@layout/shimmer_item_recyclerview_community_home_feed" />
 
-            <include layout="@layout/shimmer_item_recyclerview_community_home_feed"/>
+            <include layout="@layout/shimmer_item_recyclerview_community_home_feed" />
 
-            <include layout="@layout/shimmer_item_recyclerview_community_home_feed"/>
+            <include layout="@layout/shimmer_item_recyclerview_community_home_feed" />
 
         </LinearLayout>
     </com.facebook.shimmer.ShimmerFrameLayout>

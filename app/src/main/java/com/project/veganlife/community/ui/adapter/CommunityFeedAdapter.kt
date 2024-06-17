@@ -1,15 +1,23 @@
 package com.project.veganlife.community.ui.adapter
 
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
+import com.project.veganlife.R
 import com.project.veganlife.community.data.model.Feed
 import com.project.veganlife.databinding.ItemRecyclerviewCommunityHomeFeedBinding
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.util.Locale
 
-class FeedsAdapter : ListAdapter<Feed, FeedsAdapter.FeedsViewHolder>(diffUtil) {
+@RequiresApi(Build.VERSION_CODES.O)
+class CommunityFeedAdapter : PagingDataAdapter<Feed, CommunityFeedAdapter.FeedsViewHolder>(diffUtil) {
     inner class FeedsViewHolder(private val binding: ItemRecyclerviewCommunityHomeFeedBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Feed) {
@@ -17,12 +25,29 @@ class FeedsAdapter : ListAdapter<Feed, FeedsAdapter.FeedsViewHolder>(diffUtil) {
                 if (item.imageUrl != null) {
                     Glide.with(itemView)
                         .load(item.imageUrl)
+                        .apply(RequestOptions().error(R.drawable.all_spoon_fork_small))
+                        .fitCenter()
                         .into(ivCommunityhomefeed)
                 }
                 tvCommunityhomefeedTitle.text = item.title
-                tvCommunityhomefeedDatetime.text = item.content
-                tvCommunityhomefeedDatetime.text = item.createdAt
+                tvCommunityhomefeedDescription.text = item.content
+                tvCommunityhomefeedDatetime.text = parseDateTime(item.createdAt)
+
             }
+        }
+
+
+        private fun parseDateTime(input: String): String {
+            // 마이크로초 부분 제거 ('.' 이후 부분 제거)
+            val trimmedInput = input.substringBefore('.')
+
+            // 입력 문자열을 LocalDateTime으로 파싱 (마이크로초 제외)
+            val inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
+            val dateTime = LocalDateTime.parse(trimmedInput, inputFormatter)
+
+            // 원하는 형식으로 포맷 (한국어 로케일 설정)
+            val outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd a hh:mm", Locale("ko", "KR"))
+            return dateTime.format(outputFormatter)
         }
     }
 
@@ -43,7 +68,7 @@ class FeedsAdapter : ListAdapter<Feed, FeedsAdapter.FeedsViewHolder>(diffUtil) {
         holder: FeedsViewHolder,
         position: Int,
     ) {
-        holder.bind(currentList[position])
+        getItem(position)?.let { holder.bind(it) }
     }
 
     companion object {

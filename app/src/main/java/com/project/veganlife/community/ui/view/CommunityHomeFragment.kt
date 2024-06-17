@@ -1,26 +1,31 @@
 package com.project.veganlife.community.ui.view
 
 import android.animation.ObjectAnimator
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.annotation.RequiresApi
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.project.veganlife.R
-import com.project.veganlife.community.data.model.Feeds
-import com.project.veganlife.community.ui.adapter.FeedsAdapter
+import com.project.veganlife.community.ui.adapter.CommunityFeedAdapter
 import com.project.veganlife.community.ui.viewmodel.FeedsGetViewModel
-import com.project.veganlife.data.model.ApiResult
 import com.project.veganlife.databinding.FragmentCommunityHomeBinding
 import com.project.veganlife.utils.ui.DisplayUtils
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
+@RequiresApi(Build.VERSION_CODES.O)
 @AndroidEntryPoint
 class CommunityHomeFragment : Fragment() {
 
@@ -29,7 +34,7 @@ class CommunityHomeFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val feedsGetViewModel: FeedsGetViewModel by viewModels()
-    private lateinit var feedsAdapter: FeedsAdapter
+    private lateinit var communityFeedAdapter: CommunityFeedAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -41,70 +46,31 @@ class CommunityHomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //shimmer시작
+        feedsGetViewModel.getFeeds()
+
+        // Start shimmer animation
         binding.shimmerCommunityhomeFeed.startShimmer()
 
-        // scroll to top
-        binding.ibCommunityhomeGoToTop.setOnClickListener {
-            rvScrollToTop()
-        }
+        setupFeedList()
 
-        //scroll위치 리스너 -> 맨 위면 fab안보이도록
+        // Scroll to top
+        binding.ibCommunityhomeGoToTop.setOnClickListener { rvScrollToTop() }
+
+        // Scroll listener to hide FAB at top
         binding.rvCommunityhomeFeed.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-
                 val layoutManager = recyclerView.layoutManager as LinearLayoutManager
-                val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
-
-                if (firstVisibleItemPosition == 0) {
-                    binding.ibCommunityhomeGoToTop.visibility = View.GONE
-                } else {
-                    binding.ibCommunityhomeGoToTop.visibility = View.VISIBLE
-                }
+                binding.ibCommunityhomeGoToTop.visibility =
+                    if (layoutManager.findFirstVisibleItemPosition() == 0) View.GONE else View.VISIBLE
             }
         })
 
+        // Toggle write FAB buttons
+        binding.efabCommunityhomeWrite.setOnClickListener { toggleFabButtons() }
 
-        //피드 데이터 넣어주기
-        feedsGetViewModel.feeds.observe(viewLifecycleOwner) { apiResult ->
-            when (apiResult) {
-                is ApiResult.Error -> {
-                    val responseDesc = apiResult.description
-                    Log.d("daily Error", responseDesc)
-                }
-
-                is ApiResult.Exception -> {
-                    Log.d("daily Exception", apiResult.e.message ?: "No message available")
-                }
-
-                is ApiResult.Success -> {
-                    val feeds = apiResult.data
-
-                    binding.shimmerCommunityhomeFeed.stopShimmer()
-                    binding.shimmerCommunityhomeFeed.visibility = View.GONE
-                    //adapter에 it넣어주기
-                    setFeedsAdapter(feeds)
-                    //피드 게시글 여부에 따라 보여줄 화면 선택   
-                    setFeedView(feeds)
-                }
-            }
-
-
-        }
-
-        //글쓰기 버튼 누르면 피드/레시피 버튼 등장
-        binding.efabCommunityhomeWrite.setOnClickListener {
-
-            setRecipeButton()
-            setFeedButton()
-
-            fabOpen = !fabOpen
-
-        }
-
-        //태그 버튼에 따라 필터링
-        binding.radioGroupCommunityHomeTag.setOnCheckedChangeListener { radioGroup, i ->
+        // Tag button filter
+        binding.radioGroupCommunityHomeTag.setOnCheckedChangeListener { _, i ->
             when (i) {
                 R.id.btn_community_home_tag_all -> {
                     feedsGetViewModel.getFeeds()
@@ -123,27 +89,37 @@ class CommunityHomeFragment : Fragment() {
                 }
             }
         }
+
+        binding.toolbarCommunityhome.setOnMenuItemClickListener { item ->
+            when(item.itemId) {
+                R.id.community_notification -> {
+                    //todo: notification
+                    true
+                }
+                R.id.community_search -> {
+                    //todo: search동작
+                    true
+                }
+                else -> false
+            }
+        }
+
+
     }
 
-    private fun setFeedButton() {
-        if (!fabOpen) {
-            openButton(binding.efabCommunityhomeWriteFeed, 96f)
-        } else {
+    private fun toggleFabButtons() {
+        if (fabOpen) {
             closeButton(binding.efabCommunityhomeWriteFeed)
-        }
-    }
-
-    private fun setRecipeButton() {
-        if (!fabOpen) {
-            openButton(binding.efabCommunityhomeWriteRecipe, 52f)
-        } else {
             closeButton(binding.efabCommunityhomeWriteRecipe)
+        } else {
+            openButton(binding.efabCommunityhomeWriteFeed, 96f)
+            openButton(binding.efabCommunityhomeWriteRecipe, 52f)
         }
+        fabOpen = !fabOpen
     }
 
     private fun closeButton(button: Button) {
-        ObjectAnimator.ofFloat(button, "translationY", 0f)
-            .apply { start() }
+        ObjectAnimator.ofFloat(button, "translationY", 0f).apply { start() }
     }
 
     private fun openButton(button: Button, transitionY: Float) {
@@ -158,8 +134,9 @@ class CommunityHomeFragment : Fragment() {
         binding.rvCommunityhomeFeed.smoothScrollToPosition(0)
     }
 
-    private fun setFeedView(feeds: Feeds) {
-        if (feeds.content.isEmpty()) {
+    private fun setFeedView(adapter: CommunityFeedAdapter) {
+        Log.i("##INFO", "setFeedView: 도달")
+        if (adapter.itemCount == 0) {
             binding.linearLayoutNoContents.visibility = View.VISIBLE
             binding.rvCommunityhomeFeed.visibility = View.GONE
         } else {
@@ -168,16 +145,39 @@ class CommunityHomeFragment : Fragment() {
         }
     }
 
-    private fun setFeedsAdapter(feeds: Feeds) {
-        //새 어댑터로 교체해주기
-        feedsAdapter = FeedsAdapter()
-        binding.rvCommunityhomeFeed.adapter = feedsAdapter
-        feedsAdapter.submitList(feeds.content)
+    private fun setupFeedList() {
+
+        communityFeedAdapter = CommunityFeedAdapter()
+        binding.rvCommunityhomeFeed.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = communityFeedAdapter
+        }
+
+        communityFeedAdapter.addLoadStateListener {
+            if(it.append.endOfPaginationReached) {
+                binding.linearLayoutNoContents.isVisible = communityFeedAdapter.itemCount == 0
+            } else {
+                binding.linearLayoutNoContents.isVisible = false
+            }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+
+            feedsGetViewModel.feedList.collectLatest { pagingData ->
+                pagingData?.let { feedPagingData ->
+                    Log.i("##INFO", "observeFeeds: $pagingData")
+
+                    binding.shimmerCommunityhomeFeed.stopShimmer()
+                    binding.shimmerCommunityhomeFeed.visibility = View.GONE
+
+                    communityFeedAdapter.submitData(feedPagingData)
+                }
+            }
+        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
-
 }

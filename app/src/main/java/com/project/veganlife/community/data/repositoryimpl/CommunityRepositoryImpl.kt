@@ -1,29 +1,57 @@
 package com.project.veganlife.community.data.repositoryimpl
 
 import android.content.SharedPreferences
-import com.project.veganlife.community.data.model.Feeds
-import com.project.veganlife.community.data.remote.CommunityRemoteDataSource
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import com.project.veganlife.community.data.model.Feed
+import com.project.veganlife.community.data.remote.CommunityApi
+import com.project.veganlife.community.data.remote.CommunityFeedPagingSource
+import com.project.veganlife.community.data.remote.KeywordFilteredFeedPagingSource
 import com.project.veganlife.community.domain.repository.CommunityRepository
-import com.project.veganlife.data.model.ApiResult
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class CommunityRepositoryImpl @Inject constructor(
-    private val communityRemoteDataSource: CommunityRemoteDataSource,
+    private val communityApi: CommunityApi,
     private val sharedPreferences: SharedPreferences
 ) : CommunityRepository {
-
-    val accessToken = sharedPreferences.getString("ApiAccessToken", null) ?: ""
-
-    override suspend fun getFeeds(): ApiResult<Feeds> {
-        return communityRemoteDataSource.getFeeds(accessToken)
+    override suspend fun getFeeds(): Flow<PagingData<Feed>> {
+        return Pager(
+            config = PagingConfig(pageSize = 20, enablePlaceholders = false),
+            pagingSourceFactory = {
+                CommunityFeedPagingSource(
+                    communityApi,
+                    sharedPreferences
+                )
+            }
+        ).flow
     }
 
-    override suspend fun getFeedsByTag(tag: String): ApiResult<Feeds> {
-        return communityRemoteDataSource.searchFeedsByKeyword(accessToken, tag)
+    override suspend fun getFeedsByTag(tag: String): Flow<PagingData<Feed>> {
+        return Pager(
+            config = PagingConfig(pageSize = 20, enablePlaceholders = false),
+            pagingSourceFactory = {
+                KeywordFilteredFeedPagingSource(
+                    tag,
+                    communityApi,
+                    sharedPreferences
+                )
+            }
+        ).flow
     }
 
-    override suspend fun searchFeedsByKeyword(keyword: String): ApiResult<Feeds> {
-        return communityRemoteDataSource.searchFeedsByKeyword(accessToken, keyword)
+    override suspend fun searchFeedsByKeyword(keyword: String): Flow<PagingData<Feed>> {
+        return Pager(
+            config = PagingConfig(pageSize = 20, enablePlaceholders = false),
+            pagingSourceFactory = {
+                KeywordFilteredFeedPagingSource(
+                    keyword,
+                    communityApi,
+                    sharedPreferences
+                )
+            }
+        ).flow
     }
 
 }
