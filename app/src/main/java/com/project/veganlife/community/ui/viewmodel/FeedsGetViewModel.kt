@@ -1,12 +1,16 @@
 package com.project.veganlife.community.ui.viewmodel
 
-import android.content.SharedPreferences
-import androidx.lifecycle.MutableLiveData
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.project.veganlife.community.data.model.Feeds
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
+import com.project.veganlife.community.data.model.Feed
 import com.project.veganlife.community.data.repositoryimpl.CommunityRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -14,16 +18,36 @@ import javax.inject.Inject
 class FeedsGetViewModel @Inject constructor(
     private val communityRepositoryImpl: CommunityRepositoryImpl,
 ) : ViewModel() {
-    private val _feeds = MutableLiveData<Feeds>()
-    val feeds get() = _feeds
+    private val _feedList = MutableStateFlow<PagingData<Feed>?>(null)
+    val feedList: StateFlow<PagingData<Feed>?> get() = _feedList
 
-    init {
-        getFeeds()
-    }
-
-    private fun getFeeds() {
+    fun getFeeds() {
         viewModelScope.launch {
-            _feeds.value = communityRepositoryImpl.getFeeds()
+            try {
+                communityRepositoryImpl.getFeeds()
+                    .cachedIn(viewModelScope)
+                    .collectLatest { pagingData ->
+                        _feedList.value = pagingData
+                    }
+            } catch (e: Exception) {
+                Log.e("##ERROR", "getFeeds: paging error, ${e.message}")
+            }
+
         }
     }
+
+    fun getFeedsByTag(tag: String) {
+        viewModelScope.launch {
+            try {
+                communityRepositoryImpl.getFeedsByTag(tag)
+                    .cachedIn(viewModelScope)
+                    .collectLatest { pagingData ->
+                        _feedList.value = pagingData
+                    }
+            } catch (e: Exception) {
+                Log.e("##ERROR", "getFeeds: paging error, ${e.message}")
+            }
+        }
+    }
+
 }
