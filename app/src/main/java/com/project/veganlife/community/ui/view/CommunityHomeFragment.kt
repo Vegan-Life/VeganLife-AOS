@@ -1,19 +1,30 @@
 package com.project.veganlife.community.ui.view
 
 import android.animation.ObjectAnimator
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import androidx.annotation.RequiresApi
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.project.veganlife.community.ui.adapter.FeedsAdapter
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.project.veganlife.R
+import com.project.veganlife.community.ui.adapter.CommunityFeedAdapter
 import com.project.veganlife.community.ui.viewmodel.FeedsGetViewModel
 import com.project.veganlife.databinding.FragmentCommunityHomeBinding
 import com.project.veganlife.utils.ui.DisplayUtils
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
+@RequiresApi(Build.VERSION_CODES.O)
 @AndroidEntryPoint
 class CommunityHomeFragment : Fragment() {
 
@@ -22,67 +33,146 @@ class CommunityHomeFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val feedsGetViewModel: FeedsGetViewModel by viewModels()
-    private lateinit var feedsAdapter: FeedsAdapter
+    private lateinit var communityFeedAdapter: CommunityFeedAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentCommunityHomeBinding.inflate(inflater, container, false)
-        feedsAdapter = FeedsAdapter()
-        binding.rvCommunityhomeFeed.adapter = feedsAdapter
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // scroll to top
-        binding.ibCommunityhomeGoToTop.setOnClickListener {
-            binding.rvCommunityhomeFeed.smoothScrollToPosition(0)
+        feedsGetViewModel.getFeeds()
+
+        // Start shimmer animation
+//        binding.shimmerCommunityhomeFeed.startShimmer()
+
+        setupFeedList()
+
+        // Scroll to top
+        binding.ibCommunityhomeGoToTop.setOnClickListener { rvScrollToTop() }
+
+        // Scroll listener to hide FAB at top
+        binding.rvCommunityhomeFeed.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+                binding.ibCommunityhomeGoToTop.visibility =
+                    if (layoutManager.findFirstVisibleItemPosition() == 0) View.GONE else View.VISIBLE
+            }
+        })
+
+        // Toggle write FAB buttons
+        binding.efabCommunityhomeWrite.setOnClickListener { toggleFabButtons() }
+
+        // Tag button filter
+        binding.radioGroupCommunityHomeTag.setOnCheckedChangeListener { _, i ->
+            when (i) {
+                R.id.btn_community_home_tag_all -> {
+                    feedsGetViewModel.getFeeds()
+                }
+
+                R.id.btn_community_home_tag_worry -> {
+                    feedsGetViewModel.getFeedsByTag(resources.getString(R.string.community_tag_worry_txt))
+                }
+
+                R.id.btn_community_home_tag_together -> {
+                    feedsGetViewModel.getFeedsByTag(resources.getString(R.string.community_tag_together_txt))
+                }
+
+                R.id.btn_community_home_tag_recipe -> {
+                    feedsGetViewModel.getFeedsByTag(resources.getString(R.string.community_tag_recipe_txt))
+                }
+            }
         }
 
-        //피드 데이터 넣어주기
-        feedsGetViewModel.feeds.observe(viewLifecycleOwner) {
-            //adapter에 it넣어주기
-            feedsAdapter.submitList(it.content)
-            Log.d("community", it.content.toString())
+        binding.toolbarCommunityhome.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.community_notification -> {
+                    //todo: notification
+                    true
+                }
 
-            //피드 게시글 여부에 따라 보여줄 화면 선택
-            if (it.content.isEmpty()) {
-                binding.linearLayoutNoContents.visibility = View.VISIBLE
-                binding.rvCommunityhomeFeed.visibility = View.GONE
-            } else {
-                binding.linearLayoutNoContents.visibility = View.GONE
-                binding.rvCommunityhomeFeed.visibility = View.VISIBLE
+                R.id.community_search -> {
+                    //todo: search동작
+                    true
+                }
+
+                else -> false
             }
-
         }
 
-        //글쓰기 버튼 누르면 피드/레시피 버튼 등장
-        binding.efabCommunityhomeWrite.setOnClickListener {
 
-            //피드 - 레시피  -> 4dp
-            //레시피 - 글쓰기 -> 12dp
-            if (!fabOpen) {
-                ObjectAnimator.ofFloat(
-                    binding.efabCommunityhomeWriteRecipe,
-                    "translationY",
-                    -1 * DisplayUtils.dpToPx(requireContext(), 52f)
-                ).apply { start() }
-                ObjectAnimator.ofFloat(
-                    binding.efabCommunityhomeWriteFeed,
-                    "translationY",
-                    -1 * DisplayUtils.dpToPx(requireContext(), 96f)
-                ).apply { start() }
-            } else {
-                ObjectAnimator.ofFloat(binding.efabCommunityhomeWriteRecipe, "translationY", 0f)
-                    .apply { start() }
-                ObjectAnimator.ofFloat(binding.efabCommunityhomeWriteFeed, "translationY", 0f)
-                    .apply { start() }
+    }
+
+    private fun toggleFabButtons() {
+        if (fabOpen) {
+            closeButton(binding.efabCommunityhomeWriteFeed)
+            closeButton(binding.efabCommunityhomeWriteRecipe)
+        } else {
+            openButton(binding.efabCommunityhomeWriteFeed, 96f)
+            openButton(binding.efabCommunityhomeWriteRecipe, 52f)
+        }
+        fabOpen = !fabOpen
+    }
+
+    private fun closeButton(button: Button) {
+        ObjectAnimator.ofFloat(button, "translationY", 0f).apply { start() }
+    }
+
+    private fun openButton(button: Button, transitionY: Float) {
+        ObjectAnimator.ofFloat(
+            button,
+            "translationY",
+            -1 * DisplayUtils.dpToPx(requireContext(), transitionY)
+        ).apply { start() }
+    }
+
+    private fun rvScrollToTop() {
+        binding.rvCommunityhomeFeed.smoothScrollToPosition(0)
+    }
+
+    private fun setFeedView(adapter: CommunityFeedAdapter) {
+        Log.i("##INFO", "setFeedView: 도달")
+        if (adapter.itemCount == 0) {
+            binding.linearLayoutNoContents.visibility = View.VISIBLE
+            binding.rvCommunityhomeFeed.visibility = View.GONE
+        } else {
+            binding.linearLayoutNoContents.visibility = View.GONE
+            binding.rvCommunityhomeFeed.visibility = View.VISIBLE
+        }
+    }
+
+    private fun setupFeedList() {
+
+        setRecyclerViewAdapter()
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            feedsGetViewModel.feedList.collectLatest { pagingData ->
+                pagingData?.let { feedPagingData ->
+                    Log.i("##INFO", "observeFeeds: $pagingData")
+
+                    setRecyclerViewAdapter()
+
+                    communityFeedAdapter.submitData(feedPagingData)
+                }
             }
+        }
+    }
 
-            fabOpen = !fabOpen
+    private fun setRecyclerViewAdapter() {
+        communityFeedAdapter = CommunityFeedAdapter()
+        binding.rvCommunityhomeFeed.adapter = communityFeedAdapter
 
+        communityFeedAdapter.addLoadStateListener {
+            if (it.append.endOfPaginationReached) {
+                binding.linearLayoutNoContents.isVisible = communityFeedAdapter.itemCount == 0
+            } else {
+                binding.linearLayoutNoContents.isVisible = false
+            }
         }
     }
 
@@ -90,5 +180,4 @@ class CommunityHomeFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-
 }

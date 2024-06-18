@@ -20,8 +20,8 @@
         app:titleCentered="true"
         app:titleTextAppearance="@style/Bold.Body4" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_communityhome_popularity_tag"
+    <LinearLayout
+        android:id="@+id/linear_layout_communityhome_popularity_tag"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@color/gray1"
@@ -29,11 +29,98 @@
         android:paddingStart="24dp"
         android:paddingEnd="0dp"
         android:paddingBottom="12dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar_communityhome"
-        tools:listitem="@layout/item_recyclerview_community_home_popularity_tag" />
+        app:layout_constraintTop_toBottomOf="@id/toolbar_communityhome">
+
+        <RadioGroup
+            android:id="@+id/radio_group_community_home_tag"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:checkedButton="@id/btn_community_home_tag_all"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/btn_community_home_tag_all"
+                style="@style/Widget.AppCompat.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/selector_community_popularity_tag_background"
+                android:button="@null"
+                android:includeFontPadding="false"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="2dp"
+                android:stateListAnimator="@null"
+                android:text="@string/community_tag_all"
+                android:textAppearance="@style/Regular.Body5"
+                android:textColor="@color/selector_community_popularity_tag" />
+
+            <RadioButton
+                android:id="@+id/btn_community_home_tag_worry"
+                style="@style/Widget.AppCompat.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/selector_community_popularity_tag_background"
+                android:button="@null"
+                android:includeFontPadding="false"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="2dp"
+                android:stateListAnimator="@null"
+                android:text="@string/community_tag_worry"
+                android:textAppearance="@style/Regular.Body5"
+                android:textColor="@color/selector_community_popularity_tag" />
+
+            <RadioButton
+                android:id="@+id/btn_community_home_tag_together"
+                style="@style/Widget.AppCompat.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/selector_community_popularity_tag_background"
+                android:button="@null"
+                android:includeFontPadding="false"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="2dp"
+                android:stateListAnimator="@null"
+                android:text="@string/community_tag_together"
+                android:textAppearance="@style/Regular.Body5"
+                android:textColor="@color/selector_community_popularity_tag" />
+
+            <RadioButton
+                android:id="@+id/btn_community_home_tag_recipe"
+                style="@style/Widget.AppCompat.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/selector_community_popularity_tag_background"
+                android:button="@null"
+                android:includeFontPadding="false"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="2dp"
+                android:stateListAnimator="@null"
+                android:text="@string/community_tag_recipe"
+                android:textAppearance="@style/Regular.Body5"
+                android:textColor="@color/selector_community_popularity_tag" />
+        </RadioGroup>
+
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/linear_layout_no_contents"
@@ -41,11 +128,11 @@
         android:layout_height="0dp"
         android:gravity="center"
         android:orientation="vertical"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/rv_communityhome_popularity_tag">
-
+        app:layout_constraintTop_toBottomOf="@id/linear_layout_communityhome_popularity_tag">
 
         <ImageView
             android:id="@+id/imageView"
@@ -65,18 +152,50 @@
 
     </LinearLayout>
 
-
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_communityhome_feed"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
+        android:layout_height="0dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/rv_communityhome_popularity_tag"
+        app:layout_constraintTop_toBottomOf="@id/linear_layout_communityhome_popularity_tag"
         tools:listitem="@layout/item_recyclerview_community_home_feed" />
+
+    <!--<com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmer_communityhome_feed"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/linear_layout_communityhome_popularity_tag">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <include layout="@layout/shimmer_item_recyclerview_community_home_feed" />
+
+            <include layout="@layout/shimmer_item_recyclerview_community_home_feed" />
+
+            <include layout="@layout/shimmer_item_recyclerview_community_home_feed" />
+
+            <include layout="@layout/shimmer_item_recyclerview_community_home_feed" />
+
+            <include layout="@layout/shimmer_item_recyclerview_community_home_feed" />
+
+            <include layout="@layout/shimmer_item_recyclerview_community_home_feed" />
+
+            <include layout="@layout/shimmer_item_recyclerview_community_home_feed" />
+
+            <include layout="@layout/shimmer_item_recyclerview_community_home_feed" />
+
+        </LinearLayout>
+    </com.facebook.shimmer.ShimmerFrameLayout>-->
 
     <Button
         android:id="@+id/efab_communityhome_write_feed"
@@ -147,31 +266,5 @@
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
-
-    <ImageView
-        android:id="@+id/iv_communityhome_logo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/all_logo_gray"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/tv_communityhome_first_feed"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
-        android:includeFontPadding="false"
-        android:text="@string/community_new_feed"
-        android:textAlignment="center"
-        android:textAppearance="@style/Bold.Body4"
-        android:textColor="@color/gray3"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="@id/iv_communityhome_logo"
-        app:layout_constraintStart_toStartOf="@id/iv_communityhome_logo"
-        app:layout_constraintTop_toBottomOf="@id/iv_communityhome_logo" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
