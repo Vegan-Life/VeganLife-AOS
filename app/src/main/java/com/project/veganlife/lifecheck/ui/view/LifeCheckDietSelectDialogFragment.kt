@@ -43,12 +43,12 @@ class LifeCheckDietSelectDialogFragment : DialogFragment() {
             rgLifecheckDietSelectDialog.setOnCheckedChangeListener { _, i ->
                 val selectDietType =
                     when (i) {
-                        R.id.rb_lifecheck_diet_select_dialog_breakfast -> "breakfast"
-                        R.id.rb_lifecheck_diet_select_dialog_lunch -> "lunch"
-                        R.id.rb_lifecheck_diet_select_dialog_dinner -> "dinner"
-                        R.id.rb_lifecheck_diet_select_dialog_morning_snack -> "snack"
-                        R.id.rb_lifecheck_diet_select_dialog_afternoon_snack -> "snack"
-                        R.id.rb_lifecheck_diet_select_dialog_dinner_snack -> "snack"
+                        R.id.rb_lifecheck_diet_select_dialog_breakfast -> getString(R.string.lifecheck_morning)
+                        R.id.rb_lifecheck_diet_select_dialog_lunch -> getString(R.string.lifecheck_lunch)
+                        R.id.rb_lifecheck_diet_select_dialog_dinner -> getString(R.string.lifecheck_dinner)
+                        R.id.rb_lifecheck_diet_select_dialog_morning_snack -> getString(R.string.lifecheck_morning_snack)
+                        R.id.rb_lifecheck_diet_select_dialog_afternoon_snack -> getString(R.string.lifecheck_afternoon_snack)
+                        R.id.rb_lifecheck_diet_select_dialog_dinner_snack -> getString(R.string.lifecheck_dinner_snack)
                         else -> ""
                     }
                 viewModel.setSelectedDietType(selectDietType)
