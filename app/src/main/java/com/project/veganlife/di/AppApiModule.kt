@@ -3,6 +3,7 @@ package com.project.veganlife.di
 import com.project.veganlife.data.remote.DailyIntakeGetApi
 import com.project.veganlife.data.remote.ProfileInfoGetApi
 import com.project.veganlife.data.remote.RecommendedIntakeGetApi
+import com.project.veganlife.lifecheck.data.remote.LifeCheckMealDataApi
 import com.project.veganlife.lifecheck.data.remote.LifeCheckMonthlyCalorieGetApi
 import com.project.veganlife.lifecheck.data.remote.LifeCheckWeeklyCalorieGetApi
 import com.project.veganlife.lifecheck.data.remote.LifeCheckYearlyCalorieGetApi
@@ -67,5 +68,10 @@ class AppApiModule {
     @Provides
     fun provideLifeCheckYearlyCalorieGetApi(retrofit: Retrofit): LifeCheckYearlyCalorieGetApi {
         return retrofit.create(LifeCheckYearlyCalorieGetApi::class.java)
+    }
+
+    @Provides
+    fun provideLifeCheckMealDataApi(retrofit: Retrofit): LifeCheckMealDataApi {
+        return retrofit.create(LifeCheckMealDataApi::class.java)
     }
 }

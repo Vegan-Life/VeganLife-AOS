@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/gray1"
+    tools:context=".lifecheck.ui.view.LifeCheckDietSelectDialogFragment">
+
+    <TextView
+        android:id="@+id/tv_lifecheck_diet_select_dialog_diet_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:includeFontPadding="false"
+        android:text="@string/lifecheck_type_meal"
+        android:textAppearance="@style/Bold.Body4"
+        android:textColor="@color/base3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/btn_lifecheck_diet_select_dialog_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="24dp"
+        android:background="@color/gray1"
+        android:src="@drawable/lifecheck_close"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <RadioGroup
+        android:id="@+id/rg_lifecheck_diet_select_dialog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginBottom="8dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_lifecheck_diet_select_dialog_diet_type">
+
+        <RadioButton
+            android:id="@+id/rb_lifecheck_diet_select_dialog_breakfast"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:button="@null"
+            android:drawableStart="@drawable/selector_lifecheck_diet_select"
+            android:includeFontPadding="false"
+            android:text="@string/lifecheck_breakfast"
+            android:textAlignment="center"
+            android:textAppearance="@style/Medium.Body3"
+            android:textColor="@color/gray5" />
+
+        <RadioButton
+            android:id="@+id/rb_lifecheck_diet_select_dialog_lunch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:button="@null"
+            android:drawableStart="@drawable/selector_lifecheck_diet_select"
+            android:includeFontPadding="false"
+            android:text="@string/lifecheck_lunch"
+            android:textAlignment="center"
+            android:textAppearance="@style/Medium.Body3"
+            android:textColor="@color/gray5" />
+
+        <RadioButton
+            android:id="@+id/rb_lifecheck_diet_select_dialog_dinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:button="@null"
+            android:drawableStart="@drawable/selector_lifecheck_diet_select"
+            android:includeFontPadding="false"
+            android:text="@string/lifecheck_dinner"
+            android:textAlignment="center"
+            android:textAppearance="@style/Medium.Body3"
+            android:textColor="@color/gray5" />
+
+        <RadioButton
+            android:id="@+id/rb_lifecheck_diet_select_dialog_morning_snack"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:button="@null"
+            android:drawableStart="@drawable/selector_lifecheck_diet_select"
+            android:includeFontPadding="false"
+            android:text="@string/lifecheck_morning_snack"
+            android:textAlignment="center"
+            android:textAppearance="@style/Medium.Body3"
+            android:textColor="@color/gray5" />
+
+        <RadioButton
+            android:id="@+id/rb_lifecheck_diet_select_dialog_afternoon_snack"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:button="@null"
+            android:drawableStart="@drawable/selector_lifecheck_diet_select"
+            android:includeFontPadding="false"
+            android:text="@string/lifecheck_afternoon_snack"
+            android:textAlignment="center"
+            android:textAppearance="@style/Medium.Body3"
+            android:textColor="@color/gray5" />
+
+        <RadioButton
+            android:id="@+id/rb_lifecheck_diet_select_dialog_dinner_snack"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:button="@null"
+            android:drawableStart="@drawable/selector_lifecheck_diet_select"
+            android:includeFontPadding="false"
+            android:text="@string/lifecheck_dinner_snack"
+            android:textAlignment="center"
+            android:textAppearance="@style/Medium.Body3"
+            android:textColor="@color/gray5" />
+    </RadioGroup>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
