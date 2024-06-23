@@ -48,6 +48,7 @@ class LifeCheckHomeFragment : Fragment() {
         setupDateButtons()
         observeSelectedDate()
         observeDailyIntakeData()
+        setupDietAddButton()
     }
 
     private fun setupViewPager() {
@@ -590,6 +591,13 @@ class LifeCheckHomeFragment : Fragment() {
                 }
             }
             false
+        }
+    }
+
+    private fun setupDietAddButton() {
+        binding.btnLifecheckHomeDietAdd.setOnClickListener {
+            val dialog = LifeCheckDietSelectDialogFragment()
+            dialog.show(parentFragmentManager, "LifeCheckDietSelectDialogFragment")
         }
     }
 

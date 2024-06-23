@@ -107,6 +107,10 @@
     <string name="community_tag_worry">#고민있어요</string>
     <string name="community_tag_together">#챌린지 같이해요</string>
     <string name="community_tag_recipe">#채식레시피</string>
+    <string name="community_tag_all_txt">전체</string>
+    <string name="community_tag_worry_txt">고민있어요</string>
+    <string name="community_tag_together_txt">챌린지 같이해요</string>
+    <string name="community_tag_recipe_txt">채식레시피</string>
     <string name="community_new_feed">Vegan LIFE의\n첫 피드를 작성해주세요</string>
     <string name="community_button_write">글쓰기</string>
     <string name="community_button_write_feed">피드 작성</string>
