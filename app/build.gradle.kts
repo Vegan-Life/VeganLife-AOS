@@ -128,4 +128,8 @@ dependencies {
 
     // Paging 3
     implementation ("androidx.paging:paging-runtime:3.3.0")
+
+    // Aws
+    implementation ("com.amazonaws:aws-android-sdk-s3:2.22.5")
+    implementation ("com.amazonaws:aws-android-sdk-mobile-client:2.22.0")
 }
