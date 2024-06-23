@@ -9,17 +9,15 @@
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar_mypage_toolbar"
+        style="@style/ToolbarTheme"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@color/gray1"
-        android:includeFontPadding="false"
-        android:textAppearance="@style/Bold.Body4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:navigationIcon="@drawable/all_back"
-        app:title="@string/mypage_modify_information"
-        app:titleCentered="true" />
+        app:title="@string/mypage_modify_information" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -33,7 +31,7 @@
             android:layout_height="wrap_content"
             android:paddingBottom="120dp">
 
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/iv_mypage_profile"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
@@ -154,8 +152,8 @@
                 android:id="@+id/cl_mypage_vegan_type"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
                 android:layout_marginStart="24dp"
+                android:layout_marginTop="12dp"
                 android:layout_marginEnd="24dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -163,21 +161,22 @@
 
                 <include
                     android:id="@+id/vegan_type"
+                    layout="@layout/item_mypage_vegan_type"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    layout="@layout/item_mypage_vegan_type"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/lacto_type"
                     app:layout_constraintHorizontal_chainStyle="spread"
                     app:layout_constraintHorizontal_weight="1"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0" />
 
                 <include
                     android:id="@+id/lacto_type"
+                    layout="@layout/item_mypage_lacto_type"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    layout="@layout/item_mypage_lacto_type"
                     app:layout_constraintBottom_toBottomOf="@id/vegan_type"
                     app:layout_constraintEnd_toStartOf="@id/ovo_type"
                     app:layout_constraintHorizontal_chainStyle="spread"
@@ -187,9 +186,9 @@
 
                 <include
                     android:id="@+id/ovo_type"
+                    layout="@layout/item_mypage_ovo_type"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    layout="@layout/item_mypage_ovo_type"
                     app:layout_constraintBottom_toBottomOf="@id/lacto_type"
                     app:layout_constraintEnd_toStartOf="@id/lacto_ovo_type"
                     app:layout_constraintHorizontal_chainStyle="spread"
@@ -199,9 +198,9 @@
 
                 <include
                     android:id="@+id/lacto_ovo_type"
+                    layout="@layout/item_mypage_lacto_ovo_type"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    layout="@layout/item_mypage_lacto_ovo_type"
                     app:layout_constraintBottom_toBottomOf="@id/ovo_type"
                     app:layout_constraintEnd_toStartOf="@id/pesco_type"
                     app:layout_constraintHorizontal_chainStyle="spread"
@@ -211,9 +210,9 @@
 
                 <include
                     android:id="@+id/pesco_type"
+                    layout="@layout/item_mypage_pesco_type"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    layout="@layout/item_mypage_pesco_type"
                     app:layout_constraintBottom_toBottomOf="@id/lacto_ovo_type"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_chainStyle="spread"
@@ -374,6 +373,7 @@
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="8dp"
                 android:background="@drawable/signup_vegan_type"
+                android:clickable="false"
                 android:text="@string/all_female"
                 android:textAppearance="@style/Medium.Body3"
                 android:textColor="@color/gray3"
@@ -391,6 +391,7 @@
                 android:layout_marginStart="24dp"
                 android:layout_marginEnd="24dp"
                 android:background="@drawable/signup_vegan_type"
+                android:clickable="false"
                 android:text="@string/all_male"
                 android:textAppearance="@style/Medium.Body3"
                 android:textColor="@color/gray3"
@@ -400,20 +401,8 @@
                 app:layout_constraintStart_toEndOf="@id/btn_mypage_female"
                 app:layout_constraintTop_toTopOf="@id/btn_mypage_female" />
 
-            <TextView
-                android:id="@+id/tv_mypage_sex_error"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:includeFontPadding="false"
-                android:textAppearance="@style/Regular.Body5"
-                android:textColor="@color/no"
-                app:layout_constraintStart_toStartOf="@id/btn_mypage_female"
-                app:layout_constraintTop_toBottomOf="@id/btn_mypage_female"
-                tools:text="@string/all_sex_error" />
-
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_mypage_next"
+                android:id="@+id/btn_mypage_modify"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
