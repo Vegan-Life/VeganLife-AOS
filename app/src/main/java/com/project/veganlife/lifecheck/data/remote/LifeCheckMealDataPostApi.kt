@@ -11,5 +11,5 @@ interface LifeCheckMealDataPostApi {
     suspend fun registerMealData(
         @Header("Authorization") token: String?,
         @Body lifeCheckMealDataRequest: LifeCheckMealDataRequest
-    ): Response<LifeCheckMealDataRequest>?
+    ): Response<LifeCheckMealDataRequest?>
 }

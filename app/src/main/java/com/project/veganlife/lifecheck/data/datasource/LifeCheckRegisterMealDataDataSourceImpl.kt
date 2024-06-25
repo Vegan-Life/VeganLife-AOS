@@ -12,17 +12,25 @@ class LifeCheckRegisterMealDataDataSourceImpl @Inject constructor(
     private val mealDataPostApi: LifeCheckMealDataPostApi,
     private val token: SharedPreferences
 ) : LifeCheckRegisterMealDataDataSource {
-    override suspend fun registerMealData(mealData: LifeCheckMealDataRequest): ApiResult<LifeCheckMealDataRequest> {
+    override suspend fun registerMealData(mealData: LifeCheckMealDataRequest): ApiResult<LifeCheckMealDataRequest?> {
         val gson = GsonBuilder().create()
         return try {
             val response =
                 mealDataPostApi.registerMealData(token.getString("ApiAccessToken", null), mealData)
-            if (response?.isSuccessful == true) {
-                ApiResult.Success(response.body()!!)
+            if (response.isSuccessful) {
+                ApiResult.Success(null)
             } else {
-                val errorBodyString = response?.errorBody()?.string()
-                val conflictResponse = gson.fromJson(errorBodyString, ConflictResponse::class.java)
-                ApiResult.Error(conflictResponse.errorCode, conflictResponse.description)
+                val errorBodyString = response.errorBody()?.string()
+                if (errorBodyString != null) {
+                    val conflictResponse =
+                        gson.fromJson(errorBodyString, ConflictResponse::class.java)
+                    ApiResult.Error(
+                        conflictResponse?.errorCode ?: "UNKNOWN_ERROR",
+                        conflictResponse?.description ?: "Unknown error occurred."
+                    )
+                } else {
+                    ApiResult.Error("UNKNOWN_ERROR", "Unknown error occurred.")
+                }
             }
         } catch (e: Exception) {
             ApiResult.Exception(e)

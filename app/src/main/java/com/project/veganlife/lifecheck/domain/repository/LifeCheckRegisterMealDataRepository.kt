@@ -4,5 +4,5 @@ import com.project.veganlife.data.model.ApiResult
 import com.project.veganlife.lifecheck.data.model.LifeCheckMealDataRequest
 
 interface LifeCheckRegisterMealDataRepository {
-    suspend fun registerMealData(mealData: LifeCheckMealDataRequest): ApiResult<LifeCheckMealDataRequest>
+    suspend fun registerMealData(mealData: LifeCheckMealDataRequest): ApiResult<LifeCheckMealDataRequest?>
 }

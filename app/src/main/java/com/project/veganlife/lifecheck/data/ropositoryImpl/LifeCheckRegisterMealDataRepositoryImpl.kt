@@ -9,7 +9,7 @@ import javax.inject.Inject
 class LifeCheckRegisterMealDataRepositoryImpl @Inject constructor(
     private val datasource: LifeCheckRegisterMealDataDataSource
 ) : LifeCheckRegisterMealDataRepository {
-    override suspend fun registerMealData(mealData: LifeCheckMealDataRequest): ApiResult<LifeCheckMealDataRequest> {
+    override suspend fun registerMealData(mealData: LifeCheckMealDataRequest): ApiResult<LifeCheckMealDataRequest?> {
         return datasource.registerMealData(mealData)
     }
 }

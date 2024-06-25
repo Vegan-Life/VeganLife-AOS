@@ -79,8 +79,8 @@ class LifeCheckViewModel @Inject constructor(
     val mealData: StateFlow<PagingData<LifeCheckMealData>> = _mealData
 
     // 식품 데이터 등록
-    private val _mealDataRegister = MutableLiveData<ApiResult<LifeCheckMealDataRequest>>()
-    val mealDataRegister: LiveData<ApiResult<LifeCheckMealDataRequest>> = _mealDataRegister
+    private val _mealDataRegister = MutableLiveData<ApiResult<LifeCheckMealDataRequest?>>()
+    val mealDataRegister: LiveData<ApiResult<LifeCheckMealDataRequest?>> = _mealDataRegister
 
 
     // 일일 섭취량 조회

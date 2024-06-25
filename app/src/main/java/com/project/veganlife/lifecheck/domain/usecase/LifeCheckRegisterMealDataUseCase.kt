@@ -8,7 +8,7 @@ import javax.inject.Inject
 class LifeCheckRegisterMealDataUseCase @Inject constructor(
     private val repository: LifeCheckRegisterMealDataRepository
 ) {
-    suspend operator fun invoke(data: LifeCheckMealDataRequest): ApiResult<LifeCheckMealDataRequest> {
+    suspend operator fun invoke(data: LifeCheckMealDataRequest): ApiResult<LifeCheckMealDataRequest?> {
         return repository.registerMealData(data)
     }
 }
