@@ -75,9 +75,4 @@ class AppApiModule {
     fun provideLifeCheckMealDataApi(retrofit: Retrofit): LifeCheckMealDataApi {
         return retrofit.create(LifeCheckMealDataApi::class.java)
     }
-
-    @Provides
-    fun provideLifeCheckMealDataPostApi(retrofit: Retrofit): LifeCheckMealDataPostApi {
-        return retrofit.create(LifeCheckMealDataPostApi::class.java)
-    }
 }
