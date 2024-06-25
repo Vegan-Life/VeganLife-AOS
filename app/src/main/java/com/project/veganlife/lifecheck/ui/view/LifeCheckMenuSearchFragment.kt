@@ -12,6 +12,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.project.veganlife.R
 import com.project.veganlife.databinding.FragmentLifeCheckMenuSearchBinding
@@ -46,6 +47,7 @@ class LifeCheckMenuSearchFragment : Fragment() {
         observeViewModel()
         setupListener()
         searchAllMenu()
+        setupRegisterButton()
     }
 
     private fun setupToolbar() {
@@ -155,6 +157,12 @@ class LifeCheckMenuSearchFragment : Fragment() {
             "MEMBER"
         }
         viewModel.searchMealData(keyword, ownerType)
+    }
+
+    private fun setupRegisterButton() {
+        binding.tvLifecheckMenuSearchMenuInput.setOnClickListener {
+            findNavController().navigate(R.id.action_lifeCheckMenuSearchFragment_to_lifeCheckMenuAddFragment)
+        }
     }
 
     override fun onDestroy() {
