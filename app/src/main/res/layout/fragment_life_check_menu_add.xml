@@ -74,6 +74,7 @@
         android:background="@drawable/lifecheck_rect_gray1_gray3"
         android:hint="@string/all_total_capacity_hint"
         android:includeFontPadding="false"
+        android:inputType="numberDecimal"
         android:paddingVertical="8dp"
         android:paddingStart="16dp"
         android:textAppearance="@style/Medium.Body3"
