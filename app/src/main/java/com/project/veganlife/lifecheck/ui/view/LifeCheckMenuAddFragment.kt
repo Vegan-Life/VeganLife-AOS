@@ -47,23 +47,26 @@ class LifeCheckMenuAddFragment : Fragment() {
     }
 
     private fun observeMealDataRegister() {
-        viewModel.mealDataRegister.observe(viewLifecycleOwner) { result ->
-            when (result) {
-                is ApiResult.Success -> {
-                    // POST 요청 성공
-                    Toast.makeText(context, "성공적으로 등록되었습니다.", Toast.LENGTH_SHORT).show()
-                    findNavController().popBackStack()
-                }
+        viewModel.mealDataRegister.observe(viewLifecycleOwner) { event  ->
+            event.getContentIfNotHandled()?.let { result ->
+                when (result) {
+                    is ApiResult.Success -> {
+                        // POST 요청 성공
+                        Toast.makeText(context, "성공적으로 등록되었습니다.", Toast.LENGTH_SHORT).show()
+                        findNavController().popBackStack()
+                    }
 
-                is ApiResult.Error -> {
-                    // POST 요청 실패 (클라이언트 오류)
-                    Toast.makeText(context, "오류 발생: ${result.description}", Toast.LENGTH_SHORT)
-                        .show()
-                }
+                    is ApiResult.Error -> {
+                        // POST 요청 실패 (클라이언트 오류)
+                        Toast.makeText(context, "오류 발생: ${result.description}", Toast.LENGTH_SHORT)
+                            .show()
+                    }
 
-                is ApiResult.Exception -> {
-                    // 예외 발생
-                    Toast.makeText(context, "예외 발생: ${result.e.message}", Toast.LENGTH_SHORT).show()
+                    is ApiResult.Exception -> {
+                        // 예외 발생
+                        Toast.makeText(context, "예외 발생: ${result.e.message}", Toast.LENGTH_SHORT)
+                            .show()
+                    }
                 }
             }
         }
