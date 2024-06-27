@@ -19,6 +19,7 @@ import com.project.veganlife.lifecheck.domain.usecase.LifeCheckGetRecommendedInt
 import com.project.veganlife.lifecheck.domain.usecase.LifeCheckGetWeeklyCalorieUseCase
 import com.project.veganlife.lifecheck.domain.usecase.LifeCheckGetYearlyCalorieUseCase
 import com.project.veganlife.lifecheck.domain.usecase.LifeCheckRegisterMealDataUseCase
+import com.project.veganlife.lifecheck.util.EventWrapper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -79,8 +80,8 @@ class LifeCheckViewModel @Inject constructor(
     val mealData: StateFlow<PagingData<LifeCheckMealData>> = _mealData
 
     // 식품 데이터 등록
-    private val _mealDataRegister = MutableLiveData<ApiResult<LifeCheckMealDataRequest?>>()
-    val mealDataRegister: LiveData<ApiResult<LifeCheckMealDataRequest?>> = _mealDataRegister
+    private val _mealDataRegister = MutableLiveData<EventWrapper<ApiResult<LifeCheckMealDataRequest?>>>()
+    val mealDataRegister: LiveData<EventWrapper<ApiResult<LifeCheckMealDataRequest?>>> = _mealDataRegister
 
 
     // 일일 섭취량 조회
@@ -148,7 +149,7 @@ class LifeCheckViewModel @Inject constructor(
     // 식품 데이터 등록
     fun registerMealData(lifeCheckMealDataRequest: LifeCheckMealDataRequest) {
         viewModelScope.launch {
-            _mealDataRegister.value = lifeCheckRegisterMealDataUseCase(lifeCheckMealDataRequest)
+            _mealDataRegister.value = EventWrapper(lifeCheckRegisterMealDataUseCase(lifeCheckMealDataRequest))
         }
     }
 }
