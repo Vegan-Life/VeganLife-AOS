@@ -79,9 +79,9 @@
         </fragment>
         <fragment
             android:id="@+id/mypageModifyFramgnet"
-            android:name="com.project.veganlife.mypage.ui.view.MypageModifyFramgnet"
+            android:name="com.project.veganlife.mypage.ui.view.MypageModifyFragment"
             android:label="fragment_mypage_modify_framgnet"
-            tools:layout="@layout/fragment_mypage_modify_framgnet">
+            tools:layout="@layout/fragment_mypage_modify_fragment">
             <action
                 android:id="@+id/action_mypageModifyFramgnet_to_mypageHomeFragment"
                 app:destination="@id/mypageHomeFragment" />
