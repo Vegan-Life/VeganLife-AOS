@@ -6,23 +6,29 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferState
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.project.veganlife.R
+import com.project.veganlife.data.utils.BucketName
+import com.project.veganlife.data.utils.PROFILE_FOLDER_PATH
+import com.project.veganlife.data.utils.S3Util
 import com.project.veganlife.databinding.FragmentMypageModifyFramgnetBinding
 import com.project.veganlife.mypage.data.model.ProfileModifyRequest
 import com.project.veganlife.mypage.ui.viewmodel.MypageViewmodel
-import com.project.veganlife.utils.ui.VeganTypeChange
 import dagger.hilt.android.AndroidEntryPoint
+import java.io.File
+import java.lang.Exception
 
 @AndroidEntryPoint
 class MypageModifyFramgnet : Fragment() {
@@ -32,6 +38,8 @@ class MypageModifyFramgnet : Fragment() {
     private val mypageViewmodel: MypageViewmodel by activityViewModels()
 
     private val PICK_IMAGE_REQUEST = 1
+
+    private var file: File()
 
 
     override fun onCreateView(
@@ -70,7 +78,8 @@ class MypageModifyFramgnet : Fragment() {
             binding.apply {
                 profileInfoResponse.observe(viewLifecycleOwner) { profile ->
                     Glide.with(requireContext()).load(profile.imageUrl).apply(
-                        RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE))
+                        RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE)
+                    )
                         .into(ivMypageProfile)
 
                     tietMypageNickname.setText(profile.nickname)
@@ -112,18 +121,20 @@ class MypageModifyFramgnet : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null) {
             val imageUri: Uri? = data.data
-            if(imageUri != null) {
+            if (imageUri != null) {
                 val filePath = getRealPathFromURI(imageUri)
 
                 Glide.with(this)
                     .load(imageUri)
                     .into(binding.ivMypageProfile)
+                file = File(imageUri.path)
 
-                Log.d("modify",imageUri.toString())
-                Log.d("modify filePath",filePath.toString())
+                Log.d("modify", imageUri.toString())
+                Log.d("modify filePath", filePath.toString())
             }
         }
     }
+
     private fun getRealPathFromURI(uri: Uri): String? {
         var result: String? = null
         val proj = arrayOf(MediaStore.Images.Media.DATA)
@@ -367,6 +378,34 @@ class MypageModifyFramgnet : Fragment() {
         mypageViewmodel.apply {
             binding.apply {
                 btnMypageModify.setOnClickListener {
+                    //이미지 aws올리고
+                    //url받아와서
+                    //저 밑에 넣어주기
+                    S3Util.instance.uploadWithTransferUtility(
+                        requireContext(),
+                        BucketName,
+                        PROFILE_FOLDER_PATH,
+                        file,
+                        object : TransferListener {
+                            override fun onStateChanged(id: Int, state: TransferState?) {
+                                TODO("Not yet implemented")
+                            }
+
+                            override fun onProgressChanged(
+                                id: Int,
+                                bytesCurrent: Long,
+                                bytesTotal: Long
+                            ) {
+                                TODO("Not yet implemented")
+                            }
+
+                            override fun onError(id: Int, ex: Exception?) {
+                                TODO("Not yet implemented")
+                            }
+
+                        })
+
+
                     if (
                         isUserInfoStateCheck(
                             ProfileModifyRequest(
