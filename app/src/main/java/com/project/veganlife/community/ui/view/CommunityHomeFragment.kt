@@ -13,6 +13,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.project.veganlife.R
@@ -98,6 +99,8 @@ class CommunityHomeFragment : Fragment() {
 
                 R.id.community_search -> {
                     //todo: search동작
+                    //searchFragment로 이동하기
+                    findNavController().navigate(R.id.action_communityHomeFragment_to_communitySearchFragment)
                     true
                 }
 
