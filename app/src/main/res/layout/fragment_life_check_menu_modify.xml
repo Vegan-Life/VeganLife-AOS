@@ -9,16 +9,12 @@
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar_lifecheck_menu_modify"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@color/gray1"
+        style="@style/ToolbarTheme"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:navigationIcon="@drawable/all_back"
-        app:title="@string/lifecheck_menu_modify_toolbar_title"
-        app:titleCentered="true"
-        app:titleTextAppearance="@style/Bold.Body4" />
+        app:title="@string/lifecheck_menu_modify_toolbar_title" />
 
     <TextView
         android:id="@+id/tv_lifecheck_menu_modify_delete"
