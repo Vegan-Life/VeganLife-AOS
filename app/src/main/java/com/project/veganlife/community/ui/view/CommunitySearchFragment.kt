@@ -1,15 +1,19 @@
 package com.project.veganlife.community.ui.view
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.project.veganlife.R
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import com.project.veganlife.community.ui.viewmodel.RecentSearchesViewModel
 import com.project.veganlife.databinding.FragmentCommunitySearchBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class CommunitySearchFragment : Fragment() {
-    private lateinit var binding : FragmentCommunitySearchBinding
+    private lateinit var binding: FragmentCommunitySearchBinding
+    private val recentSearchesViewModel: RecentSearchesViewModel by viewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -36,7 +40,12 @@ class CommunitySearchFragment : Fragment() {
      * 최근 검색어
      */
     private fun setRecentSearchRV() {
+        recentSearchesViewModel.recentSearchList.observe(viewLifecycleOwner) {
+            val adapter = RecentSearchAdapter()
+            binding.rvCommunitySearchRecent.adapter = adapter
 
+            adapter.submitList(it)
+        }
     }
 
 }

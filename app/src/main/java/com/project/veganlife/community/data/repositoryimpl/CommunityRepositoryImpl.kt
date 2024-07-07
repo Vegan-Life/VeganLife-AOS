@@ -4,6 +4,7 @@ import android.content.SharedPreferences
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import com.project.veganlife.community.data.local.RecentSearchDataStoreManager
 import com.project.veganlife.community.data.model.Feed
 import com.project.veganlife.community.data.remote.CommunityApi
 import com.project.veganlife.community.data.remote.CommunityFeedPagingSource
@@ -14,7 +15,8 @@ import javax.inject.Inject
 
 class CommunityRepositoryImpl @Inject constructor(
     private val communityApi: CommunityApi,
-    private val sharedPreferences: SharedPreferences
+    private val sharedPreferences: SharedPreferences,
+    private val recentSearchDataStoreManager: RecentSearchDataStoreManager
 ) : CommunityRepository {
     override suspend fun getFeeds(): Flow<PagingData<Feed>> {
         return Pager(
@@ -52,6 +54,14 @@ class CommunityRepositoryImpl @Inject constructor(
                 )
             }
         ).flow
+    }
+
+    override suspend fun saveRecentSearches(recentSearches: List<String>) {
+        recentSearchDataStoreManager.saveRecentSearch(recentSearches)
+    }
+
+    override fun getRecentSearches(): Flow<List<String>> {
+        return recentSearchDataStoreManager.recentSearch
     }
 
 }

@@ -9,4 +9,8 @@ interface CommunityRepository {
     suspend fun getFeedsByTag(tag: String): Flow<PagingData<Feed>>
 
     suspend fun searchFeedsByKeyword(keyword: String): Flow<PagingData<Feed>>
+
+    suspend fun saveRecentSearches(recentSearches: List<String>)
+
+    fun getRecentSearches(): Flow<List<String>>
 }
