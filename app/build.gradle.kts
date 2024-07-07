@@ -128,4 +128,10 @@ dependencies {
 
     // Paging 3
     implementation ("androidx.paging:paging-runtime:3.3.0")
+
+    // Preferences Datastore
+    implementation ("androidx.datastore:datastore-preferences:1.1.1")
+
+    // GSON
+    implementation("com.google.code.gson:gson:2.11.0")
 }
