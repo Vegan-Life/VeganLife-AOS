@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/gray1">
+    android:background="@color/gray1"
+    android:paddingBottom="5dp">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar_community_search_toolbar"
@@ -45,18 +46,18 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="17dp"
         android:layout_marginEnd="24dp"
         android:src="@drawable/all_spoon_fork_small"
-        app:layout_constraintBottom_toBottomOf="@id/tv_community_search_toolbar_popularity_tag"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/tv_community_search_toolbar_popularity_tag" />
+        app:layout_constraintTop_toBottomOf="@id/et_community_search_toolbar_search_box" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_community_search_toolbar_popularity_tag"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="15dp"
         android:orientation="horizontal"
         android:paddingStart="24dp"
         android:paddingEnd="0dp"

@@ -1,5 +1,6 @@
 package com.project.veganlife.community.ui.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -24,6 +25,7 @@ class RecentSearchesViewModel @Inject constructor(
     }
 
     fun saveStringList(newSearch: String) {
+        Log.i("##INFO", "saveStringList: $newSearch")
         // 현재 값이 null인 경우 빈 리스트를 반환
         val currentList = recentSearchList.value ?: emptyList()
 
@@ -34,6 +36,8 @@ class RecentSearchesViewModel @Inject constructor(
 
         // 업데이트된 리스트로 StateFlow 값을 설정
         _recentSearchList.value = updatedList
+
+        Log.i("##INFO", "saveStringList: $updatedList")
 
         // UseCase를 호출하여 데이터를 저장
         viewModelScope.launch {
