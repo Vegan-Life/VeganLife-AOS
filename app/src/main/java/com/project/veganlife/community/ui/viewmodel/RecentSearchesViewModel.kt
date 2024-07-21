@@ -34,8 +34,8 @@ class RecentSearchesViewModel @Inject constructor(
             add(newSearch)
         }
 
-        // 업데이트된 리스트로 StateFlow 값을 설정
-        _recentSearchList.value = updatedList
+//        // 업데이트된 리스트로 StateFlow 값을 설정
+//        _recentSearchList.value = updatedList
 
         Log.i("##INFO", "saveStringList: $updatedList")
 
