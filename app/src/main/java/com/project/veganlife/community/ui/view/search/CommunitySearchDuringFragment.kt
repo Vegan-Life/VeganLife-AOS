@@ -18,7 +18,7 @@ class CommunitySearchDuringFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentCommunitySearchDuringBinding.inflate(layoutInflater)
         return binding.root
     }
@@ -32,8 +32,7 @@ class CommunitySearchDuringFragment : Fragment() {
      * 입력한 검색어와 연관 검색어
      */
     private fun setRelatedSearchRV(keyword: String) {
-        //todo: related 검색 결과 받아오고, 있다면 visible로 바꿔주기?
-        binding.rvCommunitySearchRelated.visibility = View.VISIBLE
+        //todo
 
     }
 

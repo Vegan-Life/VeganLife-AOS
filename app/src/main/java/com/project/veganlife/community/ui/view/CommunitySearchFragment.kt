@@ -18,6 +18,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.project.veganlife.R
 import com.project.veganlife.community.ui.view.search.CommunitySearchAfterFragment
+import com.project.veganlife.community.ui.view.search.CommunitySearchBeforeFragment
 import com.project.veganlife.community.ui.view.search.CommunitySearchDuringFragment
 import com.project.veganlife.community.ui.viewmodel.CommunitySearchViewModel
 import com.project.veganlife.community.ui.viewmodel.FeedsGetViewModel
@@ -73,10 +74,17 @@ class CommunitySearchFragment : Fragment() {
                 }
 
                 override fun onTextChanged(text: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                    if (communitySearchViewModel.pageStatus.value != PageStatus.DURING) {
 
+                    if (communitySearchViewModel.pageStatus.value != PageStatus.DURING) {
                         childFragmentManager.commit {
                             replace<CommunitySearchDuringFragment>(R.id.fragmentContainerView)
+                        }
+                        return
+                    }
+
+                    if(text.isNullOrEmpty()) {
+                        childFragmentManager.commit {
+                            replace<CommunitySearchBeforeFragment>(R.id.fragmentContainerView)
                         }
                     }
 
