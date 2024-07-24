@@ -46,11 +46,17 @@ class CommunitySearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setPopularTag()
+
         observePageStatus()
 
         setSearchEditText()
 
         setToolbarBackstack()
+    }
+
+    private fun setPopularTag() {
+
     }
 
     private fun observePageStatus() {

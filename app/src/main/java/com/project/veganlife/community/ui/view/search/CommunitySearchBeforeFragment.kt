@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import com.project.veganlife.community.ui.view.RecentSearchAdapter
+import com.project.veganlife.community.ui.adapter.RecentSearchAdapter
 import com.project.veganlife.community.ui.viewmodel.CommunitySearchViewModel
 import com.project.veganlife.community.ui.viewmodel.PageStatus
 import com.project.veganlife.community.ui.viewmodel.RecentSearchesViewModel

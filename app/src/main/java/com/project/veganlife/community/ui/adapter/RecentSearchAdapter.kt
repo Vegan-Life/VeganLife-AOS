@@ -1,4 +1,4 @@
-package com.project.veganlife.community.ui.view
+package com.project.veganlife.community.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

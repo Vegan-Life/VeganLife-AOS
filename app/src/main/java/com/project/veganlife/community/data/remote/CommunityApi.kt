@@ -1,6 +1,7 @@
 package com.project.veganlife.community.data.remote
 
 import com.project.veganlife.community.data.model.Feed
+import com.project.veganlife.community.data.model.PopularTagsResponse
 import com.project.veganlife.data.model.PagingResponse
 import retrofit2.Response
 import retrofit2.http.GET
@@ -24,4 +25,9 @@ interface CommunityApi {
         @Query("size") size: Int,
         @Query("sort") sort: String,
     ): Response<PagingResponse<Feed>>
+
+    @GET("posts/tags")
+    suspend fun getPopularTags(
+        @Header("Authorization") accessToken: String?
+    ): Response<PopularTagsResponse>
 }
