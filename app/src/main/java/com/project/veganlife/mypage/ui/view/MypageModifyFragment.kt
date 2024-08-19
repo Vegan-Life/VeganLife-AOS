@@ -5,7 +5,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,32 +12,39 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.project.veganlife.R
-import com.project.veganlife.databinding.FragmentMypageModifyFramgnetBinding
-import com.project.veganlife.mypage.data.model.ProfileModifyRequest
+import com.project.veganlife.data.model.ProfileResponse
+import com.project.veganlife.databinding.FragmentMypageModifyFragmentBinding
+import com.project.veganlife.data.model.ProfileRequestDTO
 import com.project.veganlife.mypage.ui.viewmodel.MypageViewmodel
-import com.project.veganlife.utils.ui.VeganTypeChange
+import com.project.veganlife.utils.PhotoUtils
+import com.project.veganlife.utils.PhotoUtils.Companion.createImageMultipart
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
-class MypageModifyFramgnet : Fragment() {
-    private var _binding: FragmentMypageModifyFramgnetBinding? = null
+class MypageModifyFragment : Fragment() {
+    private var _binding: FragmentMypageModifyFragmentBinding? = null
     private val binding get() = _binding!!
 
     private val mypageViewmodel: MypageViewmodel by activityViewModels()
 
     private val PICK_IMAGE_REQUEST = 1
 
+    val requestOptions = RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentMypageModifyFramgnetBinding.inflate(inflater, container, false)
+        _binding = FragmentMypageModifyFragmentBinding.inflate(inflater, container, false)
 
         return binding.root
     }
@@ -55,6 +61,8 @@ class MypageModifyFramgnet : Fragment() {
         setUserInfoUi()
 
         selectVeganType()
+
+        modifyUserInfo()
     }
 
     private fun setToolbarListener() {
@@ -67,30 +75,8 @@ class MypageModifyFramgnet : Fragment() {
 
     private fun setUserInfoUi() {
         mypageViewmodel.apply {
-            binding.apply {
-                profileInfoResponse.observe(viewLifecycleOwner) { profile ->
-                    Glide.with(requireContext()).load(profile.imageUrl).apply(
-                        RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE))
-                        .into(ivMypageProfile)
-
-                    tietMypageNickname.setText(profile.nickname)
-                    tietMypageNickname.isEnabled = true
-
-                    tietMypageId.setText(profile.email)
-                    tietMypageId.isEnabled = false
-
-                    tietMypageHeight.setText(profile.height.toString())
-                    tietMypageWeight.isEnabled = true
-
-                    tietMypageWeight.setText(profile.weight.toString())
-                    tietMypageWeight.isEnabled = true
-
-                    tietMypageAge.setText(profile.birthYear.toString())
-                    tietMypageAge.isEnabled = false
-
-                    setVeganTypeUi(profile.vegetarianType)
-                    setGenderUi(profile.gender)
-                }
+            profileInfoResponse.observe(viewLifecycleOwner) { profile ->
+                updateUIWithProfile(profile)
             }
         }
     }
@@ -112,30 +98,36 @@ class MypageModifyFramgnet : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null) {
             val imageUri: Uri? = data.data
-            if(imageUri != null) {
-                val filePath = getRealPathFromURI(imageUri)
+            if (imageUri != null) {
+
+                if (PhotoUtils.getFileExtension(imageUri, requireContext())
+                        .equals("webp", ignoreCase = true)
+                ) {
+                    makeToast("지원하지 않는 이미지 형식입니다.")
+                    return
+                }
 
                 Glide.with(this)
                     .load(imageUri)
+                    .apply(requestOptions)
                     .into(binding.ivMypageProfile)
 
-                Log.d("modify",imageUri.toString())
-                Log.d("modify filePath",filePath.toString())
+                lifecycleScope.launch {
+                    if (context != null) {
+                        val imageMultipart = withContext(Dispatchers.IO) {
+                            // 1. 최적화된 비트맵을 임시 파일로 저장
+                            val imagePath = PhotoUtils.optimizeBitmap(requireContext(), imageUri)
+                            // 2. 임시 파일 경로를 사용해 MultipartBody.Part로 변환
+                            createImageMultipart(imagePath)
+                        }
+
+                        if (imageMultipart != null) {
+                            mypageViewmodel.putProfilePhotoMultipart(imageMultipart)
+                        }
+                    }
+                }
             }
         }
-    }
-    private fun getRealPathFromURI(uri: Uri): String? {
-        var result: String? = null
-        val proj = arrayOf(MediaStore.Images.Media.DATA)
-        val cursor = activity?.contentResolver?.query(uri, proj, null, null, null)
-        if (cursor != null) {
-            if (cursor.moveToFirst()) {
-                val column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
-                result = cursor.getString(column_index)
-            }
-            cursor.close()
-        }
-        return result
     }
 
     private fun setVeganTypeUi(Type: String) {
@@ -337,27 +329,22 @@ class MypageModifyFramgnet : Fragment() {
             binding.apply {
                 veganType.clVeganTypeLayout.setOnClickListener {
                     setVeganTypeUi("VEGAN")
-                    setVeganType("VEGAN")
                 }
 
                 lactoType.clLactoLayout.setOnClickListener {
                     setVeganTypeUi("LACTO")
-                    setVeganType("LACTO")
                 }
 
                 ovoType.clOvoLayout.setOnClickListener {
                     setVeganTypeUi("OVO")
-                    setVeganType("OVO")
                 }
 
                 lactoOvoType.clLactoOvoLayout.setOnClickListener {
                     setVeganTypeUi("LACTO_OVO")
-                    setVeganType("LACTO_OVO")
                 }
 
                 pescoType.clPescoLayout.setOnClickListener {
                     setVeganTypeUi("PESCO")
-                    setVeganType("PESCO")
                 }
             }
         }
@@ -367,26 +354,70 @@ class MypageModifyFramgnet : Fragment() {
         mypageViewmodel.apply {
             binding.apply {
                 btnMypageModify.setOnClickListener {
-                    if (
-                        isUserInfoStateCheck(
-                            ProfileModifyRequest(
-                                nickname = tietMypageNickname.text.toString(),
-                                imageUrl = "",
-                                vegetarianType = vegetarianType.value.toString(),
-                                gender = profileInfoResponse.value!!.gender,
-                                birthYear = tietMypageAge.text.toString().toInt(),
-                                height = tietMypageHeight.text.toString().toInt(),
-                                weight = tietMypageWeight.text.toString().toInt()
-                            )
-                        )
-                    ) {
+                    val profileDTO = ProfileRequestDTO(
+                        nickname = tietMypageNickname.text.toString(),
+                        vegetarianType = profileInfoResponse.value!!.vegetarianType,
+                        gender = profileInfoResponse.value!!.gender,
+                        birthYear = tietMypageAge.text.toString().toInt(),
+                        height = tietMypageHeight.text.toString().toInt(),
+                        weight = tietMypageWeight.text.toString().toInt()
+                    )
 
-                    } else {
-                        Toast.makeText(requireContext(), "모든 정보를 올바르게 입력해주세요", Toast.LENGTH_SHORT)
-                            .show()
+                    lifecycleScope.launch {
+
+                        if (isUserInfoStateCheck(profileDTO)) {
+                            val profileRequestBody = withContext(Dispatchers.IO) {
+                                PhotoUtils.createProfileRequestBody(profileDTO)
+                            }
+                            putProfileRequestBody(profileRequestBody)
+                            getProfileModifyInfo()
+                        } else {
+                            makeToast("모든 정보를 올바르게 입력해주세요")
+                        }
+
+                        responseCode.observe(viewLifecycleOwner) { response ->
+                            if (response != null) handleSignupResponse(response)
+                        }
                     }
                 }
             }
+        }
+    }
+
+    private fun updateUIWithProfile(profile: ProfileResponse) {
+        binding.apply {
+            Glide.with(requireContext())
+                .load(profile.imageUrl)
+                .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE))
+                .into(ivMypageProfile)
+
+            tietMypageNickname.setText(profile.nickname)
+            tietMypageId.setText(profile.email)
+            tietMypageHeight.setText(profile.height.toString())
+            tietMypageWeight.setText(profile.weight.toString())
+            tietMypageAge.setText(profile.birthYear.toString())
+
+            setVeganTypeUi(profile.vegetarianType)
+            setGenderUi(profile.gender)
+        }
+    }
+
+    private fun handleSignupResponse(responseCode: String) {
+        when (responseCode) {
+            "200" -> {
+                findNavController().navigate(R.id.action_mypageModifyFragment_to_mypageHomeFragment)
+                makeToast("정보가 수정되었습니다.")
+            }
+
+            "409" -> {
+                makeToast("중복된 닉네임입니다.")
+            }
+        }
+    }
+
+    private fun makeToast(message: String) {
+        if (message.isNotEmpty()) {
+            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
         }
     }
 
