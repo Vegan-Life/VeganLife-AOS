@@ -1,8 +1,7 @@
-package com.project.veganlife.mypage.data.model
+package com.project.veganlife.data.model
 
-data class ProfileModifyRequest(
+data class ProfileRequestDTO(
     val nickname: String,
-    val imageUrl: String,
     val vegetarianType: String,
     val gender: String,
     val birthYear: Int,
