@@ -12,13 +12,11 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@color/gray1"
-        android:includeFontPadding="false"
-        android:textAppearance="@style/Bold.Body4"
+        style="@style/ToolbarTheme"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:title="@string/mypage_toolbar_title"
-        app:titleCentered="true" />
+        app:title="@string/mypage_toolbar_title" />
 
     <ScrollView
         android:layout_width="0dp"

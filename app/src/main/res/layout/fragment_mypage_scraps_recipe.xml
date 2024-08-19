@@ -4,40 +4,29 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/gray1"
+    android:background="@color/gray2"
     tools:context=".mypage.ui.view.MypageScrapsRecipeFragment">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar_mypage_toolbar"
+        style="@style/ToolbarTheme"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@color/gray1"
-        android:includeFontPadding="false"
-        android:textAppearance="@style/Bold.Body4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:navigationIcon="@drawable/all_back"
-        app:title="@string/mypage_picked_recipe_list"
-        app:titleCentered="true" />
+        app:title="@string/mypage_picked_recipe_list" />
 
-    <LinearLayout
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_mypage_recipe"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="12dp"
-        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar_mypage_toolbar">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_mypage_recipe"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbar_mypage_toolbar"
-            tools:listitem="@layout/item_recyclerview_recipe_list" />
-
-    </LinearLayout>
+        app:layout_constraintTop_toBottomOf="@id/toolbar_mypage_toolbar"
+        tools:listitem="@layout/item_recyclerview_recipe_list" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
