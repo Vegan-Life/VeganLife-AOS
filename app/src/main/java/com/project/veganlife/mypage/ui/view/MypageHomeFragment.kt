@@ -50,7 +50,7 @@ class MypageHomeFragment : Fragment() {
     private fun moveToFragment() {
         binding.apply {
             btnMypageModifyInfo.setOnClickListener {
-                findNavController().navigate(R.id.action_mypageHomeFragment_to_mypageModifyFramgnet)
+                findNavController().navigate(R.id.action_mypageHomeFragment_to_mypageModifyFragment)
             }
 
             btnMypageWroteFeed.setOnClickListener {
