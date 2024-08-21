@@ -14,7 +14,9 @@ import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.project.veganlife.MainActivity
 import com.project.veganlife.R
+import com.project.veganlife.databinding.ActivityMainBinding
 import com.project.veganlife.databinding.DialogMypageLogoutBinding
 import com.project.veganlife.databinding.DialogMypageWithdrawalBinding
 import com.project.veganlife.mypage.ui.viewmodel.MypageLogoutWithdrawalViewmodel
@@ -27,6 +29,8 @@ class MypageCustomDialogFragment(val type: String) : DialogFragment() {
 
     private var _withdrawalBinding: DialogMypageWithdrawalBinding? = null
     private val withdrawalBinding get() = _withdrawalBinding!!
+
+    private lateinit var activityBinding: ActivityMainBinding
 
     private val viewModel: MypageLogoutWithdrawalViewmodel by viewModels()
 
@@ -64,7 +68,9 @@ class MypageCustomDialogFragment(val type: String) : DialogFragment() {
                     btnMypageConfirm.setOnClickListener {
                         viewModel.doUserLogout()
                         dismiss()
+                        bottomNavigationInitialization()
                         findNavController().navigate(R.id.action_mypageHomeFragment_to_loginFragment)
+
                     }
                 }
             }
@@ -81,6 +87,7 @@ class MypageCustomDialogFragment(val type: String) : DialogFragment() {
                     btnMypageConfirm.setOnClickListener {
                         viewModel.deleteWithDrawal()
                         dismiss()
+                        bottomNavigationInitialization()
                         findNavController().navigate(R.id.action_mypageHomeFragment_to_mypageCompletedWithdrawalFragment)
                     }
                 }
@@ -120,5 +127,13 @@ class MypageCustomDialogFragment(val type: String) : DialogFragment() {
             "로그아웃" -> _logoutBinding = null
             else -> _withdrawalBinding = null
         }
+    }
+
+    fun bottomNavigationInitialization() {
+        // MainActivity의 resetBottomNavigationToHome 메서드를 호출합니다.
+        (activity as? MainActivity)?.resetBottomNavigationToHome()
+
+        // 로그인 프래그먼트로 이동합니다.
+        findNavController().popBackStack() // 백스택을 비워줍니다.
     }
 }

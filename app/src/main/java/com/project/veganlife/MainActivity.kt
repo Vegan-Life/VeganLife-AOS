@@ -162,4 +162,9 @@ class MainActivity : AppCompatActivity() {
 
         onBackPressedDispatcher.addCallback(this, callback)
     }
+
+    fun resetBottomNavigationToHome() {
+        activityMainBinding.bnvMainNavigation.selectedItemId = R.id.homeFragment
+    }
+
 }
