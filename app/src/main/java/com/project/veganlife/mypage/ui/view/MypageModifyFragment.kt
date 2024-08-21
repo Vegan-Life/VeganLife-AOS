@@ -386,10 +386,15 @@ class MypageModifyFragment : Fragment() {
 
     private fun updateUIWithProfile(profile: ProfileResponse) {
         binding.apply {
-            Glide.with(requireContext())
-                .load(profile.imageUrl)
-                .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE))
-                .into(ivMypageProfile)
+            if(profile.imageUrl != null) {
+                Glide.with(requireContext())
+                    .load(profile.imageUrl)
+                    .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE))
+                    .into(ivMypageProfile)
+            } else {
+                ivMypageProfile.setBackgroundResource(R.drawable.all_profile_basic)
+            }
+
 
             tietMypageNickname.setText(profile.nickname)
             tietMypageId.setText(profile.email)
