@@ -26,6 +26,7 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 class AppApiModule {
     @Provides
+    @Singleton
     fun provideSignupApi(retrofit: Retrofit): SignupApi {
         return retrofit.create(SignupApi::class.java)
     }

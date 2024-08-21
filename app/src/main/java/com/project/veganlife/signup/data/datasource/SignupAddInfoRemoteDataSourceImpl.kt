@@ -1,11 +1,12 @@
 package com.project.veganlife.signup.data.datasource
 
 import android.content.SharedPreferences
-import android.util.Log
-import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+import com.project.veganlife.data.model.ApiResult
 import com.project.veganlife.data.model.ConflictResponse
-import com.project.veganlife.signup.data.model.SignupRequest
+import com.project.veganlife.data.model.ProfileResponse
 import com.project.veganlife.signup.data.remote.SignupApi
+import okhttp3.RequestBody
 import java.lang.Exception
 import javax.inject.Inject
 
@@ -13,24 +14,35 @@ class SignupAddInfoRemoteDataSourceImpl @Inject constructor(
     private val signupApi: SignupApi,
     private val accessToken: SharedPreferences,
 ) : SignupAddInfoRemoteDataSource {
-    override suspend fun setSignup(signupRequest: SignupRequest): String? {
-        try {
-            val signupGetResponse = signupApi.getInformation(
-                accessToken.getString("ApiAccessToken",null),
-                signupRequest,
-            )
-            return if (signupGetResponse.code() == 200) {
-                Log.d("SignupGetSuccess", signupGetResponse.code().toString())
-                signupGetResponse.body()?.let { Log.d("SignupGetSuccess body", it.nickname) }
-                signupGetResponse.body()?.nickname
-            } else {
-                val errorBody = signupGetResponse.errorBody()?.string()
-                val conflictResponse = Gson().fromJson(errorBody, ConflictResponse::class.java)
-                conflictResponse.description
+    override suspend fun signupAddInfo(
+        signupRequestDTO: RequestBody
+    ): ApiResult<ProfileResponse> {
+        val gson = GsonBuilder().create()
+
+        return try {
+            val token = accessToken.getString("ApiAccessToken", null)
+
+            if (token == null) {
+                return ApiResult.Error("signupDataSourceImpl", "AccessToken Null")
             }
+
+            val profileInfoGetResponse = signupApi.signupAddInfo(
+                token,
+                signupRequestDTO
+            )
+
+            if (profileInfoGetResponse.isSuccessful) {
+                val responseBody = profileInfoGetResponse.body()!!
+                ApiResult.Success(responseBody)
+            } else {
+                val errorBodyString = profileInfoGetResponse.errorBody()?.string()
+                val conflictResponse =
+                    gson.fromJson(errorBodyString, ConflictResponse::class.java)
+                ApiResult.Error(conflictResponse.errorCode, conflictResponse.description)
+            }
+
         } catch (e: Exception) {
-            Log.e("SignupGetException", e.toString())
-            return null
+            ApiResult.Exception(e)
         }
     }
 }
