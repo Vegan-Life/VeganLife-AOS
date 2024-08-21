@@ -1,13 +1,17 @@
 package com.project.veganlife.signup.ui.viewmodel
 
 import android.content.SharedPreferences
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.project.veganlife.R
-import com.project.veganlife.signup.data.model.SignupRequest
+import com.project.veganlife.data.model.ApiResult
+import com.project.veganlife.data.model.ProfileRequestDTO
+import com.project.veganlife.data.model.ProfileResponse
 import com.project.veganlife.signup.domain.SignupAddInfoUsecase
+import com.project.veganlife.utils.PhotoUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -20,7 +24,7 @@ class SignupAddInfoViewModel @Inject constructor(
     // 닉네임
     private val _nickname = MutableLiveData<String>()
     val nickname: LiveData<String> get() = _nickname
-    private val NICKNAME_PATTERN = "[가-힣]{2,10}".toRegex()
+    private val NICKNAME_PATTERN = "[가-힣a-zA-Z]{2,10}".toRegex()
 
     // 성별
     private val _isMaleSelected = MutableLiveData<Boolean>()
@@ -60,12 +64,12 @@ class SignupAddInfoViewModel @Inject constructor(
     val weight: LiveData<Int> get() = _weight
 
     // 추가 정보 입력
-    private val _signupRespone = MutableLiveData<String?>()
-    val signupRespone: LiveData<String?> get() = _signupRespone
+    private val _signupRespone = MutableLiveData<ProfileResponse>()
+    val signupRespone: LiveData<ProfileResponse> get() = _signupRespone
 
-    // 에러 메세지
-    private val _responeMessage = MutableLiveData<String?>()
-    val responeMessage: LiveData<String?> get() = _responeMessage
+    // 결과 상태
+    private val _response = MutableLiveData<String>()
+    val response: LiveData<String> get() = _response
 
     // 모든 상태 체크
     private val _allStateCheck = MutableLiveData<Boolean>()
@@ -164,8 +168,8 @@ class SignupAddInfoViewModel @Inject constructor(
         _weight.value = weight
     }
 
-    fun setSignupResponse(response: String) {
-        _signupRespone.value = response
+    fun setSignupResponse(nickname: String) {
+        _nickname.value = nickname
     }
 
     fun isAllStateValid() {
@@ -185,7 +189,7 @@ class SignupAddInfoViewModel @Inject constructor(
             val gender =
                 if (isMaleSelected.value == true) "M" else if (isFemaleSelected.value == true) "F" else ""
 
-            val signupRequest = SignupRequest(
+            val signupRequest = ProfileRequestDTO(
                 nickname = nickname.value ?: "",
                 gender = gender,
                 vegetarianType = vegetarianType,
@@ -194,18 +198,35 @@ class SignupAddInfoViewModel @Inject constructor(
                 weight = weight.value ?: 0
             )
             viewModelScope.launch {
-                _signupRespone.value = signupAddInfoUsecase(signupRequest)
+                val requestDTO = PhotoUtils.createProfileRequestBody(signupRequest)
+                val response = signupAddInfoUsecase(requestDTO)
+
+                when (response) {
+                    is ApiResult.Error -> {
+                        val responseDescription = response.description
+                        Log.d("get User Info Error", responseDescription)
+                    }
+
+                    is ApiResult.Exception -> {
+                        Log.d(
+                            "SignupAddInfo Exception",
+                            response.e.message ?: "No message available"
+                        )
+                    }
+
+                    is ApiResult.Success -> {
+                        _signupRespone.value = response.data
+                        setSaveNickname(response.data.nickname)
+                    }
+                }
             }
         } else {
-            _signupRespone.value = "모든 정보를 올바르게 입력해주세요"
-        }
-
-        if(signupRespone.value == nickname.value) {
-            setSaveNickname(signupRespone.value)
+            _response.value = "모든 정보를 올바르게 입력해주세요"
         }
     }
 
-    fun setSaveNickname(message: String?) {
+    fun setSaveNickname(message: String) {
+        _response.value = message
         sharedPreferences.edit().putString("Nickname", message).apply()
     }
 
