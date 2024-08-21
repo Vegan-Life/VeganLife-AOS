@@ -94,8 +94,12 @@ class MypageHomeFragment : Fragment() {
                 profileInfoResponse.observe(viewLifecycleOwner) { profile ->
                     tvMypageNickname.text = profile.nickname
                     tvMypageEmail.text = profile.email
-                    Glide.with(requireContext()).load(profile.imageUrl).apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE))
-                        .into(ivMypageProfile)
+                    if(profile.imageUrl != null) {
+                        Glide.with(requireContext()).load(profile.imageUrl).apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE))
+                            .into(ivMypageProfile)
+                    } else {
+                        Glide.with(requireContext()).load(R.drawable.all_profile_basic).into(ivMypageProfile)
+                    }
                 }
             }
         }
