@@ -1,4 +1,4 @@
-package com.project.veganlife.data.datasource
+package com.project.veganlife.mypage.data.datasource
 
 import android.content.SharedPreferences
 import com.google.gson.GsonBuilder
@@ -11,11 +11,11 @@ import okhttp3.RequestBody
 import java.lang.Exception
 import javax.inject.Inject
 
-class Profile_Add_ModifyDataSourceImpl @Inject constructor(
+class ProfileModifyDataSourceImpl @Inject constructor(
     private val profileaddModifyapi: ProfileAdd_ModifyApi,
     private val accessToken: SharedPreferences,
-) : Profile_Add_ModifyDataSource {
-    override suspend fun add_modifyProfile(
+) : ProfileModifyDataSource {
+    override suspend fun modifyProfile(
         profileRequestDTO: RequestBody,
         profilePhotoMultipart: MultipartBody.Part
     ): ApiResult<ProfileResponse> {
