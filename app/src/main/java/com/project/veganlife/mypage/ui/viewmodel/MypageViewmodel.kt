@@ -9,7 +9,7 @@ import com.project.veganlife.data.model.ApiResult
 import com.project.veganlife.data.model.ProfileResponse
 import com.project.veganlife.domain.usecase.ProfileGetUsecase
 import com.project.veganlife.data.model.ProfileRequestDTO
-import com.project.veganlife.domain.usecase.ProfileAdd_ModifyUsecase
+import com.project.veganlife.mypage.domain.usecase.ProfileModifyUsecase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
@@ -19,7 +19,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MypageViewmodel @Inject constructor(
     private val profileGetUsecase: ProfileGetUsecase,
-    private val profileModifyUsecase: ProfileAdd_ModifyUsecase,
+    private val profileModifyUsecase: ProfileModifyUsecase,
 ) : ViewModel() {
     // 유저 정보 api Response
     private val _profileInfoResponse = MutableLiveData<ProfileResponse>()
@@ -91,7 +91,7 @@ class MypageViewmodel @Inject constructor(
 
                 is ApiResult.Exception -> {
                     Log.d(
-                        "recommended Exception",
+                        "mypage modify Info Error",
                         response.e.message ?: "No message available"
                     )
                 }
