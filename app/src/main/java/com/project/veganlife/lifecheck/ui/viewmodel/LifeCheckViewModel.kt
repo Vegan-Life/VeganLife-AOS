@@ -10,6 +10,7 @@ import com.project.veganlife.data.model.ApiResult
 import com.project.veganlife.data.model.DailyIntakeResponse
 import com.project.veganlife.data.model.RecommendedIntakeResponse
 import com.project.veganlife.lifecheck.data.model.LifeCheckMealData
+import com.project.veganlife.lifecheck.data.model.LifeCheckMealDataRequest
 import com.project.veganlife.lifecheck.data.model.LifeCheckWeeklyCalorieResponse
 import com.project.veganlife.lifecheck.domain.usecase.LifeCheckGetDailyIntakeUseCase
 import com.project.veganlife.lifecheck.domain.usecase.LifeCheckGetMealDataUsecase
@@ -17,6 +18,8 @@ import com.project.veganlife.lifecheck.domain.usecase.LifeCheckGetMonthlyCalorie
 import com.project.veganlife.lifecheck.domain.usecase.LifeCheckGetRecommendedIntakeUseCase
 import com.project.veganlife.lifecheck.domain.usecase.LifeCheckGetWeeklyCalorieUseCase
 import com.project.veganlife.lifecheck.domain.usecase.LifeCheckGetYearlyCalorieUseCase
+import com.project.veganlife.lifecheck.domain.usecase.LifeCheckRegisterMealDataUseCase
+import com.project.veganlife.lifecheck.util.EventWrapper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -32,6 +35,7 @@ class LifeCheckViewModel @Inject constructor(
     private val lifeCheckGetMonthlyCalorieUseCase: LifeCheckGetMonthlyCalorieUseCase,
     private val lifeCheckGetYearlyCalorieUseCase: LifeCheckGetYearlyCalorieUseCase,
     private val lifeCheckGetMealDataUsecase: LifeCheckGetMealDataUsecase,
+    private val lifeCheckRegisterMealDataUseCase: LifeCheckRegisterMealDataUseCase,
 ) : ViewModel() {
 
     // 일일 섭취량 조회
@@ -74,6 +78,10 @@ class LifeCheckViewModel @Inject constructor(
     // 키워드 기반 식품 데이터 조회
     private val _mealData = MutableStateFlow<PagingData<LifeCheckMealData>>(PagingData.empty())
     val mealData: StateFlow<PagingData<LifeCheckMealData>> = _mealData
+
+    // 식품 데이터 등록
+    private val _mealDataRegister = MutableLiveData<EventWrapper<ApiResult<LifeCheckMealDataRequest?>>>()
+    val mealDataRegister: LiveData<EventWrapper<ApiResult<LifeCheckMealDataRequest?>>> = _mealDataRegister
 
 
     // 일일 섭취량 조회
@@ -135,6 +143,13 @@ class LifeCheckViewModel @Inject constructor(
                 .collectLatest {
                     _mealData.value = it
                 }
+        }
+    }
+
+    // 식품 데이터 등록
+    fun registerMealData(lifeCheckMealDataRequest: LifeCheckMealDataRequest) {
+        viewModelScope.launch {
+            _mealDataRegister.value = EventWrapper(lifeCheckRegisterMealDataUseCase(lifeCheckMealDataRequest))
         }
     }
 }

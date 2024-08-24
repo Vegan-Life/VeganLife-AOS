@@ -59,8 +59,8 @@
                 android:id="@+id/action_mypageHomeFragment_to_loginFragment"
                 app:destination="@id/loginFragment" />
             <action
-                android:id="@+id/action_mypageHomeFragment_to_mypageModifyFramgnet"
-                app:destination="@id/mypageModifyFramgnet" />
+                android:id="@+id/action_mypageHomeFragment_to_mypageModifyFragment"
+                app:destination="@id/mypageModifyFragment" />
             <action
                 android:id="@+id/action_mypageHomeFragment_to_mypagePostedFeedFragment"
                 app:destination="@id/mypagePostedFeedFragment" />
@@ -78,12 +78,12 @@
                 app:destination="@id/mypageCompletedWithdrawalFragment" />
         </fragment>
         <fragment
-            android:id="@+id/mypageModifyFramgnet"
-            android:name="com.project.veganlife.mypage.ui.view.MypageModifyFramgnet"
+            android:id="@+id/mypageModifyFragment"
+            android:name="com.project.veganlife.mypage.ui.view.MypageModifyFragment"
             android:label="fragment_mypage_modify_framgnet"
-            tools:layout="@layout/fragment_mypage_modify_framgnet">
+            tools:layout="@layout/fragment_mypage_modify_fragment">
             <action
-                android:id="@+id/action_mypageModifyFramgnet_to_mypageHomeFragment"
+                android:id="@+id/action_mypageModifyFragment_to_mypageHomeFragment"
                 app:destination="@id/mypageHomeFragment" />
         </fragment>
         <fragment

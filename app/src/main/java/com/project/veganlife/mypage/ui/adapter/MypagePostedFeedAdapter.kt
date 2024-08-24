@@ -55,7 +55,7 @@ class MypagePostedFeedAdapter :
 
                 clMypageLayout.setOnClickListener {
                     val bundle = Bundle()
-                    bundle.putInt("feedId", postedFeed.id)
+                    bundle.putLong("feedId", postedFeed.id)
                     itemView.findNavController().navigate(
                         R.id.action_mypagePostedFeedFragment_to_communityDetailFeedFragment,
                         bundle

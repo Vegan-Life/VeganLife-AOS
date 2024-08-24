@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cl_vegan_type_layout"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
@@ -21,11 +22,11 @@
         android:layout_marginTop="12dp"
         android:background="@drawable/selector_mypage_vegan_background"
         android:includeFontPadding="false"
+        android:text="@string/all_vegan"
         android:textAppearance="@style/Regular.Body5"
         android:textColor="@color/gray2"
         app:layout_constraintEnd_toEndOf="@id/iv_mypage_image"
         app:layout_constraintStart_toStartOf="@id/iv_mypage_image"
-        app:layout_constraintTop_toBottomOf="@id/iv_mypage_image"
-        tools:text="@string/all_vegan" />
+        app:layout_constraintTop_toBottomOf="@id/iv_mypage_image" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

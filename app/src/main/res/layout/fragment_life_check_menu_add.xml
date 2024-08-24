@@ -74,6 +74,7 @@
         android:background="@drawable/lifecheck_rect_gray1_gray3"
         android:hint="@string/all_total_capacity_hint"
         android:includeFontPadding="false"
+        android:inputType="numberDecimal"
         android:paddingVertical="8dp"
         android:paddingStart="16dp"
         android:textAppearance="@style/Medium.Body3"
@@ -140,7 +141,6 @@
             android:id="@+id/civ_lifecheck_menu_add_standard"
             android:layout_width="12dp"
             android:layout_height="12dp"
-            android:adjustViewBounds="true"
             android:src="@drawable/all_spoon_fork_small" />
 
     </FrameLayout>
@@ -201,7 +201,6 @@
             android:id="@+id/civ_lifecheck_menu_add_kcal"
             android:layout_width="12dp"
             android:layout_height="12dp"
-            android:adjustViewBounds="true"
             android:src="@drawable/all_spoon_fork_small" />
 
     </FrameLayout>
@@ -273,7 +272,6 @@
             android:id="@+id/civ_lifecheck_menu_add_carbohydrate"
             android:layout_width="12dp"
             android:layout_height="12dp"
-            android:adjustViewBounds="true"
             android:src="@drawable/lifecheck_carbohydrate_white" />
 
     </FrameLayout>
@@ -345,7 +343,6 @@
             android:id="@+id/civ_lifecheck_menu_add_protein"
             android:layout_width="12dp"
             android:layout_height="12dp"
-            android:adjustViewBounds="true"
             android:src="@drawable/lifecheck_protein_white" />
 
     </FrameLayout>
@@ -417,7 +414,6 @@
             android:id="@+id/civ_lifecheck_menu_add_fat"
             android:layout_width="12dp"
             android:layout_height="12dp"
-            android:adjustViewBounds="true"
             android:src="@drawable/lifecheck_fat_white" />
 
     </FrameLayout>

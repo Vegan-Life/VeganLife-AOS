@@ -208,7 +208,7 @@ class SignupAddInfoFragment : Fragment() {
         signupAddInfoViewModel.apply {
             setSignupRequest(allStateCheck.value)
 
-            signupRespone.observe(viewLifecycleOwner) { response ->
+            response.observe(viewLifecycleOwner) { response ->
                 response?.let { handleSignupResponse(it) }
             }
         }

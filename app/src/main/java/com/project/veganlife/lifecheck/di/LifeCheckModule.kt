@@ -6,6 +6,8 @@ import com.project.veganlife.lifecheck.data.datasource.LifeCheckMonthlyCalorieDa
 import com.project.veganlife.lifecheck.data.datasource.LifeCheckMonthlyCalorieDataSourceImpl
 import com.project.veganlife.lifecheck.data.datasource.LifeCheckRecommendedIntakeDataSource
 import com.project.veganlife.lifecheck.data.datasource.LifeCheckRecommendedIntakeDataSourceImpl
+import com.project.veganlife.lifecheck.data.datasource.LifeCheckRegisterMealDataDataSource
+import com.project.veganlife.lifecheck.data.datasource.LifeCheckRegisterMealDataDataSourceImpl
 import com.project.veganlife.lifecheck.data.datasource.LifeCheckWeeklyCalorieDataSource
 import com.project.veganlife.lifecheck.data.datasource.LifeCheckWeeklyCalorieDataSourceImpl
 import com.project.veganlife.lifecheck.data.datasource.LifeCheckYearlyCalorieDataSource
@@ -14,12 +16,14 @@ import com.project.veganlife.lifecheck.data.ropositoryImpl.LifeCheckDailyIntakeR
 import com.project.veganlife.lifecheck.data.ropositoryImpl.LifeCheckMealDataRepositoryImpl
 import com.project.veganlife.lifecheck.data.ropositoryImpl.LifeCheckMonthlyCalorieRepositoryImpl
 import com.project.veganlife.lifecheck.data.ropositoryImpl.LifeCheckRecommendedIntakeRepositoryImpl
+import com.project.veganlife.lifecheck.data.ropositoryImpl.LifeCheckRegisterMealDataRepositoryImpl
 import com.project.veganlife.lifecheck.data.ropositoryImpl.LifeCheckWeeklyCalorieRepositoryImpl
 import com.project.veganlife.lifecheck.data.ropositoryImpl.LifeCheckYearlyCalorieRepositoryImpl
 import com.project.veganlife.lifecheck.domain.repository.LifeCheckDailyIntakeRepository
 import com.project.veganlife.lifecheck.domain.repository.LifeCheckMealDataRepository
 import com.project.veganlife.lifecheck.domain.repository.LifeCheckMonthlyCalorieRepository
 import com.project.veganlife.lifecheck.domain.repository.LifeCheckRecommendedIntakeRepository
+import com.project.veganlife.lifecheck.domain.repository.LifeCheckRegisterMealDataRepository
 import com.project.veganlife.lifecheck.domain.repository.LifeCheckWeeklyCalorieRepository
 import com.project.veganlife.lifecheck.domain.repository.LifeCheckYearlyCalorieRepository
 import dagger.Module
@@ -118,5 +122,21 @@ object LifeCheckModule {
         lifeCheckMealDataRepositoryImpl: LifeCheckMealDataRepositoryImpl
     ): LifeCheckMealDataRepository {
         return lifeCheckMealDataRepositoryImpl
+    }
+
+    @Provides
+    @Singleton
+    fun provideLifeCheckRegisterMealDataRepository(
+        lifeCheckRegisterMealDataRepositoryImpl: LifeCheckRegisterMealDataRepositoryImpl
+    ): LifeCheckRegisterMealDataRepository {
+        return lifeCheckRegisterMealDataRepositoryImpl
+    }
+
+    @Provides
+    @Singleton
+    fun provideLifeCheckRegisterMealDataDataSource(
+        lifeCheckRegisterMealDataDataSourceImpl: LifeCheckRegisterMealDataDataSourceImpl
+    ): LifeCheckRegisterMealDataDataSource {
+        return lifeCheckRegisterMealDataDataSourceImpl
     }
 }

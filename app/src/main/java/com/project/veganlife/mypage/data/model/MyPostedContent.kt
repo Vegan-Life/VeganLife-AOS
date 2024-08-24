@@ -1,7 +1,7 @@
 package com.project.veganlife.mypage.data.model
 
 data class MyPostedContent(
-    val id: Int,
+    val id: Long,
     val title: String,
     val content: String,
     val imageUrl: String,
