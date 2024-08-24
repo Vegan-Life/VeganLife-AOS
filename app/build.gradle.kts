@@ -5,6 +5,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     kotlin("kapt")
     id("com.google.dagger.hilt.android")
+    id("kotlin-parcelize")
 }
 
 var properties: Properties = Properties()
@@ -32,7 +33,7 @@ android {
         buildConfigField("String", "KAKAO_API_KEY", properties.getProperty("TEST_KAKAO_API_KEY"))
         buildConfigField("String", "NAVER_CLIENT_ID", properties.getProperty("NAVER_CLIENT_ID"))
         buildConfigField("String", "NAVER_CLIENT_SECRET_KEY", properties.getProperty("NAVER_CLIENT_SECRET_KEY"))
-        buildConfigField("String", "AWS_S3_ACCESSKEY_", properties.getProperty("AWS_S3_ACCESSKEY_"))
+        buildConfigField("String", "AWS_S3_ACCESSKEY", properties.getProperty("AWS_S3_ACCESSKEY"))
         buildConfigField("String", "AWS_S3_SECRET_ACCESSKEY", properties.getProperty("AWS_S3_SECRET_ACCESSKEY"))
         buildConfigField("String", "VEGAN_LIFE_CDN_ADDRESS", properties.getProperty("VEGAN_LIFE_CDN_ADDRESS"))
     }

@@ -10,17 +10,22 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.project.veganlife.R
-import com.project.veganlife.community.data.model.Feed
+import com.project.veganlife.community.data.model.PostPreview
 import com.project.veganlife.databinding.ItemRecyclerviewCommunityHomeFeedBinding
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 @RequiresApi(Build.VERSION_CODES.O)
-class CommunityFeedAdapter : PagingDataAdapter<Feed, CommunityFeedAdapter.FeedsViewHolder>(diffUtil) {
+class CommunityFeedAdapter(
+    private val feedItemClickListener: OnItemClickListener
+) : PagingDataAdapter<PostPreview, CommunityFeedAdapter.FeedsViewHolder>(diffUtil) {
+    interface OnItemClickListener {
+        fun onItemClicked(item: PostPreview)
+    }
     inner class FeedsViewHolder(private val binding: ItemRecyclerviewCommunityHomeFeedBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: Feed) {
+        fun bind(item: PostPreview) {
             binding.apply {
                 if (item.imageUrl != null) {
                     Glide.with(itemView)
@@ -32,6 +37,10 @@ class CommunityFeedAdapter : PagingDataAdapter<Feed, CommunityFeedAdapter.FeedsV
                 tvCommunityhomefeedTitle.text = item.title
                 tvCommunityhomefeedDescription.text = item.content
                 tvCommunityhomefeedDatetime.text = parseDateTime(item.createdAt)
+
+                root.setOnClickListener {
+                    feedItemClickListener.onItemClicked(item)
+                }
 
             }
         }
@@ -72,17 +81,17 @@ class CommunityFeedAdapter : PagingDataAdapter<Feed, CommunityFeedAdapter.FeedsV
     }
 
     companion object {
-        val diffUtil = object : DiffUtil.ItemCallback<Feed>() {
+        val diffUtil = object : DiffUtil.ItemCallback<PostPreview>() {
             override fun areItemsTheSame(
-                oldItem: Feed,
-                newItem: Feed,
+                oldItem: PostPreview,
+                newItem: PostPreview,
             ): Boolean {
                 return oldItem == newItem
             }
 
             override fun areContentsTheSame(
-                oldItem: Feed,
-                newItem: Feed,
+                oldItem: PostPreview,
+                newItem: PostPreview,
             ): Boolean {
                 return oldItem == newItem
             }

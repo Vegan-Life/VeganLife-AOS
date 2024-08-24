@@ -17,6 +17,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.project.veganlife.R
+import com.project.veganlife.community.data.model.PostPreview
 import com.project.veganlife.community.ui.adapter.CommunityFeedAdapter
 import com.project.veganlife.community.ui.viewmodel.FeedsGetViewModel
 import com.project.veganlife.databinding.FragmentCommunityHomeBinding
@@ -27,7 +28,7 @@ import kotlinx.coroutines.launch
 
 @RequiresApi(Build.VERSION_CODES.O)
 @AndroidEntryPoint
-class CommunityHomeFragment : Fragment() {
+class CommunityHomeFragment : Fragment(), CommunityFeedAdapter.OnItemClickListener {
 
     private var fabOpen = false
     private var _binding: FragmentCommunityHomeBinding? = null
@@ -98,7 +99,6 @@ class CommunityHomeFragment : Fragment() {
                 }
 
                 R.id.community_search -> {
-                    //todo: search동작
                     //searchFragment로 이동하기
                     findNavController().navigate(R.id.action_communityHomeFragment_to_communitySearchFragment)
                     true
@@ -154,9 +154,8 @@ class CommunityHomeFragment : Fragment() {
         setRecyclerViewAdapter()
 
         viewLifecycleOwner.lifecycleScope.launch {
-            feedsGetViewModel.feedList.collectLatest { pagingData ->
+            feedsGetViewModel.postPreviewList.collectLatest { pagingData ->
                 pagingData?.let { feedPagingData ->
-                    Log.i("##INFO", "observeFeeds: $pagingData")
 
                     setRecyclerViewAdapter()
 
@@ -166,8 +165,15 @@ class CommunityHomeFragment : Fragment() {
         }
     }
 
+    override fun onItemClicked(item: PostPreview) {
+        val bundle = Bundle().apply {
+            putLong("postId", item.id)
+        }
+        findNavController().navigate(R.id.action_communityHomeFragment_to_communityDetailFeedFragment, bundle)
+    }
+
     private fun setRecyclerViewAdapter() {
-        communityFeedAdapter = CommunityFeedAdapter()
+        communityFeedAdapter = CommunityFeedAdapter(this)
         binding.rvCommunityhomeFeed.adapter = communityFeedAdapter
 
         communityFeedAdapter.addLoadStateListener {
