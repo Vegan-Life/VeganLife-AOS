@@ -14,9 +14,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.project.veganlife.R
+import com.project.veganlife.community.ui.adapter.PopularTagAdapter
 import com.project.veganlife.community.ui.view.search.CommunitySearchAfterFragment
 import com.project.veganlife.community.ui.view.search.CommunitySearchBeforeFragment
 import com.project.veganlife.community.ui.view.search.CommunitySearchDuringFragment
@@ -24,6 +24,7 @@ import com.project.veganlife.community.ui.viewmodel.CommunitySearchViewModel
 import com.project.veganlife.community.ui.viewmodel.FeedsGetViewModel
 import com.project.veganlife.community.ui.viewmodel.PageStatus
 import com.project.veganlife.community.ui.viewmodel.RecentSearchesViewModel
+import com.project.veganlife.data.model.ApiResult
 import com.project.veganlife.databinding.FragmentCommunitySearchBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -56,7 +57,28 @@ class CommunitySearchFragment : Fragment() {
     }
 
     private fun setPopularTag() {
+        val adapter = PopularTagAdapter()
+        binding.includeCommunitySearchToolbar.rvCommunitySearchToolbarPopularityTag.adapter = adapter
 
+        communitySearchViewModel.popularTagList.observe(viewLifecycleOwner) { apiResult ->
+            when (apiResult) {
+                is ApiResult.Error -> {
+                    val popularTagsResponse = apiResult.description
+                    Log.d("daily Error", popularTagsResponse)
+                }
+
+                is ApiResult.Exception -> {
+                    Log.d("daily Exception", apiResult.e.message ?: "No message available")
+                }
+
+                is ApiResult.Success -> {
+                    val popularTagsResponse = apiResult.data
+
+                    adapter.submitList(popularTagsResponse.topTags)
+                }
+            }
+
+        }
     }
 
     private fun observePageStatus() {
