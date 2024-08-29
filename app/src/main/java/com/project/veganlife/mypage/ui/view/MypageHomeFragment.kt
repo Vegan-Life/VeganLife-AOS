@@ -6,11 +6,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.signature.ObjectKey
 import com.project.veganlife.R
 import com.project.veganlife.databinding.FragmentMypageHomeBinding
 import com.project.veganlife.mypage.ui.viewmodel.MypageViewmodel
@@ -20,7 +21,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class MypageHomeFragment : Fragment() {
     private var _binding: FragmentMypageHomeBinding? = null
     private val binding get() = _binding!!
-    private val mypageViewmodel: MypageViewmodel by activityViewModels()
+    private val mypageViewmodel: MypageViewmodel by viewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -95,8 +96,15 @@ class MypageHomeFragment : Fragment() {
                     tvMypageNickname.text = profile.nickname
                     tvMypageEmail.text = profile.email
                     if(profile.imageUrl != null) {
-                        Glide.with(requireContext()).load(profile.imageUrl).apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE))
-                            .into(ivMypageProfile)
+                        Glide.with(requireContext())
+                            .load(profile.imageUrl)
+                            .apply(RequestOptions()
+                                .diskCacheStrategy(DiskCacheStrategy.NONE) // 디스크 캐시 사용 안 함
+                                .skipMemoryCache(true) // 메모리 캐시 사용 안 함
+                                .signature(ObjectKey(System.currentTimeMillis().toString())) // 매번 새로운 signature 사용
+                            )
+                            .into(binding.ivMypageProfile)
+
                     } else {
                         Glide.with(requireContext()).load(R.drawable.all_profile_basic).into(ivMypageProfile)
                     }
