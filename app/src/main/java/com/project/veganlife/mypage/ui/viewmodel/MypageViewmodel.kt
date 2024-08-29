@@ -29,10 +29,6 @@ class MypageViewmodel @Inject constructor(
     private val _responseCode = MutableLiveData<String?>()
     val responseCode: LiveData<String?> get() = _responseCode
 
-    // 유저 정보 상태 체크
-    private val _profileInfoState = MutableLiveData<Boolean>()
-    val profileInfoState: LiveData<Boolean> get() = _profileInfoState
-
     // 프로필 사진 MultiPart
     private val _profilePhotoMultipart = MutableLiveData<MultipartBody.Part>()
     val profilePhotoMultipart: LiveData<MultipartBody.Part> get() = _profilePhotoMultipart
