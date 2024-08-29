@@ -3,20 +3,24 @@ package com.project.veganlife.mypage.ui.view
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.signature.ObjectKey
 import com.project.veganlife.R
 import com.project.veganlife.data.model.ProfileResponse
 import com.project.veganlife.databinding.FragmentMypageModifyFragmentBinding
@@ -34,11 +38,11 @@ class MypageModifyFragment : Fragment() {
     private var _binding: FragmentMypageModifyFragmentBinding? = null
     private val binding get() = _binding!!
 
-    private val mypageViewmodel: MypageViewmodel by activityViewModels()
+    private val mypageViewmodel: MypageViewmodel by viewModels()
 
     private val PICK_IMAGE_REQUEST = 1
 
-    val requestOptions = RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE)
+    private val requestOptions = RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -58,6 +62,8 @@ class MypageModifyFragment : Fragment() {
         replaceProfilePhoto()
 
         // ui
+        getUserInfo()
+
         setUserInfoUi()
 
         selectVeganType()
@@ -94,18 +100,12 @@ class MypageModifyFragment : Fragment() {
         startActivityForResult(intent, PICK_IMAGE_REQUEST)
     }
 
+    @RequiresApi(Build.VERSION_CODES.R)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null) {
             val imageUri: Uri? = data.data
             if (imageUri != null) {
-
-                if (PhotoUtils.getFileExtension(imageUri, requireContext())
-                        .equals("webp", ignoreCase = true)
-                ) {
-                    makeToast("지원하지 않는 이미지 형식입니다.")
-                    return
-                }
 
                 Glide.with(this)
                     .load(imageUri)
@@ -386,11 +386,15 @@ class MypageModifyFragment : Fragment() {
 
     private fun updateUIWithProfile(profile: ProfileResponse) {
         binding.apply {
-            if(profile.imageUrl != null) {
+            if (profile.imageUrl != null) {
                 Glide.with(requireContext())
                     .load(profile.imageUrl)
-                    .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE))
-                    .into(ivMypageProfile)
+                    .apply(RequestOptions()
+                        .diskCacheStrategy(DiskCacheStrategy.NONE) // 디스크 캐시 사용 안 함
+                        .skipMemoryCache(true) // 메모리 캐시 사용 안 함
+                        .signature(ObjectKey(System.currentTimeMillis().toString())) // 매번 새로운 signature 사용
+                    )
+                    .into(binding.ivMypageProfile)
             } else {
                 ivMypageProfile.setBackgroundResource(R.drawable.all_profile_basic)
             }
@@ -424,6 +428,10 @@ class MypageModifyFragment : Fragment() {
         if (message.isNotEmpty()) {
             Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun getUserInfo() {
+        mypageViewmodel.getUserInfo()
     }
 
     override fun onDestroyView() {

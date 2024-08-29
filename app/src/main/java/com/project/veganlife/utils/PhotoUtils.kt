@@ -8,6 +8,7 @@ import android.media.ExifInterface
 import android.net.Uri
 import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import com.google.gson.Gson
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -21,8 +22,8 @@ import java.util.UUID
 
 class PhotoUtils {
     companion object {
-        private const val MAX_WIDTH = 1280
-        private const val MAX_HEIGHT = 960
+        private const val MAX_WIDTH = 800
+        private const val MAX_HEIGHT = 600
 
         /**
          * 최적화된 Bitmap을 생성하고 임시 파일로 저장 후 해당 파일의 경로를 반환합니다.
@@ -30,11 +31,23 @@ class PhotoUtils {
          * @param uri 이미지의 URI
          * @return 최적화된 이미지의 임시 파일 경로
          */
+        @RequiresApi(Build.VERSION_CODES.R)
         fun optimizeBitmap(context: Context, uri: Uri): String? {
             return try {
+                // 파일 확장자를 확인
+                val extension = getFileExtension(uri, context) ?: "jpg"
+                val format = when (extension.lowercase()) {
+                    "png" -> Bitmap.CompressFormat.PNG
+                    "webp" -> Bitmap.CompressFormat.WEBP
+                    "webp_lossless" -> Bitmap.CompressFormat.WEBP_LOSSLESS
+                    "webp_lossy" -> Bitmap.CompressFormat.WEBP_LOSSY
+                    "jpg", "jpeg" -> Bitmap.CompressFormat.JPEG
+                    else -> Bitmap.CompressFormat.JPEG
+                }
+
                 // 임시 파일을 위한 디렉토리와 파일명 설정
                 val storage = context.cacheDir
-                val fileName = String.format("%s.%s", UUID.randomUUID(), "jpg")
+                val fileName = String.format("%s.%s", UUID.randomUUID(), extension)
                 val tempFile = File(storage, fileName)
                 tempFile.createNewFile()
 
@@ -43,11 +56,7 @@ class PhotoUtils {
 
                 // Bitmap을 디코딩 및 최적화 후 임시 파일로 저장
                 decodeBitmapFromUri(uri, context)?.apply {
-                    val format = when(getFileExtension(uri, context)) {
-                        "png" -> Bitmap.CompressFormat.PNG
-                        else -> Bitmap.CompressFormat.JPEG
-                    }
-                    compress(format, 100, fos)
+                    compress(format, 80, fos)
                     recycle()
                 } ?: throw NullPointerException("Bitmap decoding failed")
 
@@ -69,28 +78,28 @@ class PhotoUtils {
          * @return 최적화된 Bitmap
          */
         private fun decodeBitmapFromUri(uri: Uri, context: Context): Bitmap? {
-            val input = BufferedInputStream(context.contentResolver.openInputStream(uri))
-
-            input.mark(input.available()) // 스트림의 현재 위치를 표시
+            val inputStream = context.contentResolver.openInputStream(uri) ?: return null
+            val bufferedInputStream = BufferedInputStream(inputStream)
+            bufferedInputStream.mark(1024 * 1024) // 1MB로 마크 설정
 
             var bitmap: Bitmap?
 
             BitmapFactory.Options().run {
                 inJustDecodeBounds = true // 이미지 실제 로딩 없이 크기만 가져오기
-                bitmap = BitmapFactory.decodeStream(input, null, this)
+                bitmap = BitmapFactory.decodeStream(bufferedInputStream, null, this)
 
-                input.reset() // 스트림을 초기 위치로 되돌리기
+                bufferedInputStream.reset() // 스트림을 초기 위치로 되돌리기
 
                 // 이미지 리샘플링을 위해 inSampleSize 계산
                 inSampleSize = calculateInSampleSize(this)
                 inJustDecodeBounds = false
 
-                bitmap = BitmapFactory.decodeStream(input, null, this)?.apply {
+                bitmap = BitmapFactory.decodeStream(bufferedInputStream, null, this)?.apply {
                     rotateImageIfRequired(context, this, uri)
                 }
             }
 
-            input.close()
+            bufferedInputStream.close()
 
             return bitmap
         }
@@ -173,7 +182,15 @@ class PhotoUtils {
             if (imagePath == null) return null
 
             val file = File(imagePath)
-            val requestFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
+            val mimeType = file.extension.let {
+                when (it.lowercase()) {
+                    "png" -> "image/png"
+                    "jpg", "jpeg" -> "image/jpeg"
+                    "webp" -> "image/webp"
+                    else -> "image/jpeg"
+                }
+            }
+            val requestFile = file.asRequestBody(mimeType.toMediaTypeOrNull())
             return MultipartBody.Part.createFormData("image", file.name, requestFile)
         }
 

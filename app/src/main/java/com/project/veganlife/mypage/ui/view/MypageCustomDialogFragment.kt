@@ -11,12 +11,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowInsets
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.project.veganlife.MainActivity
 import com.project.veganlife.R
-import com.project.veganlife.databinding.ActivityMainBinding
 import com.project.veganlife.databinding.DialogMypageLogoutBinding
 import com.project.veganlife.databinding.DialogMypageWithdrawalBinding
 import com.project.veganlife.mypage.ui.viewmodel.MypageLogoutWithdrawalViewmodel
@@ -29,8 +29,6 @@ class MypageCustomDialogFragment(val type: String) : DialogFragment() {
 
     private var _withdrawalBinding: DialogMypageWithdrawalBinding? = null
     private val withdrawalBinding get() = _withdrawalBinding!!
-
-    private lateinit var activityBinding: ActivityMainBinding
 
     private val viewModel: MypageLogoutWithdrawalViewmodel by viewModels()
 
@@ -57,6 +55,10 @@ class MypageCustomDialogFragment(val type: String) : DialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         dialog?.window?.setBackgroundDrawableResource(R.color.gray2)
+
+        logout()
+        withDrawal()
+
         when (type) {
             "로그아웃" -> {
                 logoutBinding.apply {
@@ -66,29 +68,23 @@ class MypageCustomDialogFragment(val type: String) : DialogFragment() {
                     }
 
                     btnMypageConfirm.setOnClickListener {
-                        viewModel.doUserLogout()
-                        dismiss()
-                        bottomNavigationInitialization()
-                        findNavController().navigate(R.id.action_mypageHomeFragment_to_loginFragment)
-
+                        viewModel.doUserLogout("로그아웃")
                     }
                 }
             }
 
             else -> {
                 withdrawalBinding.apply {
-
                     dialog?.setContentView(withdrawalBinding.root)
-
                     btnMypageCancel.setOnClickListener {
                         dismiss()
                     }
 
                     btnMypageConfirm.setOnClickListener {
-                        viewModel.deleteWithDrawal()
-                        dismiss()
-                        bottomNavigationInitialization()
-                        findNavController().navigate(R.id.action_mypageHomeFragment_to_mypageCompletedWithdrawalFragment)
+                        viewModel.apply {
+                            doUserLogout("회원탈퇴")
+                            deleteWithDrawal()
+                        }
                     }
                 }
             }
@@ -120,7 +116,6 @@ class MypageCustomDialogFragment(val type: String) : DialogFragment() {
         window?.attributes = params as WindowManager.LayoutParams
     }
 
-
     override fun onDestroyView() {
         super.onDestroyView()
         when (type) {
@@ -135,5 +130,50 @@ class MypageCustomDialogFragment(val type: String) : DialogFragment() {
 
         // 로그인 프래그먼트로 이동합니다.
         findNavController().popBackStack() // 백스택을 비워줍니다.
+    }
+
+    private fun makeToast(message: String) {
+        if (message.isNotEmpty()) {
+            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun logout() {
+        viewModel.logout.observe(viewLifecycleOwner) { response ->
+            Log.i("logout Fragment", response)
+            if (response != null) {
+                when (response) {
+                    "로그아웃" -> {
+                        dismiss()
+                        bottomNavigationInitialization()
+                        findNavController().navigate(R.id.action_mypageHomeFragment_to_loginFragment)
+                    }
+
+                    "회원탈퇴" -> {}
+                    else -> {
+                        makeToast(response)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun withDrawal() {
+        viewModel.withdrawal.observe(viewLifecycleOwner) { response ->
+            Log.i("withDrawal Fragment", response.toString())
+            if (response != null) {
+                when (response) {
+                    "204" -> {
+                        dismiss()
+                        bottomNavigationInitialization()
+                        findNavController().navigate(R.id.action_mypageHomeFragment_to_loginFragment)
+                    }
+
+                    else -> {
+                        makeToast(response.toString())
+                    }
+                }
+            }
+        }
     }
 }
