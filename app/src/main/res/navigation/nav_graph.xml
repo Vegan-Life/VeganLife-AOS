@@ -97,7 +97,11 @@
 
             <action
                 android:id="@+id/action_mypagePostedFeedFragment_to_communityDetailFeedFragment"
-                app:destination="@id/communityDetailFeedFragment" />
+                app:destination="@id/communityDetailFeedFragment"
+                app:enterAnim="@anim/nav_default_enter_anim"
+                app:exitAnim="@anim/nav_default_exit_anim"
+                app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+                app:popExitAnim="@anim/nav_default_pop_exit_anim" />
         </fragment>
         <fragment
             android:id="@+id/mypagePostedCommentsFragment"
@@ -164,7 +168,10 @@
                 app:destination="@id/communityWriteFeedFragment" />
             <action
                 android:id="@+id/action_communityHomeFragment_to_communityDetailFeedFragment"
-                app:destination="@id/communityDetailFeedFragment" />
+                app:destination="@id/communityDetailFeedFragment"
+                app:enterAnim="@anim/slide_in_right_no_alpha"
+                app:exitAnim="@anim/stay_still"
+                app:popExitAnim="@android:anim/slide_out_right" />
             <action
                 android:id="@+id/action_communityHomeFragment_to_alarmFragment"
                 app:destination="@id/alarmFragment" />
@@ -200,7 +207,7 @@
                 app:destination="@id/communityEditFeedFragment" />
             <argument
                 android:name="postId"
-                app:argType="long" />
+                app:argType="integer" />
         </fragment>
         <fragment
             android:id="@+id/communityEditFeedFragment"

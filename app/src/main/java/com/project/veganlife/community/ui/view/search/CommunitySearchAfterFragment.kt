@@ -60,7 +60,7 @@ class CommunitySearchAfterFragment : Fragment(), CommunityFeedAdapter.OnItemClic
 
     override fun onItemClicked(item: PostPreview) {
         val bundle = Bundle().apply {
-            putLong("postId", item.id)
+            putInt("postId", item.id)
         }
         findNavController().navigate(R.id.action_communityHomeFragment_to_communityDetailFeedFragment, bundle)
     }

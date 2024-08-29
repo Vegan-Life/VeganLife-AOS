@@ -8,6 +8,7 @@ import com.google.gson.GsonBuilder
 import com.project.veganlife.community.data.local.RecentSearchDataStoreManager
 import com.project.veganlife.community.data.model.PostPreview
 import com.project.veganlife.community.data.model.PopularTagsResponse
+import com.project.veganlife.community.data.model.Post
 import com.project.veganlife.community.data.remote.CommunityApi
 import com.project.veganlife.community.data.remote.CommunityFeedPagingSource
 import com.project.veganlife.community.data.remote.KeywordFilteredFeedPagingSource
@@ -91,4 +92,27 @@ class CommunityRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun getPostData(postId: Int): ApiResult<Post> {
+
+        val gson = GsonBuilder().create()
+
+        return try {
+            val getPostResponse = communityApi.getPost(
+                accessToken.getString("ApiAccessToken", null),
+                postId
+            )
+
+            if (getPostResponse.isSuccessful) {
+                ApiResult.Success(getPostResponse.body()!!)
+            } else {
+                val errorBodyString = getPostResponse.errorBody()?.string()
+                val conflictResponse =
+                    gson.fromJson(errorBodyString, ConflictResponse::class.java)
+                ApiResult.Error(conflictResponse.errorCode, conflictResponse.description)
+            }
+
+        } catch (e: Exception) {
+            ApiResult.Exception(e)
+        }
+    }
 }
