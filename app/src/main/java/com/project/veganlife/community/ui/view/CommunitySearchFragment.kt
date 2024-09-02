@@ -16,7 +16,7 @@ import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import androidx.navigation.fragment.findNavController
 import com.project.veganlife.R
-import com.project.veganlife.community.ui.adapter.PopularTagAdapter
+import com.project.veganlife.community.ui.adapter.TagListAdapter
 import com.project.veganlife.community.ui.view.search.CommunitySearchAfterFragment
 import com.project.veganlife.community.ui.view.search.CommunitySearchBeforeFragment
 import com.project.veganlife.community.ui.view.search.CommunitySearchDuringFragment
@@ -57,7 +57,7 @@ class CommunitySearchFragment : Fragment() {
     }
 
     private fun setPopularTag() {
-        val adapter = PopularTagAdapter()
+        val adapter = TagListAdapter()
         binding.includeCommunitySearchToolbar.rvCommunitySearchToolbarPopularityTag.adapter = adapter
 
         communitySearchViewModel.popularTagList.observe(viewLifecycleOwner) { apiResult ->

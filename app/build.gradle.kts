@@ -142,4 +142,7 @@ dependencies {
     // Aws
     implementation ("com.amazonaws:aws-android-sdk-s3:2.22.5")
     implementation ("com.amazonaws:aws-android-sdk-mobile-client:2.22.0")
+
+    //flexbox layout
+    implementation("com.google.android.flexbox:flexbox:3.0.0")
 }

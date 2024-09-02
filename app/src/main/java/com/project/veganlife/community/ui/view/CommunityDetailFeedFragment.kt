@@ -1,5 +1,7 @@
 package com.project.veganlife.community.ui.view
 
+import android.content.Context
+import android.hardware.display.DisplayManager
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -12,7 +14,11 @@ import androidx.fragment.app.activityViewModels
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
+import com.google.android.flexbox.FlexDirection
+import com.google.android.flexbox.FlexboxLayoutManager
 import com.project.veganlife.community.data.model.Post
+import com.project.veganlife.community.ui.adapter.PostImagesViewPagerAdapter
+import com.project.veganlife.community.ui.adapter.TagListAdapter
 import com.project.veganlife.community.ui.viewmodel.PostViewModel
 import com.project.veganlife.data.model.ApiResult
 import com.project.veganlife.databinding.FragmentCommunityDetailFeedBinding
@@ -33,6 +39,8 @@ class CommunityDetailFeedFragment : Fragment() {
     private var post: Post? = null
 
     private val postViewModel: PostViewModel by activityViewModels()
+    private lateinit var tagListAdapter: TagListAdapter
+    private lateinit var viewPagerAdapter: PostImagesViewPagerAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -55,6 +63,17 @@ class CommunityDetailFeedFragment : Fragment() {
         binding.layoutContentLoading.visibility = View.VISIBLE
         binding.contentLoading.show()
         binding.contentScrollView.visibility = View.GONE
+
+
+        tagListAdapter = TagListAdapter()
+        binding.rvCommunityDetailFeedKeyword.adapter = tagListAdapter
+        val flexBoxLayoutManager = FlexboxLayoutManager(requireContext()).apply {
+            flexDirection = FlexDirection.ROW
+        }
+        binding.rvCommunityDetailFeedKeyword.layoutManager = flexBoxLayoutManager
+
+        viewPagerAdapter = PostImagesViewPagerAdapter()
+        binding.vpCommunityDetailFeedImage.adapter = viewPagerAdapter
     }
 
     private fun getPost(postId: Int) {
@@ -97,25 +116,26 @@ class CommunityDetailFeedFragment : Fragment() {
     }
 
     private fun formatDateTime(input: String): String {
-        // 1. 입력 문자열을 LocalDateTime으로 변환
-        val inputFormatter =
-            DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.getDefault())
-        val dateTime = LocalDateTime.parse(input, inputFormatter)
+        // 1. 2024-08-23T08:38 부분만 추출
+        val dateTimePart = input.substring(0, 16)
 
-        // 2. 원하는 출력 포맷 지정
+        // 2. LocalDateTime으로 변환 (초와 나노초 제외)
+        val inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm", Locale.getDefault())
+        val dateTime = LocalDateTime.parse(dateTimePart, inputFormatter)
+
+        // 3. 원하는 출력 포맷 설정
         val outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd a hh:mm", Locale.getDefault())
 
-        // 3. LocalDateTime을 원하는 포맷으로 변환 후 반환
+        // 4. 변환된 LocalDateTime을 원하는 형식으로 포맷
         return dateTime.format(outputFormatter)
     }
 
     private fun setImageViewPager(imageUrls: List<String>) {
-//        TODO("viewpager에 imageurl로 image 달아주기")
+        viewPagerAdapter.submitList(imageUrls)
     }
 
     private fun setTags(tags: List<String>) {
-        binding.rvCommunityDetailFeedKeyword
-//        TODO("태그 adapter달아주기")
+        tagListAdapter.submitList(tags)
     }
 
     private fun setAuthorDetail() {

@@ -7,8 +7,8 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.project.veganlife.databinding.ItemRecyclerviewCommunitySearchPopularityTagBinding
 
-class PopularTagAdapter : ListAdapter<String, PopularTagAdapter.PopularTagViewHolder>(diffUtil) {
-    inner class PopularTagViewHolder(private val binding: ItemRecyclerviewCommunitySearchPopularityTagBinding) :
+class TagListAdapter : ListAdapter<String, TagListAdapter.TagViewHolder>(diffUtil) {
+    inner class TagViewHolder(private val binding: ItemRecyclerviewCommunitySearchPopularityTagBinding) :
         ViewHolder(binding.root) {
         fun bind(item: String) {
             binding.tvCommunitySearchPopularityTag.text = item
@@ -16,15 +16,15 @@ class PopularTagAdapter : ListAdapter<String, PopularTagAdapter.PopularTagViewHo
 
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PopularTagViewHolder {
-        return PopularTagViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TagViewHolder {
+        return TagViewHolder(
             ItemRecyclerviewCommunitySearchPopularityTagBinding.inflate(
                 LayoutInflater.from(parent.context), parent, false
             )
         )
     }
 
-    override fun onBindViewHolder(holder: PopularTagViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: TagViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
 
