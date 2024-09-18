@@ -1,6 +1,5 @@
 package com.project.veganlife.lifecheck.data.datasource
 
-import android.content.SharedPreferences
 import com.google.gson.GsonBuilder
 import com.project.veganlife.data.model.ApiResult
 import com.project.veganlife.data.model.ConflictResponse
@@ -10,13 +9,12 @@ import javax.inject.Inject
 
 class LifeCheckRegisterMealDataDataSourceImpl @Inject constructor(
     private val mealDataPostApi: LifeCheckMealDataPostApi,
-    private val token: SharedPreferences
 ) : LifeCheckRegisterMealDataDataSource {
     override suspend fun registerMealData(mealData: LifeCheckMealDataRequest): ApiResult<LifeCheckMealDataRequest?> {
         val gson = GsonBuilder().create()
         return try {
             val response =
-                mealDataPostApi.registerMealData(token.getString("ApiAccessToken", null), mealData)
+                mealDataPostApi.registerMealData(mealData)
             if (response.isSuccessful) {
                 ApiResult.Success(null)
             } else {

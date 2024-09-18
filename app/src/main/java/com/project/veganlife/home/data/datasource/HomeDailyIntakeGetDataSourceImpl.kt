@@ -1,8 +1,6 @@
 package com.project.veganlife.home.data.datasource
 
-import android.content.SharedPreferences
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import com.google.gson.GsonBuilder
 import com.project.veganlife.data.model.ApiResult
@@ -14,10 +12,8 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
-
 class HomeDailyIntakeGetDataSourceImpl @Inject constructor(
     private val dailyIntakeGetApi: DailyIntakeGetApi,
-    private val accessToken: SharedPreferences,
 ) : HomeDailyIntakeGetDataSource {
     @RequiresApi(Build.VERSION_CODES.O)
     override suspend fun getDailyIntake(): ApiResult<DailyIntakeResponse>? {
@@ -26,16 +22,15 @@ class HomeDailyIntakeGetDataSourceImpl @Inject constructor(
         val date = LocalDate.now().format(formatter)
 
         return try {
-            val dailyIntakeGetResponse = dailyIntakeGetApi.getDailyIntake(
-                accessToken.getString("ApiAccessToken", null),
+            val response = dailyIntakeGetApi.getDailyIntake(
                 date.toString()
             )
-            if (dailyIntakeGetResponse?.isSuccessful == true) {
-                val responseBody = dailyIntakeGetResponse.body()!!
+            if (response?.isSuccessful == true) {
+                val responseBody = response.body()!!
 
                 ApiResult.Success(responseBody)
             } else {
-                val errorBodyString = dailyIntakeGetResponse?.errorBody()?.string()
+                val errorBodyString = response?.errorBody()?.string()
                 val conflictResponse =
                     gson.fromJson(errorBodyString, ConflictResponse::class.java)
                 ApiResult.Error(conflictResponse.errorCode, conflictResponse.description)

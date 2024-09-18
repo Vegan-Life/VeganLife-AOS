@@ -1,6 +1,5 @@
 package com.project.veganlife.mypage.data.datasource
 
-import android.content.SharedPreferences
 import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
@@ -11,7 +10,6 @@ import javax.inject.Inject
 
 class ScrapedRecipePagingSource @Inject constructor(
     private val api: MypageGetScrapedRecipeApi,
-    private val sharedPreferences: SharedPreferences
 ) : PagingSource<Int, ScrapedRecipeContent>() {
 
     // 이 메서드는 데이터 로드의 핵심 부분으로, 비동기로 호출되어 데이터를 가져옵니다.
@@ -20,10 +18,8 @@ class ScrapedRecipePagingSource @Inject constructor(
 
         return try {
             // API를 호출하여 데이터를 가져옵니다.
-            val accessToken = sharedPreferences.getString("ApiAccessToken", null)
-
             val response =
-                api.getMyScrapedRecipeList(accessToken, page, params.loadSize)
+                api.getMyScrapedRecipeList(page, params.loadSize)
             val responseData = response.body()!!
 
             // 응답이 성공적이고 데이터가 존재할 때

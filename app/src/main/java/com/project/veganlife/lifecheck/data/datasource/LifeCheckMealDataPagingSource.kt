@@ -1,6 +1,5 @@
 package com.project.veganlife.lifecheck.data.datasource
 
-import android.content.SharedPreferences
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.project.veganlife.lifecheck.data.model.LifeCheckMealData
@@ -11,15 +10,13 @@ class LifeCheckMealDataPagingSource @Inject constructor(
     private val mealDataApi: LifeCheckMealDataApi,
     private val keyword: String,
     private val ownerType: String,
-    private val sharedPreferences: SharedPreferences,
 ) : PagingSource<Int, LifeCheckMealData>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, LifeCheckMealData> {
         return try {
             val page = params.key ?: 0
             val size = params.loadSize
-            val accessToken = sharedPreferences.getString("ApiAccessToken", null)!!
-            val response = mealDataApi.getMealData(accessToken, keyword, ownerType, page, size)
+            val response = mealDataApi.getMealData(keyword, ownerType, page, size)
             val responseData = response.body()!!
             val mealData = responseData.content
 
