@@ -1,6 +1,5 @@
 package com.project.veganlife.lifecheck.data.datasource
 
-import android.content.SharedPreferences
 import com.google.gson.GsonBuilder
 import com.project.veganlife.data.model.ApiResult
 import com.project.veganlife.data.model.ConflictResponse
@@ -10,13 +9,11 @@ import javax.inject.Inject
 
 class LifeCheckYearlyCalorieDataSourceImpl @Inject constructor(
     private val yearlyCalorieApi: LifeCheckYearlyCalorieGetApi,
-    private val token: SharedPreferences
 ) : LifeCheckYearlyCalorieDataSource {
     override suspend fun getYearlyCalorie(startDate: String): ApiResult<LifeCheckWeeklyCalorieResponse> {
         val gson = GsonBuilder().create()
         return try {
             val response = yearlyCalorieApi.getYearlyCalorie(
-                token.getString("ApiAccessToken", null),
                 startDate
             )
             if (response?.isSuccessful == true) {

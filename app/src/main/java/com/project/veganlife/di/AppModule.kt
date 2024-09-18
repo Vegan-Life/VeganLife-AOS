@@ -4,11 +4,15 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
+import com.project.veganlife.BuildConfig
+import com.project.veganlife.data.datasource.TokenManager
+import com.project.veganlife.data.datasource.TokenManagerImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -40,21 +44,58 @@ class AppModule {
     }
 
     @Provides
-    fun provideOkHttpClient(): OkHttpClient {
-        val loggingInterceptor = HttpLoggingInterceptor().apply {
-            level = HttpLoggingInterceptor.Level.BODY
-        }
-        return OkHttpClient.Builder()
-            .addInterceptor(loggingInterceptor)
+    @Singleton
+    fun provideRetrofit(
+        okHttpClient: OkHttpClient,
+        gsonConverterFactory: GsonConverterFactory
+    ): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl(BuildConfig.BASEURL)
+            .client(okHttpClient)
+            .addConverterFactory(gsonConverterFactory)
             .build()
     }
 
     @Provides
-    fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
-        return Retrofit.Builder()
-            .baseUrl("https://dev.konggogi.store/api/v1/")
-            .client(okHttpClient)
-            .addConverterFactory(GsonConverterFactory.create())
+    @Singleton
+    fun provideOkHttpClient(
+        authorizationInterceptor: Interceptor,
+    ): OkHttpClient {
+        val builder = OkHttpClient.Builder()
+        val loggingInterceptor = HttpLoggingInterceptor()
+        loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
+        builder.apply {
+            addInterceptor(loggingInterceptor)
+            addInterceptor(authorizationInterceptor)
+        }
+
+        return  builder.build()
+    }
+
+    @Singleton
+    @Provides
+    fun providesAuthorizationInterceptor(
+        tokenManager: TokenManager,
+    ) = Interceptor { chain ->
+        val accessToken = tokenManager.getAccessToken()
+        val request = chain.request().newBuilder()
+            .header("Authorization", "$accessToken")
             .build()
+
+        chain.proceed(request)
+    }
+
+    @Provides
+    @Singleton
+    fun provideTokenManager(
+        sharedPreferences: SharedPreferences
+    ): TokenManager {
+        return TokenManagerImpl(sharedPreferences)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGsonConverterFactory(): GsonConverterFactory {
+        return GsonConverterFactory.create()
     }
 }

@@ -1,5 +1,6 @@
 package com.project.veganlife.di
 
+import com.project.veganlife.community.data.remote.CommunityApi
 import com.project.veganlife.data.remote.DailyIntakeGetApi
 import com.project.veganlife.data.remote.ProfileInfoGetApi
 import com.project.veganlife.data.remote.RecipeLikeApi
@@ -35,6 +36,12 @@ class AppApiModule {
     @Singleton
     fun provideHomeProfileApi(retrofit: Retrofit): ProfileInfoGetApi {
         return retrofit.create(ProfileInfoGetApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideCommunityApi(retrofit: Retrofit): CommunityApi {
+        return retrofit.create(CommunityApi::class.java)
     }
 
     @Provides

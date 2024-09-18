@@ -1,6 +1,5 @@
 package com.project.veganlife.mypage.data.datasource
 
-import android.content.SharedPreferences
 import com.google.gson.GsonBuilder
 import com.project.veganlife.data.model.ApiResult
 import com.project.veganlife.data.model.ConflictResponse
@@ -13,7 +12,6 @@ import javax.inject.Inject
 
 class ProfileModifyDataSourceImpl @Inject constructor(
     private val profileaddModifyapi: ProfileAdd_ModifyApi,
-    private val accessToken: SharedPreferences,
 ) : ProfileModifyDataSource {
     override suspend fun modifyProfile(
         profileRequestDTO: RequestBody,
@@ -22,23 +20,16 @@ class ProfileModifyDataSourceImpl @Inject constructor(
         val gson = GsonBuilder().create()
 
         return try {
-            val token = accessToken.getString("ApiAccessToken", null)
-
-            if (token == null) {
-                return ApiResult.Error("mypage_dataSourceImpl", "AccessToken Null")
-            }
-
-            val profileInfoGetResponse = profileaddModifyapi.add_modifyProfile(
-                token,
+            val response = profileaddModifyapi.add_modifyProfile(
                 profileRequestDTO,
                 profilePhotoMultipart
             )
 
-            if (profileInfoGetResponse.isSuccessful) {
-                val responseBody = profileInfoGetResponse.body()!!
+            if (response.isSuccessful) {
+                val responseBody = response.body()!!
                 ApiResult.Success(responseBody)
             } else {
-                val errorBodyString = profileInfoGetResponse.errorBody()?.string()
+                val errorBodyString = response.errorBody()?.string()
                 val conflictResponse =
                     gson.fromJson(errorBodyString, ConflictResponse::class.java)
                 ApiResult.Error(conflictResponse.errorCode, conflictResponse.description)
