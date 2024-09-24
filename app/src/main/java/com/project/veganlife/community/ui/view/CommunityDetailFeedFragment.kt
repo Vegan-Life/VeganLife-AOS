@@ -1,16 +1,18 @@
 package com.project.veganlife.community.ui.view
 
-import android.content.Context
-import android.hardware.display.DisplayManager
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import androidx.annotation.RequiresApi
+import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
@@ -49,14 +51,21 @@ class CommunityDetailFeedFragment : Fragment() {
         val postId = arguments?.getInt("postId") ?: -1
         getPost(postId)
 
+        init()
+        event()
+
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        init()
-        event()
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        binding.root.requestLayout()
     }
 
     private fun init() {
@@ -74,6 +83,43 @@ class CommunityDetailFeedFragment : Fragment() {
 
         viewPagerAdapter = PostImagesViewPagerAdapter()
         binding.vpCommunityDetailFeedImage.adapter = viewPagerAdapter
+        binding.vpCommunityDetailFeedImage.registerOnPageChangeCallback(object :
+            ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+//                val view = binding.vpCommunityDetailFeedImage[position]
+//                view.post {
+//                    val wMeasureSpec =
+//                        View.MeasureSpec.makeMeasureSpec(view.width, View.MeasureSpec.EXACTLY)
+//                    val hMeasureSpec =
+//                        View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+//                    view.measure(wMeasureSpec, hMeasureSpec)
+//
+//                    if (binding.vpCommunityDetailFeedImage[position].height != view.measuredHeight) {
+//                        // ParentViewGroup is, for example, LinearLayout
+//                        // ... or whatever the parent of the ViewPager2 is
+//                        binding.vpCommunityDetailFeedImage[position].layoutParams =
+//                            (binding.vpCommunityDetailFeedImage[position].layoutParams as ViewGroup.LayoutParams)
+//                                .also { lp -> lp.height = view.measuredHeight
+//                                    Log.i("##INFO", "onPageSelected: ${view.measuredHeight}")}
+//                    }
+//                }
+                // height를 wrap_content가 되도록 설정
+                val view = (binding.vpCommunityDetailFeedImage.getChildAt(0) as RecyclerView).layoutManager?.findViewByPosition(position) // 표시된 아이템의 뷰 객체
+                view?.post { // UI 스레드에서 해당 뷰 height를 다시 설정해서 그려줌
+                    val wMeasureSpec =
+                        View.MeasureSpec.makeMeasureSpec(view.width, View.MeasureSpec.EXACTLY)
+                    val hMeasureSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+                    view.measure(wMeasureSpec, hMeasureSpec)
+
+                    if (binding.vpCommunityDetailFeedImage.getChildAt(0).layoutParams.height != view.measuredHeight) {
+                        binding.vpCommunityDetailFeedImage.getChildAt(0).layoutParams = (binding.vpCommunityDetailFeedImage.getChildAt(0).layoutParams).also { lp ->
+                            lp.height = view.measuredHeight
+                        }
+                    }
+                }
+            }
+        })
     }
 
     private fun getPost(postId: Int) {
