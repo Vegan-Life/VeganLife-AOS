@@ -1,6 +1,5 @@
 package com.project.veganlife.data.datasource
 
-import android.content.SharedPreferences
 import com.google.gson.GsonBuilder
 import com.project.veganlife.data.model.ApiResult
 import com.project.veganlife.data.model.ConflictResponse
@@ -12,14 +11,12 @@ import kotlin.Exception
 class RecipeLikeDataSourceImpl @Inject constructor(
     private val recipeLikeApi: RecipeLikeApi,
     private val recipeLikeCancelApi: RecipeLikeCancelApi,
-    private val accessToken: SharedPreferences,
 ) : RecipeLikeDataSource {
     val gson = GsonBuilder().create()
 
     override suspend fun setRecipeLike(id: Long): ApiResult<Int> {
         return try {
             val recipeLikeResponse = recipeLikeApi.setRecipeLike(
-                accessToken.getString("ApiAccessToken", null),
                 id
             )
 
@@ -40,7 +37,6 @@ class RecipeLikeDataSourceImpl @Inject constructor(
     override suspend fun setRecipeLikeCancel(id: Long): ApiResult<Int> {
         return try {
             val recipeLikeCancelResponse = recipeLikeCancelApi.setRecipeLikeCencel(
-                accessToken.getString("ApiAccessToken", null),
                 id
             )
 
@@ -57,5 +53,4 @@ class RecipeLikeDataSourceImpl @Inject constructor(
             ApiResult.Exception(e)
         }
     }
-
 }

@@ -1,6 +1,5 @@
-package com.project.veganlife.data.datasource
+package com.project.veganlife.mypage.data.datasource
 
-import android.content.SharedPreferences
 import com.google.gson.GsonBuilder
 import com.project.veganlife.data.model.ApiResult
 import com.project.veganlife.data.model.ConflictResponse
@@ -11,34 +10,26 @@ import okhttp3.RequestBody
 import java.lang.Exception
 import javax.inject.Inject
 
-class Profile_Add_ModifyDataSourceImpl @Inject constructor(
+class ProfileModifyDataSourceImpl @Inject constructor(
     private val profileaddModifyapi: ProfileAdd_ModifyApi,
-    private val accessToken: SharedPreferences,
-) : Profile_Add_ModifyDataSource {
-    override suspend fun add_modifyProfile(
+) : ProfileModifyDataSource {
+    override suspend fun modifyProfile(
         profileRequestDTO: RequestBody,
         profilePhotoMultipart: MultipartBody.Part
     ): ApiResult<ProfileResponse> {
         val gson = GsonBuilder().create()
 
         return try {
-            val token = accessToken.getString("ApiAccessToken", null)
-
-            if (token == null) {
-                return ApiResult.Error("mypage_dataSourceImpl", "AccessToken Null")
-            }
-
-            val profileInfoGetResponse = profileaddModifyapi.add_modifyProfile(
-                token,
+            val response = profileaddModifyapi.add_modifyProfile(
                 profileRequestDTO,
                 profilePhotoMultipart
             )
 
-            if (profileInfoGetResponse.isSuccessful) {
-                val responseBody = profileInfoGetResponse.body()!!
+            if (response.isSuccessful) {
+                val responseBody = response.body()!!
                 ApiResult.Success(responseBody)
             } else {
-                val errorBodyString = profileInfoGetResponse.errorBody()?.string()
+                val errorBodyString = response.errorBody()?.string()
                 val conflictResponse =
                     gson.fromJson(errorBodyString, ConflictResponse::class.java)
                 ApiResult.Error(conflictResponse.errorCode, conflictResponse.description)

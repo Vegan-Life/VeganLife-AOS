@@ -1,5 +1,6 @@
 package com.project.veganlife.di
 
+import com.project.veganlife.community.data.remote.CommunityApi
 import com.project.veganlife.data.remote.DailyIntakeGetApi
 import com.project.veganlife.data.remote.ProfileInfoGetApi
 import com.project.veganlife.data.remote.RecipeLikeApi
@@ -32,66 +33,85 @@ class AppApiModule {
     }
 
     @Provides
+    @Singleton
     fun provideHomeProfileApi(retrofit: Retrofit): ProfileInfoGetApi {
         return retrofit.create(ProfileInfoGetApi::class.java)
     }
 
     @Provides
+    @Singleton
+    fun provideCommunityApi(retrofit: Retrofit): CommunityApi {
+        return retrofit.create(CommunityApi::class.java)
+    }
+
+    @Provides
+    @Singleton
     fun provideRecommendedIntakeGetApi(retrofit: Retrofit): RecommendedIntakeGetApi {
         return retrofit.create(RecommendedIntakeGetApi::class.java)
     }
 
     @Provides
+    @Singleton
     fun provideDailyIntakeGetApi(retrofit: Retrofit): DailyIntakeGetApi {
         return retrofit.create(DailyIntakeGetApi::class.java)
     }
 
     @Provides
+    @Singleton
     fun provideMypageDeleteWithdrawalApi(retrofit: Retrofit): MypageWithDrawalApi {
         return retrofit.create(MypageWithDrawalApi::class.java)
     }
 
     @Provides
+    @Singleton
     fun provideLifeCheckWeeklyCalorieGetApi(retrofit: Retrofit): LifeCheckWeeklyCalorieGetApi {
         return retrofit.create(LifeCheckWeeklyCalorieGetApi::class.java)
     }
 
     @Provides
+    @Singleton
     fun provideMyPostedFeedApi(retrofit: Retrofit): MypageGetMyPostedFeedApi {
         return retrofit.create(MypageGetMyPostedFeedApi::class.java)
     }
 
     @Provides
+    @Singleton
     fun provideMyPostedCommentApi(retrofit: Retrofit): MypageGetMyPostedCommentApi {
         return retrofit.create(MypageGetMyPostedCommentApi::class.java)
     }
 
     @Provides
+    @Singleton
     fun provideScrapedRecipeApi(retrofit: Retrofit): MypageGetScrapedRecipeApi {
         return retrofit.create(MypageGetScrapedRecipeApi::class.java)
     }
 
     @Provides
+    @Singleton
     fun provideScrapedRecipeLikeApi(retrofit: Retrofit): RecipeLikeApi {
         return retrofit.create(RecipeLikeApi::class.java)
     }
 
     @Provides
+    @Singleton
     fun provideScrapedRecipeLikeCancelApi(retrofit: Retrofit): RecipeLikeCancelApi {
         return retrofit.create(RecipeLikeCancelApi::class.java)
     }
 
     @Provides
+    @Singleton
     fun provideLifeCheckMonthlyCalorieGetApi(retrofit: Retrofit): LifeCheckMonthlyCalorieGetApi {
         return retrofit.create(LifeCheckMonthlyCalorieGetApi::class.java)
     }
 
     @Provides
+    @Singleton
     fun provideLifeCheckYearlyCalorieGetApi(retrofit: Retrofit): LifeCheckYearlyCalorieGetApi {
         return retrofit.create(LifeCheckYearlyCalorieGetApi::class.java)
     }
 
     @Provides
+    @Singleton
     fun provideLifeCheckMealDataApi(retrofit: Retrofit): LifeCheckMealDataApi {
         return retrofit.create(LifeCheckMealDataApi::class.java)
     }

@@ -1,6 +1,5 @@
 package com.project.veganlife.lifecheck.data.datasource
 
-import android.content.SharedPreferences
 import com.google.gson.GsonBuilder
 import com.project.veganlife.data.model.ApiResult
 import com.project.veganlife.data.model.ConflictResponse
@@ -10,13 +9,11 @@ import javax.inject.Inject
 
 class LifeCheckDailyIntakeDataSourceImpl @Inject constructor(
     private val lifeCheckDailyIntakeApi: DailyIntakeGetApi,
-    private val token: SharedPreferences,
 ) : LifeCheckDailyIntakeDataSource {
     override suspend fun getDailyIntake(date: String): ApiResult<DailyIntakeResponse> {
         val gson = GsonBuilder().create()
         return try {
             val response = lifeCheckDailyIntakeApi.getDailyIntake(
-                token.getString("ApiAccessToken", null),
                 date
             )
             if (response?.isSuccessful == true) {

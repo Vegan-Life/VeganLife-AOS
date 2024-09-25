@@ -1,6 +1,5 @@
 package com.project.veganlife.community.data.remote
 
-import android.content.SharedPreferences
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.project.veganlife.community.data.model.PostPreview
@@ -10,7 +9,6 @@ import javax.inject.Inject
 class KeywordFilteredFeedPagingSource @Inject constructor(
     private val keyword: String,
     private val api: CommunityApi,
-    private val sharedPreferences: SharedPreferences
 ) : PagingSource<Int, PostPreview>() {
     override fun getRefreshKey(state: PagingState<Int, PostPreview>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
@@ -22,9 +20,7 @@ class KeywordFilteredFeedPagingSource @Inject constructor(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, PostPreview> {
         val page = params.key ?: 0
         return try {
-            val accessToken = sharedPreferences.getString("ApiAccessToken", null)
             val response = api.searchFeedByKeyword(
-                accessToken,
                 keyword,
                 page,
                 params.loadSize,

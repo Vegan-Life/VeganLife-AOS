@@ -35,7 +35,7 @@ android {
         buildConfigField("String", "NAVER_CLIENT_SECRET_KEY", properties.getProperty("NAVER_CLIENT_SECRET_KEY"))
         buildConfigField("String", "AWS_S3_ACCESSKEY", properties.getProperty("AWS_S3_ACCESSKEY"))
         buildConfigField("String", "AWS_S3_SECRET_ACCESSKEY", properties.getProperty("AWS_S3_SECRET_ACCESSKEY"))
-        buildConfigField("String", "VEGAN_LIFE_CDN_ADDRESS", properties.getProperty("VEGAN_LIFE_CDN_ADDRESS"))
+        buildConfigField("String","BASEURL",properties.getProperty("BASE_URL"))
     }
 
     buildTypes {

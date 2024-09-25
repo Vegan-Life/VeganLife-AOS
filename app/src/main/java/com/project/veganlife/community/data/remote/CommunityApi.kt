@@ -6,14 +6,12 @@ import com.project.veganlife.community.data.model.Post
 import com.project.veganlife.data.model.PagingResponse
 import retrofit2.Response
 import retrofit2.http.GET
-import retrofit2.http.Header
 import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface CommunityApi {
     @GET("posts")
     suspend fun getAllFeeds(
-        @Header("Authorization") accessToken: String?,
         @Query("page") page: Int,
         @Query("size") size: Int,
         @Query("sort") sort: String,
@@ -21,7 +19,6 @@ interface CommunityApi {
 
     @GET("posts/search")
     suspend fun searchFeedByKeyword(
-        @Header("Authorization") accessToken: String?,
         @Query("keyword") keyword: String,
         @Query("page") page: Int,
         @Query("size") size: Int,
@@ -30,12 +27,10 @@ interface CommunityApi {
 
     @GET("posts/tags")
     suspend fun getPopularTags(
-        @Header("Authorization") accessToken: String?
     ): Response<PopularTagsResponse>
 
     @GET("posts/{postId}")
     suspend fun getPost(
-        @Header("Authorization") accessToken: String?,
         @Path("postId") postId: Int,
     ): Response<Post>
 }

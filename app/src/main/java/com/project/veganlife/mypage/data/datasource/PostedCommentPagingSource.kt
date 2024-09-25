@@ -1,6 +1,5 @@
 package com.project.veganlife.mypage.data.datasource
 
-import android.content.SharedPreferences
 import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
@@ -11,7 +10,6 @@ import javax.inject.Inject
 
 class PostedCommentPagingSource @Inject constructor(
     private val api: MypageGetMyPostedCommentApi,
-    private val sharedPreferences: SharedPreferences
 ) : PagingSource<Int, MyPostedContent>() {
 
     // 이 메서드는 데이터 로드의 핵심 부분으로, 비동기로 호출되어 데이터를 가져옵니다.
@@ -19,11 +17,8 @@ class PostedCommentPagingSource @Inject constructor(
         val page = params.key ?: 0 // 초기 페이지 키가 없으면 0으로 설정합니다.
 
         return try {
-            // API를 호출하여 데이터를 가져옵니다.
-            val accessToken = sharedPreferences.getString("ApiAccessToken", null)
-
             val response =
-                api.getMyCommentList(accessToken, page, params.loadSize, "createdAt,DESC")
+                api.getMyCommentList(page, params.loadSize, "createdAt,DESC")
             val responseData = response.body()!!
 
             // 응답이 성공적이고 데이터가 존재할 때

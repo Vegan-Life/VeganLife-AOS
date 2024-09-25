@@ -11,6 +11,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 import javax.inject.Inject
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 class NaverLoginDataSource @Inject constructor(@ApplicationContext val context: Context) :
     LoginDataSource {
@@ -52,24 +54,30 @@ class NaverLoginDataSource @Inject constructor(@ApplicationContext val context: 
         }
     }
 
-    override fun logout():String {
-        NidOAuthLogin().callDeleteTokenApi(context, object : OAuthLoginCallback {
-            override fun onSuccess() {
-                //서버에서 토큰 삭제에 성공한 상태입니다.
-            }
-            override fun onFailure(httpStatus: Int, message: String) {
-                // 서버에서 토큰 삭제에 실패했어도 클라이언트에 있는 토큰은 삭제되어 로그아웃된 상태입니다.
-                // 클라이언트에 토큰 정보가 없기 때문에 추가로 처리할 수 있는 작업은 없습니다.
-                Log.d("naver Logout", "errorCode: ${NaverIdLoginSDK.getLastErrorCode().code}")
-                Log.d("naver Logout", "errorDesc: ${NaverIdLoginSDK.getLastErrorDescription()}")
-            }
-            override fun onError(errorCode: Int, message: String) {
-                // 서버에서 토큰 삭제에 실패했어도 클라이언트에 있는 토큰은 삭제되어 로그아웃된 상태입니다.
-                // 클라이언트에 토큰 정보가 없기 때문에 추가로 처리할 수 있는 작업은 없습니다.
-                onFailure(errorCode, message)
-            }
-        })
-        return "로그아웃"
+    override suspend fun logout():String {
+        return suspendCoroutine { continuation ->
+            NidOAuthLogin().callDeleteTokenApi(context, object : OAuthLoginCallback {
+                override fun onSuccess() {
+                    //서버에서 토큰 삭제에 성공한 상태입니다.
+                    continuation.resume("로그아웃")
+                }
+
+                override fun onFailure(httpStatus: Int, message: String) {
+                    // 서버에서 토큰 삭제에 실패했어도 클라이언트에 있는 토큰은 삭제되어 로그아웃된 상태입니다.
+                    // 클라이언트에 토큰 정보가 없기 때문에 추가로 처리할 수 있는 작업은 없습니다.
+                    Log.d("naver Logout", "errorCode: ${NaverIdLoginSDK.getLastErrorCode().code}")
+                    Log.d("naver Logout", "errorDesc: ${NaverIdLoginSDK.getLastErrorDescription()}")
+                    continuation.resume("로그아웃 실패")
+                }
+
+                override fun onError(errorCode: Int, message: String) {
+                    // 서버에서 토큰 삭제에 실패했어도 클라이언트에 있는 토큰은 삭제되어 로그아웃된 상태입니다.
+                    // 클라이언트에 토큰 정보가 없기 때문에 추가로 처리할 수 있는 작업은 없습니다.
+                    onFailure(errorCode, message)
+                    continuation.resume("로그아웃 실패")
+                }
+            })
+        }
     }
 
     override fun getUserInfo() {
