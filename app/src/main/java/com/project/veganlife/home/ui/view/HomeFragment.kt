@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
@@ -16,6 +17,7 @@ import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.project.veganlife.R
+import com.project.veganlife.alarm.ui.viewmodel.AlarmViewModel
 import com.project.veganlife.data.model.ApiResult
 import com.project.veganlife.databinding.FragmentHomeBinding
 import com.project.veganlife.home.ui.viewmodel.HomeViewModel
@@ -26,6 +28,7 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
     private val homeViewModel: HomeViewModel by viewModels()
+    private val alarmViewModel: AlarmViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,6 +44,9 @@ class HomeFragment : Fragment() {
 
         // logic
         setToolbarMoveToAlarm()
+        // SSE 구독
+        alarmViewModel.connectSse()
+
         // 프로필 정보 Get
         getProfileInfo()
         getProfileInfoValue()
