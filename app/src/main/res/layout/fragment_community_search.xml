@@ -16,28 +16,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_community_search_recent"
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragmentContainerView"
+        android:name="com.project.veganlife.community.ui.view.search.CommunitySearchBeforeFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toTopOf="@id/iv_community_search_left_bottom_illustration"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/include_community_search_toolbar"
-        tools:listitem="@layout/item_recyclerview_community_search_recent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_community_search_related"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@id/iv_community_search_left_bottom_illustration"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/include_community_search_toolbar"
-        tools:listitem="@layout/item_recyclerview_community_search_related"
-        tools:visibility="visible" />
 
     <ImageView
         android:id="@+id/iv_community_search_left_bottom_illustration"
@@ -54,32 +42,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <ImageView
-        android:id="@+id/iv_community_search_logo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/all_logo_gray"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:visibility="visible" />
-
-    <TextView
-        android:id="@+id/tv_community_search_hint"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
-        android:includeFontPadding="false"
-        android:text="@string/community_search_word"
-        android:textAlignment="center"
-        android:textAppearance="@style/Bold.Body4"
-        android:textColor="@color/gray3"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="@id/iv_community_search_logo"
-        app:layout_constraintStart_toStartOf="@id/iv_community_search_logo"
-        app:layout_constraintTop_toBottomOf="@id/iv_community_search_logo"
-        tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
