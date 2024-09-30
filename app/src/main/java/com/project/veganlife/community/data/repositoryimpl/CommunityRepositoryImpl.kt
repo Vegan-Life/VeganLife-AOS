@@ -1,6 +1,5 @@
 package com.project.veganlife.community.data.repositoryimpl
 
-import android.content.SharedPreferences
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
@@ -14,7 +13,6 @@ import javax.inject.Inject
 
 class CommunityRepositoryImpl @Inject constructor(
     private val communityApi: CommunityApi,
-    private val sharedPreferences: SharedPreferences
 ) : CommunityRepository {
     override suspend fun getFeeds(): Flow<PagingData<Feed>> {
         return Pager(
@@ -22,7 +20,6 @@ class CommunityRepositoryImpl @Inject constructor(
             pagingSourceFactory = {
                 CommunityFeedPagingSource(
                     communityApi,
-                    sharedPreferences
                 )
             }
         ).flow
@@ -35,7 +32,6 @@ class CommunityRepositoryImpl @Inject constructor(
                 KeywordFilteredFeedPagingSource(
                     tag,
                     communityApi,
-                    sharedPreferences
                 )
             }
         ).flow
@@ -48,10 +44,8 @@ class CommunityRepositoryImpl @Inject constructor(
                 KeywordFilteredFeedPagingSource(
                     keyword,
                     communityApi,
-                    sharedPreferences
                 )
             }
         ).flow
     }
-
 }
