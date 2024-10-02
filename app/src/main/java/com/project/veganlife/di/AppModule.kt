@@ -17,6 +17,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @Module
@@ -63,10 +64,12 @@ class AppModule {
     ): OkHttpClient {
         val builder = OkHttpClient.Builder()
         val loggingInterceptor = HttpLoggingInterceptor()
-        loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
+        loggingInterceptor.level = HttpLoggingInterceptor.Level.BASIC
         builder.apply {
             addInterceptor(loggingInterceptor)
             addInterceptor(authorizationInterceptor)
+            connectTimeout(0, TimeUnit.SECONDS) // SSE를 위한 타임아웃 해제
+            readTimeout(0, TimeUnit.SECONDS)    // SSE를 위한 타임아웃 해제
         }
 
         return  builder.build()
