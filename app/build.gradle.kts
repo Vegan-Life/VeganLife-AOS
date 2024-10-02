@@ -5,6 +5,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     kotlin("kapt")
     id("com.google.dagger.hilt.android")
+    id("kotlin-parcelize")
 }
 
 var properties: Properties = Properties()
@@ -76,8 +77,6 @@ dependencies {
     // OkHttp3
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
 
-    implementation("com.squareup.okhttp3:okhttp-sse:4.9.0")
-
     // Hilt
     implementation("com.google.dagger:hilt-android:2.46")
     kapt("com.google.dagger:hilt-android-compiler:2.46")
@@ -131,4 +130,13 @@ dependencies {
 
     // Paging 3
     implementation ("androidx.paging:paging-runtime:3.3.0")
+
+    // Preferences Datastore
+    implementation ("androidx.datastore:datastore-preferences:1.1.1")
+
+    // GSON
+    implementation("com.google.code.gson:gson:2.11.0")
+
+    //flexbox layout
+    implementation("com.google.android.flexbox:flexbox:3.0.0")
 }

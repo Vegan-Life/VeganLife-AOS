@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.project.veganlife.community.data.model.Feed
+import com.project.veganlife.community.data.model.PostPreview
 import com.project.veganlife.community.data.repositoryimpl.CommunityRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,8 +18,8 @@ import javax.inject.Inject
 class FeedsGetViewModel @Inject constructor(
     private val communityRepositoryImpl: CommunityRepositoryImpl,
 ) : ViewModel() {
-    private val _feedList = MutableStateFlow<PagingData<Feed>?>(null)
-    val feedList: StateFlow<PagingData<Feed>?> get() = _feedList
+    private val _postPreviewList = MutableStateFlow<PagingData<PostPreview>?>(null)
+    val postPreviewList: StateFlow<PagingData<PostPreview>?> get() = _postPreviewList
 
     fun getFeeds() {
         viewModelScope.launch {
@@ -27,7 +27,7 @@ class FeedsGetViewModel @Inject constructor(
                 communityRepositoryImpl.getFeeds()
                     .cachedIn(viewModelScope)
                     .collectLatest { pagingData ->
-                        _feedList.value = pagingData
+                        _postPreviewList.value = pagingData
                     }
             } catch (e: Exception) {
                 Log.e("##ERROR", "getFeeds: paging error, ${e.message}")
@@ -42,7 +42,7 @@ class FeedsGetViewModel @Inject constructor(
                 communityRepositoryImpl.getFeedsByTag(tag)
                     .cachedIn(viewModelScope)
                     .collectLatest { pagingData ->
-                        _feedList.value = pagingData
+                        _postPreviewList.value = pagingData
                     }
             } catch (e: Exception) {
                 Log.e("##ERROR", "getFeeds: paging error, ${e.message}")
