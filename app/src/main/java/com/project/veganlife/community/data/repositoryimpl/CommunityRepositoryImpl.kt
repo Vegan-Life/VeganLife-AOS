@@ -20,9 +20,7 @@ import javax.inject.Inject
 
 class CommunityRepositoryImpl @Inject constructor(
     private val communityApi: CommunityApi,
-    private val sharedPreferences: SharedPreferences,
     private val recentSearchDataStoreManager: RecentSearchDataStoreManager,
-    private val accessToken: SharedPreferences
 ) : CommunityRepository {
     override suspend fun getFeeds(): Flow<PagingData<PostPreview>> {
         return Pager(
@@ -30,7 +28,6 @@ class CommunityRepositoryImpl @Inject constructor(
             pagingSourceFactory = {
                 CommunityFeedPagingSource(
                     communityApi,
-                    sharedPreferences
                 )
             }
         ).flow
@@ -43,7 +40,6 @@ class CommunityRepositoryImpl @Inject constructor(
                 KeywordFilteredFeedPagingSource(
                     tag,
                     communityApi,
-                    sharedPreferences
                 )
             }
         ).flow
@@ -56,7 +52,6 @@ class CommunityRepositoryImpl @Inject constructor(
                 KeywordFilteredFeedPagingSource(
                     keyword,
                     communityApi,
-                    sharedPreferences
                 )
             }
         ).flow
@@ -74,7 +69,7 @@ class CommunityRepositoryImpl @Inject constructor(
         val gson = GsonBuilder().create()
 
         return try {
-            val popularTagsGetResponse = communityApi.getPopularTags(accessToken.getString("ApiAccessToken", null))
+            val popularTagsGetResponse = communityApi.getPopularTags()
             if (popularTagsGetResponse.isSuccessful == true) {
                 val responseBody = popularTagsGetResponse.body()!!
 
@@ -97,7 +92,6 @@ class CommunityRepositoryImpl @Inject constructor(
 
         return try {
             val getPostResponse = communityApi.getPost(
-                accessToken.getString("ApiAccessToken", null),
                 postId
             )
 
