@@ -1,9 +1,9 @@
 package com.project.veganlife.community.domain.repository
 
 import androidx.paging.PagingData
-import com.project.veganlife.community.data.model.PostPreview
 import com.project.veganlife.community.data.model.PopularTagsResponse
 import com.project.veganlife.community.data.model.Post
+import com.project.veganlife.community.data.model.PostPreview
 import com.project.veganlife.data.model.ApiResult
 import kotlinx.coroutines.flow.Flow
 
@@ -19,4 +19,8 @@ interface CommunityRepository {
 
     suspend fun getPopularityTags(): ApiResult<PopularTagsResponse>
     suspend fun getPostData(postId: Int): ApiResult<Post>
+
+    suspend fun toggleLikePost(postId: Int): ApiResult<Boolean>
+
+    suspend fun toggleCommentLike(postId: Long, commentId: Long): ApiResult<Boolean>
 }

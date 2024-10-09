@@ -1,11 +1,12 @@
 package com.project.veganlife.community.data.remote
 
-import com.project.veganlife.community.data.model.PostPreview
 import com.project.veganlife.community.data.model.PopularTagsResponse
 import com.project.veganlife.community.data.model.Post
+import com.project.veganlife.community.data.model.PostPreview
 import com.project.veganlife.data.model.PagingResponse
 import retrofit2.Response
 import retrofit2.http.GET
+import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -33,4 +34,15 @@ interface CommunityApi {
     suspend fun getPost(
         @Path("postId") postId: Int,
     ): Response<Post>
+
+    @POST("posts/{postId}/likes")
+    suspend fun toggleLikePost(
+        @Path("postId") postId: Int
+    ): Response<String>
+
+    @POST("posts/{postId}/comments/{commentId}/likes")
+    suspend fun toggleCommentLike(
+        @Path("postId") postId: Long,
+        @Path("commentId") commentId: Long,
+    ): Response<String>
 }

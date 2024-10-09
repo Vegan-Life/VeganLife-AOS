@@ -25,13 +25,13 @@ class MypagePostedRepositoryImpl @Inject constructor(
             "feed" ->
                 Pager(
                 config = PagingConfig(pageSize = 20, enablePlaceholders = false),
-                pagingSourceFactory = { PostedFeedPagingSource(mypageGetMyPostedFeedApi, sharedPreferences) }
+                pagingSourceFactory = { PostedFeedPagingSource(mypageGetMyPostedFeedApi) }
             ).flow // Flow로 변환하여 반환합니다.
 
             else ->
                 Pager(
                 config = PagingConfig(pageSize = 20, enablePlaceholders = false),
-                pagingSourceFactory = { PostedCommentPagingSource(mypageGetMyPostedCommentApi, sharedPreferences) }
+                pagingSourceFactory = { PostedCommentPagingSource(mypageGetMyPostedCommentApi) }
             ).flow // Flow로 변환하여 반환합니다.
         }
     }

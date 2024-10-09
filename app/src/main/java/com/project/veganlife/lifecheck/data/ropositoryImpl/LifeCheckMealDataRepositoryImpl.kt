@@ -25,8 +25,7 @@ class LifeCheckMealDataRepositoryImpl @Inject constructor(
                 LifeCheckMealDataPagingSource(
                     mealDataApi,
                     keyword,
-                    ownerType,
-                    sharedPreferences
+                    ownerType
                 )
             }
         ).flow

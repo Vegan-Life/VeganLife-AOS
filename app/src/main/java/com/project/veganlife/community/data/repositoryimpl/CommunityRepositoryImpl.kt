@@ -6,9 +6,9 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.google.gson.GsonBuilder
 import com.project.veganlife.community.data.local.RecentSearchDataStoreManager
-import com.project.veganlife.community.data.model.PostPreview
 import com.project.veganlife.community.data.model.PopularTagsResponse
 import com.project.veganlife.community.data.model.Post
+import com.project.veganlife.community.data.model.PostPreview
 import com.project.veganlife.community.data.remote.CommunityApi
 import com.project.veganlife.community.data.remote.CommunityFeedPagingSource
 import com.project.veganlife.community.data.remote.KeywordFilteredFeedPagingSource
@@ -16,7 +16,6 @@ import com.project.veganlife.community.domain.repository.CommunityRepository
 import com.project.veganlife.data.model.ApiResult
 import com.project.veganlife.data.model.ConflictResponse
 import kotlinx.coroutines.flow.Flow
-import java.lang.Exception
 import javax.inject.Inject
 
 class CommunityRepositoryImpl @Inject constructor(
@@ -30,8 +29,7 @@ class CommunityRepositoryImpl @Inject constructor(
             config = PagingConfig(pageSize = 20, enablePlaceholders = false),
             pagingSourceFactory = {
                 CommunityFeedPagingSource(
-                    communityApi,
-                    sharedPreferences
+                    communityApi
                 )
             }
         ).flow
@@ -43,8 +41,7 @@ class CommunityRepositoryImpl @Inject constructor(
             pagingSourceFactory = {
                 KeywordFilteredFeedPagingSource(
                     tag,
-                    communityApi,
-                    sharedPreferences
+                    communityApi
                 )
             }
         ).flow
@@ -56,8 +53,7 @@ class CommunityRepositoryImpl @Inject constructor(
             pagingSourceFactory = {
                 KeywordFilteredFeedPagingSource(
                     keyword,
-                    communityApi,
-                    sharedPreferences
+                    communityApi
                 )
             }
         ).flow
@@ -75,7 +71,7 @@ class CommunityRepositoryImpl @Inject constructor(
         val gson = GsonBuilder().create()
 
         return try {
-            val popularTagsGetResponse = communityApi.getPopularTags(accessToken.getString("ApiAccessToken", null))
+            val popularTagsGetResponse = communityApi.getPopularTags()
             if (popularTagsGetResponse.isSuccessful == true) {
                 val responseBody = popularTagsGetResponse.body()!!
 
@@ -98,7 +94,6 @@ class CommunityRepositoryImpl @Inject constructor(
 
         return try {
             val getPostResponse = communityApi.getPost(
-                accessToken.getString("ApiAccessToken", null),
                 postId
             )
 
@@ -106,6 +101,44 @@ class CommunityRepositoryImpl @Inject constructor(
                 ApiResult.Success(getPostResponse.body()!!)
             } else {
                 val errorBodyString = getPostResponse.errorBody()?.string()
+                val conflictResponse =
+                    gson.fromJson(errorBodyString, ConflictResponse::class.java)
+                ApiResult.Error(conflictResponse.errorCode, conflictResponse.description)
+            }
+
+        } catch (e: Exception) {
+            ApiResult.Exception(e)
+        }
+    }
+
+    override suspend fun toggleLikePost(postId: Int): ApiResult<Boolean> {
+        val gson = GsonBuilder().create()
+
+        return try {
+            val likePostResponse = communityApi.toggleLikePost(postId)
+            if (likePostResponse.isSuccessful == true) {
+                ApiResult.Success(true)
+            } else {
+                val errorBodyString = likePostResponse.errorBody()?.string()
+                val conflictResponse =
+                    gson.fromJson(errorBodyString, ConflictResponse::class.java)
+                ApiResult.Error(conflictResponse.errorCode, conflictResponse.description)
+            }
+
+        } catch (e: Exception) {
+            ApiResult.Exception(e)
+        }
+    }
+
+    override suspend fun toggleCommentLike(postId: Long, commentId: Long): ApiResult<Boolean> {
+        val gson = GsonBuilder().create()
+
+        return try {
+            val likePostResponse = communityApi.toggleCommentLike(postId, commentId)
+            if (likePostResponse.isSuccessful == true) {
+                ApiResult.Success(true)
+            } else {
+                val errorBodyString = likePostResponse.errorBody()?.string()
                 val conflictResponse =
                     gson.fromJson(errorBodyString, ConflictResponse::class.java)
                 ApiResult.Error(conflictResponse.errorCode, conflictResponse.description)

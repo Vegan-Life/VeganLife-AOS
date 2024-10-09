@@ -1,0 +1,78 @@
+package com.project.veganlife.community.ui.adapter
+
+import android.os.Build
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.annotation.RequiresApi
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import com.project.veganlife.community.data.model.Comment
+import com.project.veganlife.databinding.ItemRecyclerviewCommunityDetailFeedCommentsBinding
+import com.project.veganlife.utils.formatDateTime
+
+@RequiresApi(Build.VERSION_CODES.O)
+class CommentsAdapter(
+    private val buttonClickListener: OnItemButtonClickListener
+) : ListAdapter<Comment, CommentsAdapter.CommentsViewHolder>(diffUtil) {
+    inner class CommentsViewHolder(private val binding: ItemRecyclerviewCommunityDetailFeedCommentsBinding) :
+        ViewHolder(binding.root) {
+        fun bind(item: Comment) {
+            binding.apply {
+                tvCommunityDetailFeedCommentsNickname.text = item.author
+                tvCommunityDetailFeedCommentsTime.text = formatDateTime(item.createdAt)
+                tvCommunityDetailFeedCommentsDescription.text = item.content
+                tvCommunityDetailFeedCommentsLikes.text = item.likeCount.toString()
+                ibCommunityDetailFeedCommentsLike.isSelected = item.isLike
+            }
+
+            binding.ibCommunityDetailFeedCommentsLike.setOnClickListener {
+                buttonClickListener.onButtonClick(it, item, ButtonType.LIKE)
+            }
+
+            binding.ibCommunityDetailFeedCommentsReply.setOnClickListener {
+                buttonClickListener.onButtonClick(it, item, ButtonType.REPLY)
+            }
+        }
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommentsViewHolder {
+        return CommentsViewHolder(
+            ItemRecyclerviewCommunityDetailFeedCommentsBinding.inflate(
+                LayoutInflater.from(parent.context), parent, false
+            )
+        )
+    }
+
+    override fun onBindViewHolder(holder: CommentsViewHolder, position: Int) {
+        holder.bind(getItem(position))
+    }
+
+    companion object {
+        val diffUtil = object : DiffUtil.ItemCallback<Comment>() {
+            override fun areItemsTheSame(
+                oldItem: Comment,
+                newItem: Comment,
+            ): Boolean {
+                return oldItem == newItem
+            }
+
+            override fun areContentsTheSame(
+                oldItem: Comment,
+                newItem: Comment,
+            ): Boolean {
+                return oldItem == newItem
+            }
+        }
+    }
+}
+
+interface OnItemButtonClickListener {
+    fun onButtonClick(view: View, item: Comment, buttonType: ButtonType)
+}
+
+enum class ButtonType {
+    LIKE,
+    REPLY
+}

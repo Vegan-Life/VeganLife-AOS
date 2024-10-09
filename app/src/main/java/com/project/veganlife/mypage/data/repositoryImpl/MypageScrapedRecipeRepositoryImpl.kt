@@ -22,8 +22,7 @@ class MypageScrapedRecipeRepositoryImpl @Inject constructor(
             config = PagingConfig(pageSize = 20, enablePlaceholders = false),
             pagingSourceFactory = {
                 ScrapedRecipePagingSource(
-                    mypageGetScrapedRecipeApi,
-                    sharedPreferences
+                    mypageGetScrapedRecipeApi
                 )
             }
         ).flow // Flow로 변환하여 반환합니다.
