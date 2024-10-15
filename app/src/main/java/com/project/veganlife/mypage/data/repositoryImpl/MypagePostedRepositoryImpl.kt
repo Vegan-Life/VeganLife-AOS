@@ -1,6 +1,5 @@
 package com.project.veganlife.mypage.data.repositoryImpl
 
-import android.content.SharedPreferences
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
@@ -16,7 +15,6 @@ import javax.inject.Inject
 class MypagePostedRepositoryImpl @Inject constructor(
     private val mypageGetMyPostedFeedApi: MypageGetMyPostedFeedApi,
     private val mypageGetMyPostedCommentApi: MypageGetMyPostedCommentApi,
-    private val sharedPreferences: SharedPreferences,
 ): MypagePostedRepository {
     // getPostedFeeds 함수는 Pager를 통해 PagingData의 Flow를 반환합니다.
     // Pager는 페이징 데이터를 로드하고 관리하는 역할을 합니다.
@@ -25,13 +23,13 @@ class MypagePostedRepositoryImpl @Inject constructor(
             "feed" ->
                 Pager(
                 config = PagingConfig(pageSize = 20, enablePlaceholders = false),
-                pagingSourceFactory = { PostedFeedPagingSource(mypageGetMyPostedFeedApi, sharedPreferences) }
+                pagingSourceFactory = { PostedFeedPagingSource(mypageGetMyPostedFeedApi) }
             ).flow // Flow로 변환하여 반환합니다.
 
             else ->
                 Pager(
                 config = PagingConfig(pageSize = 20, enablePlaceholders = false),
-                pagingSourceFactory = { PostedCommentPagingSource(mypageGetMyPostedCommentApi, sharedPreferences) }
+                pagingSourceFactory = { PostedCommentPagingSource(mypageGetMyPostedCommentApi) }
             ).flow // Flow로 변환하여 반환합니다.
         }
     }
