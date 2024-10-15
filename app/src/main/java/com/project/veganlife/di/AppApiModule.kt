@@ -1,5 +1,6 @@
 package com.project.veganlife.di
 
+import com.project.veganlife.alarm.data.remote.AlarmApi
 import com.project.veganlife.community.data.remote.CommunityApi
 import com.project.veganlife.data.remote.DailyIntakeGetApi
 import com.project.veganlife.data.remote.ProfileInfoGetApi
@@ -120,5 +121,11 @@ class AppApiModule {
     @Singleton
     fun provideProfileAdd_ModifyApi(retrofit: Retrofit): ProfileAdd_ModifyApi {
         return retrofit.create(ProfileAdd_ModifyApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideAlarmApi(retrofit: Retrofit): AlarmApi {
+        return retrofit.create(AlarmApi::class.java)
     }
 }
