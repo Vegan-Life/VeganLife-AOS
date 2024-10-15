@@ -45,7 +45,7 @@ class HomeFragment : Fragment() {
         // logic
         setToolbarMoveToAlarm()
         // SSE 구독
-        alarmViewModel.connectSse()
+        alarmViewModel.checkAlarm()
 
         // 프로필 정보 Get
         getProfileInfo()
@@ -74,14 +74,12 @@ class HomeFragment : Fragment() {
     private fun setToolbarMoveToAlarm() {
         binding.tbHomeToolbar.setOnMenuItemClickListener { menu ->
             when(menu.itemId) {
-                R.id.menu_lifecheck_home_alarm -> {
+                R.id.notification -> {
                     findNavController().navigate(R.id.action_homeFragment_to_alarmFragment)
                 }
-
             }
             false
         }
-
     }
 
     private fun setProfile() {
