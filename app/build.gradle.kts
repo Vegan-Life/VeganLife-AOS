@@ -76,6 +76,7 @@ dependencies {
 
     // OkHttp3
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
+    implementation("com.squareup.okhttp3:okhttp-sse:4.9.3")
 
     // Hilt
     implementation("com.google.dagger:hilt-android:2.46")
