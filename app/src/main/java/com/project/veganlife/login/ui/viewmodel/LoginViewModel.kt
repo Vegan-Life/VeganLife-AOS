@@ -1,7 +1,6 @@
 package com.project.veganlife.login.ui.view.viewmodel
 
 import android.content.Context
-import android.content.SharedPreferences
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -14,7 +13,6 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val loginUseCase: LoginUsecase,
-    private val sharedPreferences: SharedPreferences
 ) : ViewModel() {
     private val _loginResponse = MutableLiveData<LoginResponse?>()
     val loginResponse get() = _loginResponse

@@ -33,8 +33,6 @@ android {
         buildConfigField("String", "KAKAO_API_KEY", properties.getProperty("TEST_KAKAO_API_KEY"))
         buildConfigField("String", "NAVER_CLIENT_ID", properties.getProperty("NAVER_CLIENT_ID"))
         buildConfigField("String", "NAVER_CLIENT_SECRET_KEY", properties.getProperty("NAVER_CLIENT_SECRET_KEY"))
-        buildConfigField("String", "AWS_S3_ACCESSKEY", properties.getProperty("AWS_S3_ACCESSKEY"))
-        buildConfigField("String", "AWS_S3_SECRET_ACCESSKEY", properties.getProperty("AWS_S3_SECRET_ACCESSKEY"))
         buildConfigField("String","BASEURL",properties.getProperty("BASE_URL"))
     }
 
@@ -78,6 +76,7 @@ dependencies {
 
     // OkHttp3
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
+    implementation("com.squareup.okhttp3:okhttp-sse:4.9.3")
 
     // Hilt
     implementation("com.google.dagger:hilt-android:2.46")
@@ -138,10 +137,6 @@ dependencies {
 
     // GSON
     implementation("com.google.code.gson:gson:2.11.0")
-
-    // Aws
-    implementation ("com.amazonaws:aws-android-sdk-s3:2.22.5")
-    implementation ("com.amazonaws:aws-android-sdk-mobile-client:2.22.0")
 
     //flexbox layout
     implementation("com.google.android.flexbox:flexbox:3.0.0")

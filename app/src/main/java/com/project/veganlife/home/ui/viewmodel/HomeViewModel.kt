@@ -24,7 +24,6 @@ class HomeViewModel @Inject constructor(
     private val profileGetUsecase: ProfileGetUsecase,
     private val homeRecommenedIntakeUsecase: HomeRecommenedIntakeUsecase,
     private val homeDailyIntakeUsecase: HomeDailyIntakeUsecase,
-    private val sharedPreferences: SharedPreferences,
 ) : ViewModel() {
     private val _profile = MutableLiveData<ApiResult<ProfileResponse>>()
     val profile: LiveData<ApiResult<ProfileResponse>> get() = _profile

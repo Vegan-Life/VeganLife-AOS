@@ -1,6 +1,5 @@
 package com.project.veganlife.lifecheck.data.ropositoryImpl
 
-import android.content.SharedPreferences
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
@@ -13,7 +12,6 @@ import javax.inject.Inject
 
 class LifeCheckMealDataRepositoryImpl @Inject constructor(
     private val mealDataApi: LifeCheckMealDataApi,
-    private val sharedPreferences: SharedPreferences
 ) : LifeCheckMealDataRepository {
     override fun getMealDataStream(
         keyword: String,
@@ -25,7 +23,7 @@ class LifeCheckMealDataRepositoryImpl @Inject constructor(
                 LifeCheckMealDataPagingSource(
                     mealDataApi,
                     keyword,
-                    ownerType
+                    ownerType,
                 )
             }
         ).flow

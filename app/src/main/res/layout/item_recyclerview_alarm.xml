@@ -5,50 +5,46 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="4dp"
-    android:background="@color/white">
+    android:background="@color/gray1">
 
     <ImageView
         android:id="@+id/iv_alarm_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="38dp"
+        android:layout_height="38dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="18dp"
-        android:paddingBottom="18dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:src="@drawable/alarm_message" />
 
     <TextView
         android:id="@+id/tv_alarm_message"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
+        android:layout_marginTop="14dp"
+        android:layout_marginEnd="32dp"
+        android:ellipsize="end"
         android:includeFontPadding="false"
+        android:maxLines="2"
         android:textAppearance="@style/Regular.Body5"
+        android:textColor="@color/gray5"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/iv_alarm_image"
-        app:layout_constraintTop_toTopOf="@id/iv_alarm_image"
+        app:layout_constraintTop_toTopOf="parent"
         tools:text="@string/alarm_comment" />
 
     <TextView
-        android:id="@+id/tv_alarm_day"
+        android:id="@+id/tv_alarm_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:includeFontPadding="false"
-        android:textAppearance="@style/Regular.Body7"
+        android:paddingBottom="14dp"
+        android:textAppearance="@style/Regular.Body5"
+        android:textColor="@color/sub_gray3"
         app:layout_constraintStart_toStartOf="@id/tv_alarm_message"
         app:layout_constraintTop_toBottomOf="@id/tv_alarm_message"
         tools:text="@string/alarm_day" />
-
-    <TextView
-        android:id="@+id/tv_alarm_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:includeFontPadding="false"
-        android:textAppearance="@style/Regular.Body7"
-        app:layout_constraintStart_toEndOf="@id/tv_alarm_day"
-        app:layout_constraintTop_toTopOf="@id/tv_alarm_day"
-        tools:text="@string/alarm_time" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
