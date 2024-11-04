@@ -45,16 +45,4 @@ interface CommunityApi {
     suspend fun unlikePost(
         @Path("postId") postId: Int
     ): Response<String>
-
-    @POST("posts/{postId}/comments/{commentId}/likes")
-    suspend fun likeComment(
-        @Path("postId") postId: Long,
-        @Path("commentId") commentId: Long,
-    ): Response<String>
-
-    @DELETE("posts/{postId}/comments/{commentId}/likes")
-    suspend fun unlikeComment(
-        @Path("postId") postId: Long,
-        @Path("commentId") commentId: Long,
-    ): Response<String>
 }

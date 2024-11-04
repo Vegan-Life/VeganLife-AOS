@@ -20,9 +20,8 @@ import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.project.veganlife.community.data.model.Comment
 import com.project.veganlife.community.data.model.Post
-import com.project.veganlife.community.ui.adapter.ButtonType
 import com.project.veganlife.community.ui.adapter.CommentsAdapter
-import com.project.veganlife.community.ui.adapter.OnItemButtonClickListener
+import com.project.veganlife.community.ui.adapter.OnReplyCommentClickListener
 import com.project.veganlife.community.ui.adapter.PostImagesViewPagerAdapter
 import com.project.veganlife.community.ui.adapter.TagListAdapter
 import com.project.veganlife.community.ui.viewmodel.PostViewModel
@@ -33,7 +32,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @RequiresApi(Build.VERSION_CODES.O)
 @AndroidEntryPoint
-class CommunityDetailFeedFragment : Fragment(), OnItemButtonClickListener {
+class CommunityDetailFeedFragment : Fragment(), OnReplyCommentClickListener {
 
     private val binding: FragmentCommunityDetailFeedBinding by lazy {
         FragmentCommunityDetailFeedBinding.inflate(layoutInflater)
@@ -220,26 +219,7 @@ class CommunityDetailFeedFragment : Fragment(), OnItemButtonClickListener {
         }
     }
 
-    override fun onButtonClick(view: View, item: Comment, buttonType: ButtonType) {
-        when (buttonType) {
-            ButtonType.LIKE -> {
-                post?.let { post ->
-                    // isSelected 상태를 먼저 토글
-                    view.isSelected = !view.isSelected
-
-                    // 현재 isSelected 상태에 따라 좋아요 또는 좋아요 취소 요청
-                    if (view.isSelected) {
-                        postViewModel.likeComment(post.id, item.id)
-                    } else {
-                        postViewModel.unlikeComment(post.id, item.id)
-                    }
-                }
-
-            }
-
-            ButtonType.REPLY -> {
-                //todo: 대댓글 창 열기
-            }
-        }
+    override fun onButtonClick(view: View, item: Comment) {
+        //todo: 대댓글창 열기
     }
 }

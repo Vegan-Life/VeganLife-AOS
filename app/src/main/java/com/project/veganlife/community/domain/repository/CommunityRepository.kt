@@ -23,7 +23,4 @@ interface CommunityRepository {
     suspend fun likePost(postId: Int): ApiResult<Boolean>
 
     suspend fun unlikePost(postId: Int): ApiResult<Boolean>
-
-    suspend fun likeComment(postId: Long, commentId: Long): ApiResult<Boolean>
-    suspend fun unlikeComment(postId: Long, commentId: Long): ApiResult<Boolean>
 }

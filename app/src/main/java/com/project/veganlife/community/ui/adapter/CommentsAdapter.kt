@@ -14,7 +14,7 @@ import com.project.veganlife.utils.formatDateTime
 
 @RequiresApi(Build.VERSION_CODES.O)
 class CommentsAdapter(
-    private val buttonClickListener: OnItemButtonClickListener
+    private val buttonClickListener: OnReplyCommentClickListener
 ) : ListAdapter<Comment, CommentsAdapter.CommentsViewHolder>(diffUtil) {
     inner class CommentsViewHolder(private val binding: ItemRecyclerviewCommunityDetailFeedCommentsBinding) :
         ViewHolder(binding.root) {
@@ -24,15 +24,11 @@ class CommentsAdapter(
                 tvCommunityDetailFeedCommentsTime.text = formatDateTime(item.createdAt)
                 tvCommunityDetailFeedCommentsDescription.text = item.content
                 tvCommunityDetailFeedCommentsLikes.text = item.likeCount.toString()
-                ibCommunityDetailFeedCommentsLike.isSelected = item.isLike
             }
 
-            binding.ibCommunityDetailFeedCommentsLike.setOnClickListener {
-                buttonClickListener.onButtonClick(it, item, ButtonType.LIKE)
-            }
 
             binding.ibCommunityDetailFeedCommentsReply.setOnClickListener {
-                buttonClickListener.onButtonClick(it, item, ButtonType.REPLY)
+                buttonClickListener.onButtonClick(it, item)
             }
         }
     }
@@ -68,11 +64,6 @@ class CommentsAdapter(
     }
 }
 
-interface OnItemButtonClickListener {
-    fun onButtonClick(view: View, item: Comment, buttonType: ButtonType)
-}
-
-enum class ButtonType {
-    LIKE,
-    REPLY
+interface OnReplyCommentClickListener {
+    fun onButtonClick(view: View, item: Comment)
 }

@@ -34,17 +34,6 @@
         app:layout_constraintStart_toEndOf="@id/tv_community_detail_feed_comments_nickname"
         app:layout_constraintTop_toTopOf="@id/tv_community_detail_feed_comments_nickname" />
 
-    <androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/ib_community_detail_feed_comments_like"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="2dp"
-        android:backgroundTint="@android:color/transparent"
-        android:padding="8dp"
-        android:src="@drawable/selector_community_detail_feed_like"
-        app:layout_constraintBottom_toBottomOf="@id/ib_community_detail_feed_comments_reply"
-        app:layout_constraintEnd_toStartOf="@id/ib_community_detail_feed_comments_reply"
-        app:layout_constraintTop_toTopOf="@id/ib_community_detail_feed_comments_reply" />
 
     <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/ib_community_detail_feed_comments_reply"

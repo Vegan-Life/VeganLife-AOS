@@ -148,42 +148,4 @@ class CommunityRepositoryImpl @Inject constructor(
             ApiResult.Exception(e)
         }
     }
-
-    override suspend fun likeComment(postId: Long, commentId: Long): ApiResult<Boolean> {
-        val gson = GsonBuilder().create()
-
-        return try {
-            val likePostResponse = communityApi.likeComment(postId, commentId)
-            if (likePostResponse.isSuccessful == true) {
-                ApiResult.Success(true)
-            } else {
-                val errorBodyString = likePostResponse.errorBody()?.string()
-                val conflictResponse =
-                    gson.fromJson(errorBodyString, ConflictResponse::class.java)
-                ApiResult.Error(conflictResponse.errorCode, conflictResponse.description)
-            }
-
-        } catch (e: Exception) {
-            ApiResult.Exception(e)
-        }
-    }
-
-    override suspend fun unlikeComment(postId: Long, commentId: Long): ApiResult<Boolean> {
-        val gson = GsonBuilder().create()
-
-        return try {
-            val likePostResponse = communityApi.unlikeComment(postId, commentId)
-            if (likePostResponse.isSuccessful == true) {
-                ApiResult.Success(true)
-            } else {
-                val errorBodyString = likePostResponse.errorBody()?.string()
-                val conflictResponse =
-                    gson.fromJson(errorBodyString, ConflictResponse::class.java)
-                ApiResult.Error(conflictResponse.errorCode, conflictResponse.description)
-            }
-
-        } catch (e: Exception) {
-            ApiResult.Exception(e)
-        }
-    }
 }

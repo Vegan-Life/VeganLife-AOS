@@ -5,9 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.project.veganlife.community.data.model.Post
 import com.project.veganlife.community.domain.usecase.GetPostDataUseCase
-import com.project.veganlife.community.domain.usecase.LikeCommentUseCase
 import com.project.veganlife.community.domain.usecase.LikePostUseCase
-import com.project.veganlife.community.domain.usecase.UnlikeCommentUseCase
 import com.project.veganlife.community.domain.usecase.UnlikePostUseCase
 import com.project.veganlife.data.model.ApiResult
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,8 +17,6 @@ class PostViewModel @Inject constructor(
     private val getPostDataUseCase: GetPostDataUseCase,
     private val likePostUseCase: LikePostUseCase,
     private val unlikePostUseCase: UnlikePostUseCase,
-    private val likeCommentUseCase: LikeCommentUseCase,
-    private val unlikeCommentUseCase: UnlikeCommentUseCase,
 
     ): ViewModel() {
     val post = MutableLiveData<ApiResult<Post>>()
@@ -40,18 +36,6 @@ class PostViewModel @Inject constructor(
     fun unlikePost(postId: Int) {
         viewModelScope.launch {
             unlikePostUseCase.execute(postId)
-        }
-    }
-
-    fun likeComment(postId: Long, commentId: Long) {
-        viewModelScope.launch {
-            likeCommentUseCase.execute(postId, commentId)
-        }
-    }
-
-    fun unlikeComment(postId: Long, commentId: Long) {
-        viewModelScope.launch {
-            unlikeCommentUseCase.execute(postId, commentId)
         }
     }
 }
