@@ -111,11 +111,11 @@ class CommunityRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun toggleLikePost(postId: Int): ApiResult<Boolean> {
+    override suspend fun likePost(postId: Int): ApiResult<Boolean> {
         val gson = GsonBuilder().create()
 
         return try {
-            val likePostResponse = communityApi.toggleLikePost(postId)
+            val likePostResponse = communityApi.likePost(postId)
             if (likePostResponse.isSuccessful == true) {
                 ApiResult.Success(true)
             } else {
@@ -130,11 +130,49 @@ class CommunityRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun toggleCommentLike(postId: Long, commentId: Long): ApiResult<Boolean> {
+    override suspend fun unlikePost(postId: Int): ApiResult<Boolean> {
         val gson = GsonBuilder().create()
 
         return try {
-            val likePostResponse = communityApi.toggleCommentLike(postId, commentId)
+            val likePostResponse = communityApi.unlikePost(postId)
+            if (likePostResponse.isSuccessful == true) {
+                ApiResult.Success(true)
+            } else {
+                val errorBodyString = likePostResponse.errorBody()?.string()
+                val conflictResponse =
+                    gson.fromJson(errorBodyString, ConflictResponse::class.java)
+                ApiResult.Error(conflictResponse.errorCode, conflictResponse.description)
+            }
+
+        } catch (e: Exception) {
+            ApiResult.Exception(e)
+        }
+    }
+
+    override suspend fun likeComment(postId: Long, commentId: Long): ApiResult<Boolean> {
+        val gson = GsonBuilder().create()
+
+        return try {
+            val likePostResponse = communityApi.likeComment(postId, commentId)
+            if (likePostResponse.isSuccessful == true) {
+                ApiResult.Success(true)
+            } else {
+                val errorBodyString = likePostResponse.errorBody()?.string()
+                val conflictResponse =
+                    gson.fromJson(errorBodyString, ConflictResponse::class.java)
+                ApiResult.Error(conflictResponse.errorCode, conflictResponse.description)
+            }
+
+        } catch (e: Exception) {
+            ApiResult.Exception(e)
+        }
+    }
+
+    override suspend fun unlikeComment(postId: Long, commentId: Long): ApiResult<Boolean> {
+        val gson = GsonBuilder().create()
+
+        return try {
+            val likePostResponse = communityApi.unlikeComment(postId, commentId)
             if (likePostResponse.isSuccessful == true) {
                 ApiResult.Success(true)
             } else {

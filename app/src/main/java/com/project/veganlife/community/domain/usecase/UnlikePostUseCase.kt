@@ -4,8 +4,8 @@ import com.project.veganlife.community.domain.repository.CommunityRepository
 import com.project.veganlife.data.model.ApiResult
 import javax.inject.Inject
 
-class ToggleLikePostUseCase @Inject constructor(private val repository: CommunityRepository) {
+class UnlikePostUseCase @Inject constructor(private val repository: CommunityRepository) {
     suspend fun execute(postId: Int): ApiResult<Boolean> {
-        return repository.toggleLikePost(postId)
+        return repository.unlikePost(postId)
     }
 }

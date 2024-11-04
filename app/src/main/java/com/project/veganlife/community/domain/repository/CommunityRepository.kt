@@ -20,7 +20,10 @@ interface CommunityRepository {
     suspend fun getPopularityTags(): ApiResult<PopularTagsResponse>
     suspend fun getPostData(postId: Int): ApiResult<Post>
 
-    suspend fun toggleLikePost(postId: Int): ApiResult<Boolean>
+    suspend fun likePost(postId: Int): ApiResult<Boolean>
 
-    suspend fun toggleCommentLike(postId: Long, commentId: Long): ApiResult<Boolean>
+    suspend fun unlikePost(postId: Int): ApiResult<Boolean>
+
+    suspend fun likeComment(postId: Long, commentId: Long): ApiResult<Boolean>
+    suspend fun unlikeComment(postId: Long, commentId: Long): ApiResult<Boolean>
 }

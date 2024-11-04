@@ -106,17 +106,26 @@ class CommunityDetailFeedFragment : Fragment(), OnItemButtonClickListener {
     }
 
     private fun event() {
-        //좋아요 버튼 클릭 시
-        binding.ivCommunityDetailFeedLikes.setOnClickListener {
-            post?.let {
-                postViewModel.toggleLikePost(it.id.toInt())
+        // 좋아요 버튼 클릭 시
+        binding.ivCommunityDetailFeedLikes.setOnClickListener { view ->
+            post?.let { post ->
+                // isSelected 상태를 먼저 토글
+                view.isSelected = !view.isSelected
+
+                // 현재 isSelected 상태에 따라 좋아요 또는 좋아요 취소 요청
+                if (view.isSelected) {
+                    postViewModel.likePost(post.id.toInt())
+                } else {
+                    postViewModel.unlikePost(post.id.toInt())
+                }
+
+                // 현재 좋아요 수를 가져와서 증가/감소 처리
+                val likeCount = binding.tvCommunityDetailFeedLikes.text.toString().toInt()
+                binding.tvCommunityDetailFeedLikes.text =
+                    (likeCount + if (view.isSelected) 1 else -1).toString()
             }
-
-            it.isSelected = !it.isSelected
-
-            val likeCount = binding.tvCommunityDetailFeedLikes.text.toString()
-            binding.tvCommunityDetailFeedLikes.text = (likeCount.toInt() + 1).toString()
         }
+
 
         //댓글 버튼 클릭 시
         binding.ivCommunityDetailFeedComments.setOnClickListener {
@@ -214,17 +223,20 @@ class CommunityDetailFeedFragment : Fragment(), OnItemButtonClickListener {
     override fun onButtonClick(view: View, item: Comment, buttonType: ButtonType) {
         when (buttonType) {
             ButtonType.LIKE -> {
-                post?.let {
-                    postViewModel.toggleCommentLike(it.id, item.id)
+                post?.let { post ->
+                    // isSelected 상태를 먼저 토글
+                    view.isSelected = !view.isSelected
+
+                    // 현재 isSelected 상태에 따라 좋아요 또는 좋아요 취소 요청
+                    if (view.isSelected) {
+                        postViewModel.likeComment(post.id, item.id)
+                    } else {
+                        postViewModel.unlikeComment(post.id, item.id)
+                    }
                 }
 
-                view.isSelected = !view.isSelected
-
-                val currentLikesText = binding.tvCommunityDetailFeedLikes.text.toString()
-                val currentLikes = currentLikesText.toIntOrNull() ?: 0 // null인 경우 0으로 처리
-                binding.tvCommunityDetailFeedLikes.text = (currentLikes + 1).toString()
-
             }
+
             ButtonType.REPLY -> {
                 //todo: 대댓글 창 열기
             }
