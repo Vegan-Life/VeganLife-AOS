@@ -23,7 +23,6 @@ class CommentsAdapter(
                 tvCommunityDetailFeedCommentsNickname.text = item.author
                 tvCommunityDetailFeedCommentsTime.text = formatDateTime(item.createdAt)
                 tvCommunityDetailFeedCommentsDescription.text = item.content
-                tvCommunityDetailFeedCommentsLikes.text = item.likeCount.toString()
             }
 
 

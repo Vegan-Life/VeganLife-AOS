@@ -6,6 +6,8 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.google.gson.GsonBuilder
 import com.project.veganlife.community.data.local.RecentSearchDataStoreManager
+import com.project.veganlife.community.data.model.CommentRequest
+import com.project.veganlife.community.data.model.CommentResponse
 import com.project.veganlife.community.data.model.PopularTagsResponse
 import com.project.veganlife.community.data.model.Post
 import com.project.veganlife.community.data.model.PostPreview
@@ -139,6 +141,26 @@ class CommunityRepositoryImpl @Inject constructor(
                 ApiResult.Success(true)
             } else {
                 val errorBodyString = likePostResponse.errorBody()?.string()
+                val conflictResponse =
+                    gson.fromJson(errorBodyString, ConflictResponse::class.java)
+                ApiResult.Error(conflictResponse.errorCode, conflictResponse.description)
+            }
+
+        } catch (e: Exception) {
+            ApiResult.Exception(e)
+        }
+    }
+
+    override suspend fun createComment(postId: Long, commentId: Long?, content: String): ApiResult<CommentResponse> {
+        val gson = GsonBuilder().create()
+
+        return try {
+            val commentRequest = CommentRequest(commentId, content)
+            val createPostResponse = communityApi.createComment(postId, commentRequest)
+            if (createPostResponse.isSuccessful == true) {
+                ApiResult.Success(createPostResponse.body()!!)
+            } else {
+                val errorBodyString = createPostResponse.errorBody()?.string()
                 val conflictResponse =
                     gson.fromJson(errorBodyString, ConflictResponse::class.java)
                 ApiResult.Error(conflictResponse.errorCode, conflictResponse.description)

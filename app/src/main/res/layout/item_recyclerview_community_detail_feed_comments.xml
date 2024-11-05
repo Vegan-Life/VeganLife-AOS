@@ -53,34 +53,13 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="24dp"
+        android:layout_marginBottom="12dp"
         android:includeFontPadding="false"
         android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do~"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/tv_community_detail_feed_comments_nickname"
-        app:layout_constraintTop_toBottomOf="@id/tv_community_detail_feed_comments_nickname" />
+        app:layout_constraintTop_toBottomOf="@id/tv_community_detail_feed_comments_nickname"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/iv_community_detail_feed_comments_like"
-        android:layout_width="10dp"
-        android:layout_height="10dp"
-        android:layout_marginTop="6dp"
-        android:layout_marginBottom="12dp"
-        android:src="@drawable/all_like_full"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@id/tv_community_detail_feed_comments_description"
-        app:layout_constraintTop_toBottomOf="@id/tv_community_detail_feed_comments_description" />
-
-    <TextView
-        android:id="@+id/tv_community_detail_feed_comments_likes"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="2dp"
-        android:includeFontPadding="false"
-        android:text="00"
-        android:textAppearance="@style/Regular.Body7"
-        android:textColor="@color/no"
-        app:layout_constraintBottom_toBottomOf="@id/iv_community_detail_feed_comments_like"
-        app:layout_constraintStart_toEndOf="@id/iv_community_detail_feed_comments_like"
-        app:layout_constraintTop_toTopOf="@id/iv_community_detail_feed_comments_like" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

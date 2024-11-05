@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat.getSystemService
@@ -56,6 +57,10 @@ class CommunityDetailFeedFragment : Fragment(), OnReplyCommentClickListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        // postId를 arguments에서 가져와 데이터 로드
+        val postId = arguments?.getInt("postId") ?: -1
+        getPost(postId)
+
         return binding.root
     }
 
@@ -65,10 +70,6 @@ class CommunityDetailFeedFragment : Fragment(), OnReplyCommentClickListener {
         // 초기화 작업
         init()
         event()
-
-        // postId를 arguments에서 가져와 데이터 로드
-        val postId = arguments?.getInt("postId") ?: -1
-        getPost(postId)
 
         // ViewModel의 데이터 관찰
         observePostData()
@@ -104,6 +105,15 @@ class CommunityDetailFeedFragment : Fragment(), OnReplyCommentClickListener {
         binding.rvCommunityDetailFeedComments.adapter = commentListAdapter
     }
 
+    private fun createComment(postId: Long?, commentId: Long?, comment: String) {
+        if (postId == null) {
+            Log.e("##ERROR", "createComment: post id가 null입니다.", )
+        } else {
+            postViewModel.createComment(postId, commentId, comment)
+        }
+
+    }
+
     private fun event() {
         // 좋아요 버튼 클릭 시
         binding.ivCommunityDetailFeedLikes.setOnClickListener { view ->
@@ -128,11 +138,24 @@ class CommunityDetailFeedFragment : Fragment(), OnReplyCommentClickListener {
 
         //댓글 버튼 클릭 시
         binding.ivCommunityDetailFeedComments.setOnClickListener {
-            val editText =
-                binding.includeCommunityDetailFeedCommentInputBox.etCommunityDetailFeedCommentInputBox
-            editText.requestFocus()
-            val imm = getSystemService(requireContext(), InputMethodManager::class.java)
-            imm?.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT)
+            showSoftInput()
+        }
+
+        //댓글 editText 엔터 입력 설정
+        val editText =
+            binding.includeCommunityDetailFeedCommentInputBox.etCommunityDetailFeedCommentInputBox
+        editText.setOnEditorActionListener { _, actionId, _ ->
+            // 엔터키(IME_ACTION_DONE)인지 확인
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                val comment = editText.text.toString()
+                if (comment.isNotBlank()) {
+                    createComment(post?.id, null, comment)
+                }
+
+                true
+            } else {
+                false
+            }
         }
     }
 
@@ -220,6 +243,30 @@ class CommunityDetailFeedFragment : Fragment(), OnReplyCommentClickListener {
     }
 
     override fun onButtonClick(view: View, item: Comment) {
-        //todo: 대댓글창 열기
+        showSoftInput()
+//
+//        val editText =
+//            binding.includeCommunityDetailFeedCommentInputBox.etCommunityDetailFeedCommentInputBox
+//        editText.setText("@${item.author}")
+//        editText.setOnEditorActionListener { _, actionId, _ ->
+//            // 엔터키(IME_ACTION_DONE)인지 확인
+//            if (actionId == EditorInfo.IME_ACTION_DONE) {
+//                val comment = editText.text.toString()
+//                if (comment.isNotBlank()) {
+//                    createComment(post?.id, item.id, comment)
+//                }
+//                true
+//            } else {
+//                false
+//            }
+//        }
+    }
+
+    private fun showSoftInput() {
+        val editText =
+            binding.includeCommunityDetailFeedCommentInputBox.etCommunityDetailFeedCommentInputBox
+        editText.requestFocus()
+        val imm = getSystemService(requireContext(), InputMethodManager::class.java)
+        imm?.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT)
     }
 }
