@@ -21,7 +21,7 @@ class PostImagesViewPagerAdapter :
                     .load(url)
                     .placeholder(R.drawable.all_spoon_fork_small) // 로드 전 기본 이미지
                     .error(R.color.sub_gray2) // 로딩 실패 시 기본 색상
-                    .fitCenter()
+                    .centerCrop()
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .into(binding.imageView1)
 

@@ -208,9 +208,15 @@ class CommunityDetailFeedFragment : Fragment(), OnReplyCommentClickListener {
     }
 
     private fun setImageViewPager(imageUrls: List<String>) {
-        viewPagerAdapter.submitList(imageUrls)
-        //todo????
-        adjustViewPagerHeight(0) // 첫 번째 페이지의 높이 조정
+        if (imageUrls.isEmpty()) {
+            binding.vpCommunityDetailFeedImage.visibility = View.GONE
+        } else {
+            binding.vpCommunityDetailFeedImage.visibility = View.VISIBLE
+            viewPagerAdapter.submitList(imageUrls)
+            //todo????
+            adjustViewPagerHeight(0) // 첫 번째 페이지의 높이 조정
+        }
+
     }
 
     private fun setTags(tags: List<String>) {
@@ -244,6 +250,9 @@ class CommunityDetailFeedFragment : Fragment(), OnReplyCommentClickListener {
 
     override fun onButtonClick(view: View, item: Comment) {
         showSoftInput()
+        //대댓글 다는 중임을 알리는 텍스트뷰
+        binding.tvReplayToWho.text = "${item.author}님에게 답글을 남기는 중..."
+        binding.tvReplayToWho.visibility = View.VISIBLE
 //
 //        val editText =
 //            binding.includeCommunityDetailFeedCommentInputBox.etCommunityDetailFeedCommentInputBox

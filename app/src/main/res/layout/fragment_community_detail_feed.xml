@@ -34,11 +34,11 @@
 
     </LinearLayout>
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:id="@+id/content_scroll_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/include_community_detail_feed_comment_input_box"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar_community_detail_feed">
@@ -221,6 +221,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/sub_gray1"
+                android:nestedScrollingEnabled="false"
+                android:overScrollMode="never"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -229,7 +231,7 @@
 
         </LinearLayout>
 
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/tv_community_detail_feed_mentions"
@@ -245,7 +247,44 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:listitem="@layout/item_recyclerview_community_detail_feed_mentions"
-        tools:visibility="visible" />
+         />
+
+    <LinearLayout
+        android:id="@+id/layout_replay_to_who"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@id/include_community_detail_feed_comment_input_box"
+        android:background="@color/sub_gray1"
+        android:gravity="center_vertical"
+        >
+
+        <TextView
+            android:id="@+id/tv_replay_to_who"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="~님에게 답글을 남기는 중..."
+            android:textColor="@color/gray4" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+        <ImageView
+            android:id="@+id/btn_cancle_replay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/lifecheck_close"
+            android:clickable="true"
+            android:focusable="true"
+            app:tint="@color/gray4" />
+
+    </LinearLayout>
+
+
+
 
     <include
         android:id="@+id/include_community_detail_feed_comment_input_box"
