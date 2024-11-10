@@ -243,7 +243,7 @@
         android:paddingBottom="8dp"
         android:visibility="gone"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toTopOf="@id/include_community_detail_feed_comment_input_box"
+        app:layout_constraintBottom_toTopOf="@id/layout_replay_to_who"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:listitem="@layout/item_recyclerview_community_detail_feed_mentions"

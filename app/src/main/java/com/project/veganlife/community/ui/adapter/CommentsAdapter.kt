@@ -55,14 +55,14 @@ class CommentsAdapter(
                 oldItem: Comment,
                 newItem: Comment,
             ): Boolean {
-                return oldItem == newItem
+                return oldItem.id == newItem.id
             }
 
             override fun areContentsTheSame(
                 oldItem: Comment,
                 newItem: Comment,
             ): Boolean {
-                return oldItem == newItem
+                return oldItem.id == newItem.id
             }
         }
     }

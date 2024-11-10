@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewGroup.MarginLayoutParams
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.annotation.RequiresApi
@@ -169,6 +170,10 @@ class CommunityDetailFeedFragment : Fragment(), OnReplyCommentClickListener {
         //~님에게 댓글 다는 중 라벨 x 클릭시
         binding.btnCancleReplay.setOnClickListener {
             binding.layoutReplayToWho.visibility = View.GONE
+            //todo: 마지막 댓글 가려짐
+            val params = binding.rvCommunityDetailFeedComments.layoutParams as MarginLayoutParams
+            params.setMargins(0, 0, 0, 0)
+            binding.rvCommunityDetailFeedComments.layoutParams = params
             //todo: 대댓글 대상 해제
             commentId = null
         }
@@ -268,6 +273,11 @@ class CommunityDetailFeedFragment : Fragment(), OnReplyCommentClickListener {
         //대댓글 다는 중임을 알리는 텍스트뷰
         binding.tvReplayToWho.text = "${item.author}님에게 답글을 남기는 중..."
         binding.layoutReplayToWho.visibility = View.VISIBLE
+        //todo: 마지막 댓글 가려짐
+        val params = binding.rvCommunityDetailFeedComments.layoutParams as MarginLayoutParams
+        params.setMargins(0, 0, 0, binding.layoutReplayToWho.height)
+        binding.rvCommunityDetailFeedComments.layoutParams = params
+
         //edittext에 아이디 태그해주기
         tagAuthor(item.author)
         commentId = item.id
