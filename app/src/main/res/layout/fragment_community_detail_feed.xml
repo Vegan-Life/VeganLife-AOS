@@ -258,6 +258,7 @@
         app:layout_constraintBottom_toTopOf="@id/include_community_detail_feed_comment_input_box"
         android:background="@color/sub_gray1"
         android:gravity="center_vertical"
+        android:visibility="gone"
         >
 
         <TextView

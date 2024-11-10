@@ -2,6 +2,9 @@ package com.project.veganlife.community.ui.view
 
 import android.os.Build
 import android.os.Bundle
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.TextAppearanceSpan
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -19,6 +22,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
+import com.project.veganlife.R
 import com.project.veganlife.community.data.model.Comment
 import com.project.veganlife.community.data.model.Post
 import com.project.veganlife.community.ui.adapter.CommentsAdapter
@@ -44,6 +48,8 @@ class CommunityDetailFeedFragment : Fragment(), OnReplyCommentClickListener {
     private lateinit var tagListAdapter: TagListAdapter
     private lateinit var viewPagerAdapter: PostImagesViewPagerAdapter
     private lateinit var commentListAdapter: CommentsAdapter
+
+    private var commentId: Long? = null
 
     // ViewPager2 콜백 변수
     private val viewPagerCallback = object : ViewPager2.OnPageChangeCallback() {
@@ -107,7 +113,7 @@ class CommunityDetailFeedFragment : Fragment(), OnReplyCommentClickListener {
 
     private fun createComment(postId: Long?, commentId: Long?, comment: String) {
         if (postId == null) {
-            Log.e("##ERROR", "createComment: post id가 null입니다.", )
+            Log.e("##ERROR", "createComment: post id가 null입니다.")
         } else {
             postViewModel.createComment(postId, commentId, comment)
         }
@@ -149,13 +155,22 @@ class CommunityDetailFeedFragment : Fragment(), OnReplyCommentClickListener {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 val comment = editText.text.toString()
                 if (comment.isNotBlank()) {
-                    createComment(post?.id, null, comment)
+                    Log.i("##INFO", "댓글 id: $commentId")
+                    createComment(post?.id, commentId, comment)
+                    editText.setText("")
                 }
 
                 true
             } else {
                 false
             }
+        }
+
+        //~님에게 댓글 다는 중 라벨 x 클릭시
+        binding.btnCancleReplay.setOnClickListener {
+            binding.layoutReplayToWho.visibility = View.GONE
+            //todo: 대댓글 대상 해제
+            commentId = null
         }
     }
 
@@ -252,23 +267,27 @@ class CommunityDetailFeedFragment : Fragment(), OnReplyCommentClickListener {
         showSoftInput()
         //대댓글 다는 중임을 알리는 텍스트뷰
         binding.tvReplayToWho.text = "${item.author}님에게 답글을 남기는 중..."
-        binding.tvReplayToWho.visibility = View.VISIBLE
-//
-//        val editText =
-//            binding.includeCommunityDetailFeedCommentInputBox.etCommunityDetailFeedCommentInputBox
-//        editText.setText("@${item.author}")
-//        editText.setOnEditorActionListener { _, actionId, _ ->
-//            // 엔터키(IME_ACTION_DONE)인지 확인
-//            if (actionId == EditorInfo.IME_ACTION_DONE) {
-//                val comment = editText.text.toString()
-//                if (comment.isNotBlank()) {
-//                    createComment(post?.id, item.id, comment)
-//                }
-//                true
-//            } else {
-//                false
-//            }
-//        }
+        binding.layoutReplayToWho.visibility = View.VISIBLE
+        //edittext에 아이디 태그해주기
+        tagAuthor(item.author)
+        commentId = item.id
+    }
+
+    private fun tagAuthor(author: String) {
+        val string = "@${author} "
+        val spannableString = SpannableString(string)
+
+        val textAppearanceSpan = TextAppearanceSpan(context, R.style.CommentTag)
+        spannableString.setSpan(
+            textAppearanceSpan,
+            0, string.length,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+
+        binding.includeCommunityDetailFeedCommentInputBox.etCommunityDetailFeedCommentInputBox.apply {
+            setText(spannableString)
+            setSelection(spannableString.length)
+        }
     }
 
     private fun showSoftInput() {

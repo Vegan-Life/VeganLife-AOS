@@ -14,7 +14,7 @@ import com.project.veganlife.utils.formatDateTime
 
 @RequiresApi(Build.VERSION_CODES.O)
 class CommentsAdapter(
-    private val buttonClickListener: OnReplyCommentClickListener
+    private val buttonClickListener: OnReplyCommentClickListener?
 ) : ListAdapter<Comment, CommentsAdapter.CommentsViewHolder>(diffUtil) {
     inner class CommentsViewHolder(private val binding: ItemRecyclerviewCommunityDetailFeedCommentsBinding) :
         ViewHolder(binding.root) {
@@ -27,10 +27,15 @@ class CommentsAdapter(
 
 
             binding.ibCommunityDetailFeedCommentsReply.setOnClickListener {
-                buttonClickListener.onButtonClick(it, item)
+                buttonClickListener?.onButtonClick(it, item)
             }
+
+            val replayAdapter = ReplyAdapter()
+            binding.rvCommentReply.adapter = replayAdapter
+            replayAdapter.submitList(item.subComments)
         }
     }
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommentsViewHolder {
         return CommentsViewHolder(
