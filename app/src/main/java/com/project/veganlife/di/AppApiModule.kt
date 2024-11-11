@@ -16,6 +16,7 @@ import com.project.veganlife.mypage.data.remote.MypageGetMyPostedFeedApi
 import com.project.veganlife.mypage.data.remote.MypageGetScrapedRecipeApi
 import com.project.veganlife.data.remote.ProfileAdd_ModifyApi
 import com.project.veganlife.mypage.data.remote.MypageWithDrawalApi
+import com.project.veganlife.recipe.data.remote.RecipeApi
 import com.project.veganlife.signup.data.remote.SignupApi
 import dagger.Module
 import dagger.Provides
@@ -127,5 +128,11 @@ class AppApiModule {
     @Singleton
     fun provideAlarmApi(retrofit: Retrofit): AlarmApi {
         return retrofit.create(AlarmApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideRecipeApi(retrofit: Retrofit): RecipeApi {
+        return retrofit.create(RecipeApi::class.java)
     }
 }
