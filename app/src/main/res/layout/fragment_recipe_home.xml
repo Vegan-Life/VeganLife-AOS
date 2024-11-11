@@ -4,41 +4,208 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/gray1"
+    android:background="@color/sub_gray1"
     tools:context=".recipe.ui.view.RecipeHomeFragment">
 
     <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/toolbar_recipe_toolbar"
+        android:id="@+id/tb_recipe_toolbar"
         style="@style/ToolbarTheme"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:menu="@menu/menu_community"
+        app:menu="@menu/menu_recipe"
         app:title="@string/recipe_recipe" />
 
-    <include
-        android:id="@+id/include_recipe_all_vegan_type"
-        layout="@layout/layout_recipe_all_vegan_type"
+    <LinearLayout
+        android:id="@+id/ll_recipe_vegan_type"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:background="@color/gray1"
+        android:orientation="horizontal"
+        android:paddingStart="24dp"
+        android:paddingEnd="0dp"
+        android:paddingBottom="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar_recipe_toolbar" />
+        app:layout_constraintTop_toBottomOf="@id/tb_recipe_toolbar">
+
+        <RadioGroup
+            android:id="@+id/rg_recipe_vegan_type"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:checkedButton="@id/rb_recipe_home_all_type"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/rb_recipe_home_all_type"
+                style="@style/Widget.AppCompat.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/recipe_vegan_type_all"
+                android:button="@null"
+                android:includeFontPadding="false"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="2dp"
+                android:stateListAnimator="@null"
+                android:text="@string/recipe_all"
+                android:textAppearance="@style/Regular.Body5"
+                android:textColor="@color/gray1" />
+
+            <RadioButton
+                android:id="@+id/rb_recipe_home_vegan"
+                style="@style/Widget.AppCompat.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/recipe_vegan_type_vegan"
+                android:button="@null"
+                android:includeFontPadding="false"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="2dp"
+                android:stateListAnimator="@null"
+                android:text="@string/all_vegan"
+                android:textAppearance="@style/Regular.Body5"
+                android:textColor="@color/base3" />
+
+            <RadioButton
+                android:id="@+id/rb_recipe_home_lacto"
+                style="@style/Widget.AppCompat.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/recipe_vegan_type_lacto"
+                android:button="@null"
+                android:includeFontPadding="false"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="2dp"
+                android:stateListAnimator="@null"
+                android:text="@string/all_lacto"
+                android:textAppearance="@style/Regular.Body5"
+                android:textColor="@color/gray1" />
+
+            <RadioButton
+                android:id="@+id/rb_recipe_home_ovo"
+                style="@style/Widget.AppCompat.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/recipe_vegan_type_ovo"
+                android:button="@null"
+                android:includeFontPadding="false"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="2dp"
+                android:stateListAnimator="@null"
+                android:text="@string/all_ovo"
+                android:textAppearance="@style/Regular.Body5"
+                android:textColor="@color/gray1" />
+
+            <RadioButton
+                android:id="@+id/rb_recipe_home_lacto_ovo"
+                style="@style/Widget.AppCompat.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/recipe_vegan_type_lacto_ovo"
+                android:button="@null"
+                android:includeFontPadding="false"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="2dp"
+                android:stateListAnimator="@null"
+                android:text="@string/all_lacto_ovo"
+                android:textAppearance="@style/Regular.Body5"
+                android:textColor="@color/gray1" />
+
+            <RadioButton
+                android:id="@+id/rb_recipe_home_pesco"
+                style="@style/Widget.AppCompat.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/recipe_vegan_type_all"
+                android:button="@null"
+                android:includeFontPadding="false"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="2dp"
+                android:stateListAnimator="@null"
+                android:text="@string/all_pesco"
+                android:textAppearance="@style/Regular.Body5"
+                android:textColor="@color/gray1" />
+
+        </RadioGroup>
+
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_recipe_recipe_list"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="14dp"
         android:background="@color/sub_gray1"
         android:paddingTop="2dp"
+        android:visibility="visible"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/include_recipe_all_vegan_type"
+        app:layout_constraintTop_toBottomOf="@id/ll_recipe_vegan_type"
         tools:listitem="@layout/item_recyclerview_recipe_list" />
 
+    <LinearLayout
+        android:id="@+id/ll_recipe_no_contents"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ll_recipe_vegan_type">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/all_logo_gray" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:includeFontPadding="false"
+            android:text="@string/recipe_empty_feed"
+            android:textAlignment="center"
+            android:textAppearance="@style/Bold.Body4"
+            android:textColor="@color/gray3" />
+
+    </LinearLayout>
+
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/btn_recipe_write"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:layout_marginBottom="20dp"
@@ -54,7 +221,7 @@
         app:shapeAppearanceOverlay="@style/OverrideRoundedButton" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/ib_recipe_scroll_up"
+        android:id="@+id/fb_recipe_scroll_up"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="19dp"
