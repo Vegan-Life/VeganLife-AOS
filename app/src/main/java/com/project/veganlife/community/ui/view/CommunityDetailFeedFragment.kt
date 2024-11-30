@@ -116,7 +116,7 @@ class CommunityDetailFeedFragment : Fragment(), OnReplyCommentClickListener {
         if (postId == null) {
             Log.e("##ERROR", "createComment: post id가 null입니다.")
         } else {
-            postViewModel.createComment(postId, commentId, comment)
+            val result = postViewModel.createComment(postId, commentId, comment)
         }
 
     }

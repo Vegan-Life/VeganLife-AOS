@@ -48,6 +48,7 @@ class PostViewModel @Inject constructor(
             Log.i("##INFO", "createComment: $postId, $commentId, $comment")
             val result = createCommentUseCase.execute(postId, commentId, comment)
             Log.i("##INFO", "createComment: $result")
+            if (result is ApiResult.Success) {
         }
     }
 
