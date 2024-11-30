@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -17,6 +18,7 @@ import com.project.veganlife.databinding.FragmentRecipeHomeBinding
 import com.project.veganlife.recipe.data.model.RecipeFeedContent
 import com.project.veganlife.recipe.ui.adapter.RecipeHomeAdapter
 import com.project.veganlife.recipe.ui.viewmodel.RecipeHomeViewmodel
+import com.project.veganlife.recipe.ui.viewmodel.RecipeSharedViewmodel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -27,6 +29,8 @@ class RecipeHomeFragment : Fragment(), RecipeHomeAdapter.OnItemClickListener {
     private val binding get() = _binding!!
 
     private val viewmodel: RecipeHomeViewmodel by viewModels()
+    private val sharedViewmodel: RecipeSharedViewmodel by activityViewModels()
+
     private lateinit var recipeHomeAdapter: RecipeHomeAdapter
 
     override fun onCreateView(
@@ -61,6 +65,9 @@ class RecipeHomeFragment : Fragment(), RecipeHomeAdapter.OnItemClickListener {
         binding.btnRecipeWrite.setOnClickListener {
             findNavController().navigate(R.id.action_recipeHomeFragment_to_recipeWriteFragment)
         }
+
+        // DetailContent 초기화
+        sharedViewmodel.setRecipeDetailContent(null)
     }
 
     private fun setToolbarMove() {
@@ -118,13 +125,8 @@ class RecipeHomeFragment : Fragment(), RecipeHomeAdapter.OnItemClickListener {
     }
 
     override fun onItemCLicked(item: RecipeFeedContent) {
-        val bundle = Bundle().apply {
-            putInt("recipeFeedId", item.id)
-        }
-        findNavController().navigate(
-            R.id.action_recipeHomeFragment_to_recipeDetailInfoFragment,
-            bundle
-        )
+        sharedViewmodel.getRecipeDetailContent(item.id)
+        findNavController().navigate(R.id.action_recipeHomeFragment_to_recipeDetailInfoFragment)
     }
 
     private fun setRecyclerviewAdapter() {
@@ -132,7 +134,6 @@ class RecipeHomeFragment : Fragment(), RecipeHomeAdapter.OnItemClickListener {
         binding.rvRecipeRecipeList.adapter = recipeHomeAdapter
 
         recipeHomeAdapter.addLoadStateListener { loadState ->
-//            val isEndOfPaginationReached = loadState.append.endOfPaginationReached && loadState.refresh is LoadState.NotLoading
             val isEndOfPaginationReached = loadState.append.endOfPaginationReached
             Log.d("itemCnt", recipeHomeAdapter.itemCount.toString())
             if (isEndOfPaginationReached) {
