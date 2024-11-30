@@ -1,5 +1,6 @@
 package com.project.veganlife.lifecheck.di
 
+import com.project.veganlife.BuildConfig
 import com.project.veganlife.lifecheck.data.remote.LifeCheckMealDataPostApi
 import dagger.Module
 import dagger.Provides
@@ -22,7 +23,7 @@ class LifeCheckPostModule {
     @Named("lifeCheckRetrofit")
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("https://dev.konggogi.store/api/v1/")
+            .baseUrl(BuildConfig.BASEURL)
             .client(okHttpClient)
             .addConverterFactory(nullOnEmptyConverterFactory)
             .addConverterFactory(GsonConverterFactory.create())

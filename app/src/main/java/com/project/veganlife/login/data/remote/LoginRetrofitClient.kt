@@ -1,5 +1,6 @@
 package com.project.veganlife.login.data.model.remote
 
+import com.project.veganlife.BuildConfig
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
 import okhttp3.logging.HttpLoggingInterceptor
@@ -9,8 +10,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.lang.reflect.Type
 
 object LoginRetrofitClient {
-    private const val  BASE_URL = "https://dev.konggogi.store/api/v1/"
-
     private val logging =
         HttpLoggingInterceptor().apply {
             level = HttpLoggingInterceptor.Level.BODY
@@ -24,7 +23,7 @@ object LoginRetrofitClient {
 
     private fun getRetrofit(): Retrofit {
         return Retrofit.Builder()
-            .baseUrl(BASE_URL)
+            .baseUrl(BuildConfig.BASEURL)
             .client(okHttpClient)
             .addConverterFactory(nullOnEmptyConverterFactory)
             .addConverterFactory(GsonConverterFactory.create())
