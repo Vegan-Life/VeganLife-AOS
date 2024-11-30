@@ -4,8 +4,6 @@ import com.project.veganlife.alarm.data.remote.AlarmApi
 import com.project.veganlife.community.data.remote.CommunityApi
 import com.project.veganlife.data.remote.DailyIntakeGetApi
 import com.project.veganlife.data.remote.ProfileInfoGetApi
-import com.project.veganlife.data.remote.RecipeLikeApi
-import com.project.veganlife.data.remote.RecipeLikeCancelApi
 import com.project.veganlife.data.remote.RecommendedIntakeGetApi
 import com.project.veganlife.lifecheck.data.remote.LifeCheckMealDataApi
 import com.project.veganlife.lifecheck.data.remote.LifeCheckMonthlyCalorieGetApi
@@ -86,18 +84,6 @@ class AppApiModule {
     @Singleton
     fun provideScrapedRecipeApi(retrofit: Retrofit): MypageGetScrapedRecipeApi {
         return retrofit.create(MypageGetScrapedRecipeApi::class.java)
-    }
-
-    @Provides
-    @Singleton
-    fun provideScrapedRecipeLikeApi(retrofit: Retrofit): RecipeLikeApi {
-        return retrofit.create(RecipeLikeApi::class.java)
-    }
-
-    @Provides
-    @Singleton
-    fun provideScrapedRecipeLikeCancelApi(retrofit: Retrofit): RecipeLikeCancelApi {
-        return retrofit.create(RecipeLikeCancelApi::class.java)
     }
 
     @Provides
