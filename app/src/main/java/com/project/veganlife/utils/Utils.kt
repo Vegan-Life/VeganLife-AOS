@@ -14,3 +14,9 @@ fun formatDateTime(input: String): String {
     val outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd a hh:mm", Locale.getDefault())
     return dateTime.format(outputFormatter)
 }
+
+@RequiresApi(Build.VERSION_CODES.O)
+fun getCurrentTimestamp(): String {
+    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+    return LocalDateTime.now().format(formatter)
+}

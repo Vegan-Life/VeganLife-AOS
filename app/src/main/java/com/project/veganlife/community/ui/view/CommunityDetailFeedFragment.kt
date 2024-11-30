@@ -25,6 +25,7 @@ import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.project.veganlife.R
 import com.project.veganlife.community.data.model.Comment
+import com.project.veganlife.community.data.model.CommentResponse
 import com.project.veganlife.community.data.model.Post
 import com.project.veganlife.community.ui.adapter.CommentsAdapter
 import com.project.veganlife.community.ui.adapter.OnReplyCommentClickListener
@@ -112,13 +113,63 @@ class CommunityDetailFeedFragment : Fragment(), OnReplyCommentClickListener {
         binding.rvCommunityDetailFeedComments.adapter = commentListAdapter
     }
 
+    private fun createCommentLocally(commentText: String, commentResponse: CommentResponse) {
+        val newComment = Comment(
+            id = commentResponse.commentId.toLong(),
+            author = getMyNickname(), // 현재 로그인된 사용자 이름
+            content = commentText,
+            createdAt = commentResponse.createdAt, // 현재 시간 문자열
+            subComments = null
+        )
+
+        val updatedComments = commentListAdapter.currentList.toMutableList()
+
+        if (commentId != null) {
+            // 대댓글 처리
+            val targetCommentIndex = updatedComments.indexOfFirst { it.id == commentId }
+            if (targetCommentIndex != -1) {
+                val targetComment = updatedComments[targetCommentIndex]
+                val updatedSubComments = (targetComment.subComments ?: emptyList()).toMutableList()
+                updatedSubComments.add(newComment)
+
+                updatedComments[targetCommentIndex] = targetComment.copy(
+                    subComments = updatedSubComments
+                )
+            }
+        } else {
+            // 최상위 댓글로 추가
+            updatedComments.add(newComment)
+        }
+
+        // Adapter에 새로운 리스트 반영
+        commentListAdapter.submitList(updatedComments)
+    }
+
+
     private fun createComment(postId: Long?, commentId: Long?, comment: String) {
         if (postId == null) {
             Log.e("##ERROR", "createComment: post id가 null입니다.")
         } else {
-            val result = postViewModel.createComment(postId, commentId, comment)
+            postViewModel.createComment(postId, commentId, comment) {
+                if (it is ApiResult.Success) {
+                    createCommentLocally(comment, it.data)
+                } else {
+                    Log.e("##ERROR", "createComment: 댓글 작성 실패")
+                }
+            }
         }
 
+    }
+
+    private fun getMyNickname(): String {
+        postViewModel.myProfile.value?.let {
+            if (it is ApiResult.Success) {
+                return it.data.nickname
+            } else {
+                return "nickname"
+            }
+        }
+        return "nickname"
     }
 
     private fun event() {
