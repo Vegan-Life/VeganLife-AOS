@@ -70,10 +70,6 @@ class MypageScrapedRecipeAdapter(private val viewModel: MypageScrapedRecipeViewM
 
                 updateLikeBackground(scrapedRecipe.isLiked)
 
-                btnRecipeLike.setOnClickListener {
-                    viewModel.like_likeCancelRecipe(scrapedRecipe)
-                }
-
                 clMypageLayout.setOnClickListener {
                     val bundle = Bundle()
                     bundle.putLong("recipeId", scrapedRecipe.recipeId)

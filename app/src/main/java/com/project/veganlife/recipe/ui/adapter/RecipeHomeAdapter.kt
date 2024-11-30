@@ -11,7 +11,8 @@ import com.bumptech.glide.request.RequestOptions
 import com.project.veganlife.R
 import com.project.veganlife.databinding.ItemRecyclerviewRecipeListBinding
 import com.project.veganlife.recipe.data.model.RecipeFeedContent
-import com.project.veganlife.utils.ui.VeganTypeChange
+import com.project.veganlife.utils.ui.VeganTypeChange.Companion.changeBackground
+import com.project.veganlife.utils.ui.VeganTypeChange.Companion.changeVeganType
 
 class RecipeHomeAdapter(
     private val recipeFeedItemClickListener: OnItemClickListener
@@ -38,21 +39,23 @@ class RecipeHomeAdapter(
 
                 tvRecipeName.text = item.recipeTitle
                 tvRecipeNickname.text = item.author.nickname
-                tvRecipeVeganType.text = VeganTypeChange.changeVeganType(item.author.vegetarianType)
+                tvRecipeVeganType.text = changeVeganType(item.author.vegetarianType)
 
                 when (item.recipeTypes.size) {
                     1 -> {
-                        tvRecipeAbleVeganTypeOne.text =
-                            VeganTypeChange.changeVeganType(item.recipeTypes.get(0))
+                        tvRecipeAbleVeganTypeOne.text = changeVeganType(item.recipeTypes.get(0))
+                        tvRecipeAbleVeganTypeOne.setBackgroundResource(changeBackground(item.recipeTypes.get(0)))
                     }
 
                     2 -> {
-                        tvRecipeAbleVeganTypeOne.text =
-                            VeganTypeChange.changeVeganType(item.recipeTypes.get(0))
-                        tvRecipeAbleVeganTypeTwo.text =
-                            VeganTypeChange.changeVeganType(item.recipeTypes.get(1))
+                        tvRecipeAbleVeganTypeOne.text = changeVeganType(item.recipeTypes.get(0))
+                        tvRecipeAbleVeganTypeOne.setBackgroundResource(changeBackground(item.recipeTypes.get(0)))
+
+                        tvRecipeAbleVeganTypeTwo.text = changeVeganType(item.recipeTypes.get(1))
+                        tvRecipeAbleVeganTypeTwo.setBackgroundResource(changeBackground(item.recipeTypes.get(1)))
                     }
                 }
+                updateLikeBackground(item.isLiked)
 
 
                 root.setOnClickListener {
@@ -62,13 +65,7 @@ class RecipeHomeAdapter(
         }
 
         private fun updateLikeBackground(isLike: Boolean) {
-            binding.apply {
-                if (isLike) {
-                    btnRecipeLike.setImageResource(R.drawable.all_like_full_recipe)
-                } else {
-                    btnRecipeLike.setImageResource(R.drawable.all_like_empty_recipe)
-                }
-            }
+            if (isLike) binding.btnRecipeLike.setImageResource(R.drawable.all_like_full_recipe)
         }
     }
 
