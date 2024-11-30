@@ -4,8 +4,6 @@ import com.project.veganlife.alarm.data.remote.AlarmApi
 import com.project.veganlife.community.data.remote.CommunityApi
 import com.project.veganlife.data.remote.DailyIntakeGetApi
 import com.project.veganlife.data.remote.ProfileInfoGetApi
-import com.project.veganlife.data.remote.RecipeLikeApi
-import com.project.veganlife.data.remote.RecipeLikeCancelApi
 import com.project.veganlife.data.remote.RecommendedIntakeGetApi
 import com.project.veganlife.lifecheck.data.remote.LifeCheckMealDataApi
 import com.project.veganlife.lifecheck.data.remote.LifeCheckMonthlyCalorieGetApi
@@ -16,6 +14,7 @@ import com.project.veganlife.mypage.data.remote.MypageGetMyPostedFeedApi
 import com.project.veganlife.mypage.data.remote.MypageGetScrapedRecipeApi
 import com.project.veganlife.data.remote.ProfileAdd_ModifyApi
 import com.project.veganlife.mypage.data.remote.MypageWithDrawalApi
+import com.project.veganlife.recipe.data.remote.RecipeApi
 import com.project.veganlife.signup.data.remote.SignupApi
 import dagger.Module
 import dagger.Provides
@@ -89,18 +88,6 @@ class AppApiModule {
 
     @Provides
     @Singleton
-    fun provideScrapedRecipeLikeApi(retrofit: Retrofit): RecipeLikeApi {
-        return retrofit.create(RecipeLikeApi::class.java)
-    }
-
-    @Provides
-    @Singleton
-    fun provideScrapedRecipeLikeCancelApi(retrofit: Retrofit): RecipeLikeCancelApi {
-        return retrofit.create(RecipeLikeCancelApi::class.java)
-    }
-
-    @Provides
-    @Singleton
     fun provideLifeCheckMonthlyCalorieGetApi(retrofit: Retrofit): LifeCheckMonthlyCalorieGetApi {
         return retrofit.create(LifeCheckMonthlyCalorieGetApi::class.java)
     }
@@ -127,5 +114,11 @@ class AppApiModule {
     @Singleton
     fun provideAlarmApi(retrofit: Retrofit): AlarmApi {
         return retrofit.create(AlarmApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideRecipeApi(retrofit: Retrofit): RecipeApi {
+        return retrofit.create(RecipeApi::class.java)
     }
 }

@@ -15,7 +15,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:menu="@menu/menu_all"
         app:navigationIcon="@drawable/all_back"
         app:title="@string/recipe_toolbar_title_recipe_search" />
 
@@ -23,8 +22,8 @@
         android:id="@+id/et_recipe_search_toolbar_search_box"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
         android:layout_marginHorizontal="24dp"
+        android:layout_marginTop="4dp"
         android:background="@color/sub_gray1"
         android:drawableEnd="@drawable/all_search"
         app:layout_constraintEnd_toEndOf="parent"

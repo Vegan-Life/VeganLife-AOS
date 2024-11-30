@@ -42,8 +42,6 @@ class MypageScrapsRecipeFragment : Fragment() {
 
         // ui
         setScrapedRecipe()
-
-        setRecipeLikeBackground()
     }
 
     private fun setToolbarListener() {
@@ -70,14 +68,6 @@ class MypageScrapsRecipeFragment : Fragment() {
                 pagingData?.let {
                     adapter.submitData(it)
                 }
-            }
-        }
-    }
-
-    private fun setRecipeLikeBackground() {
-        viewModel.apply {
-            recipeLikeResponse.observe(viewLifecycleOwner) {
-                adapter.refresh()
             }
         }
     }

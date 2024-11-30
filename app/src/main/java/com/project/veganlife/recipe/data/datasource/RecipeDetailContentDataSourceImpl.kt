@@ -1,34 +1,31 @@
-package com.project.veganlife.data.datasource
+package com.project.veganlife.recipe.data.datasource
 
-import android.content.SharedPreferences
 import com.google.gson.GsonBuilder
 import com.project.veganlife.data.model.ApiResult
 import com.project.veganlife.data.model.ConflictResponse
-import com.project.veganlife.data.model.ProfileResponse
-import com.project.veganlife.data.remote.ProfileInfoGetApi
-import java.lang.Exception
+import com.project.veganlife.recipe.data.model.RecipeDetailContent
+import com.project.veganlife.recipe.data.remote.RecipeApi
 import javax.inject.Inject
 
-class ProfileGetDataSourceImpl @Inject constructor(
-    private val profileInfoGetApi: ProfileInfoGetApi,
-    private val sharedPreferences: SharedPreferences,
-): ProfileGetDataSource{
-    override suspend fun getInformation(): ApiResult<ProfileResponse> {
+class RecipeDetailContentDataSourceImpl @Inject constructor(
+    private val recipeApi: RecipeApi
+) {
+    suspend fun getRecipeDetailContent(id: Long): ApiResult<RecipeDetailContent> {
         val gson = GsonBuilder().create()
 
         return try {
-            val response = profileInfoGetApi.getInformation()
-            if (response.isSuccessful == true) {
+            val response = recipeApi.getRecipeDetailContent(id)
+
+            if (response.isSuccessful) {
                 val responseBody = response.body()!!
-                sharedPreferences.edit().putString("userNickname",responseBody.nickname).apply()
                 ApiResult.Success(responseBody)
+
             } else {
                 val errorBodyString = response.errorBody()?.string()
                 val conflictResponse =
                     gson.fromJson(errorBodyString, ConflictResponse::class.java)
                 ApiResult.Error(conflictResponse.errorCode, conflictResponse.description)
             }
-
         } catch (e: Exception) {
             ApiResult.Exception(e)
         }
