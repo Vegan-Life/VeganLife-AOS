@@ -4,11 +4,11 @@ import com.google.gson.GsonBuilder
 import com.project.veganlife.data.model.ApiResult
 import com.project.veganlife.data.model.ConflictResponse
 import com.project.veganlife.data.model.DailyIntakeResponse
-import com.project.veganlife.data.remote.DailyIntakeGetApi
+import com.project.veganlife.data.remote.IntakeGetApi
 import javax.inject.Inject
 
 class LifeCheckDailyIntakeDataSourceImpl @Inject constructor(
-    private val lifeCheckDailyIntakeApi: DailyIntakeGetApi,
+    private val lifeCheckDailyIntakeApi: IntakeGetApi,
 ) : LifeCheckDailyIntakeDataSource {
     override suspend fun getDailyIntake(date: String): ApiResult<DailyIntakeResponse> {
         val gson = GsonBuilder().create()

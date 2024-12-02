@@ -8,8 +8,8 @@ import javax.inject.Inject
 
 class LocalUserDataSourceImpl @Inject constructor(
     private val sharedPreferences: SharedPreferences,
-) : LocalUserDataSource {
-    override suspend fun saveToken(provider: String, token: LoginResponse) {
+)  {
+    suspend fun saveToken(provider: String, token: LoginResponse) {
         withContext(Dispatchers.IO) {
             sharedPreferences.edit().apply {
                 putString("provider", provider)
