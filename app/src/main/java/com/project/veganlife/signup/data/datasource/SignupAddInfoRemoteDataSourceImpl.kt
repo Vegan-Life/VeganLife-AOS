@@ -13,8 +13,8 @@ import javax.inject.Inject
 class SignupAddInfoRemoteDataSourceImpl @Inject constructor(
     private val signupApi: SignupApi,
     private val accessToken: SharedPreferences,
-) : SignupAddInfoRemoteDataSource {
-    override suspend fun signupAddInfo(
+)  {
+    suspend fun signupAddInfo(
         signupRequestDTO: RequestBody
     ): ApiResult<ProfileResponse> {
         val gson = GsonBuilder().create()

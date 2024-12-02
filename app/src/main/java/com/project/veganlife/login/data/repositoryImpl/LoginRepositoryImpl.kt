@@ -1,20 +1,19 @@
 package com.project.veganlife.login.data.repositoryImpl
 
 import android.util.Log
-import com.project.veganlife.login.data.datasource.KakaoLoginDataSource
-import com.project.veganlife.login.data.datasource.NaverLoginDataSource
-import com.project.veganlife.login.data.model.LoginRequest
+import com.project.veganlife.login.data.datasource.KakaoLoginDataSourceImpl
+import com.project.veganlife.login.data.datasource.NaverLoginDataSourceImpl
 import com.project.veganlife.login.data.model.LoginResponse
-import com.project.veganlife.login.data.remote.LoginRemoteDataSource
+import com.project.veganlife.login.data.datasource.LoginRemoteDataSourceImpl
+import com.project.veganlife.login.data.model.LoginRequest
 import com.project.veganlife.login.domain.repository.LoginRepository
 import javax.inject.Inject
 
 class LoginRepositoryImpl @Inject constructor(
-    private val kakaoLoginDataSource: KakaoLoginDataSource,
-    private val naverLoginDataSource: NaverLoginDataSource,
-    private val loginRemoteDataSource: LoginRemoteDataSource,
+    private val kakaoLoginDataSource: KakaoLoginDataSourceImpl,
+    private val naverLoginDataSource: NaverLoginDataSourceImpl,
+    private val loginRemoteDataSource: LoginRemoteDataSourceImpl,
 ) : LoginRepository {
-
     override suspend fun login(provider: String): String {
         var accessToken = ""
         if (provider == "kakao") {

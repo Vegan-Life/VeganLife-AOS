@@ -6,14 +6,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.project.veganlife.R
 import com.project.veganlife.signup.data.model.SignupVeganType
-import com.project.veganlife.signup.domain.SignupVeganTypeUsecase
+import com.project.veganlife.signup.domain.usecase.SignupUsecase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class SignupVeganTypeViewModel @Inject constructor(
-    private val signupVeganTypeUsecase: SignupVeganTypeUsecase,
+    private val signupUsecase: SignupUsecase,
 ) : ViewModel() {
     private val _veganTypeData = MutableLiveData<List<SignupVeganType>>()
     val veganTypeData: LiveData<List<SignupVeganType>> get() = _veganTypeData
@@ -29,7 +29,7 @@ class SignupVeganTypeViewModel @Inject constructor(
 
     fun setVeganList() {
         viewModelScope.launch {
-            val result = signupVeganTypeUsecase()
+            val result = signupUsecase.saveVeganTypeList()
             _veganTypeData.value = result
         }
     }

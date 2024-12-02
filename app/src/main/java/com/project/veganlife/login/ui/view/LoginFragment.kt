@@ -6,11 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.project.veganlife.R
 import com.project.veganlife.databinding.FragmentLoginBinding
 import com.project.veganlife.login.ui.view.viewmodel.LoginViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class LoginFragment : Fragment() {
@@ -61,6 +63,8 @@ class LoginFragment : Fragment() {
     }
 
     private fun login(provider: String) {
-        context?.let { loginViewModel.login(provider, it) }
+        lifecycleScope.launch {
+            loginViewModel.login(provider)
+        }
     }
 }

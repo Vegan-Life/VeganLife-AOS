@@ -9,7 +9,7 @@ import com.project.veganlife.data.model.ApiResult
 import com.project.veganlife.data.model.ProfileResponse
 import com.project.veganlife.domain.usecase.ProfileGetUsecase
 import com.project.veganlife.data.model.ProfileRequestDTO
-import com.project.veganlife.mypage.domain.usecase.ProfileModifyUsecase
+import com.project.veganlife.mypage.domain.usecase.MypageUsecase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
@@ -19,7 +19,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MypageViewmodel @Inject constructor(
     private val profileGetUsecase: ProfileGetUsecase,
-    private val profileModifyUsecase: ProfileModifyUsecase,
+    private val mypageUsecase: MypageUsecase
 ) : ViewModel() {
     // 유저 정보 api Response
     private val _profileInfoResponse = MutableLiveData<ProfileResponse>()
@@ -67,7 +67,7 @@ class MypageViewmodel @Inject constructor(
         val profileModifyDTO = profileModifyRequestBody.value ?: return
         val profilePhoto = profilePhotoMultipart.value ?: return
         viewModelScope.launch {
-            val response = profileModifyUsecase.invoke(profileModifyDTO, profilePhoto)
+            val response = mypageUsecase.modifyProfile(profileModifyDTO, profilePhoto)
             when (response) {
                 is ApiResult.Error -> {
                     val responseDescription = response.description

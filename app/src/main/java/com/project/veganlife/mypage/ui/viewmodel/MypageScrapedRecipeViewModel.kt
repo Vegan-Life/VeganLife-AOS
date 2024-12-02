@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import com.project.veganlife.mypage.data.model.ScrapedRecipeContent
-import com.project.veganlife.mypage.domain.usecase.MypageGetScrapedRecipeUsecase
+import com.project.veganlife.mypage.domain.usecase.MypageUsecase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MypageScrapedRecipeViewModel @Inject constructor(
-    private val mypageGetScrapedRecipeUsecase: MypageGetScrapedRecipeUsecase,
+    private val mypageUsecase: MypageUsecase,
 
 ) : ViewModel() {
 
@@ -25,7 +25,7 @@ class MypageScrapedRecipeViewModel @Inject constructor(
     fun getScrapedRecipe() {
         viewModelScope.launch {
             try {
-                mypageGetScrapedRecipeUsecase()
+                mypageUsecase.getScrapedRecipe()
                     .collectLatest { pagingData ->
                         _scrapedRecipe.value = pagingData
                     }

@@ -1,11 +1,11 @@
 package com.project.veganlife.login.ui.view.viewmodel
 
-import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.project.veganlife.login.data.model.LoginResponse
 import com.project.veganlife.login.domain.usecase.LoginUsecase
+import com.project.veganlife.login.domain.usecase.UserUsecase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -13,14 +13,26 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val loginUseCase: LoginUsecase,
+    private val userUsecase: UserUsecase,
 ) : ViewModel() {
     private val _loginResponse = MutableLiveData<LoginResponse?>()
     val loginResponse get() = _loginResponse
 
-    fun login(provider: String,context: Context) {
+    fun login(provider: String) {
         viewModelScope.launch {
-            val getAccessToken = loginUseCase(provider,context)
-            _loginResponse.value = getAccessToken
+            val getAccessToken = loginUseCase(provider)
+            if (getAccessToken != null) {
+                getUserInfo(getAccessToken)
+                storeUserInfo(provider, getAccessToken)
+            }
         }
+    }
+
+    private fun getUserInfo(userInfo: LoginResponse) {
+        _loginResponse.value = userInfo
+    }
+
+    private suspend fun storeUserInfo(provider: String, userInfo: LoginResponse) {
+        userUsecase.invoke(provider, userInfo)
     }
 }

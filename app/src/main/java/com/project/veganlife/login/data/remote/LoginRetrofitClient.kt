@@ -1,5 +1,7 @@
-package com.project.veganlife.login.data.model.remote
+package com.project.veganlife.login.data.remote
 
+import com.project.veganlife.BuildConfig
+import com.project.veganlife.login.data.model.remote.LoginApi
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
 import okhttp3.logging.HttpLoggingInterceptor
@@ -9,8 +11,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.lang.reflect.Type
 
 object LoginRetrofitClient {
-    private const val  BASE_URL = "https://dev.konggogi.store/api/v1/"
-
     private val logging =
         HttpLoggingInterceptor().apply {
             level = HttpLoggingInterceptor.Level.BODY
@@ -24,7 +24,7 @@ object LoginRetrofitClient {
 
     private fun getRetrofit(): Retrofit {
         return Retrofit.Builder()
-            .baseUrl(BASE_URL)
+            .baseUrl(BuildConfig.BASEURL)
             .client(okHttpClient)
             .addConverterFactory(nullOnEmptyConverterFactory)
             .addConverterFactory(GsonConverterFactory.create())
@@ -41,7 +41,8 @@ object LoginRetrofitClient {
                 annotations: Array<out Annotation>,
                 retrofit: Retrofit,
             ) = object : Converter<ResponseBody, Any?> {
-                val nextResponseBodyConverter = retrofit.nextResponseBodyConverter<Any?>(converterFactory(), type, annotations)
+                val nextResponseBodyConverter =
+                    retrofit.nextResponseBodyConverter<Any?>(converterFactory(), type, annotations)
 
                 override fun convert(value: ResponseBody) =
                     if (value.contentLength() != 0L) nextResponseBodyConverter.convert(value) else null

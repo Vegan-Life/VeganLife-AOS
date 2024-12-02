@@ -72,7 +72,7 @@ class AppModule {
             readTimeout(0, TimeUnit.SECONDS)    // SSE를 위한 타임아웃 해제
         }
 
-        return  builder.build()
+        return builder.build()
     }
 
     @Singleton

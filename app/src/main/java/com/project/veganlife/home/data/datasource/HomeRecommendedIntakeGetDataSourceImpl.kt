@@ -4,14 +4,14 @@ import com.google.gson.GsonBuilder
 import com.project.veganlife.data.model.ApiResult
 import com.project.veganlife.data.model.ConflictResponse
 import com.project.veganlife.data.model.RecommendedIntakeResponse
-import com.project.veganlife.data.remote.RecommendedIntakeGetApi
+import com.project.veganlife.data.remote.IntakeGetApi
 import java.lang.Exception
 import javax.inject.Inject
 
 class HomeRecommendedIntakeGetDataSourceImpl @Inject constructor(
-    private val recommendedIntakeGetApi: RecommendedIntakeGetApi,
-) : HomeRecommendedIntakeGetDataSource {
-    override suspend fun getRecommendedIntake(): ApiResult<RecommendedIntakeResponse>? {
+    private val recommendedIntakeGetApi: IntakeGetApi,
+){
+    suspend fun getRecommendedIntake(): ApiResult<RecommendedIntakeResponse>? {
         val gson = GsonBuilder().create()
 
         return try {
