@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import com.project.veganlife.mypage.data.model.MyPostedContent
-import com.project.veganlife.mypage.domain.usecase.MypageGetPostedUsecase
+import com.project.veganlife.mypage.domain.usecase.MypageUsecase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MypagePostedPagingViewModel @Inject constructor(
-    private val usecase: MypageGetPostedUsecase,
+    private val mypageUsecase: MypageUsecase,
 ) : ViewModel() {
 
     private var _posted = MutableStateFlow<PagingData<MyPostedContent>?>(null)
@@ -24,7 +24,7 @@ class MypagePostedPagingViewModel @Inject constructor(
     fun getPostedFeed(type: String) {
         viewModelScope.launch {
             try {
-                usecase(type)
+                mypageUsecase.getMyPosted(type)
                     .collectLatest { pagingData ->
                         _posted.value = pagingData
                     }

@@ -2,9 +2,10 @@ package com.project.veganlife.signup.data.local
 
 import com.project.veganlife.R
 import com.project.veganlife.signup.data.model.SignupVeganType
+import javax.inject.Inject
 
-class LocalSignupDataSourceImpl : LocalSignupDataSource {
-    override suspend fun saveVeganTypeList(): List<SignupVeganType> {
+class LocalSignupDataSourceImpl @Inject constructor() {
+    fun saveVeganTypeList(): List<SignupVeganType> {
         return listOf(
             SignupVeganType(
                 R.drawable.all_vegan_type_vegan,

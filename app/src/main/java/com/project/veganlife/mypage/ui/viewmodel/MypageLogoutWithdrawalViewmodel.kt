@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.project.veganlife.data.model.ApiResult
 import com.project.veganlife.mypage.domain.usecase.MypageLogoutUsecase
-import com.project.veganlife.mypage.domain.usecase.MypageWithdrawalUsecase
+import com.project.veganlife.mypage.domain.usecase.MypageUsecase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -16,7 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MypageLogoutWithdrawalViewmodel @Inject constructor(
     private val mypageLogoutUsecase: MypageLogoutUsecase,
-    private val mypageWithdrawalUsecase: MypageWithdrawalUsecase,
+    private val mypageWithdrawalUsecase: MypageUsecase,
     private val sharedPreferences: SharedPreferences,
 ): ViewModel() {
     private val _logout = MutableLiveData<String>().apply { value = "" }
@@ -43,7 +43,7 @@ class MypageLogoutWithdrawalViewmodel @Inject constructor(
 
     fun deleteWithDrawal() {
         viewModelScope.launch {
-            val response = mypageWithdrawalUsecase.invoke()
+            val response = mypageWithdrawalUsecase.deleteWithdrawal()
             when(response) {
                 is ApiResult.Error -> {
                     val responseDescription = response.description

@@ -10,7 +10,7 @@ import com.project.veganlife.R
 import com.project.veganlife.data.model.ApiResult
 import com.project.veganlife.data.model.ProfileRequestDTO
 import com.project.veganlife.data.model.ProfileResponse
-import com.project.veganlife.signup.domain.SignupAddInfoUsecase
+import com.project.veganlife.signup.domain.usecase.SignupUsecase
 import com.project.veganlife.utils.PhotoUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -18,7 +18,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SignupAddInfoViewModel @Inject constructor(
-    private val signupAddInfoUsecase: SignupAddInfoUsecase,
+    private val signupUsecase: SignupUsecase,
     private val sharedPreferences: SharedPreferences,
 ) : ViewModel() {
     // 닉네임
@@ -199,7 +199,7 @@ class SignupAddInfoViewModel @Inject constructor(
             )
             viewModelScope.launch {
                 val requestDTO = PhotoUtils.createProfileRequestBody(signupRequest)
-                val response = signupAddInfoUsecase(requestDTO)
+                val response = signupUsecase.signupAddInfo(requestDTO)
 
                 when (response) {
                     is ApiResult.Error -> {

@@ -2,18 +2,14 @@ package com.project.veganlife.di
 
 import com.project.veganlife.alarm.data.remote.AlarmApi
 import com.project.veganlife.community.data.remote.CommunityApi
-import com.project.veganlife.data.remote.DailyIntakeGetApi
+import com.project.veganlife.data.remote.IntakeGetApi
 import com.project.veganlife.data.remote.ProfileInfoGetApi
-import com.project.veganlife.data.remote.RecommendedIntakeGetApi
 import com.project.veganlife.lifecheck.data.remote.LifeCheckMealDataApi
 import com.project.veganlife.lifecheck.data.remote.LifeCheckMonthlyCalorieGetApi
 import com.project.veganlife.lifecheck.data.remote.LifeCheckWeeklyCalorieGetApi
 import com.project.veganlife.lifecheck.data.remote.LifeCheckYearlyCalorieGetApi
-import com.project.veganlife.mypage.data.remote.MypageGetMyPostedCommentApi
-import com.project.veganlife.mypage.data.remote.MypageGetMyPostedFeedApi
-import com.project.veganlife.mypage.data.remote.MypageGetScrapedRecipeApi
-import com.project.veganlife.data.remote.ProfileAdd_ModifyApi
-import com.project.veganlife.mypage.data.remote.MypageWithDrawalApi
+import com.project.veganlife.login.data.model.remote.LoginApi
+import com.project.veganlife.mypage.data.remote.MypageApi
 import com.project.veganlife.recipe.data.remote.RecipeApi
 import com.project.veganlife.signup.data.remote.SignupApi
 import dagger.Module
@@ -34,6 +30,12 @@ class AppApiModule {
 
     @Provides
     @Singleton
+    fun provideLoginApi(retrofit: Retrofit): LoginApi {
+        return retrofit.create(LoginApi::class.java)
+    }
+
+    @Provides
+    @Singleton
     fun provideHomeProfileApi(retrofit: Retrofit): ProfileInfoGetApi {
         return retrofit.create(ProfileInfoGetApi::class.java)
     }
@@ -46,44 +48,20 @@ class AppApiModule {
 
     @Provides
     @Singleton
-    fun provideRecommendedIntakeGetApi(retrofit: Retrofit): RecommendedIntakeGetApi {
-        return retrofit.create(RecommendedIntakeGetApi::class.java)
+    fun provideIntakeGetApi(retrofit: Retrofit): IntakeGetApi {
+        return retrofit.create(IntakeGetApi::class.java)
     }
 
     @Provides
     @Singleton
-    fun provideDailyIntakeGetApi(retrofit: Retrofit): DailyIntakeGetApi {
-        return retrofit.create(DailyIntakeGetApi::class.java)
-    }
-
-    @Provides
-    @Singleton
-    fun provideMypageDeleteWithdrawalApi(retrofit: Retrofit): MypageWithDrawalApi {
-        return retrofit.create(MypageWithDrawalApi::class.java)
+    fun provideMypageApi(retrofit: Retrofit): MypageApi {
+        return retrofit.create(MypageApi::class.java)
     }
 
     @Provides
     @Singleton
     fun provideLifeCheckWeeklyCalorieGetApi(retrofit: Retrofit): LifeCheckWeeklyCalorieGetApi {
         return retrofit.create(LifeCheckWeeklyCalorieGetApi::class.java)
-    }
-
-    @Provides
-    @Singleton
-    fun provideMyPostedFeedApi(retrofit: Retrofit): MypageGetMyPostedFeedApi {
-        return retrofit.create(MypageGetMyPostedFeedApi::class.java)
-    }
-
-    @Provides
-    @Singleton
-    fun provideMyPostedCommentApi(retrofit: Retrofit): MypageGetMyPostedCommentApi {
-        return retrofit.create(MypageGetMyPostedCommentApi::class.java)
-    }
-
-    @Provides
-    @Singleton
-    fun provideScrapedRecipeApi(retrofit: Retrofit): MypageGetScrapedRecipeApi {
-        return retrofit.create(MypageGetScrapedRecipeApi::class.java)
     }
 
     @Provides
@@ -102,12 +80,6 @@ class AppApiModule {
     @Singleton
     fun provideLifeCheckMealDataApi(retrofit: Retrofit): LifeCheckMealDataApi {
         return retrofit.create(LifeCheckMealDataApi::class.java)
-    }
-
-    @Provides
-    @Singleton
-    fun provideProfileAdd_ModifyApi(retrofit: Retrofit): ProfileAdd_ModifyApi {
-        return retrofit.create(ProfileAdd_ModifyApi::class.java)
     }
 
     @Provides

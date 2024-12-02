@@ -1,20 +1,17 @@
 package com.project.veganlife.home.ui.viewmodel
 
-import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.github.mikephil.charting.data.PieEntry
 import com.project.veganlife.R
 import com.project.veganlife.data.model.ApiResult
 import com.project.veganlife.data.model.DailyIntakeResponse
 import com.project.veganlife.data.model.ProfileResponse
 import com.project.veganlife.data.model.RecommendedIntakeResponse
 import com.project.veganlife.domain.usecase.ProfileGetUsecase
-import com.project.veganlife.home.domain.usecase.HomeDailyIntakeUsecase
-import com.project.veganlife.home.domain.usecase.HomeRecommenedIntakeUsecase
+import com.project.veganlife.home.domain.usecase.HomeUsecase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -22,8 +19,7 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val profileGetUsecase: ProfileGetUsecase,
-    private val homeRecommenedIntakeUsecase: HomeRecommenedIntakeUsecase,
-    private val homeDailyIntakeUsecase: HomeDailyIntakeUsecase,
+    private val homeUsecase: HomeUsecase,
 ) : ViewModel() {
     private val _profile = MutableLiveData<ApiResult<ProfileResponse>>()
     val profile: LiveData<ApiResult<ProfileResponse>> get() = _profile
@@ -164,13 +160,13 @@ class HomeViewModel @Inject constructor(
 
     fun getRecommendedIntake() {
         viewModelScope.launch {
-            _resultRecommendedIntake.value = homeRecommenedIntakeUsecase.invoke()
+            _resultRecommendedIntake.value = homeUsecase.getRecommendedIntake()
         }
     }
 
     fun getDailyIntake() {
         viewModelScope.launch {
-            _resultDailyIntake.value = homeDailyIntakeUsecase.invoke()
+            _resultDailyIntake.value = homeUsecase.getDailyIntake()
         }
     }
 

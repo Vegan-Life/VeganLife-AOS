@@ -1,7 +1,6 @@
 package com.project.veganlife.login.di
 
 import android.content.SharedPreferences
-import com.project.veganlife.login.data.local.LocalUserDataSource
 import com.project.veganlife.login.data.local.LocalUserDataSourceImpl
 import com.project.veganlife.login.data.repositoryImpl.UserRepositoryImpl
 import com.project.veganlife.login.domain.repository.UserRepository
@@ -24,8 +23,8 @@ object UserRepositoryModule {
     @Provides
     @Singleton
     fun provideLocalUserDataSource(
-        sharedPreferences: SharedPreferences,
-    ): LocalUserDataSource {
+        sharedPreferences: SharedPreferences
+    ): LocalUserDataSourceImpl {
         return LocalUserDataSourceImpl(sharedPreferences)
     }
 }
