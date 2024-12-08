@@ -1,11 +1,16 @@
 package com.project.veganlife.community.data.remote
 
-import com.project.veganlife.community.data.model.PostPreview
+import com.project.veganlife.community.data.model.CommentRequest
+import com.project.veganlife.community.data.model.CommentResponse
 import com.project.veganlife.community.data.model.PopularTagsResponse
 import com.project.veganlife.community.data.model.Post
+import com.project.veganlife.community.data.model.PostPreview
 import com.project.veganlife.data.model.PagingResponse
 import retrofit2.Response
+import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -33,4 +38,20 @@ interface CommunityApi {
     suspend fun getPost(
         @Path("postId") postId: Int,
     ): Response<Post>
+
+    @POST("posts/{postId}/likes")
+    suspend fun likePost(
+        @Path("postId") postId: Int
+    ): Response<String>
+
+    @DELETE("posts/{postId}/likes")
+    suspend fun unlikePost(
+        @Path("postId") postId: Int
+    ): Response<String>
+
+    @POST("posts/{postId}/comments")
+    suspend fun createComment(
+        @Path("postId") postId: Long,
+        @Body commentRequest: CommentRequest
+    ): Response<CommentResponse>
 }
