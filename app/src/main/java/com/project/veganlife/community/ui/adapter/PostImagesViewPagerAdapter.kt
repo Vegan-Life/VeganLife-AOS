@@ -2,11 +2,12 @@ package com.project.veganlife.community.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.project.veganlife.R
 import com.project.veganlife.databinding.ItemImageBinding
 
 class PostImagesViewPagerAdapter :
@@ -17,8 +18,13 @@ class PostImagesViewPagerAdapter :
             fun bind(url: String) {
                 // Glide로 이미지 로드
                 Glide.with(binding.imageView1.context)
-                    .load(url)  // getItem()으로 데이터 접근
+                    .load(url)
+                    .placeholder(R.drawable.all_spoon_fork_small) // 로드 전 기본 이미지
+                    .error(R.color.sub_gray2) // 로딩 실패 시 기본 색상
+                    .centerCrop()
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .into(binding.imageView1)
+
             }
         }
 

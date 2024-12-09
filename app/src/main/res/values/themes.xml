@@ -88,4 +88,11 @@
 
     </style>
 
+    <style name="CommentTag">
+        <item name="android:textColor">@color/base3</item> <!-- 텍스트 색상 -->
+        <item name="android:textSize">12sp</item>     <!-- 텍스트 크기 -->
+        <item name="android:fontFamily">@font/noto_sans_kr_bold</item> <!-- 폰트 (res/font 폴더) -->
+    </style>
+
+
 </resources>
