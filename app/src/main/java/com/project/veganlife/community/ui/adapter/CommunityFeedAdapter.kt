@@ -8,7 +8,7 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.project.veganlife.R
 import com.project.veganlife.community.data.model.PostPreview
 import com.project.veganlife.databinding.ItemRecyclerviewCommunityHomeFeedBinding
@@ -23,17 +23,18 @@ class CommunityFeedAdapter(
     interface OnItemClickListener {
         fun onItemClicked(item: PostPreview)
     }
+
     inner class FeedsViewHolder(private val binding: ItemRecyclerviewCommunityHomeFeedBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: PostPreview) {
             binding.apply {
-                if (item.imageUrl != null) {
-                    Glide.with(itemView)
-                        .load(item.imageUrl)
-                        .apply(RequestOptions().error(R.drawable.all_spoon_fork_small))
-                        .fitCenter()
-                        .into(ivCommunityhomefeed)
-                }
+                Glide.with(itemView)
+                    .load(item.imageUrl ?: R.drawable.all_spoon_fork_small)
+                    .placeholder(R.drawable.all_spoon_fork_small) // 로드 전 기본 이미지
+                    .error(R.color.sub_gray2) // 로딩 실패 시 기본 색상
+                    .centerCrop()
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .into(ivCommunityhomefeed)
                 tvCommunityhomefeedTitle.text = item.title
                 tvCommunityhomefeedDescription.text = item.content
                 tvCommunityhomefeedDatetime.text = parseDateTime(item.createdAt)
@@ -55,7 +56,8 @@ class CommunityFeedAdapter(
             val dateTime = LocalDateTime.parse(trimmedInput, inputFormatter)
 
             // 원하는 형식으로 포맷 (한국어 로케일 설정)
-            val outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd a hh:mm", Locale("ko", "KR"))
+            val outputFormatter =
+                DateTimeFormatter.ofPattern("yyyy-MM-dd a hh:mm", Locale("ko", "KR"))
             return dateTime.format(outputFormatter)
         }
     }
