@@ -12,13 +12,7 @@ import com.project.veganlife.data.model.RecommendedIntakeResponse
 import com.project.veganlife.lifecheck.data.model.LifeCheckMealData
 import com.project.veganlife.lifecheck.data.model.LifeCheckMealDataRequest
 import com.project.veganlife.lifecheck.data.model.LifeCheckWeeklyCalorieResponse
-import com.project.veganlife.lifecheck.domain.usecase.LifeCheckGetDailyIntakeUseCase
-import com.project.veganlife.lifecheck.domain.usecase.LifeCheckGetMealDataUsecase
-import com.project.veganlife.lifecheck.domain.usecase.LifeCheckGetMonthlyCalorieUseCase
-import com.project.veganlife.lifecheck.domain.usecase.LifeCheckGetRecommendedIntakeUseCase
-import com.project.veganlife.lifecheck.domain.usecase.LifeCheckGetWeeklyCalorieUseCase
-import com.project.veganlife.lifecheck.domain.usecase.LifeCheckGetYearlyCalorieUseCase
-import com.project.veganlife.lifecheck.domain.usecase.LifeCheckRegisterMealDataUseCase
+import com.project.veganlife.lifecheck.domain.usecase.LifeCheckUseCase
 import com.project.veganlife.lifecheck.util.EventWrapper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -29,13 +23,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LifeCheckViewModel @Inject constructor(
-    private val lifeCheckGetDailyIntakeUseCase: LifeCheckGetDailyIntakeUseCase,
-    private val lifeCheckGetRecommendedIntakeUseCase: LifeCheckGetRecommendedIntakeUseCase,
-    private val lifeCheckGetWeeklyCalorieUseCase: LifeCheckGetWeeklyCalorieUseCase,
-    private val lifeCheckGetMonthlyCalorieUseCase: LifeCheckGetMonthlyCalorieUseCase,
-    private val lifeCheckGetYearlyCalorieUseCase: LifeCheckGetYearlyCalorieUseCase,
-    private val lifeCheckGetMealDataUsecase: LifeCheckGetMealDataUsecase,
-    private val lifeCheckRegisterMealDataUseCase: LifeCheckRegisterMealDataUseCase,
+    private val lifeCheckUseCase: LifeCheckUseCase,
 ) : ViewModel() {
 
     // 일일 섭취량 조회
@@ -80,14 +68,16 @@ class LifeCheckViewModel @Inject constructor(
     val mealData: StateFlow<PagingData<LifeCheckMealData>> = _mealData
 
     // 식품 데이터 등록
-    private val _mealDataRegister = MutableLiveData<EventWrapper<ApiResult<LifeCheckMealDataRequest?>>>()
-    val mealDataRegister: LiveData<EventWrapper<ApiResult<LifeCheckMealDataRequest?>>> = _mealDataRegister
+    private val _mealDataRegister =
+        MutableLiveData<EventWrapper<ApiResult<LifeCheckMealDataRequest?>>>()
+    val mealDataRegister: LiveData<EventWrapper<ApiResult<LifeCheckMealDataRequest?>>> =
+        _mealDataRegister
 
 
     // 일일 섭취량 조회
     fun fetchDailyIntake(date: String) {
         viewModelScope.launch {
-            _dailyIntakeData.value = lifeCheckGetDailyIntakeUseCase(date)
+            _dailyIntakeData.value = lifeCheckUseCase.getDailyIntake(date)
         }
     }
 
@@ -98,14 +88,14 @@ class LifeCheckViewModel @Inject constructor(
     // 권장 섭취량 조회
     fun fetchRecommendedIntake() {
         viewModelScope.launch {
-            _recommendedIntakeData.value = lifeCheckGetRecommendedIntakeUseCase()
+            _recommendedIntakeData.value = lifeCheckUseCase.getRecommendedIntake()
         }
     }
 
     // 주간 섭취 칼로리 조회
     fun fetchWeeklyCalorie(startDate: String, endDate: String) {
         viewModelScope.launch {
-            _weeklyCalorieData.value = lifeCheckGetWeeklyCalorieUseCase(startDate, endDate)
+            _weeklyCalorieData.value = lifeCheckUseCase.getWeeklyCalorie(startDate, endDate)
         }
     }
 
@@ -120,14 +110,14 @@ class LifeCheckViewModel @Inject constructor(
     // 월간 섭취 칼로리 조회
     fun fetchMonthlyCalorie(startDate: String) {
         viewModelScope.launch {
-            _monthlyCalorieData.value = lifeCheckGetMonthlyCalorieUseCase(startDate)
+            _monthlyCalorieData.value = lifeCheckUseCase.getMonthlyCalorie(startDate)
         }
     }
 
     // 연간 섭취 칼로리 조회
     fun fetchYearlyCalorie(startDate: String) {
         viewModelScope.launch {
-            _yearlyCalorieData.value = lifeCheckGetYearlyCalorieUseCase(startDate)
+            _yearlyCalorieData.value = lifeCheckUseCase.getYearlyCalorie(startDate)
         }
     }
 
@@ -139,7 +129,7 @@ class LifeCheckViewModel @Inject constructor(
     // 키워드 기반 식품 데이터 조회
     fun searchMealData(keyword: String, ownerType: String) {
         viewModelScope.launch {
-            lifeCheckGetMealDataUsecase.invoke(keyword, ownerType).cachedIn(viewModelScope)
+            lifeCheckUseCase.getMealDataStream(keyword, ownerType).cachedIn(viewModelScope)
                 .collectLatest {
                     _mealData.value = it
                 }
@@ -149,7 +139,8 @@ class LifeCheckViewModel @Inject constructor(
     // 식품 데이터 등록
     fun registerMealData(lifeCheckMealDataRequest: LifeCheckMealDataRequest) {
         viewModelScope.launch {
-            _mealDataRegister.value = EventWrapper(lifeCheckRegisterMealDataUseCase(lifeCheckMealDataRequest))
+            _mealDataRegister.value =
+                EventWrapper(lifeCheckUseCase.registerMealData(lifeCheckMealDataRequest))
         }
     }
 }
