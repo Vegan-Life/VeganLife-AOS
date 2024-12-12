@@ -9,8 +9,8 @@ import javax.inject.Inject
 
 class LifeCheckDailyIntakeDataSourceImpl @Inject constructor(
     private val lifeCheckDailyIntakeApi: IntakeGetApi,
-) : LifeCheckDailyIntakeDataSource {
-    override suspend fun getDailyIntake(date: String): ApiResult<DailyIntakeResponse> {
+) {
+    suspend fun getDailyIntake(date: String): ApiResult<DailyIntakeResponse> {
         val gson = GsonBuilder().create()
         return try {
             val response = lifeCheckDailyIntakeApi.getDailyIntake(
