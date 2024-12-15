@@ -165,7 +165,10 @@
                 app:destination="@id/communitySearchFragment" />
             <action
                 android:id="@+id/action_communityHomeFragment_to_communityWriteFeedFragment"
-                app:destination="@id/communityWriteFeedFragment" />
+                app:destination="@id/communityWriteFeedFragment"
+                app:enterAnim="@anim/slide_in_right_no_alpha"
+                app:exitAnim="@anim/stay_still"
+                app:popExitAnim="@android:anim/slide_out_right"/>
             <action
                 android:id="@+id/action_communityHomeFragment_to_communityDetailFeedFragment"
                 app:destination="@id/communityDetailFeedFragment"

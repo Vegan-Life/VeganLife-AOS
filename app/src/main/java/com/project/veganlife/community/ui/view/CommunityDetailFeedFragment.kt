@@ -16,6 +16,7 @@ import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
@@ -25,7 +26,7 @@ import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.project.veganlife.R
 import com.project.veganlife.community.data.model.Comment
-import com.project.veganlife.community.data.model.CommentResponse
+import com.project.veganlife.community.data.model.CreateResponse
 import com.project.veganlife.community.data.model.Post
 import com.project.veganlife.community.ui.adapter.CommentsAdapter
 import com.project.veganlife.community.ui.adapter.OnReplyCommentClickListener
@@ -113,12 +114,12 @@ class CommunityDetailFeedFragment : Fragment(), OnReplyCommentClickListener {
         binding.rvCommunityDetailFeedComments.adapter = commentListAdapter
     }
 
-    private fun createCommentLocally(commentText: String, commentResponse: CommentResponse) {
+    private fun createCommentLocally(commentText: String, createResponse: CreateResponse) {
         val newComment = Comment(
-            id = commentResponse.commentId.toLong(),
+            id = createResponse.commentId.toLong(),
             author = getMyNickname(), // 현재 로그인된 사용자 이름
             content = commentText,
-            createdAt = commentResponse.createdAt, // 현재 시간 문자열
+            createdAt = createResponse.createdAt, // 현재 시간 문자열
             subComments = null
         )
 
@@ -173,6 +174,9 @@ class CommunityDetailFeedFragment : Fragment(), OnReplyCommentClickListener {
     }
 
     private fun event() {
+        binding.toolbarCommunityDetailFeed.setNavigationOnClickListener {
+            findNavController().navigateUp()
+        }
         // 좋아요 버튼 클릭 시
         binding.ivCommunityDetailFeedLikes.setOnClickListener { view ->
             post?.let { post ->

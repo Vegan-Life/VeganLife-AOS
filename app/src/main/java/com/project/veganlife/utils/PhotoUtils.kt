@@ -199,7 +199,7 @@ class PhotoUtils {
          * @param profileModifyInfo 서버에 보낼 프로필 정보
          * @return RequestBody로 변환된 프로필 정보
          */
-        fun createProfileRequestBody(contentDTO: Any): RequestBody {
+        fun createRequestBody(contentDTO: Any): RequestBody {
             val gson = Gson()
             val json = gson.toJson(contentDTO)
             return json.toRequestBody("application/json".toMediaTypeOrNull())

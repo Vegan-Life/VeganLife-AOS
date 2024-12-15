@@ -198,7 +198,7 @@ class SignupAddInfoViewModel @Inject constructor(
                 weight = weight.value ?: 0
             )
             viewModelScope.launch {
-                val requestDTO = PhotoUtils.createProfileRequestBody(signupRequest)
+                val requestDTO = PhotoUtils.createRequestBody(signupRequest)
                 val response = signupUsecase.signupAddInfo(requestDTO)
 
                 when (response) {

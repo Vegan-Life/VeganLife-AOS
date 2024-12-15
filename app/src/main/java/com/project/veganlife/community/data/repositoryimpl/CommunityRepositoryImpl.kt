@@ -7,7 +7,7 @@ import androidx.paging.PagingData
 import com.google.gson.GsonBuilder
 import com.project.veganlife.community.data.local.RecentSearchDataStoreManager
 import com.project.veganlife.community.data.model.CommentRequest
-import com.project.veganlife.community.data.model.CommentResponse
+import com.project.veganlife.community.data.model.CreateResponse
 import com.project.veganlife.community.data.model.PopularTagsResponse
 import com.project.veganlife.community.data.model.Post
 import com.project.veganlife.community.data.model.PostPreview
@@ -18,6 +18,8 @@ import com.project.veganlife.community.domain.repository.CommunityRepository
 import com.project.veganlife.data.model.ApiResult
 import com.project.veganlife.data.model.ConflictResponse
 import kotlinx.coroutines.flow.Flow
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import javax.inject.Inject
 
 class CommunityRepositoryImpl @Inject constructor(
@@ -151,7 +153,7 @@ class CommunityRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun createComment(postId: Long, commentId: Long?, content: String): ApiResult<CommentResponse> {
+    override suspend fun createComment(postId: Long, commentId: Long?, content: String): ApiResult<CreateResponse> {
         val gson = GsonBuilder().create()
 
         return try {
@@ -159,6 +161,30 @@ class CommunityRepositoryImpl @Inject constructor(
             val createPostResponse = communityApi.createComment(postId, commentRequest)
             if (createPostResponse.isSuccessful == true) {
                 ApiResult.Success(createPostResponse.body()!!)
+            } else {
+                val errorBodyString = createPostResponse.errorBody()?.string()
+                val conflictResponse =
+                    gson.fromJson(errorBodyString, ConflictResponse::class.java)
+                ApiResult.Error(conflictResponse.errorCode, conflictResponse.description)
+            }
+
+        } catch (e: Exception) {
+            ApiResult.Exception(e)
+        }
+    }
+
+    override suspend fun createPost(
+        postDTO: RequestBody,
+        images: List<MultipartBody.Part>
+    ): ApiResult<CreateResponse> {
+        val gson = GsonBuilder().create()
+
+        return try {
+            val createPostResponse = communityApi.createPost(postDTO, images)
+            if (createPostResponse.isSuccessful == true) {
+                val responseBody = createPostResponse.body()!!
+
+                ApiResult.Success(responseBody)
             } else {
                 val errorBodyString = createPostResponse.errorBody()?.string()
                 val conflictResponse =

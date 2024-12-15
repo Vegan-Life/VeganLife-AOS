@@ -3,7 +3,7 @@ package com.project.veganlife.community.ui.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.project.veganlife.community.data.model.CommentResponse
+import com.project.veganlife.community.data.model.CreateResponse
 import com.project.veganlife.community.data.model.Post
 import com.project.veganlife.community.domain.usecase.CreateCommentUseCase
 import com.project.veganlife.community.domain.usecase.GetPostDataUseCase
@@ -47,7 +47,7 @@ class PostViewModel @Inject constructor(
         }
     }
 
-    fun createComment(postId: Long, commentId: Long?, comment: String, onCommentCreated: (ApiResult<CommentResponse>) -> Unit) {
+    fun createComment(postId: Long, commentId: Long?, comment: String, onCommentCreated: (ApiResult<CreateResponse>) -> Unit) {
         //직접 댓글이면 commentId는 -1
         // 대댓글이면 commentId는 > 0
         viewModelScope.launch {

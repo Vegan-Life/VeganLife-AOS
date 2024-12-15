@@ -199,6 +199,7 @@
                 tools:visibility="visible" />
 
             <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnFeedUpload"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="24dp"
