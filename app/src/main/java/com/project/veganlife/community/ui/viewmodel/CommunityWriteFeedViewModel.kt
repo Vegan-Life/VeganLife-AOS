@@ -1,5 +1,7 @@
 package com.project.veganlife.community.ui.viewmodel
 
+import android.content.Context
+import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -13,7 +15,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
@@ -24,9 +25,8 @@ class CommunityWriteFeedViewModel @Inject constructor(
     private val _keywordList: MutableLiveData<List<String>> = MutableLiveData(emptyList())
     val keywordList: LiveData<List<String>> get() = _keywordList
 
-    // 프로필 사진 MultiPart
-    private val _imagesFile = MutableLiveData<List<File>>()
-    val imagesFile: LiveData<List<File>> get() = _imagesFile
+    private val _imageUris: MutableLiveData<List<Uri>> = MutableLiveData(emptyList())
+    val imageUris: LiveData<List<Uri>> get() = _imageUris
 
     //게시물 등록 결과
     private val _response = MutableLiveData<String>()
@@ -43,9 +43,16 @@ class CommunityWriteFeedViewModel @Inject constructor(
 //        _postRequestBody.value = post
 //    }
 
-    fun createPost(keywords: List<String>, title: String, content: String, images: List<File>) {
+    fun createPost(context: Context, keywords: List<String>, title: String, content: String, images: List<Uri>) {
         val postRequestBody = createPostRequestBody(keywords, title, content)
-        val imagesMultipart = createImagesMultipart(images)
+
+        val imagesMultipart = mutableListOf<MultipartBody.Part>()
+        if (images.isNotEmpty()) {
+            images.forEach { uri ->
+                PhotoUtils.uriToMultipart(uri, context)?.let { it1 -> imagesMultipart.add(it1) }
+            }
+        }
+
         viewModelScope.launch {
             when (val response = createPostUseCase.execute(postRequestBody, imagesMultipart)) {
                 is ApiResult.Success -> {
@@ -68,13 +75,21 @@ class CommunityWriteFeedViewModel @Inject constructor(
         }
     }
 
-    private fun createImagesMultipart(parts: List<File>): List<MultipartBody.Part> {
-        return parts.map { PhotoUtils.createImageMultipart(it.absolutePath)!! }
-    }
-
     private fun createPostRequestBody(keywords: List<String>, title: String, content: String): RequestBody {
         val postDTO = PostDTO(keywords, title, content)
 
         return PhotoUtils.createRequestBody(postDTO)
+    }
+
+    fun setImageUris(uris: List<Uri>) {
+        _imageUris.value = uris
+    }
+
+    fun removePartAt(position: Int) {
+        val modifiedImageUris = mutableListOf<Uri>()
+        imageUris.value?.let { modifiedImageUris.addAll(it) }
+
+        modifiedImageUris.removeAt(position)
+        setImageUris(modifiedImageUris)
     }
 }
