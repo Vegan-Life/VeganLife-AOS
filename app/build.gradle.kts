@@ -6,6 +6,7 @@ plugins {
     kotlin("kapt")
     id("com.google.dagger.hilt.android")
     id("kotlin-parcelize")
+    id("androidx.navigation.safeargs.kotlin") // Safe Args 활성화
 }
 
 var properties: Properties = Properties()
@@ -32,8 +33,12 @@ android {
 
         buildConfigField("String", "KAKAO_API_KEY", properties.getProperty("TEST_KAKAO_API_KEY"))
         buildConfigField("String", "NAVER_CLIENT_ID", properties.getProperty("NAVER_CLIENT_ID"))
-        buildConfigField("String", "NAVER_CLIENT_SECRET_KEY", properties.getProperty("NAVER_CLIENT_SECRET_KEY"))
-        buildConfigField("String","BASEURL",properties.getProperty("BASE_URL"))
+        buildConfigField(
+            "String",
+            "NAVER_CLIENT_SECRET_KEY",
+            properties.getProperty("NAVER_CLIENT_SECRET_KEY")
+        )
+        buildConfigField("String", "BASEURL", properties.getProperty("BASE_URL"))
     }
 
     buildTypes {
@@ -89,9 +94,9 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0")
 
     // Navigation
-    implementation("androidx.navigation:navigation-runtime-ktx:2.7.7")
-    implementation("androidx.navigation:navigation-fragment-ktx:2.7.7")
-    implementation("androidx.navigation:navigation-ui-ktx:2.7.7")
+    implementation("androidx.navigation:navigation-runtime-ktx:2.8.5")
+    implementation("androidx.navigation:navigation-fragment-ktx:2.8.5")
+    implementation("androidx.navigation:navigation-ui-ktx:2.8.5")
 
     // Splash
     implementation("androidx.core:core-splashscreen:1.0.1")
@@ -124,16 +129,16 @@ dependencies {
     implementation("com.tbuonomo:dotsindicator:5.0")
 
     // EncryptedSharedPreference
-    implementation ("androidx.security:security-crypto:1.1.0-alpha06")
+    implementation("androidx.security:security-crypto:1.1.0-alpha06")
 
     // Circle Imageview
-    implementation ("de.hdodenhof:circleimageview:3.1.0")
+    implementation("de.hdodenhof:circleimageview:3.1.0")
 
     // Paging 3
-    implementation ("androidx.paging:paging-runtime:3.3.0")
+    implementation("androidx.paging:paging-runtime:3.3.0")
 
     // Preferences Datastore
-    implementation ("androidx.datastore:datastore-preferences:1.1.1")
+    implementation("androidx.datastore:datastore-preferences:1.1.1")
 
     // GSON
     implementation("com.google.code.gson:gson:2.11.0")
