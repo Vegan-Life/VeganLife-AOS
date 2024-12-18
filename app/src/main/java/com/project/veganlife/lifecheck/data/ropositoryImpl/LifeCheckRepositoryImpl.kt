@@ -7,6 +7,7 @@ import com.project.veganlife.data.model.ApiResult
 import com.project.veganlife.data.model.DailyIntakeResponse
 import com.project.veganlife.data.model.RecommendedIntakeResponse
 import com.project.veganlife.lifecheck.data.datasource.LifeCheckDailyIntakeDataSourceImpl
+import com.project.veganlife.lifecheck.data.datasource.LifeCheckMealDataByIdDataSourceImpl
 import com.project.veganlife.lifecheck.data.datasource.LifeCheckMealDataPagingSource
 import com.project.veganlife.lifecheck.data.datasource.LifeCheckMonthlyCalorieDataSourceImpl
 import com.project.veganlife.lifecheck.data.datasource.LifeCheckRecommendedIntakeDataSourceImpl
@@ -14,6 +15,7 @@ import com.project.veganlife.lifecheck.data.datasource.LifeCheckRegisterMealData
 import com.project.veganlife.lifecheck.data.datasource.LifeCheckWeeklyCalorieDataSourceImpl
 import com.project.veganlife.lifecheck.data.datasource.LifeCheckYearlyCalorieDataSourceImpl
 import com.project.veganlife.lifecheck.data.model.LifeCheckMealData
+import com.project.veganlife.lifecheck.data.model.LifeCheckMealDataDetail
 import com.project.veganlife.lifecheck.data.model.LifeCheckMealDataRequest
 import com.project.veganlife.lifecheck.data.model.LifeCheckWeeklyCalorieResponse
 import com.project.veganlife.lifecheck.data.remote.LifeCheckApi
@@ -30,7 +32,7 @@ class LifeCheckRepositoryImpl @Inject constructor(
     private val lifeCheckMealDataDataSource: LifeCheckRegisterMealDataDataSourceImpl,
     private val lifeCheckWeeklyDataSource: LifeCheckWeeklyCalorieDataSourceImpl,
     private val lifeCheckYearlyDataSource: LifeCheckYearlyCalorieDataSourceImpl,
-
+    private val lifeCheckMealDataByIdDataSource: LifeCheckMealDataByIdDataSourceImpl,
     ) : LifeCheckRepository {
     override suspend fun getDailyIntake(date: String): ApiResult<DailyIntakeResponse> {
         return lifeCheckDailyDataSource.getDailyIntake(date)
@@ -73,6 +75,10 @@ class LifeCheckRepositoryImpl @Inject constructor(
 
     override suspend fun getYearlyCalorie(startDate: String): ApiResult<LifeCheckWeeklyCalorieResponse> {
         return lifeCheckYearlyDataSource.getYearlyCalorie(startDate)
+    }
+
+    override suspend fun getMealDataById(id: Long): ApiResult<LifeCheckMealDataDetail> {
+        return lifeCheckMealDataByIdDataSource.getMealDataById(id)
     }
 
 }

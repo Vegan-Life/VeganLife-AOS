@@ -2,12 +2,14 @@ package com.project.veganlife.lifecheck.data.remote
 
 import com.project.veganlife.data.model.PagingResponse
 import com.project.veganlife.lifecheck.data.model.LifeCheckMealData
+import com.project.veganlife.lifecheck.data.model.LifeCheckMealDataDetail
 import com.project.veganlife.lifecheck.data.model.LifeCheckMealDataRequest
 import com.project.veganlife.lifecheck.data.model.LifeCheckWeeklyCalorieResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface LifeCheckApi {
@@ -39,4 +41,9 @@ interface LifeCheckApi {
     suspend fun getYearlyCalorie(
         @Query("startDate") startDate: String
     ): Response<LifeCheckWeeklyCalorieResponse>?
+
+    @GET("meal-data/{id}")
+    suspend fun getMealDataById(
+        @Path("id") id: Long
+    ): Response<LifeCheckMealDataDetail>
 }

@@ -10,6 +10,7 @@ import com.project.veganlife.data.model.ApiResult
 import com.project.veganlife.data.model.DailyIntakeResponse
 import com.project.veganlife.data.model.RecommendedIntakeResponse
 import com.project.veganlife.lifecheck.data.model.LifeCheckMealData
+import com.project.veganlife.lifecheck.data.model.LifeCheckMealDataDetail
 import com.project.veganlife.lifecheck.data.model.LifeCheckMealDataRequest
 import com.project.veganlife.lifecheck.data.model.LifeCheckWeeklyCalorieResponse
 import com.project.veganlife.lifecheck.domain.usecase.LifeCheckUseCase
@@ -72,6 +73,10 @@ class LifeCheckViewModel @Inject constructor(
         MutableLiveData<EventWrapper<ApiResult<LifeCheckMealDataRequest?>>>()
     val mealDataRegister: LiveData<EventWrapper<ApiResult<LifeCheckMealDataRequest?>>> =
         _mealDataRegister
+
+    // ID 식품데이터 조회
+    private val _mealDataById = MutableLiveData<ApiResult<LifeCheckMealDataDetail>>()
+    val mealDataById: LiveData<ApiResult<LifeCheckMealDataDetail>> = _mealDataById
 
 
     // 일일 섭취량 조회
