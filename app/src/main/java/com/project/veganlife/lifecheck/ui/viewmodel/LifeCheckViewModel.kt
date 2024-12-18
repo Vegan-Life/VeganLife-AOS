@@ -1,5 +1,6 @@
 package com.project.veganlife.lifecheck.ui.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -146,6 +147,12 @@ class LifeCheckViewModel @Inject constructor(
         viewModelScope.launch {
             _mealDataRegister.value =
                 EventWrapper(lifeCheckUseCase.registerMealData(lifeCheckMealDataRequest))
+        }
+    }
+
+    fun fetchMealDataById(id: Long) {
+        viewModelScope.launch {
+            _mealDataById.value = lifeCheckUseCase.getMealDataById(id)
         }
     }
 }
