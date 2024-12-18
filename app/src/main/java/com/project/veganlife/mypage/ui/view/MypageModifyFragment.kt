@@ -389,10 +389,15 @@ class MypageModifyFragment : Fragment() {
             if (profile.imageUrl != null) {
                 Glide.with(requireContext())
                     .load(profile.imageUrl)
-                    .apply(RequestOptions()
-                        .diskCacheStrategy(DiskCacheStrategy.NONE) // 디스크 캐시 사용 안 함
-                        .skipMemoryCache(true) // 메모리 캐시 사용 안 함
-                        .signature(ObjectKey(System.currentTimeMillis().toString())) // 매번 새로운 signature 사용
+                    .apply(
+                        RequestOptions()
+                            .diskCacheStrategy(DiskCacheStrategy.NONE) // 디스크 캐시 사용 안 함
+                            .skipMemoryCache(true) // 메모리 캐시 사용 안 함
+                            .signature(
+                                ObjectKey(
+                                    System.currentTimeMillis().toString()
+                                )
+                            ) // 매번 새로운 signature 사용
                     )
                     .into(binding.ivMypageProfile)
             } else {

@@ -14,19 +14,22 @@ import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavOptions
+import androidx.navigation.fragment.findNavController
 import com.project.veganlife.R
 import com.project.veganlife.databinding.DialogRecipeDeleteBinding
-import com.project.veganlife.recipe.ui.viewmodel.RecipeSharedViewmodel
 import com.project.veganlife.recipe.ui.viewmodel.RecipeViewmodel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class RecipeDeleteDialogFragment : DialogFragment() {
+class RecipeDeleteDialogFragment(id: Long) : DialogFragment() {
     private var _binding: DialogRecipeDeleteBinding? = null
     private val binding get() = _binding!!
 
     private val viewmodel: RecipeViewmodel by viewModels()
-    private val sharedViewmodel: RecipeSharedViewmodel by activityViewModels()
+    private val recipeId = id
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,7 +47,24 @@ class RecipeDeleteDialogFragment : DialogFragment() {
         binding.apply {
             btnRecipeCancel.setOnClickListener { dismiss() }
             btnRecipeConfirm.setOnClickListener {
-                sharedViewmodel.recipeId.value?.let { it1 -> viewmodel.deleteRecipe(it1) }
+                viewmodel.deleteRecipe(recipeId)
+            }
+        }
+
+        lifecycleScope.launch {
+            viewmodel.recipeDeleteResponse.observe(viewLifecycleOwner) { response ->
+                if (response == "레시피 삭제") {
+                    dismiss()
+                    findNavController().apply {
+                        previousBackStackEntry?.savedStateHandle?.set("recipe_updated", true)
+                        navigate(
+                            R.id.action_recipeDetailInfoFragment_to_recipeHomeFragment,
+                            null,
+                            NavOptions.Builder().setPopUpTo(R.id.recipeDetailInfoFragment, true)
+                                .build()
+                        )
+                    }
+                }
             }
         }
     }
