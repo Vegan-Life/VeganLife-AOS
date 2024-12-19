@@ -91,7 +91,7 @@ class RecipeHomeAdapter(
                 oldItem: RecipeFeedContent,
                 newItem: RecipeFeedContent
             ): Boolean {
-                return oldItem == newItem
+                return oldItem.id == newItem.id
             }
 
             override fun areContentsTheSame(
@@ -100,7 +100,6 @@ class RecipeHomeAdapter(
             ): Boolean {
                 return oldItem == newItem
             }
-
         }
     }
 }

@@ -146,7 +146,7 @@
 
             <action
                 android:id="@+id/action_mypageCompleteWithdrawalFragment_to_LoginFragment"
-                app:destination="@id/loginFragment"/>
+                app:destination="@id/loginFragment" />
 
         </fragment>
 
@@ -226,6 +226,9 @@
             android:name="com.project.veganlife.recipe.ui.view.RecipeDetailInfoFragment"
             android:label="fragment_recipe_detail_info"
             tools:layout="@layout/fragment_recipe_detail_info">
+            <argument
+                android:name="recipe"
+                app:argType="com.project.veganlife.recipe.data.model.RecipeFeedContent" />
             <action
                 android:id="@+id/action_recipeDetailInfoFragment_to_recipeHomeFragment"
                 app:destination="@id/recipeHomeFragment" />
@@ -234,7 +237,11 @@
                 app:destination="@id/alarmFragment" />
             <action
                 android:id="@+id/action_recipeDetailInfoFragment_to_recipeWriteFragment"
-                app:destination="@id/recipeWriteFragment" />
+                app:destination="@id/recipeWriteFragment" >
+                <argument
+                    android:name="recipe"
+                    app:argType="com.project.veganlife.recipe.data.model.RecipeFeedContent" />
+            </action>
             <action
                 android:id="@+id/action_recipeDetailInfoFragment_to_recipeSearchFragment"
                 app:destination="@id/recipeSearchFragment" />
@@ -244,9 +251,14 @@
             android:name="com.project.veganlife.recipe.ui.view.RecipeHomeFragment"
             android:label="fragment_recipe_home"
             tools:layout="@layout/fragment_recipe_home">
+
             <action
                 android:id="@+id/action_recipeHomeFragment_to_recipeDetailInfoFragment"
-                app:destination="@id/recipeDetailInfoFragment" />
+                app:destination="@id/recipeDetailInfoFragment" >
+                <argument
+                    android:name="recipe"
+                    app:argType="com.project.veganlife.recipe.data.model.RecipeFeedContent" />
+            </action>
             <action
                 android:id="@+id/action_recipeHomeFragment_to_recipeWriteFragment"
                 app:destination="@id/recipeWriteFragment" />
@@ -262,6 +274,9 @@
             android:name="com.project.veganlife.recipe.ui.view.RecipeWriteFragment"
             android:label="fragment_recipe_write"
             tools:layout="@layout/fragment_recipe_write">
+            <argument
+                android:name="recipe"
+                app:argType="com.project.veganlife.recipe.data.model.RecipeFeedContent" />
             <action
                 android:id="@+id/action_recipeWriteFragment_to_recipeDetailInfoFragment"
                 app:destination="@id/recipeDetailInfoFragment" />
