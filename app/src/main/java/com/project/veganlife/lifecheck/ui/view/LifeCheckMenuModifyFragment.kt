@@ -29,6 +29,8 @@ class LifeCheckMenuModifyFragment : Fragment() {
         val mealId = arguments?.getLong("mealId") ?: -1
     }
 
+
+
     override fun onDestroy() {
         super.onDestroy()
         _binding = null

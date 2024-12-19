@@ -15,7 +15,6 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.project.veganlife.R
-import com.project.veganlife.data.model.ApiResult
 import com.project.veganlife.databinding.FragmentLifeCheckMenuSearchBinding
 import com.project.veganlife.lifecheck.ui.adapter.LifeCheckMealDataAdapter
 import com.project.veganlife.lifecheck.ui.viewmodel.LifeCheckViewModel
@@ -60,7 +59,6 @@ class LifeCheckMenuSearchFragment : Fragment() {
         adapter =
             LifeCheckMealDataAdapter(object : LifeCheckMealDataAdapter.OnItemLongClickListener {
                 override fun onItemLongClicked(id: Long) {
-
                     val dialog = LifeCheckCustomDialogFragment.newInstance(id)
                     dialog.show(parentFragmentManager, "LifeCheckCustomDialogFragment")
                 }
@@ -78,22 +76,6 @@ class LifeCheckMenuSearchFragment : Fragment() {
                     // 어댑터에 롱클릭 활성화 여부 설정
                     adapter.setLongClickEnabled(isMemberSelected)
                     adapter.submitData(it)
-                }
-
-                viewModel.mealDataById.observe(viewLifecycleOwner) { result ->
-                    when (result) {
-                        is ApiResult.Success -> {
-
-                        }
-
-                        is ApiResult.Error -> {
-
-                        }
-
-                        is ApiResult.Exception -> {
-
-                        }
-                    }
                 }
             }
         }
