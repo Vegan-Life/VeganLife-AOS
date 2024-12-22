@@ -1,6 +1,8 @@
 package com.project.veganlife.community.ui.view
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -12,7 +14,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.project.veganlife.community.ui.adapter.GalleryAdapter
+import com.project.veganlife.community.ui.adapter.TagListAdapter
 import com.project.veganlife.community.ui.viewmodel.CommunityWriteFeedViewModel
+import com.project.veganlife.data.model.ApiResult
 import com.project.veganlife.databinding.FragmentCommunityWriteEditFeedBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -75,6 +79,8 @@ class CommunityWriteFeedFragment : Fragment() {
                 etCommunityWriteEditFeedContent.error = null
             }
         }
+
+        setPopularTag()
     }
 
     private fun event() {
@@ -82,7 +88,6 @@ class CommunityWriteFeedFragment : Fragment() {
             ibCommunityWriteEditFeedUploadPhoto.setOnClickListener {
                 galleryLauncher.launch("image/*")
             }
-            //TODO(키워드 리스트 추가해주기)
             toolbarCommunityWriteEditFeed.setNavigationOnClickListener {
                 findNavController().navigateUp()
             }
@@ -97,6 +102,51 @@ class CommunityWriteFeedFragment : Fragment() {
                 }
             }
 
+
+            // 포커스 변경 리스너
+            etCommunityWriteEditKeywordSearchBox.setOnFocusChangeListener { _, hasFocus ->
+                if (hasFocus && etCommunityWriteEditKeywordSearchBox.text.isEmpty()) {
+                    layoutPopularKeyword.visibility = View.VISIBLE
+                } else {
+                    layoutPopularKeyword.visibility = View.GONE
+                }
+            }
+
+            // 텍스트 변경 리스너
+            etCommunityWriteEditKeywordSearchBox.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    layoutPopularKeyword.visibility = if (s.isNullOrEmpty()) View.VISIBLE else View.GONE
+                }
+
+                override fun afterTextChanged(s: Editable?) {}
+            })
+
+        }
+    }
+
+    private fun setPopularTag() {
+        val adapter = TagListAdapter()
+        binding.rvWriteEditFeedPopularKeyword.adapter = adapter
+
+        viewModel.popularTagList.observe(viewLifecycleOwner) { apiResult ->
+            when (apiResult) {
+                is ApiResult.Error -> {
+                    val popularTagsResponse = apiResult.description
+                    Log.d("daily Error", popularTagsResponse)
+                }
+
+                is ApiResult.Exception -> {
+                    Log.d("daily Exception", apiResult.e.message ?: "No message available")
+                }
+
+                is ApiResult.Success -> {
+                    val popularTagsResponse = apiResult.data
+                    //인기 태그 중 5개만 보여주기
+                    adapter.submitList(popularTagsResponse.topTags.take(5))
+                }
+            }
 
         }
     }

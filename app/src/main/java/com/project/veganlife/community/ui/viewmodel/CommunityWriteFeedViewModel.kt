@@ -7,8 +7,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.project.veganlife.community.data.model.PopularTagsResponse
 import com.project.veganlife.community.data.model.PostDTO
 import com.project.veganlife.community.domain.usecase.CreatePostUseCase
+import com.project.veganlife.community.domain.usecase.GetPopularTagsUseCase
 import com.project.veganlife.data.model.ApiResult
 import com.project.veganlife.utils.PhotoUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,11 +21,16 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CommunityWriteFeedViewModel @Inject constructor(
-    private val createPostUseCase: CreatePostUseCase
+    private val createPostUseCase: CreatePostUseCase,
+    private val getPopularTagsUseCase: GetPopularTagsUseCase
 ) : ViewModel() {
     //키워드 리스트
     private val _keywordList: MutableLiveData<List<String>> = MutableLiveData(emptyList())
     val keywordList: LiveData<List<String>> get() = _keywordList
+
+    //인기 태그 리스트
+    private val _popularTagList = MutableLiveData<ApiResult<PopularTagsResponse>>()
+    val popularTagList: LiveData<ApiResult<PopularTagsResponse>> = _popularTagList
 
     private val _imageUris: MutableLiveData<List<Uri>> = MutableLiveData(emptyList())
     val imageUris: LiveData<List<Uri>> get() = _imageUris
@@ -42,6 +49,16 @@ class CommunityWriteFeedViewModel @Inject constructor(
 //    fun putPostRequestBody(post: RequestBody) {
 //        _postRequestBody.value = post
 //    }
+
+    init {
+        loadPopularTags()
+    }
+
+    fun loadPopularTags() {
+        viewModelScope.launch {
+            _popularTagList.value = getPopularTagsUseCase.execute()
+        }
+    }
 
     fun createPost(context: Context, keywords: List<String>, title: String, content: String, images: List<Uri>) {
         val postRequestBody = createPostRequestBody(keywords, title, content)
