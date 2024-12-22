@@ -1,6 +1,6 @@
 package com.project.veganlife.community.data.repositoryimpl
 
-import android.content.SharedPreferences
+import android.util.Log
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
@@ -24,9 +24,7 @@ import javax.inject.Inject
 
 class CommunityRepositoryImpl @Inject constructor(
     private val communityApi: CommunityApi,
-    private val sharedPreferences: SharedPreferences,
     private val recentSearchDataStoreManager: RecentSearchDataStoreManager,
-    private val accessToken: SharedPreferences
 ) : CommunityRepository {
     override suspend fun getFeeds(): Flow<PagingData<PostPreview>> {
         return Pager(
@@ -82,6 +80,29 @@ class CommunityRepositoryImpl @Inject constructor(
                 ApiResult.Success(responseBody)
             } else {
                 val errorBodyString = popularTagsGetResponse.errorBody()?.string()
+                val conflictResponse =
+                    gson.fromJson(errorBodyString, ConflictResponse::class.java)
+                ApiResult.Error(conflictResponse.errorCode, conflictResponse.description)
+            }
+
+        } catch (e: Exception) {
+            ApiResult.Exception(e)
+        }
+    }
+
+    override suspend fun getKeywordAutoComplete(keyword: String, size: Int): ApiResult<List<String>> {
+        val gson = GsonBuilder().create()
+
+        return try {
+            val keywordAutoCompleteResponse = communityApi.keywordAutoComplete(keyword, size)
+
+            
+            if (keywordAutoCompleteResponse.isSuccessful == true) {
+                val responseBody = keywordAutoCompleteResponse.body()!!
+                Log.i("##INFO", "getKeywordAutoComplete: $responseBody")
+                ApiResult.Success(responseBody)
+            } else {
+                val errorBodyString = keywordAutoCompleteResponse.errorBody()?.string()
                 val conflictResponse =
                     gson.fromJson(errorBodyString, ConflictResponse::class.java)
                 ApiResult.Error(conflictResponse.errorCode, conflictResponse.description)

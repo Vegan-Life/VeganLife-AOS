@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.project.veganlife.community.ui.adapter.GalleryAdapter
+import com.project.veganlife.community.ui.adapter.KeywordAutoCompleteAdapter
 import com.project.veganlife.community.ui.adapter.TagListAdapter
 import com.project.veganlife.community.ui.viewmodel.CommunityWriteFeedViewModel
 import com.project.veganlife.data.model.ApiResult
@@ -81,6 +82,29 @@ class CommunityWriteFeedFragment : Fragment() {
         }
 
         setPopularTag()
+        setKeywordAutoComplete()
+    }
+
+    private fun setKeywordAutoComplete() {
+        val adapter = KeywordAutoCompleteAdapter()
+        binding.rvWriteEditFeedKeywordAutoComplete.adapter = adapter
+        viewModel.keywordAutoCompleteList.observe(viewLifecycleOwner) {apiResult ->
+            when (apiResult) {
+                is ApiResult.Error -> {
+                    val popularTagsResponse = apiResult.description
+                    Log.d("daily Error", popularTagsResponse)
+                }
+
+                is ApiResult.Exception -> {
+                    Log.d("daily Exception", apiResult.e.message ?: "No message available")
+                }
+
+                is ApiResult.Success -> {
+                    Log.i("##INFO", "setKeywordAutoComplete: ${apiResult.data}")
+                    adapter.submitList(apiResult.data)
+                }
+            }
+        }
     }
 
     private fun event() {
@@ -109,6 +133,7 @@ class CommunityWriteFeedFragment : Fragment() {
                     layoutPopularKeyword.visibility = View.VISIBLE
                 } else {
                     layoutPopularKeyword.visibility = View.GONE
+                    rvWriteEditFeedKeywordAutoComplete.visibility = View.GONE
                 }
             }
 
@@ -118,6 +143,14 @@ class CommunityWriteFeedFragment : Fragment() {
 
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                     layoutPopularKeyword.visibility = if (s.isNullOrEmpty()) View.VISIBLE else View.GONE
+                    //텍스트 있으면 자동완성 보이기
+                    rvWriteEditFeedKeywordAutoComplete.visibility = if (s.isNullOrEmpty()) {
+                        View.GONE
+                    } else {
+                        viewModel.getKeywordAutoComplete(s.toString())
+                        View.VISIBLE
+                    }
+
                 }
 
                 override fun afterTextChanged(s: Editable?) {}

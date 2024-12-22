@@ -38,6 +38,12 @@ interface CommunityApi {
     suspend fun getPopularTags(
     ): Response<PopularTagsResponse>
 
+    @GET("posts/complete/search")
+    suspend fun keywordAutoComplete(
+        @Query("keyword") keyword: String,
+        @Query("size") size: Int = 10,
+    ): Response<List<String>>
+
     @GET("posts/{postId}")
     suspend fun getPost(
         @Path("postId") postId: Int,

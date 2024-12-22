@@ -21,6 +21,8 @@ interface CommunityRepository {
     fun getRecentSearches(): Flow<List<String>>
 
     suspend fun getPopularityTags(): ApiResult<PopularTagsResponse>
+
+    suspend fun getKeywordAutoComplete(keyword: String, size: Int): ApiResult<List<String>>
     suspend fun getPostData(postId: Int): ApiResult<Post>
 
     suspend fun likePost(postId: Int): ApiResult<Boolean>

@@ -11,6 +11,7 @@ import com.project.veganlife.community.data.model.PopularTagsResponse
 import com.project.veganlife.community.data.model.PostDTO
 import com.project.veganlife.community.domain.usecase.CreatePostUseCase
 import com.project.veganlife.community.domain.usecase.GetPopularTagsUseCase
+import com.project.veganlife.community.domain.usecase.KeywordAutoCompleteUseCase
 import com.project.veganlife.data.model.ApiResult
 import com.project.veganlife.utils.PhotoUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,7 +23,8 @@ import javax.inject.Inject
 @HiltViewModel
 class CommunityWriteFeedViewModel @Inject constructor(
     private val createPostUseCase: CreatePostUseCase,
-    private val getPopularTagsUseCase: GetPopularTagsUseCase
+    private val getPopularTagsUseCase: GetPopularTagsUseCase,
+    private val keywordAutoCompleteUseCase: KeywordAutoCompleteUseCase,
 ) : ViewModel() {
     //키워드 리스트
     private val _keywordList: MutableLiveData<List<String>> = MutableLiveData(emptyList())
@@ -31,6 +33,10 @@ class CommunityWriteFeedViewModel @Inject constructor(
     //인기 태그 리스트
     private val _popularTagList = MutableLiveData<ApiResult<PopularTagsResponse>>()
     val popularTagList: LiveData<ApiResult<PopularTagsResponse>> = _popularTagList
+
+    //연관 키워드 리스트
+    private val _keywordAutoCompleteList = MutableLiveData<ApiResult<List<String>>>()
+    val keywordAutoCompleteList: LiveData<ApiResult<List<String>>> get() = _keywordAutoCompleteList
 
     private val _imageUris: MutableLiveData<List<Uri>> = MutableLiveData(emptyList())
     val imageUris: LiveData<List<Uri>> get() = _imageUris
@@ -52,6 +58,12 @@ class CommunityWriteFeedViewModel @Inject constructor(
 
     init {
         loadPopularTags()
+    }
+
+    fun getKeywordAutoComplete(keyword: String) {
+        viewModelScope.launch {
+            _keywordAutoCompleteList.value = keywordAutoCompleteUseCase.execute(keyword, 5)
+        }
     }
 
     fun loadPopularTags() {
