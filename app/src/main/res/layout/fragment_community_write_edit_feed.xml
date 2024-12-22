@@ -207,7 +207,7 @@
                 android:paddingHorizontal="20dp"
                 android:paddingTop="24dp"
                 android:paddingBottom="15dp"
-
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="@id/et_community_write_edit_keyword_search_box"
                 app:layout_constraintStart_toStartOf="@id/et_community_write_edit_keyword_search_box"
                 app:layout_constraintTop_toTopOf="@id/et_community_write_edit_keyword_search_box">
