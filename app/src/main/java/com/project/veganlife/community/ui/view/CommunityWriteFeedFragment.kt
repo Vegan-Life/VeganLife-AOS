@@ -25,14 +25,14 @@ class CommunityWriteFeedFragment : Fragment() {
     }
     private val viewModel: CommunityWriteFeedViewModel by viewModels()
 
-    private val galleryAdapter: GalleryAdapter by lazy {
-        GalleryAdapter { position ->
-            viewModel.removePartAt(position)
-        }
-    }
+    private lateinit var galleryAdapter: GalleryAdapter
     private val galleryLauncher =
         registerForActivityResult(ActivityResultContracts.GetMultipleContents()) {
             Log.i("##INFO", "$it: ")
+            if (it.size > 5) {
+                Toast.makeText(requireContext(), "최대 5개의 사진만 등록할 수 있습니다.", Toast.LENGTH_SHORT)
+                    .show()
+            }
             val imageUris = it.take(5) // 최대 5개로 제한
 
             viewModel.setImageUris(imageUris)
@@ -53,6 +53,9 @@ class CommunityWriteFeedFragment : Fragment() {
     }
 
     private fun init() {
+        galleryAdapter = GalleryAdapter { position ->
+            viewModel.removePartAt(position)
+        }
         binding.rvCommunityWriteEditFeedPhoto.adapter = galleryAdapter
         viewModel.imageUris.observe(viewLifecycleOwner) {
             galleryAdapter.submitList(it)

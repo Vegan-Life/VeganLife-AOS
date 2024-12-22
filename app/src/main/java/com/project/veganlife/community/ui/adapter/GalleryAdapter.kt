@@ -47,7 +47,7 @@ class GalleryAdapter(private val onDeleteClicked: (Int) -> Unit) : ListAdapter<U
             }
 
             override fun areContentsTheSame(oldItem: Uri, newItem: Uri): Boolean {
-                return oldItem == newItem
+                return oldItem.toString() == newItem.toString()
             }
         }
     }

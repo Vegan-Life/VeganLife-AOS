@@ -188,15 +188,11 @@
                 android:layout_height="0dp"
                 android:layout_marginStart="8dp"
                 android:orientation="horizontal"
-                android:visibility="gone"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintBottom_toBottomOf="@id/ib_community_write_edit_feed_upload_photo"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/ib_community_write_edit_feed_upload_photo"
-                app:layout_constraintTop_toTopOf="@id/ib_community_write_edit_feed_upload_photo"
-                tools:itemCount="5"
-                tools:listitem="@layout/item_recyclerview_community_write_edit_feed_photo"
-                tools:visibility="visible" />
+                app:layout_constraintTop_toTopOf="@id/ib_community_write_edit_feed_upload_photo" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnFeedUpload"
