@@ -45,11 +45,15 @@ class LifeCheckUseCase @Inject constructor(
         return lifeCheckRepository.getYearlyCalorie(startDate)
     }
 
-    suspend fun registerMealData(data: LifeCheckMealDataRequest): ApiResult<LifeCheckMealDataRequest?> {
+    suspend fun registerMealData(data: LifeCheckMealDataRequest): ApiResult<Unit> {
         return lifeCheckRepository.registerMealData(data)
     }
 
     suspend fun getMealDataById(id: Long): ApiResult<LifeCheckMealDataDetail> {
         return lifeCheckRepository.getMealDataById(id)
+    }
+
+    suspend fun modifyMealData(mealId: Long, request: LifeCheckMealDataRequest): ApiResult<Unit> {
+        return lifeCheckRepository.modifyMealData(mealId, request)
     }
 }

@@ -180,6 +180,21 @@ class LifeCheckMenuSearchFragment : Fragment() {
         }
     }
 
+    private fun resetToAllMenu() {
+        binding.run {
+            btnLifecheckMenuSearchAllMenu.isSelected = true
+            btnLifecheckMenuSearchMyMenu.isSelected = false
+            updateButtonUI()
+            searchAllMenu()
+            adapter.setLongClickEnabled(false)
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        resetToAllMenu()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         _binding = null

@@ -9,6 +9,7 @@ import com.project.veganlife.data.model.RecommendedIntakeResponse
 import com.project.veganlife.lifecheck.data.datasource.LifeCheckDailyIntakeDataSourceImpl
 import com.project.veganlife.lifecheck.data.datasource.LifeCheckMealDataByIdDataSourceImpl
 import com.project.veganlife.lifecheck.data.datasource.LifeCheckMealDataPagingSource
+import com.project.veganlife.lifecheck.data.datasource.LifeCheckModifyMealDataSourceImpl
 import com.project.veganlife.lifecheck.data.datasource.LifeCheckMonthlyCalorieDataSourceImpl
 import com.project.veganlife.lifecheck.data.datasource.LifeCheckRecommendedIntakeDataSourceImpl
 import com.project.veganlife.lifecheck.data.datasource.LifeCheckRegisterMealDataDataSourceImpl
@@ -33,7 +34,8 @@ class LifeCheckRepositoryImpl @Inject constructor(
     private val lifeCheckWeeklyDataSource: LifeCheckWeeklyCalorieDataSourceImpl,
     private val lifeCheckYearlyDataSource: LifeCheckYearlyCalorieDataSourceImpl,
     private val lifeCheckMealDataByIdDataSource: LifeCheckMealDataByIdDataSourceImpl,
-    ) : LifeCheckRepository {
+    private val lifeCheckModifyMealDataSource: LifeCheckModifyMealDataSourceImpl,
+) : LifeCheckRepository {
     override suspend fun getDailyIntake(date: String): ApiResult<DailyIntakeResponse> {
         return lifeCheckDailyDataSource.getDailyIntake(date)
     }
@@ -62,7 +64,7 @@ class LifeCheckRepositoryImpl @Inject constructor(
         return lifeCheckRecommendedIntakeDataSource.getRecommendedIntake()
     }
 
-    override suspend fun registerMealData(mealData: LifeCheckMealDataRequest): ApiResult<LifeCheckMealDataRequest?> {
+    override suspend fun registerMealData(mealData: LifeCheckMealDataRequest): ApiResult<Unit> {
         return lifeCheckMealDataDataSource.registerMealData(mealData)
     }
 
@@ -81,4 +83,10 @@ class LifeCheckRepositoryImpl @Inject constructor(
         return lifeCheckMealDataByIdDataSource.getMealDataById(id)
     }
 
+    override suspend fun modifyMealData(
+        id: Long,
+        request: LifeCheckMealDataRequest
+    ): ApiResult<Unit> {
+        return lifeCheckModifyMealDataSource.modifyMealData(id, request)
+    }
 }

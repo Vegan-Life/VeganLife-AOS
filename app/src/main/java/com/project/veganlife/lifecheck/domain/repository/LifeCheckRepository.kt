@@ -20,7 +20,7 @@ interface LifeCheckRepository {
 
     suspend fun getRecommendedIntake(): ApiResult<RecommendedIntakeResponse>
 
-    suspend fun registerMealData(mealData: LifeCheckMealDataRequest): ApiResult<LifeCheckMealDataRequest?>
+    suspend fun registerMealData(mealData: LifeCheckMealDataRequest): ApiResult<Unit>
 
     suspend fun getWeeklyCalorie(
         startDate: String,
@@ -30,4 +30,6 @@ interface LifeCheckRepository {
     suspend fun getYearlyCalorie(startDate: String): ApiResult<LifeCheckWeeklyCalorieResponse>
 
     suspend fun getMealDataById(id: Long): ApiResult<LifeCheckMealDataDetail>
+
+    suspend fun modifyMealData(id: Long, request: LifeCheckMealDataRequest): ApiResult<Unit>
 }

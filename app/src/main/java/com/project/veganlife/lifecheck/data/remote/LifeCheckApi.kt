@@ -9,6 +9,7 @@ import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -24,7 +25,7 @@ interface LifeCheckApi {
     @POST("meal-data")
     suspend fun registerMealData(
         @Body lifeCheckMealDataRequest: LifeCheckMealDataRequest
-    ): Response<LifeCheckMealDataRequest?>
+    ): Response<Unit>
 
     @GET("members/nutrients/month")
     suspend fun getMonthlyCalorie(
@@ -46,4 +47,10 @@ interface LifeCheckApi {
     suspend fun getMealDataById(
         @Path("id") id: Long
     ): Response<LifeCheckMealDataDetail>
+
+    @PUT("meal-data/{mealId}")
+    suspend fun modifyMealData(
+        @Path("mealId") mealId: Long,
+        @Body request: LifeCheckMealDataRequest
+    ): Response<Unit>?
 }

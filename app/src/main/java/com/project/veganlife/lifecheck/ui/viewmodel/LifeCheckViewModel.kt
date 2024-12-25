@@ -1,6 +1,5 @@
 package com.project.veganlife.lifecheck.ui.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -71,14 +70,18 @@ class LifeCheckViewModel @Inject constructor(
 
     // 식품 데이터 등록
     private val _mealDataRegister =
-        MutableLiveData<EventWrapper<ApiResult<LifeCheckMealDataRequest?>>>()
-    val mealDataRegister: LiveData<EventWrapper<ApiResult<LifeCheckMealDataRequest?>>> =
+        MutableLiveData<EventWrapper<ApiResult<Unit>>>()
+    val mealDataRegister: LiveData<EventWrapper<ApiResult<Unit>>> =
         _mealDataRegister
 
     // ID 식품데이터 조회
     private val _mealDataById = MutableLiveData<ApiResult<LifeCheckMealDataDetail>>()
     val mealDataById: LiveData<ApiResult<LifeCheckMealDataDetail>> = _mealDataById
 
+    // 식품데이터 수정
+    private val _mealDataUpdateResult =
+        MutableLiveData<EventWrapper<ApiResult<Unit>>>()
+    val mealDataUpdateResult: LiveData<EventWrapper<ApiResult<Unit>>> = _mealDataUpdateResult
 
     // 일일 섭취량 조회
     fun fetchDailyIntake(date: String) {
@@ -153,6 +156,13 @@ class LifeCheckViewModel @Inject constructor(
     fun fetchMealDataById(id: Long) {
         viewModelScope.launch {
             _mealDataById.value = lifeCheckUseCase.getMealDataById(id)
+        }
+    }
+
+    fun modifyMealData(id: Long, updatedData: LifeCheckMealDataRequest) {
+        viewModelScope.launch {
+            _mealDataUpdateResult.value =
+                EventWrapper(lifeCheckUseCase.modifyMealData(id, updatedData))
         }
     }
 }
