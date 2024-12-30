@@ -7,11 +7,15 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.project.veganlife.databinding.ItemRecyclerviewCommunityWriteEditKeywordAutoCompleteBinding
 
-class KeywordAutoCompleteAdapter : ListAdapter<String, KeywordAutoCompleteAdapter.KeywordViewHolder>(diffUtil) {
+class KeywordAutoCompleteAdapter(val onTagClicked: (String) -> Unit) : ListAdapter<String, KeywordAutoCompleteAdapter.KeywordViewHolder>(diffUtil) {
     inner class KeywordViewHolder(private val binding: ItemRecyclerviewCommunityWriteEditKeywordAutoCompleteBinding) :
         ViewHolder(binding.root) {
         fun bind(item: String) {
             binding.tvAutoComplete.text = item
+
+            binding.root.setOnClickListener {
+                onTagClicked(item)
+            }
         }
 
     }

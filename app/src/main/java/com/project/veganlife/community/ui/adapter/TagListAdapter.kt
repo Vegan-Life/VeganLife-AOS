@@ -7,11 +7,16 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.project.veganlife.databinding.ItemRecyclerviewCommunitySearchPopularityTagBinding
 
-class TagListAdapter : ListAdapter<String, TagListAdapter.TagViewHolder>(diffUtil) {
+class TagListAdapter(private val onTagClicked: ((String) -> Unit)? = null) : ListAdapter<String, TagListAdapter.TagViewHolder>(diffUtil) {
+
     inner class TagViewHolder(private val binding: ItemRecyclerviewCommunitySearchPopularityTagBinding) :
         ViewHolder(binding.root) {
         fun bind(item: String) {
             binding.tvCommunitySearchPopularityTag.text = item
+
+            binding.root.setOnClickListener {
+                onTagClicked?.let { it1 -> it1(item) }
+            }
         }
 
     }

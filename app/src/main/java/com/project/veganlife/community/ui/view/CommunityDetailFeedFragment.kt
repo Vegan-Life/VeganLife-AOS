@@ -97,7 +97,9 @@ class CommunityDetailFeedFragment : Fragment(), OnReplyCommentClickListener {
         binding.contentScrollView.visibility = View.GONE
 
         // 태그 리스트 어댑터 설정
-        tagListAdapter = TagListAdapter()
+        tagListAdapter = TagListAdapter { popularTag: String ->
+
+        }
         binding.rvCommunityDetailFeedKeyword.adapter = tagListAdapter
         binding.rvCommunityDetailFeedKeyword.layoutManager =
             FlexboxLayoutManager(requireContext()).apply {
@@ -256,6 +258,7 @@ class CommunityDetailFeedFragment : Fragment(), OnReplyCommentClickListener {
                     binding.contentScrollView.visibility = View.VISIBLE
 
                     post = postApiResult.data
+                    Log.i("##INFO", "observePostData: $post")
                     updateUIWithPostData()
                 }
             }

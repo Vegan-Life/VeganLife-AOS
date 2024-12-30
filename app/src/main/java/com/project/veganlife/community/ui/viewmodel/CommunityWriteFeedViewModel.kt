@@ -2,11 +2,13 @@ package com.project.veganlife.community.ui.viewmodel
 
 import android.content.Context
 import android.net.Uri
-import android.util.Log
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.project.veganlife.community.data.model.CreateResponse
 import com.project.veganlife.community.data.model.PopularTagsResponse
 import com.project.veganlife.community.data.model.PostDTO
 import com.project.veganlife.community.domain.usecase.CreatePostUseCase
@@ -42,8 +44,8 @@ class CommunityWriteFeedViewModel @Inject constructor(
     val imageUris: LiveData<List<Uri>> get() = _imageUris
 
     //게시물 등록 결과
-    private val _response = MutableLiveData<String>()
-    val response: LiveData<String> get() = _response
+    private val _response = MutableLiveData<ApiResult<CreateResponse>>()
+    val response: LiveData<ApiResult<CreateResponse>> get() = _response
 
     //사진
 //    private val
@@ -60,6 +62,17 @@ class CommunityWriteFeedViewModel @Inject constructor(
         loadPopularTags()
     }
 
+    fun addKeyword(newString: String) {
+        // 기존 리스트 가져오기 (null이면 빈 리스트로 초기화)
+        val currentList = keywordList.value ?: emptyList()
+
+        // 새 리스트 생성
+        val updatedList = currentList + newString
+
+        // LiveData 업데이트
+        _keywordList.value = updatedList
+    }
+
     fun getKeywordAutoComplete(keyword: String) {
         viewModelScope.launch {
             _keywordAutoCompleteList.value = keywordAutoCompleteUseCase.execute(keyword, 5)
@@ -72,39 +85,38 @@ class CommunityWriteFeedViewModel @Inject constructor(
         }
     }
 
-    fun createPost(context: Context, keywords: List<String>, title: String, content: String, images: List<Uri>) {
+    @RequiresApi(Build.VERSION_CODES.R)
+    fun createPost(
+        context: Context,
+        keywords: List<String>,
+        title: String,
+        content: String,
+        images: List<Uri>
+    ) {
         val postRequestBody = createPostRequestBody(keywords, title, content)
 
         val imagesMultipart = mutableListOf<MultipartBody.Part>()
         if (images.isNotEmpty()) {
             images.forEach { uri ->
-                PhotoUtils.uriToMultipart(uri, context)?.let { it1 -> imagesMultipart.add(it1) }
+                // 1. 최적화된 비트맵을 임시 파일로 저장
+                val imagePath = PhotoUtils.optimizeBitmap(context, uri)
+                PhotoUtils.createImageMultipart(imagePath)?.let {
+                    // 2. 임시 파일 경로를 사용해 MultipartBody.Part로 변환
+                    imagesMultipart.add(it)
+                }
             }
         }
 
         viewModelScope.launch {
-            when (val response = createPostUseCase.execute(postRequestBody, imagesMultipart)) {
-                is ApiResult.Success -> {
-                    _response.value = "게시물이 등록됐습니다."
-                }
-
-                is ApiResult.Error -> {
-                    _response.value = "게시물 등록에 실패했습니다. 다시 시도해주세요."
-                    Log.e(
-                        "##ERROR",
-                        "createPost ERROR: ${response.errorCode}, ${response.description}",
-                    )
-                }
-
-                is ApiResult.Exception -> {
-                    Log.e("##ERROR", "createPost EXCEPTION: ${response.e.stackTraceToString()}")
-                    _response.value = "게시물 등록에 실패했습니다. 다시 시도해주세요."
-                }
-            }
+            _response.value = createPostUseCase.execute(postRequestBody, imagesMultipart)
         }
     }
 
-    private fun createPostRequestBody(keywords: List<String>, title: String, content: String): RequestBody {
+    private fun createPostRequestBody(
+        keywords: List<String>,
+        title: String,
+        content: String
+    ): RequestBody {
         val postDTO = PostDTO(keywords, title, content)
 
         return PhotoUtils.createRequestBody(postDTO)

@@ -67,7 +67,27 @@ class CommunityWriteFeedFragment : Fragment() {
         }
         //결과값 보여주기
         viewModel.response.observe(viewLifecycleOwner) {
-            Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+            when (it) {
+                is ApiResult.Success -> {
+                    Toast.makeText(requireContext(), "게시물이 등록됐습니다.", Toast.LENGTH_SHORT).show()
+                    findNavController().navigateUp()
+                }
+
+                is ApiResult.Error -> {
+                    Log.e(
+                        "##ERROR",
+                        "createPost ERROR: ${it.errorCode}, ${it.description}",
+                    )
+
+                    Toast.makeText(requireContext(), "게시물 등록에 실패했습니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
+                }
+
+                is ApiResult.Exception -> {
+                    Log.e("##ERROR", "createPost EXCEPTION: ${it.e.stackTraceToString()}")
+                    Toast.makeText(requireContext(), "게시물 등록에 실패했습니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
+                }
+            }
+
         }
 
         //입력 중일 경우 에러 없애주기
@@ -81,12 +101,51 @@ class CommunityWriteFeedFragment : Fragment() {
             }
         }
 
+        //키워드 입력창에 입력 후 엔터 누르면 등록
+        binding.etCommunityWriteEditKeywordSearchBox.setOnEditorActionListener { textView, i, keyEvent ->
+            val keyword = textView.text.toString()
+
+            // 텍스트 내용이 비어있다면...
+            if (keyword.isEmpty()) {
+
+                // 토스트 메세지를 띄우고, 창 내용을 비운다
+                Toast.makeText(requireContext(), "정보를 입력해주세요", Toast.LENGTH_SHORT).show()
+                textView.clearFocus()
+                textView.isFocusable = false
+                textView.isFocusableInTouchMode = true
+                textView.isFocusable = true
+            } else {
+                viewModel.addKeyword(keyword)
+
+                textView.clearFocus()
+                textView.isFocusable = false
+                textView.isFocusableInTouchMode = true
+                textView.isFocusable = true
+                textView.text = ""
+            }
+
+
+            true
+        }
+
+        setKeywordList()
         setPopularTag()
         setKeywordAutoComplete()
     }
 
+    private fun setKeywordList() {
+        val adapter = TagListAdapter()
+        binding.rvCommunityWriteEditKeywordFeed.adapter = adapter
+        viewModel.keywordList.observe(viewLifecycleOwner) {
+            adapter.submitList(it)
+        }
+    }
+
     private fun setKeywordAutoComplete() {
-        val adapter = KeywordAutoCompleteAdapter()
+        val adapter = KeywordAutoCompleteAdapter(){ popularTag: String ->
+            //클릭할 경우 viewmodel의 keywordlist에 추가
+            viewModel.addKeyword(popularTag)
+        }
         binding.rvWriteEditFeedKeywordAutoComplete.adapter = adapter
         viewModel.keywordAutoCompleteList.observe(viewLifecycleOwner) {apiResult ->
             when (apiResult) {
@@ -160,7 +219,10 @@ class CommunityWriteFeedFragment : Fragment() {
     }
 
     private fun setPopularTag() {
-        val adapter = TagListAdapter()
+        val adapter = TagListAdapter { popularTag: String ->
+            //클릭할 경우 viewmodel의 keywordlist에 추가
+            viewModel.addKeyword(popularTag)
+        }
         binding.rvWriteEditFeedPopularKeyword.adapter = adapter
 
         viewModel.popularTagList.observe(viewLifecycleOwner) { apiResult ->
