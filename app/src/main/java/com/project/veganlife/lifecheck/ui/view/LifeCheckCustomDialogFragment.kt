@@ -21,13 +21,27 @@ class LifeCheckCustomDialogFragment : DialogFragment() {
     private var _binding: FragmentLifeCheckCustomDialogBinding? = null
     private val binding get() = _binding!!
 
+    private var dialogResultListener: DialogResultListener? = null
+
+    interface DialogResultListener {
+        fun onConfirm()
+    }
+
+    fun setDialogResultListener(listener: DialogResultListener) {
+        this.dialogResultListener = listener
+    }
+
     companion object {
         private const val ARG_MEAL_ID = "meal_id"
+        private const val ARG_ACTION_MODE = "action_mode"
+        const val MODE_DELETE = "delete"
+        const val MODE_MODIFY = "modify"
 
-        fun newInstance(mealId: Long): LifeCheckCustomDialogFragment {
+        fun newInstance(mealId: Long, actionMode: String): LifeCheckCustomDialogFragment {
             val fragment = LifeCheckCustomDialogFragment()
             val args = Bundle()
             args.putLong(ARG_MEAL_ID, mealId)
+            args.putString(ARG_ACTION_MODE, actionMode)
             fragment.arguments = args
             return fragment
         }
@@ -43,16 +57,48 @@ class LifeCheckCustomDialogFragment : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val mealId = arguments?.getLong(ARG_MEAL_ID) ?: return
+        val actionMode = arguments?.getString(ARG_ACTION_MODE) ?: MODE_MODIFY
+
+        when (actionMode) {
+            MODE_DELETE -> setupDeleteMode(mealId)
+            MODE_MODIFY -> setupModifyMode(mealId)
+        }
+    }
+
+    private fun setupDeleteMode(mealId: Long) {
         binding.run {
+            tvLifecheckTitle.text = getString(R.string.lifecheck_menu_delete)
+            tvLifecheckContent.text = getString(R.string.lifecheck_dialog_menu_delete_content)
+
+            btnLifecheckCancel.setOnClickListener {
+                dismiss()
+            }
+
+            btnLifecheckConfirm.setOnClickListener {
+                dialogResultListener?.onConfirm()
+                dismiss()
+            }
+        }
+    }
+
+    private fun setupModifyMode(mealId: Long) {
+        binding.run {
+            tvLifecheckTitle.text = getString(R.string.lifecheck_menu_modify_toolbar_title)
+            tvLifecheckContent.text = getString(R.string.lifecheck_dialog_menu_modify_content)
+
             btnLifecheckCancel.setOnClickListener {
                 dismiss()
             }
 
             btnLifecheckConfirm.setOnClickListener {
                 val bundle = Bundle().apply {
-                    putLong("mealId", requireArguments().getLong(ARG_MEAL_ID))
+                    putLong("mealId", mealId)
                 }
-                findNavController().navigate(R.id.action_lifeCheckMenuSearchFragment_to_lifeCheckMenuModifyFragment, bundle)
+                findNavController().navigate(
+                    R.id.action_lifeCheckMenuSearchFragment_to_lifeCheckMenuModifyFragment,
+                    bundle
+                )
                 dismiss()
             }
         }

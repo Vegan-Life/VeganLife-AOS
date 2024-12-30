@@ -32,4 +32,6 @@ interface LifeCheckRepository {
     suspend fun getMealDataById(id: Long): ApiResult<LifeCheckMealDataDetail>
 
     suspend fun modifyMealData(id: Long, request: LifeCheckMealDataRequest): ApiResult<Unit>
+
+    suspend fun deleteMealData(id: Long): ApiResult<Unit>
 }

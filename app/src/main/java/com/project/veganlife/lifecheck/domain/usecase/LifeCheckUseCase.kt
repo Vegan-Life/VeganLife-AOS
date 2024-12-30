@@ -56,4 +56,8 @@ class LifeCheckUseCase @Inject constructor(
     suspend fun modifyMealData(mealId: Long, request: LifeCheckMealDataRequest): ApiResult<Unit> {
         return lifeCheckRepository.modifyMealData(mealId, request)
     }
+
+    suspend fun deleteMealData(id: Long): ApiResult<Unit> {
+        return lifeCheckRepository.deleteMealData(id)
+    }
 }

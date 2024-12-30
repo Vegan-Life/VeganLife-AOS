@@ -1,11 +1,13 @@
 package com.project.veganlife.lifecheck.ui.view
 
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -51,7 +53,12 @@ class LifeCheckMenuSearchFragment : Fragment() {
     }
 
     private fun setupToolbar() {
-        binding.toolbarLifecheckMenuSearchToolbar.title = viewModel.selectedDietType.value
+        binding.toolbarLifecheckMenuSearchToolbar.run {
+            title = viewModel.selectedDietType.value
+            setNavigationOnClickListener {
+                findNavController().popBackStack()
+            }
+        }
     }
 
     private fun setupRecyclerView() {
@@ -59,7 +66,10 @@ class LifeCheckMenuSearchFragment : Fragment() {
         adapter =
             LifeCheckMealDataAdapter(object : LifeCheckMealDataAdapter.OnItemLongClickListener {
                 override fun onItemLongClicked(id: Long) {
-                    val dialog = LifeCheckCustomDialogFragment.newInstance(id)
+                    val dialog = LifeCheckCustomDialogFragment.newInstance(
+                        id,
+                        LifeCheckCustomDialogFragment.MODE_MODIFY
+                    )
                     dialog.show(parentFragmentManager, "LifeCheckCustomDialogFragment")
                 }
             })
@@ -99,6 +109,17 @@ class LifeCheckMenuSearchFragment : Fragment() {
                 updateButtonUI()
                 // 롱클릭 활성화
                 adapter.setLongClickEnabled(true)
+
+                if (getMyMenuShowDialog()) {
+                    val dialog = AlertDialog.Builder(requireContext())
+                        .setMessage("내가 등록한 메뉴는 길게 드래그하여 수정할 수 있습니다.")
+                        .setPositiveButton("확인") { dialog, _ ->
+                            dialog.dismiss()
+                        }
+                        .create()
+                    dialog.show()
+                    setMyMenuShowDialog()
+                }
             }
 
             etLifecheckMenuSearchBox.addTextChangedListener(object : TextWatcher {
@@ -188,6 +209,16 @@ class LifeCheckMenuSearchFragment : Fragment() {
             searchAllMenu()
             adapter.setLongClickEnabled(false)
         }
+    }
+
+    private fun getMyMenuShowDialog(): Boolean {
+        val prefs = requireContext().getSharedPreferences("LifeCheckMyMenu", Context.MODE_PRIVATE)
+        return prefs.getBoolean("MyMenu_notice", true)
+    }
+
+    private fun setMyMenuShowDialog() {
+        val prefs = requireContext().getSharedPreferences("LifeCheckMyMenu", Context.MODE_PRIVATE)
+        prefs.edit().putBoolean("MyMenu_notice", false).apply()
     }
 
     override fun onResume() {

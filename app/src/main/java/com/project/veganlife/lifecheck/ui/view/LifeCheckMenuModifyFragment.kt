@@ -99,6 +99,16 @@ class LifeCheckMenuModifyFragment : Fragment() {
                     viewModel.modifyMealData(mealId, updatedData)
                 }
             }
+
+            tvLifecheckMenuModifyDelete.setOnClickListener {
+                val dialog = LifeCheckCustomDialogFragment.newInstance(mealId, LifeCheckCustomDialogFragment.MODE_DELETE)
+                dialog.setDialogResultListener(object : LifeCheckCustomDialogFragment.DialogResultListener {
+                    override fun onConfirm() {
+                        deleteMealData(mealId)
+                    }
+                })
+                dialog.show(parentFragmentManager, "LifeCheckCustomDialogFragment")
+            }
         }
     }
 
@@ -288,9 +298,29 @@ class LifeCheckMenuModifyFragment : Fragment() {
     }
 
     private fun setupToolbar() {
-        binding.run {
-            toolbarLifecheckMenuModify.setOnClickListener {
+        binding.toolbarLifecheckMenuModify.run {
+            setNavigationOnClickListener {
                 findNavController().popBackStack()
+            }
+        }
+    }
+
+    private fun deleteMealData(mealId: Long) {
+        viewModel.deleteMealData(mealId)
+        viewModel.mealDataDeleteResult.observe(viewLifecycleOwner) { event ->
+            event.getContentIfNotHandled()?.let { result ->
+                when (result) {
+                    is ApiResult.Success -> {
+                        Toast.makeText(context, "메뉴가 삭제되었습니다.", Toast.LENGTH_SHORT).show()
+                        findNavController().popBackStack()
+                    }
+                    is ApiResult.Error -> {
+                        Toast.makeText(context, "오류 발생: ${result.description}", Toast.LENGTH_SHORT).show()
+                    }
+                    is ApiResult.Exception -> {
+                        Toast.makeText(context, "예외 발생: ${result.e.message}", Toast.LENGTH_SHORT).show()
+                    }
+                }
             }
         }
     }

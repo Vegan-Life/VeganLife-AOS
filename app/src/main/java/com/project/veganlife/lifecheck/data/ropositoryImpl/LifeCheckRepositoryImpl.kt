@@ -7,6 +7,7 @@ import com.project.veganlife.data.model.ApiResult
 import com.project.veganlife.data.model.DailyIntakeResponse
 import com.project.veganlife.data.model.RecommendedIntakeResponse
 import com.project.veganlife.lifecheck.data.datasource.LifeCheckDailyIntakeDataSourceImpl
+import com.project.veganlife.lifecheck.data.datasource.LifeCheckDeleteMealDataDataSourceImpl
 import com.project.veganlife.lifecheck.data.datasource.LifeCheckMealDataByIdDataSourceImpl
 import com.project.veganlife.lifecheck.data.datasource.LifeCheckMealDataPagingSource
 import com.project.veganlife.lifecheck.data.datasource.LifeCheckModifyMealDataSourceImpl
@@ -35,6 +36,7 @@ class LifeCheckRepositoryImpl @Inject constructor(
     private val lifeCheckYearlyDataSource: LifeCheckYearlyCalorieDataSourceImpl,
     private val lifeCheckMealDataByIdDataSource: LifeCheckMealDataByIdDataSourceImpl,
     private val lifeCheckModifyMealDataSource: LifeCheckModifyMealDataSourceImpl,
+    private val lifeCheckDeleteMealDataDataSource: LifeCheckDeleteMealDataDataSourceImpl,
 ) : LifeCheckRepository {
     override suspend fun getDailyIntake(date: String): ApiResult<DailyIntakeResponse> {
         return lifeCheckDailyDataSource.getDailyIntake(date)
@@ -89,4 +91,9 @@ class LifeCheckRepositoryImpl @Inject constructor(
     ): ApiResult<Unit> {
         return lifeCheckModifyMealDataSource.modifyMealData(id, request)
     }
+
+    override suspend fun deleteMealData(id: Long): ApiResult<Unit> {
+        return lifeCheckDeleteMealDataDataSource.deleteMealData(id)
+    }
+
 }

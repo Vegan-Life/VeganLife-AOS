@@ -83,6 +83,11 @@ class LifeCheckViewModel @Inject constructor(
         MutableLiveData<EventWrapper<ApiResult<Unit>>>()
     val mealDataUpdateResult: LiveData<EventWrapper<ApiResult<Unit>>> = _mealDataUpdateResult
 
+    // 식품데이터 삭제
+    private val _mealDataDeleteResult =
+        MutableLiveData<EventWrapper<ApiResult<Unit>>>()
+    val mealDataDeleteResult: LiveData<EventWrapper<ApiResult<Unit>>> = _mealDataDeleteResult
+
     // 일일 섭취량 조회
     fun fetchDailyIntake(date: String) {
         viewModelScope.launch {
@@ -163,6 +168,12 @@ class LifeCheckViewModel @Inject constructor(
         viewModelScope.launch {
             _mealDataUpdateResult.value =
                 EventWrapper(lifeCheckUseCase.modifyMealData(id, updatedData))
+        }
+    }
+
+    fun deleteMealData(id: Long) {
+        viewModelScope.launch {
+            _mealDataDeleteResult.value = EventWrapper(lifeCheckUseCase.deleteMealData(id))
         }
     }
 }
