@@ -5,6 +5,7 @@ import com.project.veganlife.data.model.ApiResult
 import com.project.veganlife.data.model.DailyIntakeResponse
 import com.project.veganlife.data.model.RecommendedIntakeResponse
 import com.project.veganlife.lifecheck.data.model.LifeCheckMealData
+import com.project.veganlife.lifecheck.data.model.LifeCheckMealDataDetail
 import com.project.veganlife.lifecheck.data.model.LifeCheckMealDataRequest
 import com.project.veganlife.lifecheck.data.model.LifeCheckWeeklyCalorieResponse
 import com.project.veganlife.lifecheck.domain.repository.LifeCheckRepository
@@ -44,7 +45,19 @@ class LifeCheckUseCase @Inject constructor(
         return lifeCheckRepository.getYearlyCalorie(startDate)
     }
 
-    suspend fun registerMealData(data: LifeCheckMealDataRequest): ApiResult<LifeCheckMealDataRequest?> {
+    suspend fun registerMealData(data: LifeCheckMealDataRequest): ApiResult<Unit> {
         return lifeCheckRepository.registerMealData(data)
+    }
+
+    suspend fun getMealDataById(id: Long): ApiResult<LifeCheckMealDataDetail> {
+        return lifeCheckRepository.getMealDataById(id)
+    }
+
+    suspend fun modifyMealData(mealId: Long, request: LifeCheckMealDataRequest): ApiResult<Unit> {
+        return lifeCheckRepository.modifyMealData(mealId, request)
+    }
+
+    suspend fun deleteMealData(id: Long): ApiResult<Unit> {
+        return lifeCheckRepository.deleteMealData(id)
     }
 }

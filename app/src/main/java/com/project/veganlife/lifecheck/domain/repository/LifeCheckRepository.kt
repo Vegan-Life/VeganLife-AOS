@@ -5,6 +5,7 @@ import com.project.veganlife.data.model.ApiResult
 import com.project.veganlife.data.model.DailyIntakeResponse
 import com.project.veganlife.data.model.RecommendedIntakeResponse
 import com.project.veganlife.lifecheck.data.model.LifeCheckMealData
+import com.project.veganlife.lifecheck.data.model.LifeCheckMealDataDetail
 import com.project.veganlife.lifecheck.data.model.LifeCheckMealDataRequest
 import com.project.veganlife.lifecheck.data.model.LifeCheckWeeklyCalorieResponse
 import kotlinx.coroutines.flow.Flow
@@ -19,7 +20,7 @@ interface LifeCheckRepository {
 
     suspend fun getRecommendedIntake(): ApiResult<RecommendedIntakeResponse>
 
-    suspend fun registerMealData(mealData: LifeCheckMealDataRequest): ApiResult<LifeCheckMealDataRequest?>
+    suspend fun registerMealData(mealData: LifeCheckMealDataRequest): ApiResult<Unit>
 
     suspend fun getWeeklyCalorie(
         startDate: String,
@@ -27,4 +28,10 @@ interface LifeCheckRepository {
     ): ApiResult<LifeCheckWeeklyCalorieResponse>
 
     suspend fun getYearlyCalorie(startDate: String): ApiResult<LifeCheckWeeklyCalorieResponse>
+
+    suspend fun getMealDataById(id: Long): ApiResult<LifeCheckMealDataDetail>
+
+    suspend fun modifyMealData(id: Long, request: LifeCheckMealDataRequest): ApiResult<Unit>
+
+    suspend fun deleteMealData(id: Long): ApiResult<Unit>
 }

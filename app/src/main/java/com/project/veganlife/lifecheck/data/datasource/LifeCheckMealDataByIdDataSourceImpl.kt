@@ -3,20 +3,19 @@ package com.project.veganlife.lifecheck.data.datasource
 import com.google.gson.GsonBuilder
 import com.project.veganlife.data.model.ApiResult
 import com.project.veganlife.data.model.ConflictResponse
-import com.project.veganlife.lifecheck.data.model.LifeCheckMealDataRequest
+import com.project.veganlife.lifecheck.data.model.LifeCheckMealDataDetail
 import com.project.veganlife.lifecheck.data.remote.LifeCheckApi
 import javax.inject.Inject
 
-class LifeCheckRegisterMealDataDataSourceImpl @Inject constructor(
-    private val mealDataPostApi: LifeCheckApi,
+class LifeCheckMealDataByIdDataSourceImpl @Inject constructor(
+    private val lifeCheckApi: LifeCheckApi
 ) {
-    suspend fun registerMealData(mealData: LifeCheckMealDataRequest): ApiResult<Unit> {
+    suspend fun getMealDataById(id: Long): ApiResult<LifeCheckMealDataDetail> {
         val gson = GsonBuilder().create()
         return try {
-            val response =
-                mealDataPostApi.registerMealData(mealData)
+            val response = lifeCheckApi.getMealDataById(id)
             if (response.isSuccessful) {
-                ApiResult.Success(Unit)
+                ApiResult.Success(response.body()!!)
             } else {
                 val errorBodyString = response.errorBody()?.string()
                 val conflictResponse =

@@ -1,11 +1,13 @@
 package com.project.veganlife.lifecheck.ui.view
 
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -51,11 +53,26 @@ class LifeCheckMenuSearchFragment : Fragment() {
     }
 
     private fun setupToolbar() {
-        binding.toolbarLifecheckMenuSearchToolbar.title = viewModel.selectedDietType.value
+        binding.toolbarLifecheckMenuSearchToolbar.run {
+            title = viewModel.selectedDietType.value
+            setNavigationOnClickListener {
+                findNavController().popBackStack()
+            }
+        }
     }
 
     private fun setupRecyclerView() {
-        adapter = LifeCheckMealDataAdapter()
+        // 어댑터 초기화 시 롱클릭 리스너 전달
+        adapter =
+            LifeCheckMealDataAdapter(object : LifeCheckMealDataAdapter.OnItemLongClickListener {
+                override fun onItemLongClicked(id: Long) {
+                    val dialog = LifeCheckCustomDialogFragment.newInstance(
+                        id,
+                        LifeCheckCustomDialogFragment.MODE_MODIFY
+                    )
+                    dialog.show(parentFragmentManager, "LifeCheckCustomDialogFragment")
+                }
+            })
         binding.rvLifecheckMenuSearch.layoutManager = LinearLayoutManager(context)
         binding.rvLifecheckMenuSearch.adapter = adapter
     }
@@ -64,6 +81,10 @@ class LifeCheckMenuSearchFragment : Fragment() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.mealData.collectLatest {
+                    // 현재 선택된 ownerType 확인
+                    val isMemberSelected = binding.btnLifecheckMenuSearchMyMenu.isSelected
+                    // 어댑터에 롱클릭 활성화 여부 설정
+                    adapter.setLongClickEnabled(isMemberSelected)
                     adapter.submitData(it)
                 }
             }
@@ -77,6 +98,8 @@ class LifeCheckMenuSearchFragment : Fragment() {
                 btnLifecheckMenuSearchMyMenu.isSelected = false
                 searchAllMenu()
                 updateButtonUI()
+                // 롱클릭 비활성화
+                adapter.setLongClickEnabled(false)
             }
 
             btnLifecheckMenuSearchMyMenu.setOnClickListener {
@@ -84,6 +107,19 @@ class LifeCheckMenuSearchFragment : Fragment() {
                 btnLifecheckMenuSearchAllMenu.isSelected = false
                 searchMyMenu()
                 updateButtonUI()
+                // 롱클릭 활성화
+                adapter.setLongClickEnabled(true)
+
+                if (getMyMenuShowDialog()) {
+                    val dialog = AlertDialog.Builder(requireContext())
+                        .setMessage("내가 등록한 메뉴는 길게 드래그하여 수정할 수 있습니다.")
+                        .setPositiveButton("확인") { dialog, _ ->
+                            dialog.dismiss()
+                        }
+                        .create()
+                    dialog.show()
+                    setMyMenuShowDialog()
+                }
             }
 
             etLifecheckMenuSearchBox.addTextChangedListener(object : TextWatcher {
@@ -163,6 +199,31 @@ class LifeCheckMenuSearchFragment : Fragment() {
         binding.tvLifecheckMenuSearchMenuInput.setOnClickListener {
             findNavController().navigate(R.id.action_lifeCheckMenuSearchFragment_to_lifeCheckMenuAddFragment)
         }
+    }
+
+    private fun resetToAllMenu() {
+        binding.run {
+            btnLifecheckMenuSearchAllMenu.isSelected = true
+            btnLifecheckMenuSearchMyMenu.isSelected = false
+            updateButtonUI()
+            searchAllMenu()
+            adapter.setLongClickEnabled(false)
+        }
+    }
+
+    private fun getMyMenuShowDialog(): Boolean {
+        val prefs = requireContext().getSharedPreferences("LifeCheckMyMenu", Context.MODE_PRIVATE)
+        return prefs.getBoolean("MyMenu_notice", true)
+    }
+
+    private fun setMyMenuShowDialog() {
+        val prefs = requireContext().getSharedPreferences("LifeCheckMyMenu", Context.MODE_PRIVATE)
+        prefs.edit().putBoolean("MyMenu_notice", false).apply()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        resetToAllMenu()
     }
 
     override fun onDestroy() {

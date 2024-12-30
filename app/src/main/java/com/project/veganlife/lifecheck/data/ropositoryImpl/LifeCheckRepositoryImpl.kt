@@ -7,13 +7,17 @@ import com.project.veganlife.data.model.ApiResult
 import com.project.veganlife.data.model.DailyIntakeResponse
 import com.project.veganlife.data.model.RecommendedIntakeResponse
 import com.project.veganlife.lifecheck.data.datasource.LifeCheckDailyIntakeDataSourceImpl
+import com.project.veganlife.lifecheck.data.datasource.LifeCheckDeleteMealDataDataSourceImpl
+import com.project.veganlife.lifecheck.data.datasource.LifeCheckMealDataByIdDataSourceImpl
 import com.project.veganlife.lifecheck.data.datasource.LifeCheckMealDataPagingSource
+import com.project.veganlife.lifecheck.data.datasource.LifeCheckModifyMealDataSourceImpl
 import com.project.veganlife.lifecheck.data.datasource.LifeCheckMonthlyCalorieDataSourceImpl
 import com.project.veganlife.lifecheck.data.datasource.LifeCheckRecommendedIntakeDataSourceImpl
 import com.project.veganlife.lifecheck.data.datasource.LifeCheckRegisterMealDataDataSourceImpl
 import com.project.veganlife.lifecheck.data.datasource.LifeCheckWeeklyCalorieDataSourceImpl
 import com.project.veganlife.lifecheck.data.datasource.LifeCheckYearlyCalorieDataSourceImpl
 import com.project.veganlife.lifecheck.data.model.LifeCheckMealData
+import com.project.veganlife.lifecheck.data.model.LifeCheckMealDataDetail
 import com.project.veganlife.lifecheck.data.model.LifeCheckMealDataRequest
 import com.project.veganlife.lifecheck.data.model.LifeCheckWeeklyCalorieResponse
 import com.project.veganlife.lifecheck.data.remote.LifeCheckApi
@@ -30,8 +34,10 @@ class LifeCheckRepositoryImpl @Inject constructor(
     private val lifeCheckMealDataDataSource: LifeCheckRegisterMealDataDataSourceImpl,
     private val lifeCheckWeeklyDataSource: LifeCheckWeeklyCalorieDataSourceImpl,
     private val lifeCheckYearlyDataSource: LifeCheckYearlyCalorieDataSourceImpl,
-
-    ) : LifeCheckRepository {
+    private val lifeCheckMealDataByIdDataSource: LifeCheckMealDataByIdDataSourceImpl,
+    private val lifeCheckModifyMealDataSource: LifeCheckModifyMealDataSourceImpl,
+    private val lifeCheckDeleteMealDataDataSource: LifeCheckDeleteMealDataDataSourceImpl,
+) : LifeCheckRepository {
     override suspend fun getDailyIntake(date: String): ApiResult<DailyIntakeResponse> {
         return lifeCheckDailyDataSource.getDailyIntake(date)
     }
@@ -60,7 +66,7 @@ class LifeCheckRepositoryImpl @Inject constructor(
         return lifeCheckRecommendedIntakeDataSource.getRecommendedIntake()
     }
 
-    override suspend fun registerMealData(mealData: LifeCheckMealDataRequest): ApiResult<LifeCheckMealDataRequest?> {
+    override suspend fun registerMealData(mealData: LifeCheckMealDataRequest): ApiResult<Unit> {
         return lifeCheckMealDataDataSource.registerMealData(mealData)
     }
 
@@ -73,6 +79,21 @@ class LifeCheckRepositoryImpl @Inject constructor(
 
     override suspend fun getYearlyCalorie(startDate: String): ApiResult<LifeCheckWeeklyCalorieResponse> {
         return lifeCheckYearlyDataSource.getYearlyCalorie(startDate)
+    }
+
+    override suspend fun getMealDataById(id: Long): ApiResult<LifeCheckMealDataDetail> {
+        return lifeCheckMealDataByIdDataSource.getMealDataById(id)
+    }
+
+    override suspend fun modifyMealData(
+        id: Long,
+        request: LifeCheckMealDataRequest
+    ): ApiResult<Unit> {
+        return lifeCheckModifyMealDataSource.modifyMealData(id, request)
+    }
+
+    override suspend fun deleteMealData(id: Long): ApiResult<Unit> {
+        return lifeCheckDeleteMealDataDataSource.deleteMealData(id)
     }
 
 }

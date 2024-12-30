@@ -7,18 +7,20 @@ import com.project.veganlife.lifecheck.data.model.LifeCheckMealDataRequest
 import com.project.veganlife.lifecheck.data.remote.LifeCheckApi
 import javax.inject.Inject
 
-class LifeCheckRegisterMealDataDataSourceImpl @Inject constructor(
-    private val mealDataPostApi: LifeCheckApi,
+class LifeCheckModifyMealDataSourceImpl @Inject constructor(
+    private val lifeCheckApi: LifeCheckApi,
 ) {
-    suspend fun registerMealData(mealData: LifeCheckMealDataRequest): ApiResult<Unit> {
+    suspend fun modifyMealData(
+        mealId: Long,
+        updatedData: LifeCheckMealDataRequest
+    ): ApiResult<Unit> {
         val gson = GsonBuilder().create()
         return try {
-            val response =
-                mealDataPostApi.registerMealData(mealData)
-            if (response.isSuccessful) {
+            val response = lifeCheckApi.modifyMealData(mealId, updatedData)
+            if (response?.isSuccessful == true) {
                 ApiResult.Success(Unit)
             } else {
-                val errorBodyString = response.errorBody()?.string()
+                val errorBodyString = response?.errorBody()?.string()
                 val conflictResponse =
                     gson.fromJson(errorBodyString, ConflictResponse::class.java)
                 ApiResult.Error(conflictResponse.errorCode, conflictResponse.description)
