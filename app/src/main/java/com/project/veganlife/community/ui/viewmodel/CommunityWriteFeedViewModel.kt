@@ -8,9 +8,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.project.veganlife.community.data.model.CreateResponse
 import com.project.veganlife.community.data.model.PopularTagsResponse
 import com.project.veganlife.community.data.model.PostDTO
+import com.project.veganlife.community.data.model.PostResponse
 import com.project.veganlife.community.domain.usecase.CreatePostUseCase
 import com.project.veganlife.community.domain.usecase.GetPopularTagsUseCase
 import com.project.veganlife.community.domain.usecase.KeywordAutoCompleteUseCase
@@ -44,8 +44,8 @@ class CommunityWriteFeedViewModel @Inject constructor(
     val imageUris: LiveData<List<Uri>> get() = _imageUris
 
     //게시물 등록 결과
-    private val _response = MutableLiveData<ApiResult<CreateResponse>>()
-    val response: LiveData<ApiResult<CreateResponse>> get() = _response
+    private val _response = MutableLiveData<ApiResult<PostResponse>>()
+    val response: LiveData<ApiResult<PostResponse>> get() = _response
 
     //사진
 //    private val
@@ -117,13 +117,25 @@ class CommunityWriteFeedViewModel @Inject constructor(
         title: String,
         content: String
     ): RequestBody {
-        val postDTO = PostDTO(keywords, title, content)
+        val postDTO = PostDTO(title, content, keywords)
 
         return PhotoUtils.createRequestBody(postDTO)
     }
 
     fun setImageUris(uris: List<Uri>) {
+        val uriList = mutableListOf<Uri>()
+        imageUris.value?.let { uriList.addAll(it) }
+        uriList.addAll(uris)
+
         _imageUris.value = uris
+    }
+
+    fun addUriList(newUris: List<Uri>) {
+        val currentList = imageUris.value ?: emptyList()
+
+        val updatedList = currentList + newUris
+
+        _imageUris.value = updatedList
     }
 
     fun removePartAt(position: Int) {

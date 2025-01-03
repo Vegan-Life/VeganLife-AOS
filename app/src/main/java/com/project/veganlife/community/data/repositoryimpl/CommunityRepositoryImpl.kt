@@ -11,6 +11,7 @@ import com.project.veganlife.community.data.model.CreateResponse
 import com.project.veganlife.community.data.model.PopularTagsResponse
 import com.project.veganlife.community.data.model.Post
 import com.project.veganlife.community.data.model.PostPreview
+import com.project.veganlife.community.data.model.PostResponse
 import com.project.veganlife.community.data.remote.CommunityApi
 import com.project.veganlife.community.data.remote.CommunityFeedPagingSource
 import com.project.veganlife.community.data.remote.KeywordFilteredFeedPagingSource
@@ -197,7 +198,7 @@ class CommunityRepositoryImpl @Inject constructor(
     override suspend fun createPost(
         postDTO: RequestBody,
         images: List<MultipartBody.Part>
-    ): ApiResult<CreateResponse> {
+    ): ApiResult<PostResponse> {
         val gson = GsonBuilder().create()
 
         return try {

@@ -5,6 +5,7 @@ import com.project.veganlife.community.data.model.CreateResponse
 import com.project.veganlife.community.data.model.PopularTagsResponse
 import com.project.veganlife.community.data.model.Post
 import com.project.veganlife.community.data.model.PostPreview
+import com.project.veganlife.community.data.model.PostResponse
 import com.project.veganlife.data.model.ApiResult
 import kotlinx.coroutines.flow.Flow
 import okhttp3.MultipartBody
@@ -31,5 +32,5 @@ interface CommunityRepository {
 
     suspend fun createComment(postId: Long, commentId: Long?, content: String): ApiResult<CreateResponse>
 
-    suspend fun createPost(postDTO: RequestBody, images: List<MultipartBody.Part>): ApiResult<CreateResponse>
+    suspend fun createPost(postDTO: RequestBody, images: List<MultipartBody.Part>): ApiResult<PostResponse>
 }

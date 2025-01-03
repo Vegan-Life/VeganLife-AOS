@@ -5,6 +5,7 @@ import com.project.veganlife.community.data.model.CreateResponse
 import com.project.veganlife.community.data.model.PopularTagsResponse
 import com.project.veganlife.community.data.model.Post
 import com.project.veganlife.community.data.model.PostPreview
+import com.project.veganlife.community.data.model.PostResponse
 import com.project.veganlife.data.model.PagingResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -70,5 +71,5 @@ interface CommunityApi {
     suspend fun createPost(
         @Part("request") postDTO: RequestBody,
         @Part images: List<MultipartBody.Part>
-    ): Response<CreateResponse>
+    ): Response<PostResponse>
 }

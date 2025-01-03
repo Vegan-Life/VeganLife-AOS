@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
@@ -32,15 +33,14 @@ class CommunityWriteFeedFragment : Fragment() {
 
     private lateinit var galleryAdapter: GalleryAdapter
     private val galleryLauncher =
-        registerForActivityResult(ActivityResultContracts.GetMultipleContents()) {
-            Log.i("##INFO", "$it: ")
-            if (it.size > 5) {
-                Toast.makeText(requireContext(), "최대 5개의 사진만 등록할 수 있습니다.", Toast.LENGTH_SHORT)
-                    .show()
+        registerForActivityResult(ActivityResultContracts.PickMultipleVisualMedia(5)) {
+            viewModel.imageUris.value?.let { currentUris ->
+                if (currentUris.size + it.size <= 5) {
+                    viewModel.addUriList(it)
+                } else {
+                    Toast.makeText(requireContext(), "최대 5개의 사진을 등록할 수 있습니다.", Toast.LENGTH_SHORT).show()
+                }
             }
-            val imageUris = it.take(5) // 최대 5개로 제한
-
-            viewModel.setImageUris(imageUris)
         }
 
     override fun onCreateView(
@@ -79,12 +79,20 @@ class CommunityWriteFeedFragment : Fragment() {
                         "createPost ERROR: ${it.errorCode}, ${it.description}",
                     )
 
-                    Toast.makeText(requireContext(), "게시물 등록에 실패했습니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        requireContext(),
+                        "게시물 등록에 실패했습니다. 다시 시도해주세요.",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
 
                 is ApiResult.Exception -> {
                     Log.e("##ERROR", "createPost EXCEPTION: ${it.e.stackTraceToString()}")
-                    Toast.makeText(requireContext(), "게시물 등록에 실패했습니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        requireContext(),
+                        "게시물 등록에 실패했습니다. 다시 시도해주세요.",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
 
@@ -142,12 +150,12 @@ class CommunityWriteFeedFragment : Fragment() {
     }
 
     private fun setKeywordAutoComplete() {
-        val adapter = KeywordAutoCompleteAdapter(){ popularTag: String ->
+        val adapter = KeywordAutoCompleteAdapter() { popularTag: String ->
             //클릭할 경우 viewmodel의 keywordlist에 추가
             viewModel.addKeyword(popularTag)
         }
         binding.rvWriteEditFeedKeywordAutoComplete.adapter = adapter
-        viewModel.keywordAutoCompleteList.observe(viewLifecycleOwner) {apiResult ->
+        viewModel.keywordAutoCompleteList.observe(viewLifecycleOwner) { apiResult ->
             when (apiResult) {
                 is ApiResult.Error -> {
                     val popularTagsResponse = apiResult.description
@@ -169,7 +177,7 @@ class CommunityWriteFeedFragment : Fragment() {
     private fun event() {
         binding.apply {
             ibCommunityWriteEditFeedUploadPhoto.setOnClickListener {
-                galleryLauncher.launch("image/*")
+                galleryLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
             }
             toolbarCommunityWriteEditFeed.setNavigationOnClickListener {
                 findNavController().navigateUp()
@@ -198,10 +206,17 @@ class CommunityWriteFeedFragment : Fragment() {
 
             // 텍스트 변경 리스너
             etCommunityWriteEditKeywordSearchBox.addTextChangedListener(object : TextWatcher {
-                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                override fun beforeTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    count: Int,
+                    after: Int
+                ) {
+                }
 
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                    layoutPopularKeyword.visibility = if (s.isNullOrEmpty()) View.VISIBLE else View.GONE
+                    layoutPopularKeyword.visibility =
+                        if (s.isNullOrEmpty()) View.VISIBLE else View.GONE
                     //텍스트 있으면 자동완성 보이기
                     rvWriteEditFeedKeywordAutoComplete.visibility = if (s.isNullOrEmpty()) {
                         View.GONE
