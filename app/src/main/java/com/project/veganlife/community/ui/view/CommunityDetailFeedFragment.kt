@@ -68,7 +68,9 @@ class CommunityDetailFeedFragment : Fragment(), OnReplyCommentClickListener {
     ): View {
         // postId를 arguments에서 가져와 데이터 로드
         val postId = arguments?.getInt("postId") ?: -1
-        getPost(postId)
+        postViewModel.getPost(postId)
+        postViewModel.getMyProfile()
+
 
         return binding.root
     }
@@ -236,48 +238,44 @@ class CommunityDetailFeedFragment : Fragment(), OnReplyCommentClickListener {
         }
     }
 
-    private fun getPost(postId: Int) {
-        postViewModel.getPost(postId)
-    }
-
     private fun observePostData() {
-        // ViewModel의 LiveData를 관찰하여 데이터 업데이트
-        postViewModel.post.observe(viewLifecycleOwner) { postApiResult ->
-            when (postApiResult) {
-                is ApiResult.Error -> {
-                    Log.d("daily Error", postApiResult.description)
-                }
 
-                is ApiResult.Exception -> {
-                    Log.d("daily Exception", postApiResult.e.message ?: "No message available")
-                }
+        postViewModel.combinedLiveData.observe(viewLifecycleOwner) { (profile, post) ->
+            if (profile != null && post != null) {
 
-                is ApiResult.Success -> {
-                    binding.layoutContentLoading.visibility = View.GONE
-                    binding.contentLoading.hide()
-                    binding.contentScrollView.visibility = View.VISIBLE
+                binding.layoutContentLoading.visibility = View.GONE
+                binding.contentLoading.hide()
+                binding.contentScrollView.visibility = View.VISIBLE
 
-                    post = postApiResult.data
-                    Log.i("##INFO", "observePostData: $post")
-                    updateUIWithPostData()
-                }
+                this.post = post
+                Log.i("##INFO", "observePostData: $post")
+
+                updateUIWithPostData(post, profile.nickname)
             }
         }
+
     }
 
-    private fun updateUIWithPostData() {
-        post?.let { post ->
-            binding.tvCommunityDetailFeedTitle.text = post.title
-            binding.tvCommunityDetailFeedDescription.text = post.content
-            binding.tvCommunityDetailFeedDateTime.text = formatDateTime(post.createdAt)
-            binding.tvCommunityDetailFeedLikes.text = post.likeCount.toString()
-            binding.tvCommunityDetailFeedComments.text = post.commentCount.toString()
-            binding.ivCommunityDetailFeedLikes.isSelected = post.isLike
+    private fun updateUIWithPostData(post: Post, nickname: String) {
+        binding.tvCommunityDetailFeedTitle.text = post.title
+        binding.tvCommunityDetailFeedDescription.text = post.content
+        binding.tvCommunityDetailFeedDateTime.text = formatDateTime(post.createdAt)
+        binding.tvCommunityDetailFeedLikes.text = post.likeCount.toString()
+        binding.tvCommunityDetailFeedComments.text = post.commentCount.toString()
+        binding.ivCommunityDetailFeedLikes.isSelected = post.isLike
 
-            setImageViewPager(post.imageUrls)
-            setTags(post.tags)
-            setAuthorDetail(post)
-            setComments(post.comments)
+        setImageViewPager(post.imageUrls)
+        setTags(post.tags)
+        setAuthorDetail(post)
+        setComments(post.comments)
+
+        //내 게시물일 경우 수정 및 삭제 메뉴 보여주기
+        if (nickname == post.author) {
+            Log.i("##INFO", "내 게시물 -> 메뉴 보여주기")
+            binding.toolbarCommunityDetailFeed.menu.clear()
+            binding.toolbarCommunityDetailFeed.inflateMenu(R.menu.menu_community_detail)
+        } else {
+            binding.toolbarCommunityDetailFeed.menu.clear()
         }
     }
 

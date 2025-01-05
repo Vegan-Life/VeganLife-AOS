@@ -1,5 +1,7 @@
 package com.project.veganlife.community.ui.viewmodel
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -27,10 +29,25 @@ class PostViewModel @Inject constructor(
     val post = MutableLiveData<ApiResult<Post>>()
     val myProfile = MutableLiveData<ApiResult<ProfileResponse>>()
 
+    // 결합된 데이터를 제공하는 LiveData
+    val combinedLiveData: LiveData<Pair<ProfileResponse?, Post?>> = MediatorLiveData<Pair<ProfileResponse?, Post?>>().apply {
+        addSource(myProfile) { profileResult ->
+            value = Pair((profileResult as? ApiResult.Success)?.data, (post.value as? ApiResult.Success)?.data)
+        }
+        addSource(post) { postResult ->
+            value = Pair((myProfile.value as? ApiResult.Success)?.data, (postResult as? ApiResult.Success)?.data)
+        }
+    }
+
 
     fun getPost(postId: Int) {
         viewModelScope.launch {
             post.value = getPostDataUseCase.execute(postId)
+        }
+    }
+
+    fun getMyProfile() {
+        viewModelScope.launch {
             myProfile.value = profileGetUseCase.invoke()
         }
     }

@@ -38,7 +38,8 @@ class CommunityWriteFeedFragment : Fragment() {
                 if (currentUris.size + it.size <= 5) {
                     viewModel.addUriList(it)
                 } else {
-                    Toast.makeText(requireContext(), "최대 5개의 사진을 등록할 수 있습니다.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "최대 5개의 사진을 등록할 수 있습니다.", Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
         }
