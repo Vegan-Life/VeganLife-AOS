@@ -9,7 +9,8 @@ import com.project.veganlife.databinding.ItemRecyclerviewLifecheckMenuSearchBind
 import com.project.veganlife.lifecheck.data.model.LifeCheckMealData
 
 class LifeCheckMealDataAdapter(
-    private val listener: OnItemLongClickListener
+    private val longClickListener: OnItemLongClickListener,
+    private val clickListener: OnItemClickListener,
 ) : PagingDataAdapter<LifeCheckMealData, LifeCheckMealDataAdapter.MealDataViewHolder>(diffUtil) {
 
     private var isLongClickEnabled: Boolean = false
@@ -24,13 +25,17 @@ class LifeCheckMealDataAdapter(
         fun onItemLongClicked(id: Long)
     }
 
+    interface OnItemClickListener {
+        fun onItemClicked(id: Long)
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MealDataViewHolder {
         val binding = ItemRecyclerviewLifecheckMenuSearchBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false
         )
-        return MealDataViewHolder(binding, listener)
+        return MealDataViewHolder(binding, longClickListener, clickListener)
     }
 
     override fun onBindViewHolder(holder: MealDataViewHolder, position: Int) {
@@ -42,16 +47,21 @@ class LifeCheckMealDataAdapter(
 
     class MealDataViewHolder(
         private val binding: ItemRecyclerviewLifecheckMenuSearchBinding,
-        private val listener: OnItemLongClickListener
+        private val longClickListener: OnItemLongClickListener,
+        private val clickListener: OnItemClickListener
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(mealData: LifeCheckMealData, isLongClickEnabled: Boolean) {
             binding.tvLifecheckMenuSearchWord.text = mealData.name
 
+            binding.root.setOnClickListener {
+                clickListener.onItemClicked(mealData.id.toLong()) // ID 전달
+            }
+
             if (isLongClickEnabled) {
                 // 롱클릭 이벤트 활성화
                 binding.root.setOnLongClickListener {
-                    listener.onItemLongClicked(mealData.id.toLong()) // ID 전달
+                    longClickListener.onItemLongClicked(mealData.id.toLong()) // ID 전달
                     true
                 }
             } else {
