@@ -18,7 +18,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
@@ -54,14 +53,6 @@ class CommunityDetailFeedFragment : Fragment(), OnReplyCommentClickListener {
 
     private var commentId: Long? = null
 
-    // ViewPager2 콜백 변수
-    private val viewPagerCallback = object : ViewPager2.OnPageChangeCallback() {
-        override fun onPageSelected(position: Int) {
-            super.onPageSelected(position)
-            adjustViewPagerHeight(position)
-        }
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -88,8 +79,6 @@ class CommunityDetailFeedFragment : Fragment(), OnReplyCommentClickListener {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        // ViewPager2 콜백 해제
-        binding.vpCommunityDetailFeedImage.unregisterOnPageChangeCallback(viewPagerCallback)
     }
 
     private fun init() {
@@ -111,7 +100,6 @@ class CommunityDetailFeedFragment : Fragment(), OnReplyCommentClickListener {
         // ViewPager 어댑터 및 콜백 등록
         viewPagerAdapter = PostImagesViewPagerAdapter()
         binding.vpCommunityDetailFeedImage.adapter = viewPagerAdapter
-        binding.vpCommunityDetailFeedImage.registerOnPageChangeCallback(viewPagerCallback)
 
         //댓글 어댑터 설정
         commentListAdapter = CommentsAdapter(this)
@@ -289,8 +277,8 @@ class CommunityDetailFeedFragment : Fragment(), OnReplyCommentClickListener {
         } else {
             binding.vpCommunityDetailFeedImage.visibility = View.VISIBLE
             viewPagerAdapter.submitList(imageUrls)
-            //todo????
-            adjustViewPagerHeight(0) // 첫 번째 페이지의 높이 조정
+//            //todo????
+//            adjustViewPagerHeight(0) // 첫 번째 페이지의 높이 조정
         }
 
     }
