@@ -202,7 +202,6 @@ class CommunityRepositoryImpl @Inject constructor(
         val gson = GsonBuilder().create()
 
         return try {
-            Log.i("##INFO", "멀티멀티파트파트: ${images}")
             val createPostResponse = communityApi.createPost(postDTO, images)
             if (createPostResponse.isSuccessful == true) {
                 val responseBody = createPostResponse.body()!!

@@ -100,7 +100,7 @@ class CommunityWriteFeedViewModel @Inject constructor(
             images.forEach { uri ->
                 // 1. 최적화된 비트맵을 임시 파일로 저장
                 val imagePath = PhotoUtils.optimizeBitmap(context, uri)
-                PhotoUtils.createImageMultipart(imagePath)?.let {
+                PhotoUtils.createImagesMultipart(imagePath)?.let {
                     // 2. 임시 파일 경로를 사용해 MultipartBody.Part로 변환
                     imagesMultipart.add(it)
                 }

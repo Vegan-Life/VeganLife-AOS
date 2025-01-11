@@ -196,6 +196,27 @@ class PhotoUtils {
         }
 
         /**
+         * 이미지 파일을 MultipartBody.Part로 변환합니다. (name = images)
+         * @param imagePath 최적화된 이미지 파일 경로
+         * @return MultipartBody.Part로 변환된 이미지 파일
+         */
+        fun createImagesMultipart(imagePath: String?): MultipartBody.Part? {
+            if (imagePath == null) return null
+
+            val file = File(imagePath)
+            val mimeType = file.extension.let {
+                when (it.lowercase()) {
+                    "png" -> "image/png"
+                    "jpg", "jpeg" -> "image/jpeg"
+                    "webp" -> "image/webp"
+                    else -> "image/jpeg"
+                }
+            }
+            val requestFile = file.asRequestBody(mimeType.toMediaTypeOrNull())
+            return MultipartBody.Part.createFormData("images", file.name, requestFile)
+        }
+
+        /**
          * uri로부터 파일 이름을 추출하는 함수
          */
         private fun getFileNameFromUri(context: Context, uri: Uri): String? {
