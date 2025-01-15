@@ -44,4 +44,8 @@ class RecipeUsecase @Inject constructor(
     suspend fun likeCancelRecipe(id: Long): ApiResult<Any> {
         return recipeRepository.likeCancelRecipe(id)
     }
+
+    suspend fun registerRecipe(recipeRequestDTO: RequestBody, recipePhotoMultipart: List<MultipartBody.Part>): ApiResult<Any>{
+        return recipeRepository.registerRecipe(recipeRequestDTO, recipePhotoMultipart)
+    }
 }

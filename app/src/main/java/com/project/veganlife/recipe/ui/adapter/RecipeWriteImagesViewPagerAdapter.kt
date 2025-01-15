@@ -10,8 +10,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.project.veganlife.R
 import com.project.veganlife.databinding.ItemRecipeImageBinding
 
-class RecipeFeedImagesViewPagerAdapter :
-    ListAdapter<String, RecipeFeedImagesViewPagerAdapter.ViewPagerViewHolder>(diffUtil) {
+class RecipeWriteImagesViewPagerAdapter :
+    ListAdapter<String, RecipeWriteImagesViewPagerAdapter.ViewPagerViewHolder>(diffUtil) {
 
     inner class ViewPagerViewHolder(private val binding: ItemRecipeImageBinding) :
         RecyclerView.ViewHolder(binding.root) {

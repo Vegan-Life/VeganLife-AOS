@@ -8,6 +8,7 @@ import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.PUT
@@ -57,5 +58,11 @@ interface RecipeApi {
     @DELETE("recipes/{id}/likes")
     suspend fun likeCancelRecipe(
         @Path("id") id: Long
+    ): Response<Any>
+
+    @POST("recipes")
+    suspend fun registerRecipe(
+        @Part("request") RecipeRequestDTO: RequestBody,
+        @Part images: List<MultipartBody.Part?>
     ): Response<Any>
 }

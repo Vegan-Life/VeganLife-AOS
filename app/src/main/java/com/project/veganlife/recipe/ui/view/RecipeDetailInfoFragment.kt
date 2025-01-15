@@ -1,6 +1,7 @@
 package com.project.veganlife.recipe.ui.view
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -16,7 +17,7 @@ import com.project.veganlife.databinding.FragmentRecipeDetailInfoBinding
 import com.project.veganlife.recipe.data.model.RecipeDetailDescription
 import com.project.veganlife.recipe.ui.adapter.RecipeDetailDescriptionAdapter
 import com.project.veganlife.recipe.ui.adapter.RecipeDetailIngredientAdapter
-import com.project.veganlife.recipe.ui.adapter.RecipeFeedImagesViewPagerAdapter
+import com.project.veganlife.recipe.ui.adapter.RecipeWriteImagesViewPagerAdapter
 import com.project.veganlife.recipe.ui.viewmodel.RecipeDetailViewModel
 import com.project.veganlife.recipe.ui.viewmodel.RecipeViewmodel
 import com.project.veganlife.utils.ui.VeganTypeChange.Companion.changeBackground
@@ -31,7 +32,7 @@ class RecipeDetailInfoFragment : Fragment() {
 
     private lateinit var ingredientAdapter: RecipeDetailIngredientAdapter
     private lateinit var descriptionAdapter: RecipeDetailDescriptionAdapter
-    private lateinit var viewPagerAdapter: RecipeFeedImagesViewPagerAdapter
+    private lateinit var viewPagerAdapter: RecipeWriteImagesViewPagerAdapter
 
     private val recipeDetailViewModel: RecipeDetailViewModel by viewModels()
     private val recipeViewModel: RecipeViewmodel by viewModels()
@@ -49,6 +50,7 @@ class RecipeDetailInfoFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.d("args recipeId",args.recipe.id.toString())
         isLikeState = args.recipe.isLiked
     }
 
@@ -79,7 +81,9 @@ class RecipeDetailInfoFragment : Fragment() {
             tvRecipeModify.setOnClickListener {
                 val action =
                     RecipeDetailInfoFragmentDirections.actionRecipeDetailInfoFragmentToRecipeWriteFragment(
-                        recipe = args.recipe
+                        recipeId = args.recipe,
+                        isEditing = true,
+                        recipeIngredientDescription = recipeDetailViewModel.recipeDetailContent.value!!
                     )
                 findNavController().navigate(action)
             }
@@ -121,12 +125,12 @@ class RecipeDetailInfoFragment : Fragment() {
                 val userNickname = recipeDetailViewModel.getValue()
                 val recipeAuthor = author.nickname
 
-                if (userNickname == recipeAuthor) {
-                    tvRecipeModify.visibility = View.GONE
-                    tvRecipeDelete.visibility = View.GONE
-                } else {
+                if (userNickname.trim() == recipeAuthor.trim()) {
                     tvRecipeModify.visibility = View.VISIBLE
                     tvRecipeDelete.visibility = View.VISIBLE
+                } else {
+                    tvRecipeModify.visibility = View.GONE
+                    tvRecipeDelete.visibility = View.GONE
                 }
 
                 tvRecipeRecipeName.text = recipeTitle
@@ -162,7 +166,7 @@ class RecipeDetailInfoFragment : Fragment() {
     private fun setRecyclerviewAdpater() {
         ingredientAdapter = RecipeDetailIngredientAdapter()
         descriptionAdapter = RecipeDetailDescriptionAdapter()
-        viewPagerAdapter = RecipeFeedImagesViewPagerAdapter()
+        viewPagerAdapter = RecipeWriteImagesViewPagerAdapter()
 
         binding.apply {
             rvRecipeIngredient.adapter = ingredientAdapter

@@ -20,4 +20,5 @@ interface RecipeRepository {
         ): ApiResult<Any>
     suspend fun likeRecipe(id: Long): ApiResult<Any>
     suspend fun likeCancelRecipe(id: Long): ApiResult<Any>
+    suspend fun registerRecipe(recipeRequestDTO: RequestBody, recipePhotoMultipart: List<MultipartBody.Part>): ApiResult<Any>
 }
