@@ -237,10 +237,19 @@
                 app:destination="@id/alarmFragment" />
             <action
                 android:id="@+id/action_recipeDetailInfoFragment_to_recipeWriteFragment"
-                app:destination="@id/recipeWriteFragment" >
+                app:destination="@id/recipeWriteFragment">
                 <argument
-                    android:name="recipe"
-                    app:argType="com.project.veganlife.recipe.data.model.RecipeFeedContent" />
+                    android:name="recipeId"
+                    app:argType="com.project.veganlife.recipe.data.model.RecipeFeedContent"
+                    app:nullable="true" />
+                <argument
+                    android:name="recipe_ingredient_description"
+                    app:argType="com.project.veganlife.recipe.data.model.RecipeDetailContent"
+                    app:nullable="true" />
+                <argument
+                    android:name="isEditing"
+                    android:defaultValue="true"
+                    app:argType="boolean" />
             </action>
             <action
                 android:id="@+id/action_recipeDetailInfoFragment_to_recipeSearchFragment"
@@ -254,14 +263,21 @@
 
             <action
                 android:id="@+id/action_recipeHomeFragment_to_recipeDetailInfoFragment"
-                app:destination="@id/recipeDetailInfoFragment" >
+                app:destination="@id/recipeDetailInfoFragment">
                 <argument
                     android:name="recipe"
                     app:argType="com.project.veganlife.recipe.data.model.RecipeFeedContent" />
             </action>
+
             <action
                 android:id="@+id/action_recipeHomeFragment_to_recipeWriteFragment"
-                app:destination="@id/recipeWriteFragment" />
+                app:destination="@id/recipeWriteFragment">
+                <argument
+                    android:name="isEditing"
+                    android:defaultValue="false"
+                    app:argType="boolean" />
+            </action>
+
             <action
                 android:id="@+id/action_recipeHomeFragment_to_recipeSearchFragment"
                 app:destination="@id/recipeSearchFragment" />
@@ -275,8 +291,17 @@
             android:label="fragment_recipe_write"
             tools:layout="@layout/fragment_recipe_write">
             <argument
-                android:name="recipe"
-                app:argType="com.project.veganlife.recipe.data.model.RecipeFeedContent" />
+                android:name="recipeId"
+                app:argType="com.project.veganlife.recipe.data.model.RecipeFeedContent"
+                app:nullable="true"/>
+            <argument
+                android:name="recipe_ingredient_description"
+                app:argType="com.project.veganlife.recipe.data.model.RecipeDetailContent"
+                app:nullable="true"/>
+            <argument
+                android:name="isEditing"
+                android:defaultValue="false"
+                app:argType="boolean" />
             <action
                 android:id="@+id/action_recipeWriteFragment_to_recipeDetailInfoFragment"
                 app:destination="@id/recipeDetailInfoFragment" />

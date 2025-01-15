@@ -4,8 +4,9 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginEnd="8dp">
+
     <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/iv_community_write_edit_feed_photo"
+        android:id="@+id/iv_recipe_write_edit_feed_photo"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginTop="2dp"
@@ -18,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/ib_community_write_edit_feed_photo_delete"
+        android:id="@+id/ib_recipe_write_edit_feed_photo_delete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="@android:color/transparent"

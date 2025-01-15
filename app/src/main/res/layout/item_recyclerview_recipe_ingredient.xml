@@ -5,30 +5,35 @@
     android:layout_height="wrap_content">
 
     <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/et_recipe_recipe"
+        android:id="@+id/et_recipe_ingredient"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="25dp"
         android:layout_marginTop="12dp"
-        android:layout_marginEnd="45dp"
         android:background="@drawable/recipe_edittext_background_gray3_1dp"
+        android:ellipsize="none"
         android:hint="@string/recipe_input_ingredient_hint"
         android:includeFontPadding="false"
+        android:inputType="textMultiLine"
         android:paddingVertical="8dp"
         android:paddingStart="16dp"
+        android:paddingEnd="12dp"
         android:textAppearance="@style/Medium.Body3"
         android:textColor="@color/gray3"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btn_recipe_ingredient_delete"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/btn_recipe_ingredient_delete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
+        android:layout_marginEnd="20dp"
         android:background="@drawable/recipe_close_btn"
-        app:layout_constraintBottom_toBottomOf="@id/et_recipe_recipe"
-        app:layout_constraintStart_toEndOf="@id/et_recipe_recipe"
-        app:layout_constraintTop_toTopOf="@id/et_recipe_recipe" />
+        app:layout_constraintBottom_toBottomOf="@id/et_recipe_ingredient"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/et_recipe_ingredient"
+        app:layout_constraintTop_toTopOf="@id/et_recipe_ingredient" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
