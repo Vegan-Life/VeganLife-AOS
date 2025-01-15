@@ -3,10 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/item_more"
-        android:enabled="true"
-        android:icon="@drawable/more_vert_24px"
-        android:title="더보기"
-        app:showAsAction="ifRoom" />
+        android:id="@+id/item_edit"
+        android:title="수정하기" />
+
+    <item
+        android:id="@+id/item_delete"
+        android:title="삭제하기" />
 
 </menu>

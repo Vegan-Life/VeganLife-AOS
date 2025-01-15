@@ -104,7 +104,22 @@ class CommunityDetailFeedFragment : Fragment(), OnReplyCommentClickListener {
         //댓글 어댑터 설정
         commentListAdapter = CommentsAdapter(this)
         binding.rvCommunityDetailFeedComments.adapter = commentListAdapter
+
+        //내 게시글인 경우 나오는 메뉴 클릭 리스너 등록
+        binding.toolbarCommunityDetailFeed.setOnMenuItemClickListener {
+            when(it.itemId) {
+                R.id.item_edit -> {
+                    Log.i("##INFO", "수정")
+                }
+
+                R.id.item_delete -> {
+                    Log.i("##INFO", "삭제")
+                }
+            }
+            true
+        }
     }
+
 
     private fun createCommentLocally(commentText: String, createResponse: CreateResponse) {
         val newComment = Comment(
