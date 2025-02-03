@@ -1,5 +1,9 @@
 package com.project.veganlife.lifecheck.data.model
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
 data class LifeCheckMealDataDetail(
     val id: Long,
     val name: String,
@@ -11,4 +15,4 @@ data class LifeCheckMealDataDetail(
     val proteinPerUnit: Double,
     val fatPerUnit: Double,
     val intakeUnit: String
-)
+) : Parcelable

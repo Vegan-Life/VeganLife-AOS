@@ -56,19 +56,21 @@ class LifeCheckMenuModifyFragment : Fragment() {
     private fun fetchMealData(mealId: Long) {
         viewModel.fetchMealDataById(mealId)
 
-        viewModel.mealDataById.observe(viewLifecycleOwner) { result ->
-            when (result) {
-                is ApiResult.Success -> {
-                    val data = result.data
-                    populateUI(data)
-                }
+        viewModel.mealDataById.observe(viewLifecycleOwner) { event ->
+            event.getContentIfNotHandled()?.let { result ->
+                when (result) {
+                    is ApiResult.Success -> {
+                        val data = result.data
+                        populateUI(data)
+                    }
 
-                is ApiResult.Error -> {
-                    Log.e("LifeCheckMenuModify", "Error: ${result.description}")
-                }
+                    is ApiResult.Error -> {
+                        Log.e("LifeCheckMenuModify", "Error: ${result.description}")
+                    }
 
-                is ApiResult.Exception -> {
-                    Log.e("LifeCheckMenuModify", "Exception ", result.e)
+                    is ApiResult.Exception -> {
+                        Log.e("LifeCheckMenuModify", "Exception ", result.e)
+                    }
                 }
             }
         }

@@ -9,12 +9,17 @@ import com.project.veganlife.lifecheck.data.model.LifeCheckMealDataDetail
 import com.project.veganlife.lifecheck.data.model.LifeCheckMealDataRequest
 import com.project.veganlife.lifecheck.data.model.LifeCheckWeeklyCalorieResponse
 import kotlinx.coroutines.flow.Flow
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 
 interface LifeCheckRepository {
 
     suspend fun getDailyIntake(date: String): ApiResult<DailyIntakeResponse>
 
-    suspend fun getMealDataStream(keyword: String, ownerType: String): Flow<PagingData<LifeCheckMealData>>
+    suspend fun getMealDataStream(
+        keyword: String,
+        ownerType: String
+    ): Flow<PagingData<LifeCheckMealData>>
 
     suspend fun getMonthlyCalorie(startDate: String): ApiResult<LifeCheckWeeklyCalorieResponse>
 
@@ -34,4 +39,9 @@ interface LifeCheckRepository {
     suspend fun modifyMealData(id: Long, request: LifeCheckMealDataRequest): ApiResult<Unit>
 
     suspend fun deleteMealData(id: Long): ApiResult<Unit>
+
+    suspend fun registerMealLog(
+        mealLogRequest: RequestBody,
+        images: List<MultipartBody.Part>?
+    ): ApiResult<Unit>
 }

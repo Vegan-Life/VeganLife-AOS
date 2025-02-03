@@ -64,7 +64,8 @@ class LifeCheckMenuSearchFragment : Fragment() {
     private fun setupRecyclerView() {
         // 어댑터 초기화 시 롱클릭 리스너 전달
         adapter =
-            LifeCheckMealDataAdapter(object : LifeCheckMealDataAdapter.OnItemLongClickListener {
+            LifeCheckMealDataAdapter(
+                longClickListener = object : LifeCheckMealDataAdapter.OnItemLongClickListener {
                 override fun onItemLongClicked(id: Long) {
                     val dialog = LifeCheckCustomDialogFragment.newInstance(
                         id,
@@ -72,7 +73,18 @@ class LifeCheckMenuSearchFragment : Fragment() {
                     )
                     dialog.show(parentFragmentManager, "LifeCheckCustomDialogFragment")
                 }
-            })
+            },
+                clickListener = object : LifeCheckMealDataAdapter.OnItemClickListener {
+                    override fun onItemClicked(id: Long) {
+                        val bundle = Bundle().apply {
+                            putLong("mealId", id)
+                        }
+                        findNavController().navigate(
+                            R.id.action_lifeCheckMenuSearchFragment_to_lifeCheckDietAddFragment,
+                            bundle
+                        )
+                    }
+                })
         binding.rvLifecheckMenuSearch.layoutManager = LinearLayoutManager(context)
         binding.rvLifecheckMenuSearch.adapter = adapter
     }
