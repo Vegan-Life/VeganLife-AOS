@@ -1,7 +1,9 @@
 package com.project.veganlife.lifecheck.ui.viewmodel
 
+import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
@@ -20,11 +22,14 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import javax.inject.Inject
 
 @HiltViewModel
 class LifeCheckViewModel @Inject constructor(
     private val lifeCheckUseCase: LifeCheckUseCase,
+    private val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
     // 일일 섭취량 조회
@@ -75,8 +80,8 @@ class LifeCheckViewModel @Inject constructor(
         _mealDataRegister
 
     // ID 식품데이터 조회
-    private val _mealDataById = MutableLiveData<ApiResult<LifeCheckMealDataDetail>>()
-    val mealDataById: LiveData<ApiResult<LifeCheckMealDataDetail>> = _mealDataById
+    private val _mealDataById = MutableLiveData<EventWrapper<ApiResult<LifeCheckMealDataDetail>>>()
+    val mealDataById: LiveData<EventWrapper<ApiResult<LifeCheckMealDataDetail>>> = _mealDataById
 
     // 식품데이터 수정
     private val _mealDataUpdateResult =
@@ -87,6 +92,30 @@ class LifeCheckViewModel @Inject constructor(
     private val _mealDataDeleteResult =
         MutableLiveData<EventWrapper<ApiResult<Unit>>>()
     val mealDataDeleteResult: LiveData<EventWrapper<ApiResult<Unit>>> = _mealDataDeleteResult
+
+    // 식사 기록 등록
+    private val _registerMealLogResult = MutableLiveData<EventWrapper<ApiResult<Unit>>>()
+    val registerMealLogResult: LiveData<EventWrapper<ApiResult<Unit>>> = _registerMealLogResult
+
+    // 동적 뷰 관리 리스트 추가
+    private val _dynamicMealList =
+        savedStateHandle.getLiveData<MutableList<LifeCheckMealDataDetail>>(
+            "dynamicMealList",
+            mutableListOf()
+        )
+    val dynamicMealList: LiveData<MutableList<LifeCheckMealDataDetail>> = _dynamicMealList
+
+    // intakeValue 관리
+    private val _intakeValues = MutableLiveData<Map<Long, Double>>(emptyMap())
+    val intakeValues: LiveData<Map<Long, Double>> = _intakeValues
+
+    // 음식 ID
+    private val _selectedMealId = MutableLiveData<Long>()
+    val selectedMealId: LiveData<Long> = _selectedMealId
+
+    // 식사 기록 사진 리스트 관리
+    private val _selectedPhotos = MutableLiveData<MutableList<Uri>>(mutableListOf())
+    val selectedPhotos: MutableLiveData<MutableList<Uri>> = _selectedPhotos
 
     // 일일 섭취량 조회
     fun fetchDailyIntake(date: String) {
@@ -160,7 +189,7 @@ class LifeCheckViewModel @Inject constructor(
 
     fun fetchMealDataById(id: Long) {
         viewModelScope.launch {
-            _mealDataById.value = lifeCheckUseCase.getMealDataById(id)
+            _mealDataById.value = EventWrapper(lifeCheckUseCase.getMealDataById(id))
         }
     }
 
@@ -174,6 +203,59 @@ class LifeCheckViewModel @Inject constructor(
     fun deleteMealData(id: Long) {
         viewModelScope.launch {
             _mealDataDeleteResult.value = EventWrapper(lifeCheckUseCase.deleteMealData(id))
+        }
+    }
+
+    // 음식 리스트 데이터 추가
+    fun addMealData(mealData: LifeCheckMealDataDetail) {
+        val updatedList = _dynamicMealList.value ?: mutableListOf()
+        updatedList.add(mealData)
+        _dynamicMealList.value = updatedList
+        savedStateHandle["dynamicMealList"] = updatedList
+    }
+
+    // 음식 리스트 데이터 삭제
+    fun removeMealData(mealData: LifeCheckMealDataDetail) {
+        val updatedList = _dynamicMealList.value ?: mutableListOf()
+        updatedList.remove(mealData)
+        _dynamicMealList.value = updatedList
+        savedStateHandle["dynamicMealList"] = updatedList
+    }
+
+    // 음식 리스트 저장된 데이터를 로드하여 동적 뷰 복원
+    fun getMealDataList(): List<LifeCheckMealDataDetail> {
+        return _dynamicMealList.value ?: emptyList()
+    }
+
+    // 동적 뷰 관리 리스트 초기화 함수
+    fun clearDynamicMealList() {
+        _dynamicMealList.value = mutableListOf<LifeCheckMealDataDetail>()
+        savedStateHandle["dynamicMealList"] = mutableListOf<LifeCheckMealDataDetail>()
+    }
+
+    fun getIntakeValue(mealId: Long): Double {
+        return _intakeValues.value?.get(mealId) ?: 1.0
+    }
+
+    fun setIntakeValue(mealId: Long, value: Double) {
+        val currentMap = _intakeValues.value?.toMutableMap() ?: mutableMapOf()
+        currentMap[mealId] = value
+        _intakeValues.value = currentMap
+    }
+
+    fun removeIntakeValue(mealId: Long) {
+        val currentMap = _intakeValues.value?.toMutableMap() ?: mutableMapOf()
+        currentMap.remove(mealId)
+        _intakeValues.value = currentMap
+    }
+
+    fun registerMealLog(
+        mealLogRequest: RequestBody,
+        images: List<MultipartBody.Part>
+    ) {
+        viewModelScope.launch {
+            _registerMealLogResult.value =
+                EventWrapper(lifeCheckUseCase.registerMealLog(mealLogRequest, images))
         }
     }
 }

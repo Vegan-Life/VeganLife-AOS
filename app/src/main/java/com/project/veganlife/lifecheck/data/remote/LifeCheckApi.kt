@@ -5,12 +5,16 @@ import com.project.veganlife.lifecheck.data.model.LifeCheckMealData
 import com.project.veganlife.lifecheck.data.model.LifeCheckMealDataDetail
 import com.project.veganlife.lifecheck.data.model.LifeCheckMealDataRequest
 import com.project.veganlife.lifecheck.data.model.LifeCheckWeeklyCalorieResponse
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.PUT
+import retrofit2.http.Part
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -57,4 +61,11 @@ interface LifeCheckApi {
 
     @DELETE("meal-data/{mealId}")
     suspend fun deleteMealData(@Path("mealId") mealId: Long): Response<Unit>?
+
+    @Multipart
+    @POST("meal-log")
+    suspend fun registerMealLog(
+        @Part("request") request: RequestBody,
+        @Part images: List<MultipartBody.Part>?
+    ): Response<Unit>
 }

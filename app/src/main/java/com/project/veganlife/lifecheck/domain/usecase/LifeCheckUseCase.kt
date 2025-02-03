@@ -10,6 +10,8 @@ import com.project.veganlife.lifecheck.data.model.LifeCheckMealDataRequest
 import com.project.veganlife.lifecheck.data.model.LifeCheckWeeklyCalorieResponse
 import com.project.veganlife.lifecheck.domain.repository.LifeCheckRepository
 import kotlinx.coroutines.flow.Flow
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import javax.inject.Inject
 
 class LifeCheckUseCase @Inject constructor(
@@ -59,5 +61,12 @@ class LifeCheckUseCase @Inject constructor(
 
     suspend fun deleteMealData(id: Long): ApiResult<Unit> {
         return lifeCheckRepository.deleteMealData(id)
+    }
+
+    suspend fun registerMealLog(
+        mealLogRequest: RequestBody,
+        images: List<MultipartBody.Part>?
+    ): ApiResult<Unit> {
+        return lifeCheckRepository.registerMealLog(mealLogRequest, images)
     }
 }

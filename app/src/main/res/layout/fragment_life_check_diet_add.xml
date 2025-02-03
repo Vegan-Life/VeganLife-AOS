@@ -42,15 +42,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <include
-                    android:id="@+id/include_lifecheck_diet_add"
-                    layout="@layout/layout_lifecheck_diet_add"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/cl_lifecheck_diet_add_diet_plus"
                     android:layout_width="match_parent"
@@ -58,8 +49,7 @@
                     android:layout_marginTop="16dp"
                     android:background="@color/sub_gray1"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/include_lifecheck_diet_add">
+                    app:layout_constraintStart_toStartOf="parent">
 
                     <ImageView
                         android:id="@+id/iv_lifecheck_diet_add_diet_plus"
@@ -152,6 +142,7 @@
                 app:layout_constraintTop_toBottomOf="@id/cl_lifecheck_diet_add_total_kcal" />
 
             <TextView
+                android:id="@+id/tv_liffecheck_diet_add_photo_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"

@@ -14,6 +14,7 @@ import com.project.veganlife.lifecheck.data.datasource.LifeCheckModifyMealDataSo
 import com.project.veganlife.lifecheck.data.datasource.LifeCheckMonthlyCalorieDataSourceImpl
 import com.project.veganlife.lifecheck.data.datasource.LifeCheckRecommendedIntakeDataSourceImpl
 import com.project.veganlife.lifecheck.data.datasource.LifeCheckRegisterMealDataDataSourceImpl
+import com.project.veganlife.lifecheck.data.datasource.LifeCheckRegisterMealLogDataSourceImpl
 import com.project.veganlife.lifecheck.data.datasource.LifeCheckWeeklyCalorieDataSourceImpl
 import com.project.veganlife.lifecheck.data.datasource.LifeCheckYearlyCalorieDataSourceImpl
 import com.project.veganlife.lifecheck.data.model.LifeCheckMealData
@@ -23,6 +24,8 @@ import com.project.veganlife.lifecheck.data.model.LifeCheckWeeklyCalorieResponse
 import com.project.veganlife.lifecheck.data.remote.LifeCheckApi
 import com.project.veganlife.lifecheck.domain.repository.LifeCheckRepository
 import kotlinx.coroutines.flow.Flow
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import javax.inject.Inject
 
 
@@ -37,6 +40,7 @@ class LifeCheckRepositoryImpl @Inject constructor(
     private val lifeCheckMealDataByIdDataSource: LifeCheckMealDataByIdDataSourceImpl,
     private val lifeCheckModifyMealDataSource: LifeCheckModifyMealDataSourceImpl,
     private val lifeCheckDeleteMealDataDataSource: LifeCheckDeleteMealDataDataSourceImpl,
+    private val lifeCheckRegisterMealLogDataSource: LifeCheckRegisterMealLogDataSourceImpl,
 ) : LifeCheckRepository {
     override suspend fun getDailyIntake(date: String): ApiResult<DailyIntakeResponse> {
         return lifeCheckDailyDataSource.getDailyIntake(date)
@@ -96,4 +100,10 @@ class LifeCheckRepositoryImpl @Inject constructor(
         return lifeCheckDeleteMealDataDataSource.deleteMealData(id)
     }
 
+    override suspend fun registerMealLog(
+        mealLogRequest: RequestBody,
+        images: List<MultipartBody.Part>?
+    ): ApiResult<Unit> {
+        return lifeCheckRegisterMealLogDataSource.registerMealLog(mealLogRequest, images)
+    }
 }
