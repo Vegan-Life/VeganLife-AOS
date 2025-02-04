@@ -121,7 +121,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/cl_lifecheck_diet_detail_total_kcal">
 
-                <de.hdodenhof.circleimageview.CircleImageView
+                <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/civ_lifecheck_diet_detail_carbohydrate"
                     android:layout_width="12dp"
                     android:layout_height="12dp"
@@ -146,7 +146,7 @@
             <View
                 android:id="@+id/view_lifecheck_line_dot1"
                 android:layout_width="0dp"
-                android:layout_height="1dp"
+                android:layout_height="1.5dp"
                 android:layout_marginStart="8dp"
                 android:background="@drawable/lifecheck_line_dot"
                 app:layout_constraintBottom_toBottomOf="@id/tv_lifecheck_diet_detail_carbohydrate"
@@ -160,7 +160,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="24dp"
-                android:background="@drawable/lifecheck_rect_gray1_gray3"
                 android:includeFontPadding="false"
                 android:text="50g"
                 android:textAppearance="@style/Regular.Body5"
@@ -180,7 +179,7 @@
                 app:layout_constraintStart_toStartOf="@id/fl_lifecheck_diet_detail_carbohydrate"
                 app:layout_constraintTop_toBottomOf="@id/fl_lifecheck_diet_detail_carbohydrate">
 
-                <de.hdodenhof.circleimageview.CircleImageView
+                <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/civ_lifecheck_diet_detail_protein"
                     android:layout_width="12dp"
                     android:layout_height="12dp"
@@ -205,7 +204,7 @@
             <View
                 android:id="@+id/view_lifecheck_line_dot2"
                 android:layout_width="0dp"
-                android:layout_height="1dp"
+                android:layout_height="1.5dp"
                 android:background="@drawable/lifecheck_line_dot"
                 app:layout_constraintBottom_toBottomOf="@id/tv_lifecheck_diet_detail_protein"
                 app:layout_constraintEnd_toStartOf="@id/et_lifecheck_diet_detail_protein"
@@ -218,7 +217,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="24dp"
-                android:background="@drawable/lifecheck_rect_gray1_gray3"
                 android:includeFontPadding="false"
                 android:text="50g"
                 android:textAppearance="@style/Regular.Body5"
@@ -238,7 +236,7 @@
                 app:layout_constraintStart_toStartOf="@id/fl_lifecheck_diet_detail_carbohydrate"
                 app:layout_constraintTop_toBottomOf="@id/fl_lifecheck_diet_detail_protein">
 
-                <de.hdodenhof.circleimageview.CircleImageView
+                <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/civ_lifecheck_diet_detail_fat"
                     android:layout_width="12dp"
                     android:layout_height="wrap_content"
@@ -263,7 +261,7 @@
             <View
                 android:id="@+id/view_lifecheck_line_dot3"
                 android:layout_width="0dp"
-                android:layout_height="1dp"
+                android:layout_height="1.5dp"
                 android:background="@drawable/lifecheck_line_dot"
                 app:layout_constraintBottom_toBottomOf="@id/tv_lifecheck_diet_detail_fat"
                 app:layout_constraintEnd_toStartOf="@id/et_lifecheck_diet_detail_fat"
@@ -276,7 +274,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="24dp"
-                android:background="@drawable/lifecheck_rect_gray1_gray3"
                 android:includeFontPadding="false"
                 android:text="50g"
                 android:textAppearance="@style/Regular.Body5"
@@ -320,7 +317,7 @@
                 android:layout_marginBottom="56dp"
                 android:background="@drawable/lifecheck_rect_gray4"
                 android:includeFontPadding="false"
-                android:text="@string/all_dialog_cancel"
+                android:text="@string/lifecheck_button_delete"
                 android:textAppearance="@style/Medium.Body3"
                 android:textColor="@color/gray1"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -338,7 +335,7 @@
                 android:layout_marginBottom="56dp"
                 android:background="@drawable/lifecheck_rect_base3"
                 android:includeFontPadding="false"
-                android:text="@string/lifecheck_input_meal"
+                android:text="@string/all_button_modify"
                 android:textAppearance="@style/Medium.Body3"
                 android:textColor="@color/gray1"
                 app:layout_constraintBottom_toBottomOf="parent"
