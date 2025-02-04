@@ -199,8 +199,9 @@ class LifeCheckDailyFragment : Fragment() {
             recommendedIntake.let { recommend ->
                 val remainingCalories = recommend.dailyCalorie - daily.calorie
                 val statusText: String
-                val spannable: Spannable
                 val textColor: Int
+                val start: Int
+                val end: Int
 
                 if (remainingCalories >= 0) {
                     statusText =
@@ -208,17 +209,19 @@ class LifeCheckDailyFragment : Fragment() {
                             R.string.all_rest_kcal_is
                         )
                     textColor = ContextCompat.getColor(requireContext(), R.color.base3)
+                    start = statusText.indexOf("${remainingCalories}kcal")
+                    end = start + "${remainingCalories}kcal".length
                 } else {
                     statusText =
                         getString(R.string.all_over_rest_kcal) + " ${-remainingCalories}kcal" + getString(
                             R.string.all_rest_kcal_is
                         )
                     textColor = ContextCompat.getColor(requireContext(), R.color.no)
+                    start = statusText.indexOf("${-remainingCalories}kcal")
+                    end = start + "${remainingCalories}kcal".length
                 }
 
-                spannable = SpannableString(statusText)
-                val start = statusText.indexOf("${remainingCalories}kcal")
-                val end = start + "${remainingCalories}kcal".length
+                val spannable: Spannable = SpannableString(statusText)
                 spannable.setSpan(
                     ForegroundColorSpan(textColor),
                     start,
