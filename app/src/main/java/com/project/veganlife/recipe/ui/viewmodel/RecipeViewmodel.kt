@@ -17,6 +17,10 @@ import javax.inject.Inject
 class RecipeViewmodel @Inject constructor(
     private val recipeUsecase: RecipeUsecase,
 ) : ViewModel() {
+    // 레시피 등록
+    private val _recipeRegisterResponse = MutableLiveData<Any>()
+    val recipeRegisterResponse: LiveData<Any> get() = _recipeRegisterResponse
+
     // 레시피 수정
     private val _recipeModifyResponse = MutableLiveData<String>()
     val recipeModifyResponse: LiveData<String> get() = _recipeModifyResponse
@@ -33,18 +37,40 @@ class RecipeViewmodel @Inject constructor(
     private val _recipeLikeCancelResponse = MutableLiveData<String>()
     val recipeLikeCancelResponse: LiveData<String> get() = _recipeLikeCancelResponse
 
-    fun modifyRecipe(id: Long, recipeRequetDTO: RequestBody, recipePhotoMultipart: MultipartBody.Part) {
+    fun registerRecipe(request: RequestBody, images: List<MultipartBody.Part>) {
+        viewModelScope.launch {
+            val response = recipeUsecase.registerRecipe(request, images)
+            when(response) {
+                is ApiResult.Error -> {
+                    val responseDescription = response.description
+                    Log.d("recipe register Error", responseDescription)
+                }
+
+                is ApiResult.Exception -> {
+                    Log.d(
+                        "recipe gegister Exception",
+                        response.e.message ?: "No message available"
+                    )
+                }
+                is ApiResult.Success -> {
+                    _recipeRegisterResponse.value = response.data
+                }
+            }
+        }
+    }
+
+    fun modifyRecipe(id: Long, recipeRequetDTO: RequestBody, recipePhotoMultipart: List<MultipartBody.Part>) {
         viewModelScope.launch {
             val response = recipeUsecase.modifyRecipe(id, recipeRequetDTO, recipePhotoMultipart)
             when(response) {
                 is ApiResult.Error -> {
                     val responseDescription = response.description
-                    Log.d("withDrawal Error", responseDescription)
+                    Log.d("recipe modify Error", responseDescription)
                 }
 
                 is ApiResult.Exception -> {
                     Log.d(
-                        "withDrawal Exception",
+                        "recipe modify Exception",
                         response.e.message ?: "No message available"
                     )
                 }
@@ -62,12 +88,12 @@ class RecipeViewmodel @Inject constructor(
             when(response) {
                 is ApiResult.Error -> {
                     val responseDescription = response.description
-                    Log.d("withDrawal Error", responseDescription)
+                    Log.d("recipe delete Error", responseDescription)
                 }
 
                 is ApiResult.Exception -> {
                     Log.d(
-                        "withDrawal Exception",
+                        "recipe delete Exception",
                         response.e.message ?: "No message available"
                     )
                 }
@@ -85,12 +111,12 @@ class RecipeViewmodel @Inject constructor(
             when(response) {
                 is ApiResult.Error -> {
                     val responseDescription = response.description
-                    Log.d("withDrawal Error", responseDescription)
+                    Log.d("recipe like Error", responseDescription)
                 }
 
                 is ApiResult.Exception -> {
                     Log.d(
-                        "withDrawal Exception",
+                        "recipe like Exception",
                         response.e.message ?: "No message available"
                     )
                 }
@@ -108,12 +134,12 @@ class RecipeViewmodel @Inject constructor(
             when(response) {
                 is ApiResult.Error -> {
                     val responseDescription = response.description
-                    Log.d("withDrawal Error", responseDescription)
+                    Log.d("recipe like cancel Error", responseDescription)
                 }
 
                 is ApiResult.Exception -> {
                     Log.d(
-                        "withDrawal Exception",
+                        "recipe like cancel Exception",
                         response.e.message ?: "No message available"
                     )
                 }

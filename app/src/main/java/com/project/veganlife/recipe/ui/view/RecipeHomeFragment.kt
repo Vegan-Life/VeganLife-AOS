@@ -65,7 +65,12 @@ class RecipeHomeFragment : Fragment(), RecipeHomeAdapter.OnItemClickListener {
         getRecipeList()
 
         binding.btnRecipeWrite.setOnClickListener {
-            findNavController().navigate(R.id.action_recipeHomeFragment_to_recipeWriteFragment)
+            val action = RecipeHomeFragmentDirections.actionRecipeHomeFragmentToRecipeWriteFragment(
+                recipeId = null,
+                isEditing = false,
+                recipeIngredientDescription = null
+            )
+            findNavController().navigate(action)
         }
     }
 
@@ -125,7 +130,9 @@ class RecipeHomeFragment : Fragment(), RecipeHomeAdapter.OnItemClickListener {
 
     override fun onItemCLicked(item: RecipeFeedContent) {
         val action =
-            RecipeHomeFragmentDirections.actionRecipeHomeFragmentToRecipeDetailInfoFragment(item)
+            RecipeHomeFragmentDirections.actionRecipeHomeFragmentToRecipeDetailInfoFragment(
+                recipe = item
+            )
         findNavController().navigate(action)
     }
 
@@ -135,7 +142,6 @@ class RecipeHomeFragment : Fragment(), RecipeHomeAdapter.OnItemClickListener {
 
         recipeHomeAdapter.addLoadStateListener { loadState ->
             val isEndOfPaginationReached = loadState.append.endOfPaginationReached
-            Log.d("itemCnt", recipeHomeAdapter.itemCount.toString())
             if (isEndOfPaginationReached) {
                 binding.llRecipeNoContents.isVisible = recipeHomeAdapter.itemCount == 0
             } else {

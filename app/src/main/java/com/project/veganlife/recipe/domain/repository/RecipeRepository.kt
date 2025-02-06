@@ -16,8 +16,9 @@ interface RecipeRepository {
     suspend fun modifyRecipe(
         id: Long,
         recipeRequestDTO: RequestBody,
-        recipePhotoMultipart: MultipartBody.Part
+        recipePhotoMultipart: List<MultipartBody.Part>
         ): ApiResult<Any>
     suspend fun likeRecipe(id: Long): ApiResult<Any>
     suspend fun likeCancelRecipe(id: Long): ApiResult<Any>
+    suspend fun registerRecipe(recipeRequestDTO: RequestBody, recipePhotoMultipart: List<MultipartBody.Part>): ApiResult<Any>
 }
