@@ -11,5 +11,5 @@ data class RecipeFeedContent(
     val isLiked: Boolean,
     @SerializedName("name") val recipeTitle: String,
     val recipeTypes: List<String>,
-    val thumbnailUrl: String
+    val thumbnailUrl: String?
 ) : Parcelable
