@@ -46,7 +46,7 @@ interface RecipeApi {
     suspend fun modifyRecipe(
         @Path("id") id: Long,
         @Part("request") RecipeRequestDTO: RequestBody,
-        @Part images: MultipartBody.Part?
+        @Part images: List<MultipartBody.Part>
     ): Response<Any>
 
     @POST("recipes/{id}/likes")
@@ -57,5 +57,12 @@ interface RecipeApi {
     @DELETE("recipes/{id}/likes")
     suspend fun likeCancelRecipe(
         @Path("id") id: Long
+    ): Response<Any>
+
+    @Multipart
+    @POST("recipes")
+    suspend fun registerRecipe(
+        @Part("request") RecipeRequestDTO: RequestBody,
+        @Part images: List<MultipartBody.Part?>
     ): Response<Any>
 }
