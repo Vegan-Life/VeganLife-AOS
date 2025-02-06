@@ -190,7 +190,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_recipe_ingredient"
-                tools:listitem="@layout/item_recyclerview_recipe_ingredient" />
+                tools:listitem="@layout/item_recyclerview_recipe_ingredient"
+                tools:visibility="gone" />
 
             <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/btn_recipe_ingredient_add"
@@ -229,7 +230,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_recipe_recipe_procedure"
-                tools:listitem="@layout/item_recyclerview_recipe_description" />
+                tools:listitem="@layout/item_recyclerview_recipe_description"
+                tools:visibility="gone" />
 
             <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/btn_recipe_description_add"
@@ -285,7 +287,6 @@
                 android:layout_height="0dp"
                 android:layout_marginStart="8dp"
                 android:orientation="horizontal"
-                android:visibility="gone"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintBottom_toBottomOf="@id/ib_recipe_write_edit_feed_upload_photo"
                 app:layout_constraintEnd_toEndOf="parent"
