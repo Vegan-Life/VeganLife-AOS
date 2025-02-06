@@ -9,19 +9,17 @@ import okhttp3.RequestBody
 import java.lang.Exception
 import javax.inject.Inject
 
-class RecipeModifyDataSourceImpl @Inject constructor(
+class RecipeRegisterDataSourceImpl @Inject constructor(
     private val recipeApi: RecipeApi,
 ) {
-    suspend fun modifyRecipe(
-        id: Long,
+    suspend fun registerRecipe(
         recipeRequestDTO: RequestBody,
-        recipePhotoMultipart: List<MultipartBody.Part>
+        recipePhotoMultipart: List<MultipartBody.Part>,
     ): ApiResult<Any> {
         val gson = GsonBuilder().create()
 
         return try {
-            val response = recipeApi.modifyRecipe(
-                id,
+            val response = recipeApi.registerRecipe(
                 recipeRequestDTO,
                 recipePhotoMultipart,
             )
@@ -31,13 +29,16 @@ class RecipeModifyDataSourceImpl @Inject constructor(
                 ApiResult.Success(responseBody)
             } else {
                 val errorBodyString = response.errorBody()?.string()
-                val conflictResponse =
-                    gson.fromJson(errorBodyString, ConflictResponse::class.java)
-                ApiResult.Error(conflictResponse.errorCode, conflictResponse.description)
+                if(errorBodyString.isNullOrEmpty()) ApiResult.Error("UNKNOWN_ERROR", "서버 응답이 비어 있습니다.")
+                else {
+                    val conflictResponse =
+                        gson.fromJson(errorBodyString, ConflictResponse::class.java)
+                    ApiResult.Error(conflictResponse.errorCode, conflictResponse.description)
+                }
             }
 
         } catch (e: Exception) {
-            ApiResult.Exception(e)
+            ApiResult.Error("JSON_PARSE_ERROR", "$e 에러 응답을 파싱할 수 없습니다.")
         }
     }
 }
