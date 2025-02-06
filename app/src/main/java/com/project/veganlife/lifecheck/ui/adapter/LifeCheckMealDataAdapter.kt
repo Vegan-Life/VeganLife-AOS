@@ -8,8 +8,26 @@ import androidx.recyclerview.widget.RecyclerView
 import com.project.veganlife.databinding.ItemRecyclerviewLifecheckMenuSearchBinding
 import com.project.veganlife.lifecheck.data.model.LifeCheckMealData
 
-class LifeCheckMealDataAdapter :
-    PagingDataAdapter<LifeCheckMealData, LifeCheckMealDataAdapter.MealDataViewHolder>(diffUtil) {
+class LifeCheckMealDataAdapter(
+    private val longClickListener: OnItemLongClickListener,
+    private val clickListener: OnItemClickListener,
+) : PagingDataAdapter<LifeCheckMealData, LifeCheckMealDataAdapter.MealDataViewHolder>(diffUtil) {
+
+    private var isLongClickEnabled: Boolean = false
+
+    // 롱클릭 활성화/비활성화 설정
+    fun setLongClickEnabled(enabled: Boolean) {
+        isLongClickEnabled = enabled
+    }
+
+    // 롱클릭 이벤트를 위한 인터페이스
+    interface OnItemLongClickListener {
+        fun onItemLongClicked(id: Long)
+    }
+
+    interface OnItemClickListener {
+        fun onItemClicked(id: Long)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MealDataViewHolder {
         val binding = ItemRecyclerviewLifecheckMenuSearchBinding.inflate(
@@ -17,21 +35,39 @@ class LifeCheckMealDataAdapter :
             parent,
             false
         )
-        return MealDataViewHolder(binding)
+        return MealDataViewHolder(binding, longClickListener, clickListener)
     }
 
     override fun onBindViewHolder(holder: MealDataViewHolder, position: Int) {
         val item = getItem(position)
         if (item != null) {
-            holder.bind(item)
+            holder.bind(item, isLongClickEnabled)
         }
     }
 
-    class MealDataViewHolder(private val binding: ItemRecyclerviewLifecheckMenuSearchBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-                
-        fun bind(mealData: LifeCheckMealData) {
+    class MealDataViewHolder(
+        private val binding: ItemRecyclerviewLifecheckMenuSearchBinding,
+        private val longClickListener: OnItemLongClickListener,
+        private val clickListener: OnItemClickListener
+    ) : RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(mealData: LifeCheckMealData, isLongClickEnabled: Boolean) {
             binding.tvLifecheckMenuSearchWord.text = mealData.name
+
+            binding.root.setOnClickListener {
+                clickListener.onItemClicked(mealData.id.toLong()) // ID 전달
+            }
+
+            if (isLongClickEnabled) {
+                // 롱클릭 이벤트 활성화
+                binding.root.setOnLongClickListener {
+                    longClickListener.onItemLongClicked(mealData.id.toLong()) // ID 전달
+                    true
+                }
+            } else {
+                // 롱클릭 이벤트 비활성화
+                binding.root.setOnLongClickListener(null)
+            }
         }
     }
 
@@ -40,14 +76,12 @@ class LifeCheckMealDataAdapter :
             override fun areItemsTheSame(
                 oldItem: LifeCheckMealData,
                 newItem: LifeCheckMealData
-            ): Boolean =
-                oldItem.id == newItem.id
+            ): Boolean = oldItem.id == newItem.id
 
             override fun areContentsTheSame(
                 oldItem: LifeCheckMealData,
                 newItem: LifeCheckMealData
-            ): Boolean =
-                oldItem == newItem
+            ): Boolean = oldItem == newItem
         }
     }
 }

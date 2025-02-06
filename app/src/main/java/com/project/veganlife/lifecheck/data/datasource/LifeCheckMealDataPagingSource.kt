@@ -3,11 +3,11 @@ package com.project.veganlife.lifecheck.data.datasource
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.project.veganlife.lifecheck.data.model.LifeCheckMealData
-import com.project.veganlife.lifecheck.data.remote.LifeCheckMealDataApi
+import com.project.veganlife.lifecheck.data.remote.LifeCheckApi
 import javax.inject.Inject
 
 class LifeCheckMealDataPagingSource @Inject constructor(
-    private val mealDataApi: LifeCheckMealDataApi,
+    private val mealDataApi: LifeCheckApi,
     private val keyword: String,
     private val ownerType: String,
 ) : PagingSource<Int, LifeCheckMealData>() {

@@ -32,48 +32,49 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <include
-                android:id="@+id/include_lifecheck_diet_add"
-                layout="@layout/layout_lifecheck_diet_add"
+            <LinearLayout
+                android:id="@+id/root_layout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/cl_lifecheck_diet_add_diet_plus"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:background="@color/sub_gray1"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/include_lifecheck_diet_add">
-
-                <ImageView
-                    android:id="@+id/iv_lifecheck_diet_add_diet_plus"
-                    android:layout_width="wrap_content"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cl_lifecheck_diet_add_diet_plus"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/all_plus"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginTop="16dp"
+                    android:background="@color/sub_gray1"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintStart_toStartOf="parent">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="24dp"
-                    android:includeFontPadding="false"
-                    android:text="@string/lifecheck_add_diet"
-                    android:textAppearance="@style/Regular.Body7"
-                    android:textColor="@color/base1"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    <ImageView
+                        android:id="@+id/iv_lifecheck_diet_add_diet_plus"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/all_plus"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="24dp"
+                        android:includeFontPadding="false"
+                        android:text="@string/lifecheck_add_diet"
+                        android:textAppearance="@style/Regular.Body7"
+                        android:textColor="@color/base1"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cl_lifecheck_diet_add_total_kcal"
@@ -83,7 +84,7 @@
                 android:background="@color/gray2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/cl_lifecheck_diet_add_diet_plus">
+                app:layout_constraintTop_toBottomOf="@id/root_layout">
 
                 <TextView
                     android:id="@+id/tv_lifecheck_diet_add_total_kcal"
@@ -141,6 +142,7 @@
                 app:layout_constraintTop_toBottomOf="@id/cl_lifecheck_diet_add_total_kcal" />
 
             <TextView
+                android:id="@+id/tv_liffecheck_diet_add_photo_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"

@@ -4,13 +4,13 @@ import com.google.gson.GsonBuilder
 import com.project.veganlife.data.model.ApiResult
 import com.project.veganlife.data.model.ConflictResponse
 import com.project.veganlife.lifecheck.data.model.LifeCheckWeeklyCalorieResponse
-import com.project.veganlife.lifecheck.data.remote.LifeCheckWeeklyCalorieGetApi
+import com.project.veganlife.lifecheck.data.remote.LifeCheckApi
 import javax.inject.Inject
 
 class LifeCheckWeeklyCalorieDataSourceImpl @Inject constructor(
-    private val weeklyCalorieApi: LifeCheckWeeklyCalorieGetApi,
-) : LifeCheckWeeklyCalorieDataSource {
-    override suspend fun getWeeklyCalorie(
+    private val weeklyCalorieApi: LifeCheckApi,
+) {
+    suspend fun getWeeklyCalorie(
         startDate: String,
         endDate: String
     ): ApiResult<LifeCheckWeeklyCalorieResponse> {

@@ -308,7 +308,6 @@
             android:name="com.project.veganlife.recipe.ui.view.RecipeHomeFragment"
             android:label="fragment_recipe_home"
             tools:layout="@layout/fragment_recipe_home">
-
             <action
                 android:id="@+id/action_recipeHomeFragment_to_recipeDetailInfoFragment"
                 app:destination="@id/recipeDetailInfoFragment">
@@ -365,6 +364,9 @@
             <action
                 android:id="@+id/action_lifeCheckDietAddFragment_to_lifeCheckHomeFragment"
                 app:destination="@id/lifeCheckHomeFragment" />
+            <argument
+                android:name="mealId"
+                app:argType="long" />
         </fragment>
         <fragment
             android:id="@+id/lifeCheckMenuSearchFragment"
@@ -380,6 +382,9 @@
             <action
                 android:id="@+id/action_lifeCheckMenuSearchFragment_to_lifeCheckDietAddFragment"
                 app:destination="@id/lifeCheckDietAddFragment" />
+            <action
+                android:id="@+id/action_lifeCheckMenuSearchFragment_to_lifeCheckMenuModifyFragment"
+                app:destination="@+id/lifeCheckMenuModifyFragment" />
         </fragment>
         <fragment
             android:id="@+id/lifeCheckDietDetailFragment"
@@ -413,6 +418,18 @@
             <action
                 android:id="@+id/action_lifeCheckHomeFragment_to_lifeCheckDietDetailFragment"
                 app:destination="@id/lifeCheckDietDetailFragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/lifeCheckMenuModifyFragment"
+            android:name="com.project.veganlife.lifecheck.ui.view.LifeCheckMenuModifyFragment"
+            android:label="fragment_life_check_menu_modify"
+            tools:layout="@layout/fragment_life_check_menu_modify">
+            <action
+                android:id="@+id/action_lifeCheckMenuModifyFragment_to_lifeCheckMenuSearchFragment"
+                app:destination="@+id/lifeCheckMenuSearchFragment" />
+            <argument
+                android:name="mealId"
+                app:argType="long" />
         </fragment>
     </navigation>
     <navigation
