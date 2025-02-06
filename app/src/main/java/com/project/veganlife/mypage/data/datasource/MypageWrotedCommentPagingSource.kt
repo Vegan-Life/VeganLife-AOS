@@ -8,7 +8,7 @@ import com.project.veganlife.mypage.data.remote.MypageApi
 import retrofit2.HttpException
 import javax.inject.Inject
 
-class MypagePostedFeedPagingSource @Inject constructor(
+class MypageWrotedCommentPagingSource @Inject constructor(
     private val api: MypageApi,
 ) : PagingSource<Int, MyPostedContent>() {
 
@@ -18,17 +18,17 @@ class MypagePostedFeedPagingSource @Inject constructor(
 
         return try {
             val response =
-                api.getMyPostedFeedList(page, params.loadSize, "createdAt,DESC")
+                api.getMyCommentList(page, params.loadSize, "createdAt,DESC")
             val responseData = response.body()!!
 
             // 응답이 성공적이고 데이터가 존재할 때
             Log.d("Source", "로드 성공")
             // 가져온 데이터 목록
-            val postedFeedList = responseData.content
+            val wrotedCommentList = responseData.content
 
             // 페이징된 결과를 반환합니다.
             LoadResult.Page(
-                data = postedFeedList,
+                data = wrotedCommentList,
                 prevKey = if (page == 0) null else page - 1, // 이전 페이지 키 설정
                 nextKey = if (responseData.last) null else page + 1 // 다음 페이지 키 설정
             )

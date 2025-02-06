@@ -10,28 +10,28 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.paging.cachedIn
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.project.veganlife.databinding.FragmentMypageScrapsRecipeBinding
-import com.project.veganlife.mypage.ui.adapter.MypageScrapedRecipeAdapter
-import com.project.veganlife.mypage.ui.viewmodel.MypageScrapedRecipeViewModel
+import com.project.veganlife.R
+import com.project.veganlife.databinding.FragmentMypageWrotedRecipeBinding
+import com.project.veganlife.mypage.ui.adapter.MypageWrotedRecipeAdapter
+import com.project.veganlife.mypage.ui.viewmodel.MypageWrotedPagingViewModel
 import com.project.veganlife.recipe.data.model.RecipeFeedContent
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class MypageScrapsRecipeFragment : Fragment(), MypageScrapedRecipeAdapter.OnItemClickListener {
-    private var _binding: FragmentMypageScrapsRecipeBinding? = null
+class MypageWrotedRecipeFragment : Fragment(), MypageWrotedRecipeAdapter.OnItemClickListener {
+    private var _binding: FragmentMypageWrotedRecipeBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var adapter: MypageScrapedRecipeAdapter
-
-    private val viewModel: MypageScrapedRecipeViewModel by viewModels()
+    private lateinit var adapter: MypageWrotedRecipeAdapter
+    private val viewModel: MypageWrotedPagingViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentMypageScrapsRecipeBinding.inflate(inflater, container, false)
+        _binding = FragmentMypageWrotedRecipeBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -39,11 +39,10 @@ class MypageScrapsRecipeFragment : Fragment(), MypageScrapedRecipeAdapter.OnItem
         super.onViewCreated(view, savedInstanceState)
 
         setToolbarListener()
-
-        getScrapedRecipe()
+        getWrotedRecipe()
 
         // ui
-        setScrapedRecipe()
+        setPostedFeedList()
     }
 
     private fun setToolbarListener() {
@@ -54,21 +53,22 @@ class MypageScrapsRecipeFragment : Fragment(), MypageScrapedRecipeAdapter.OnItem
         }
     }
 
-    private fun getScrapedRecipe() {
-        viewModel.getScrapedRecipe()
+    private fun getWrotedRecipe() {
+        viewModel.getWrotedRecipe()
     }
 
-    private fun setScrapedRecipe() {
-        adapter = MypageScrapedRecipeAdapter(this)
-        binding.rvMypageRecipe.layoutManager = LinearLayoutManager(requireContext())
-        binding.rvMypageRecipe.adapter = adapter
+    private fun setPostedFeedList() {
+        // Adapter에 Context 전달
+        adapter = MypageWrotedRecipeAdapter(this)
+        binding.rvMypageFeed.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvMypageFeed.adapter = adapter
 
         lifecycleScope.launch {
-            viewModel.scrapedRecipe
+            viewModel.wrotedRecipe
                 .cachedIn(viewLifecycleOwner.lifecycleScope)
                 .collectLatest { pagingData ->
                     adapter.submitData(pagingData)
-                }
+            }
         }
     }
 
@@ -78,9 +78,8 @@ class MypageScrapsRecipeFragment : Fragment(), MypageScrapedRecipeAdapter.OnItem
     }
 
     override fun onItemCLicked(item: RecipeFeedContent) {
-        val action = MypageScrapsRecipeFragmentDirections.actionGlobalToRecipeDetailInfoFragment(
-            recipe = item
-        )
+        val action = MypageWrotedRecipeFragmentDirections.actionGlobalToRecipeDetailInfoFragment(
+            recipe = item)
         findNavController().navigate(action)
     }
 }

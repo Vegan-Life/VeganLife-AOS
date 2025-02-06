@@ -54,12 +54,16 @@ class MypageHomeFragment : Fragment() {
                 findNavController().navigate(R.id.action_mypageHomeFragment_to_mypageModifyFragment)
             }
 
-            btnMypageWroteFeed.setOnClickListener {
-                findNavController().navigate(R.id.action_mypageHomeFragment_to_mypagePostedFeedFragment)
+            btnMypageWrotedFeed.setOnClickListener {
+                findNavController().navigate(R.id.action_mypageHomeFragment_to_mypageWrotedFeedFragment)
             }
 
-            btnMypageWroteComments.setOnClickListener {
-                findNavController().navigate(R.id.action_mypageHomeFragment_to_mypagePostedCommentsFragment)
+            btnMypageWrotedComments.setOnClickListener {
+                findNavController().navigate(R.id.action_mypageHomeFragment_to_mypageWrotedCommentsFragment)
+            }
+
+            btnMypageWrotedRecipe.setOnClickListener {
+                findNavController().navigate(R.id.action_mypageHomeFragment_to_mypageWrotedRecipeFragment)
             }
 
             btnMypagePickedRecipe.setOnClickListener {

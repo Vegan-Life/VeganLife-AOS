@@ -15,20 +15,20 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MypageScrapedRecipeViewModel @Inject constructor(
+class MypageWrotedPagingViewModel @Inject constructor(
     private val mypageUsecase: MypageUsecase,
-
 ) : ViewModel() {
-    private var _scrapedRecipe = MutableStateFlow<PagingData<RecipeFeedContent>>(PagingData.empty())
-    val scrapedRecipe: StateFlow<PagingData<RecipeFeedContent>> get() = _scrapedRecipe
 
-    fun getScrapedRecipe() {
+    private var _wrotedRecipe = MutableStateFlow<PagingData<RecipeFeedContent>>(PagingData.empty())
+    val wrotedRecipe: StateFlow<PagingData<RecipeFeedContent>> get() = _wrotedRecipe
+
+    fun getWrotedRecipe() {
         viewModelScope.launch {
             try {
-                mypageUsecase.getScrapedRecipe()
+                mypageUsecase.getWrotedRecipe()
                     .cachedIn(viewModelScope)
                     .collectLatest { pagingData ->
-                        _scrapedRecipe.value = pagingData
+                        _wrotedRecipe.value = pagingData
                     }
             } catch (e: Exception) {
                 Log.d("ViewModel", "paging error: ${e.message}")

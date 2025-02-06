@@ -17,17 +17,14 @@ import com.project.veganlife.utils.ui.VeganTypeChange.Companion.changeBackground
 import com.project.veganlife.utils.ui.VeganTypeChange.Companion.changeVeganType
 import com.project.veganlife.utils.ui.VeganTypeChange.Companion.changeVeganTypeTextColor
 
-class MypageScrapedRecipeAdapter(
-    private val mypageScrapedRecipeItemClickListener: OnItemClickListener,
-) :
-    PagingDataAdapter<RecipeFeedContent, MypageScrapedRecipeAdapter.MypageScrapedRecipeViewHolder>(
-        diffUtil
-    ) {
+class MypageWrotedRecipeAdapter(
+    private val mypageWrotedRecipeItemClickListener: OnItemClickListener
+) : PagingDataAdapter<RecipeFeedContent, MypageWrotedRecipeAdapter.MypageWrotedRecipeViewHolder>(diffUtil) {
     interface OnItemClickListener {
         fun onItemCLicked(item: RecipeFeedContent)
     }
 
-    inner class MypageScrapedRecipeViewHolder(private val binding: ItemRecyclerviewRecipeListBinding) :
+    inner class MypageWrotedRecipeViewHolder(private val binding: ItemRecyclerviewRecipeListBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: RecipeFeedContent) {
             binding.apply {
@@ -70,32 +67,25 @@ class MypageScrapedRecipeAdapter(
                 }
 
                 root.setOnClickListener {
-                    mypageScrapedRecipeItemClickListener.onItemCLicked(item)
-                }
-            }
-        }
-
-        private fun updateLikeBackground(isLike: Boolean) {
-            binding.apply {
-                if (isLike) {
-                    btnRecipeLike.setImageResource(R.drawable.all_like_full_recipe)
-                } else {
-                    btnRecipeLike.setImageResource(R.drawable.all_like_empty_recipe)
+                    mypageWrotedRecipeItemClickListener.onItemCLicked(item)
                 }
             }
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MypageScrapedRecipeViewHolder {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): MypageWrotedRecipeViewHolder {
         val binding = ItemRecyclerviewRecipeListBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false
         )
-        return MypageScrapedRecipeViewHolder(binding)
+        return MypageWrotedRecipeViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: MypageScrapedRecipeViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: MypageWrotedRecipeViewHolder, position: Int) {
         val postedFeed = getItem(position)
         if (postedFeed != null) {
             holder.bind(postedFeed)
@@ -103,6 +93,7 @@ class MypageScrapedRecipeAdapter(
             Log.d("Adapter", "Bind position: $position, Data: null")
         }
     }
+
 
     companion object {
         private val diffUtil = object : DiffUtil.ItemCallback<RecipeFeedContent>() {
