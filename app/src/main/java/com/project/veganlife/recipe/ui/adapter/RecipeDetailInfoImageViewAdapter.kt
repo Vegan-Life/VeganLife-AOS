@@ -7,26 +7,28 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.RequestOptions
 import com.project.veganlife.R
 import com.project.veganlife.databinding.ItemRecipeImageBinding
 
-class RecipeFeedImagesViewPagerAdapter :
-    ListAdapter<String, RecipeFeedImagesViewPagerAdapter.ViewPagerViewHolder>(diffUtil) {
+class RecipeDetailInfoImageViewAdapter :
+    ListAdapter<String, RecipeDetailInfoImageViewAdapter.ViewPagerViewHolder>(diffUtil) {
 
     inner class ViewPagerViewHolder(private val binding: ItemRecipeImageBinding) :
         RecyclerView.ViewHolder(binding.root) {
-            fun bind(url: String) {
-                // Glide로 이미지 로드
-                Glide.with(binding.imageView1.context)
-                    .load(url)
-                    .placeholder(R.drawable.all_spoon_fork_small) // 로드 전 기본 이미지
-                    .error(R.color.sub_gray2) // 로딩 실패 시 기본 색상
-                    .centerCrop()
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .into(binding.imageView1)
-
-            }
+        fun bind(url: String) {
+            // Glide로 이미지 로드
+            Glide.with(binding.imageView1.context)
+                .load(url)
+                .apply(
+                    RequestOptions()
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .centerCrop()
+                        .placeholder(R.color.sub2)
+                        .error(R.color.sub_gray2)
+                ).into(binding.imageView1)
         }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewPagerViewHolder {
         val view = ItemRecipeImageBinding.inflate(
