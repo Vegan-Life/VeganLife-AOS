@@ -38,10 +38,13 @@ class CommunityWriteFeedFragment : Fragment() {
 
     private lateinit var galleryAdapter: GalleryAdapter
     private val galleryLauncher =
-        registerForActivityResult(ActivityResultContracts.PickMultipleVisualMedia(5)) {
-            viewModel.imageUris.value?.let { currentUris ->
-                if (currentUris.size + it.size <= 5) {
-                    viewModel.addUriList(it)
+        registerForActivityResult(ActivityResultContracts.PickMultipleVisualMedia(5)) { uriList ->
+            viewModel.images.value?.let {
+                if (it.size + uriList.size <= 5) {
+                    for (uri in uriList) {
+                        viewModel.addImage(uri)
+                    }
+
                 } else {
                     Toast.makeText(requireContext(), "최대 5개의 사진을 등록할 수 있습니다.", Toast.LENGTH_SHORT)
                         .show()
@@ -94,11 +97,12 @@ class CommunityWriteFeedFragment : Fragment() {
         }
         // 사진 리스트 어댑터
         galleryAdapter = GalleryAdapter { position ->
-            viewModel.removePartAt(position)
+            viewModel.removeImage(position)
         }
         binding.rvCommunityWriteEditFeedPhoto.adapter = galleryAdapter
-        viewModel.imageUris.observe(viewLifecycleOwner) {
+        viewModel.images.observe(viewLifecycleOwner) {
             galleryAdapter.submitList(it)
+            galleryAdapter.notifyDataSetChanged()
         }
         //결과값 보여주기
         viewModel.response.observe(viewLifecycleOwner) {
@@ -126,6 +130,39 @@ class CommunityWriteFeedFragment : Fragment() {
                     Toast.makeText(
                         requireContext(),
                         "게시물 등록에 실패했습니다. 다시 시도해주세요.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+
+        }
+
+        //결과값 보여주기
+        viewModel.updateResponse.observe(viewLifecycleOwner) {
+            when (it) {
+                is ApiResult.Success -> {
+                    Toast.makeText(requireContext(), "게시물이 수정됐습니다.", Toast.LENGTH_SHORT).show()
+                    findNavController().navigateUp()
+                }
+
+                is ApiResult.Error -> {
+                    Log.e(
+                        "##ERROR",
+                        "createPost ERROR: ${it.errorCode}, ${it.description}",
+                    )
+
+                    Toast.makeText(
+                        requireContext(),
+                        "게시물 수정에 실패했습니다. 다시 시도해주세요.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
+                is ApiResult.Exception -> {
+                    Log.e("##ERROR", "updatePost EXCEPTION: ${it.e.stackTraceToString()}")
+                    Toast.makeText(
+                        requireContext(),
+                        "게시물 수정에 실패했습니다. 다시 시도해주세요.",
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -221,13 +258,12 @@ class CommunityWriteFeedFragment : Fragment() {
                 val keywords = viewModel.keywordList.value ?: emptyList()
                 val title = etCommunityWriteEditTitle.text.toString()
                 val content = etCommunityWriteEditFeedContent.text.toString()
-                val images = viewModel.imageUris.value ?: emptyList()
 
                 if (isPostValid(title, content)) {
                     if (isEditMode) {
-                        viewModel.updatePost(requireContext(), viewModel.oldPost.value?.id!!.toInt(), keywords, title, content, viewModel.oldPost.value!!.imageUrls, images)
+                        viewModel.updatePost(requireContext(), viewModel.oldPost.value?.id!!.toInt(), keywords, title, content, viewModel.getExistingImageUrls(), viewModel.getNewImages())
                     } else {
-                        viewModel.createPost(requireContext(), keywords, title, content, images)
+                        viewModel.createPost(requireContext(), keywords, title, content, viewModel.getNewImages())
                     }
                 }
             }

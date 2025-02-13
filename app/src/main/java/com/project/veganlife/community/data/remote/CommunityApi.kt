@@ -79,6 +79,7 @@ interface CommunityApi {
         @Path("postId") postId: Int
     ): Response<String>
 
+    @Multipart
     @PUT("posts/{postId}")
     suspend fun updatePost(
         @Path("postId") postId: Int,

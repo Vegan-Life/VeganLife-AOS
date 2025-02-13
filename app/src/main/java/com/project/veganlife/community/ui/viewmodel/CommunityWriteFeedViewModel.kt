@@ -9,6 +9,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.project.veganlife.community.data.model.ImageItem
 import com.project.veganlife.community.data.model.PopularTagsResponse
 import com.project.veganlife.community.data.model.Post
 import com.project.veganlife.community.data.model.PostDTO
@@ -45,12 +46,16 @@ class CommunityWriteFeedViewModel @Inject constructor(
     private val _keywordAutoCompleteList = MutableLiveData<ApiResult<List<String>>>()
     val keywordAutoCompleteList: LiveData<ApiResult<List<String>>> get() = _keywordAutoCompleteList
 
-    private val _imageUris: MutableLiveData<List<Uri>> = MutableLiveData(emptyList())
-    val imageUris: LiveData<List<Uri>> get() = _imageUris
+    //fixme: oldimage or newimage
+    private val _images = MutableLiveData<MutableList<ImageItem>>(mutableListOf())
+    val images: LiveData<MutableList<ImageItem>> = _images
 
     //게시물 등록 결과
     private val _response = MutableLiveData<ApiResult<PostResponse>>()
     val response: LiveData<ApiResult<PostResponse>> get() = _response
+
+    private val _updateResponse = MutableLiveData<ApiResult<Boolean>>()
+    val updateResponse: LiveData<ApiResult<Boolean>> get() = _updateResponse
 
     private val _oldPost = MutableLiveData<Post>()
     val oldPost: LiveData<Post> get() = _oldPost
@@ -70,12 +75,40 @@ class CommunityWriteFeedViewModel @Inject constructor(
         loadPopularTags()
     }
 
+    fun loadExistingImages(existingUrls: List<String>) {
+        val currentList = _images.value ?: mutableListOf()
+        currentList.addAll(existingUrls.map { ImageItem(url = it) })
+        _images.value = currentList
+    }
+
     fun initOldPostData(post: Post) {
         _oldPost.value = post
         _keywordList.value = post.tags
         Log.d("PostWriteViewModel", "initPostData: ${post.imageUrls}")
-        //todo: 이미지 (옛날 이미지도 보여줘야하는데 -> imageuris는 새 이미지 용도인데 이렇게 넣으면 안되는데
-//        _imageUris.value = post.imageUrls.map { Uri.parse(it) }
+        //fixme: 기존 이미지 리스트에 넣기
+        loadExistingImages(post.imageUrls)
+    }
+
+    fun addImage(uri: Uri) {
+        val currentList = _images.value ?: mutableListOf()
+        currentList.add(ImageItem(uri = uri))
+        _images.value = currentList
+    }
+
+    fun removeImage(position: Int) {
+        val currentList = _images.value ?: mutableListOf()
+        if (position in currentList.indices) {
+            currentList.removeAt(position)
+            _images.value = currentList
+        }
+    }
+
+    fun getNewImages(): List<Uri> {
+        return _images.value?.mapNotNull { it.uri } ?: emptyList()
+    }
+
+    fun getExistingImageUrls(): List<String> {
+        return _images.value?.mapNotNull { it.url } ?: emptyList()
     }
 
     fun addKeyword(newString: String) {
@@ -151,7 +184,7 @@ class CommunityWriteFeedViewModel @Inject constructor(
         }
 
         viewModelScope.launch {
-            updatePostUseCase.execute(postId, postRequestBody, imagesMultipart)
+            _updateResponse.value = updatePostUseCase.execute(postId, postRequestBody, imagesMultipart)
         }
     }
 
@@ -176,27 +209,4 @@ class CommunityWriteFeedViewModel @Inject constructor(
         return PhotoUtils.createRequestBody(postDTO)
     }
 
-    fun setImageUris(uris: List<Uri>) {
-        val uriList = mutableListOf<Uri>()
-        imageUris.value?.let { uriList.addAll(it) }
-        uriList.addAll(uris)
-
-        _imageUris.value = uris
-    }
-
-    fun addUriList(newUris: List<Uri>) {
-        val currentList = imageUris.value ?: emptyList()
-
-        val updatedList = currentList + newUris
-
-        _imageUris.value = updatedList
-    }
-
-    fun removePartAt(position: Int) {
-        val modifiedImageUris = mutableListOf<Uri>()
-        imageUris.value?.let { modifiedImageUris.addAll(it) }
-
-        modifiedImageUris.removeAt(position)
-        setImageUris(modifiedImageUris)
-    }
 }
