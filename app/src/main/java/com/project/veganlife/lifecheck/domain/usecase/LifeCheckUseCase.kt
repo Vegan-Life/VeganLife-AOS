@@ -7,6 +7,7 @@ import com.project.veganlife.data.model.RecommendedIntakeResponse
 import com.project.veganlife.lifecheck.data.model.LifeCheckMealData
 import com.project.veganlife.lifecheck.data.model.LifeCheckMealDataDetail
 import com.project.veganlife.lifecheck.data.model.LifeCheckMealDataRequest
+import com.project.veganlife.lifecheck.data.model.LifeCheckMealLogDetailResponse
 import com.project.veganlife.lifecheck.data.model.LifeCheckMealLogListResponse
 import com.project.veganlife.lifecheck.data.model.LifeCheckWeeklyCalorieResponse
 import com.project.veganlife.lifecheck.domain.repository.LifeCheckRepository
@@ -73,5 +74,9 @@ class LifeCheckUseCase @Inject constructor(
 
     suspend fun getMealLogList(date: String): ApiResult<List<LifeCheckMealLogListResponse>> {
         return lifeCheckRepository.getMealLogList(date)
+    }
+
+    suspend fun getMealLogDetail(mealLogId: Long): ApiResult<LifeCheckMealLogDetailResponse> {
+        return lifeCheckRepository.getMealLogDetail(mealLogId)
     }
 }

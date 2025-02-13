@@ -35,7 +35,7 @@
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/vp_lifecheck_diet_detail_image"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
+                android:layout_height="300dp"
                 android:layout_marginHorizontal="24dp"
                 app:layout_constraintBottom_toTopOf="@id/di_lifecheck_diet_detail"
                 app:layout_constraintEnd_toEndOf="parent"
