@@ -1,5 +1,6 @@
 package com.project.veganlife.community.ui.view
 
+import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -14,6 +15,7 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.project.veganlife.community.data.model.Post
 import com.project.veganlife.community.ui.adapter.GalleryAdapter
 import com.project.veganlife.community.ui.adapter.KeywordAutoCompleteAdapter
 import com.project.veganlife.community.ui.adapter.TagListAdapter
@@ -24,6 +26,9 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class CommunityWriteFeedFragment : Fragment() {
+
+    private var isEditMode: Boolean = false
+
     private val binding: FragmentCommunityWriteEditFeedBinding by lazy {
         FragmentCommunityWriteEditFeedBinding.inflate(
             layoutInflater
@@ -44,6 +49,22 @@ class CommunityWriteFeedFragment : Fragment() {
             }
         }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            arguments?.getParcelable("post", Post::class.java)?.let { post ->
+                isEditMode = true
+                viewModel.initOldPostData(post) // 기존 데이터 뷰모델에 전달
+            }
+        } else {
+            arguments?.getParcelable<Post>("post")?.let { post ->
+                isEditMode = true
+                viewModel.initOldPostData(post) // 기존 데이터 뷰모델에 전달
+            }
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -59,6 +80,19 @@ class CommunityWriteFeedFragment : Fragment() {
     }
 
     private fun init() {
+        // 버튼 텍스트 다르게
+        binding.btnFeedUpload.text = if (isEditMode) "수정하기" else "업로드"
+        binding.toolbarCommunityWriteEditFeed.title = if (isEditMode) "피드 작성" else "피드 수정"
+
+        // 수정으로 넘어온 post데이터 넣어주기
+        viewModel.oldPost.observe(viewLifecycleOwner) {
+            binding.apply {
+                etCommunityWriteEditTitle.setText(it.title)
+                etCommunityWriteEditFeedContent.setText(it.content)
+            }
+
+        }
+        // 사진 리스트 어댑터
         galleryAdapter = GalleryAdapter { position ->
             viewModel.removePartAt(position)
         }
@@ -190,7 +224,11 @@ class CommunityWriteFeedFragment : Fragment() {
                 val images = viewModel.imageUris.value ?: emptyList()
 
                 if (isPostValid(title, content)) {
-                    viewModel.createPost(requireContext(), keywords, title, content, images)
+                    if (isEditMode) {
+                        viewModel.updatePost(requireContext(), viewModel.oldPost.value?.id!!.toInt(), keywords, title, content, viewModel.oldPost.value!!.imageUrls, images)
+                    } else {
+                        viewModel.createPost(requireContext(), keywords, title, content, images)
+                    }
                 }
             }
 

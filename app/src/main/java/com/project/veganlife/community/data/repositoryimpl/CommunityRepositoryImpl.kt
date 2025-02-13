@@ -218,4 +218,46 @@ class CommunityRepositoryImpl @Inject constructor(
             ApiResult.Exception(e)
         }
     }
+
+    override suspend fun deletePost(postId: Int): ApiResult<Boolean> {
+        val gson = GsonBuilder().create()
+
+        return try {
+            val deletePostResponse = communityApi.deletePost(postId)
+            if (deletePostResponse.isSuccessful == true) {
+                ApiResult.Success(true)
+            } else {
+                val errorBodyString = deletePostResponse.errorBody()?.string()
+                val conflictResponse =
+                    gson.fromJson(errorBodyString, ConflictResponse::class.java)
+                ApiResult.Error(conflictResponse.errorCode, conflictResponse.description)
+            }
+
+        } catch (e: Exception) {
+            ApiResult.Exception(e)
+        }
+    }
+
+    override suspend fun updatePost(
+        postId: Int,
+        postDTO: RequestBody,
+        images: List<MultipartBody.Part>
+    ): ApiResult<Boolean> {
+        val gson = GsonBuilder().create()
+
+        return try {
+            val updatePostResponse = communityApi.updatePost(postId, postDTO, images)
+            if (updatePostResponse.isSuccessful == true) {
+                ApiResult.Success(true)
+            } else {
+                val errorBodyString = updatePostResponse.errorBody()?.string()
+                val conflictResponse =
+                    gson.fromJson(errorBodyString, ConflictResponse::class.java)
+                ApiResult.Error(conflictResponse.errorCode, conflictResponse.description)
+            }
+
+        } catch (e: Exception) {
+            ApiResult.Exception(e)
+        }
+    }
 }

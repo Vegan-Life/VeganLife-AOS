@@ -1,5 +1,6 @@
 package com.project.veganlife.community.ui.view
 
+import android.app.AlertDialog
 import android.os.Build
 import android.os.Bundle
 import android.text.Spannable
@@ -14,6 +15,7 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat.getSystemService
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -107,13 +109,30 @@ class CommunityDetailFeedFragment : Fragment(), OnReplyCommentClickListener {
 
         //내 게시글인 경우 나오는 메뉴 클릭 리스너 등록
         binding.toolbarCommunityDetailFeed.setOnMenuItemClickListener {
-            when(it.itemId) {
+            when (it.itemId) {
                 R.id.item_edit -> {
-                    Log.i("##INFO", "수정")
+                    Log.i("##INFO", "수정, $post")
+                    findNavController().navigate(
+                        R.id.action_communityDetailFeedFragment_to_communityWriteFeedFragment,
+                        bundleOf("post" to post!!)
+                    )
                 }
 
                 R.id.item_delete -> {
                     Log.i("##INFO", "삭제")
+                    AlertDialog.Builder(requireContext()).apply {
+                        setTitle("삭제")
+                        setMessage("게시글을 삭제하시겠습니까?")
+                        setPositiveButton("확인") { _, i ->
+                            findNavController().navigateUp()
+                            if (post != null) {
+                                postViewModel.deletePost(post!!.id.toInt())
+                            }
+                        }
+                        setNegativeButton("취소") { _, _ -> }
+
+                        show()
+                    }
                 }
             }
             true

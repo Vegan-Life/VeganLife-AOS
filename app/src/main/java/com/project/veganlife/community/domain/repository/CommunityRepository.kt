@@ -33,4 +33,8 @@ interface CommunityRepository {
     suspend fun createComment(postId: Long, commentId: Long?, content: String): ApiResult<CreateResponse>
 
     suspend fun createPost(postDTO: RequestBody, images: List<MultipartBody.Part>): ApiResult<PostResponse>
+
+    suspend fun deletePost(postId: Int): ApiResult<Boolean>
+
+    suspend fun updatePost(postId: Int, postDTO: RequestBody, images: List<MultipartBody.Part>): ApiResult<Boolean>
 }

@@ -15,6 +15,7 @@ import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Multipart
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Part
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -72,4 +73,16 @@ interface CommunityApi {
         @Part("request") postDTO: RequestBody,
         @Part images: List<MultipartBody.Part>
     ): Response<PostResponse>
+
+    @DELETE("posts/{postId}")
+    suspend fun deletePost(
+        @Path("postId") postId: Int
+    ): Response<String>
+
+    @PUT("posts/{postId}")
+    suspend fun updatePost(
+        @Path("postId") postId: Int,
+        @Part("request") postDTO: RequestBody,
+        @Part images: List<MultipartBody.Part>
+    ): Response<String>
 }

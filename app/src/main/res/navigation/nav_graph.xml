@@ -196,6 +196,9 @@
             <action
                 android:id="@+id/action_communityWriteFeedFragment_to_communityHomeFragment"
                 app:destination="@id/communityHomeFragment" />
+            <argument
+                android:name="post"
+                app:argType="com.project.veganlife.community.data.model.Post" />
         </fragment>
         <fragment
             android:id="@+id/communityDetailFeedFragment"

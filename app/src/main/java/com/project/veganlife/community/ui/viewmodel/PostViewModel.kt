@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.project.veganlife.community.data.model.CreateResponse
 import com.project.veganlife.community.data.model.Post
 import com.project.veganlife.community.domain.usecase.CreateCommentUseCase
+import com.project.veganlife.community.domain.usecase.DeletePostUseCase
 import com.project.veganlife.community.domain.usecase.GetPostDataUseCase
 import com.project.veganlife.community.domain.usecase.LikePostUseCase
 import com.project.veganlife.community.domain.usecase.UnlikePostUseCase
@@ -24,7 +25,8 @@ class PostViewModel @Inject constructor(
     private val likePostUseCase: LikePostUseCase,
     private val unlikePostUseCase: UnlikePostUseCase,
     private val createCommentUseCase: CreateCommentUseCase,
-    private val profileGetUseCase: ProfileGetUsecase
+    private val profileGetUseCase: ProfileGetUsecase,
+    private val deletePostUseCase: DeletePostUseCase
 ) : ViewModel() {
     val post = MutableLiveData<ApiResult<Post>>()
     val myProfile = MutableLiveData<ApiResult<ProfileResponse>>()
@@ -79,5 +81,11 @@ class PostViewModel @Inject constructor(
 
     fun deleteComment(postId: Long, commentId: Long) {
 
+    }
+
+    fun deletePost(postId: Int) {
+        viewModelScope.launch {
+            deletePostUseCase.execute(postId)
+        }
     }
 }

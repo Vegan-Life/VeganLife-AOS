@@ -5,3 +5,10 @@ data class PostDTO(
     val content: String,
     val tags: List<String>,
 )
+
+data class PostUpdateDTO(
+    val title: String,
+    val content: String,
+    val tags: List<String>,
+    val existingImageUrls: List<String>
+)
