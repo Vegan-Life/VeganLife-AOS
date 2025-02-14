@@ -344,6 +344,9 @@
             <action
                 android:id="@+id/action_lifeCheckDietDetailFragment_to_lifeCheckHomeFragment"
                 app:destination="@id/lifeCheckHomeFragment" />
+            <argument
+                android:name="mealLogId"
+                app:argType="long" />
         </fragment>
         <fragment
             android:id="@+id/lifeCheckMenuAddFragment"

@@ -4,6 +4,8 @@ import com.project.veganlife.data.model.PagingResponse
 import com.project.veganlife.lifecheck.data.model.LifeCheckMealData
 import com.project.veganlife.lifecheck.data.model.LifeCheckMealDataDetail
 import com.project.veganlife.lifecheck.data.model.LifeCheckMealDataRequest
+import com.project.veganlife.lifecheck.data.model.LifeCheckMealLogDetailResponse
+import com.project.veganlife.lifecheck.data.model.LifeCheckMealLogListResponse
 import com.project.veganlife.lifecheck.data.model.LifeCheckWeeklyCalorieResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -68,4 +70,14 @@ interface LifeCheckApi {
         @Part("request") request: RequestBody,
         @Part images: List<MultipartBody.Part>?
     ): Response<Unit>
+
+    @GET("meal-log")
+    suspend fun getMealLogList(
+        @Query("date") date: String
+    ): Response<List<LifeCheckMealLogListResponse>>
+
+    @GET("meal-log/{mealLogId}")
+    suspend fun getMealLogDetail(
+        @Path("mealLogId") mealLogId: Long
+    ): Response<LifeCheckMealLogDetailResponse>
 }

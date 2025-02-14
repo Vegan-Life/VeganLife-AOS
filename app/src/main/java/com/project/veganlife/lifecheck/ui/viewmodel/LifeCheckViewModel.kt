@@ -14,6 +14,8 @@ import com.project.veganlife.data.model.RecommendedIntakeResponse
 import com.project.veganlife.lifecheck.data.model.LifeCheckMealData
 import com.project.veganlife.lifecheck.data.model.LifeCheckMealDataDetail
 import com.project.veganlife.lifecheck.data.model.LifeCheckMealDataRequest
+import com.project.veganlife.lifecheck.data.model.LifeCheckMealLogDetailResponse
+import com.project.veganlife.lifecheck.data.model.LifeCheckMealLogListResponse
 import com.project.veganlife.lifecheck.data.model.LifeCheckWeeklyCalorieResponse
 import com.project.veganlife.lifecheck.domain.usecase.LifeCheckUseCase
 import com.project.veganlife.lifecheck.util.EventWrapper
@@ -116,6 +118,14 @@ class LifeCheckViewModel @Inject constructor(
     // 식사 기록 사진 리스트 관리
     private val _selectedPhotos = MutableLiveData<MutableList<Uri>>(mutableListOf())
     val selectedPhotos: MutableLiveData<MutableList<Uri>> = _selectedPhotos
+
+    // 식사 기록 목록
+    private val _mealLogList = MutableLiveData<EventWrapper<ApiResult<List<LifeCheckMealLogListResponse>>>>()
+    val mealLogList: LiveData<EventWrapper<ApiResult<List<LifeCheckMealLogListResponse>>>> = _mealLogList
+
+    // 식사 기록 상세 조회
+    private val _mealLogDetail = MutableLiveData<EventWrapper<ApiResult<LifeCheckMealLogDetailResponse>>>()
+    val mealLogDetail: LiveData<EventWrapper<ApiResult<LifeCheckMealLogDetailResponse>>> = _mealLogDetail
 
     // 일일 섭취량 조회
     fun fetchDailyIntake(date: String) {
@@ -256,6 +266,18 @@ class LifeCheckViewModel @Inject constructor(
         viewModelScope.launch {
             _registerMealLogResult.value =
                 EventWrapper(lifeCheckUseCase.registerMealLog(mealLogRequest, images))
+        }
+    }
+
+    fun fetchMealLogList(date: String) {
+        viewModelScope.launch {
+            _mealLogList.value = EventWrapper(lifeCheckUseCase.getMealLogList(date))
+        }
+    }
+
+    fun fetchMealLogDetail(mealLogId: Long) {
+        viewModelScope.launch {
+            _mealLogDetail.value = EventWrapper(lifeCheckUseCase.getMealLogDetail(mealLogId))
         }
     }
 }
