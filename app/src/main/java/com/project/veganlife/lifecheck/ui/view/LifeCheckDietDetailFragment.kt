@@ -46,6 +46,7 @@ class LifeCheckDietDetailFragment : Fragment() {
         setupRecyclerView()
         setupViewPager()
         observeMealLogDetail()
+        setupClickListeners()
     }
 
     private fun initMealId() {
@@ -121,6 +122,20 @@ class LifeCheckDietDetailFragment : Fragment() {
                         result.e.message ?: "Unknown error"
                     )
                 }
+            }
+        }
+    }
+
+    private fun setupClickListeners() {
+        binding.apply {
+            btnLifecheckDietDetailModify.setOnClickListener {
+                findNavController().navigate(
+                    LifeCheckDietDetailFragmentDirections
+                        .actionLifeCheckDietDetailFragmentToLifeCheckDietModifyFragment(
+                            mealLogId = args.mealLogId,
+                            mealId = -1
+                        )
+                )
             }
         }
     }

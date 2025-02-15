@@ -224,6 +224,13 @@ class LifeCheckViewModel @Inject constructor(
         savedStateHandle["dynamicMealList"] = updatedList
     }
 
+    fun addMealDataList(mealDataList: List<LifeCheckMealDataDetail>) {
+        val currentList = _dynamicMealList.value ?: mutableListOf()
+        currentList.addAll(mealDataList)
+        _dynamicMealList.value = currentList
+        savedStateHandle["dynamicMealList"] = currentList
+    }
+
     // 음식 리스트 데이터 삭제
     fun removeMealData(mealData: LifeCheckMealDataDetail) {
         val updatedList = _dynamicMealList.value ?: mutableListOf()

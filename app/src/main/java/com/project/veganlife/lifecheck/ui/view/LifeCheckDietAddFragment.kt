@@ -169,7 +169,8 @@ class LifeCheckDietAddFragment : Fragment() {
         binding.apply {
             clLifecheckDietAddDietPlus.setOnClickListener {
                 findNavController().navigate(
-                    R.id.action_lifeCheckDietAddFragment_to_lifeCheckMenuSearchFragment
+                    LifeCheckDietAddFragmentDirections
+                        .actionLifeCheckDietAddFragmentToLifeCheckMenuSearchFragment("dietAdd")
                 )
             }
 

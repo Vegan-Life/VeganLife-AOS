@@ -304,6 +304,24 @@
         android:id="@+id/lifecheck_graph"
         app:startDestination="@id/lifeCheckHomeFragment">
         <fragment
+            android:id="@+id/lifeCheckDietModifyFragment"
+            android:name="com.project.veganlife.lifecheck.ui.view.LifeCheckDietModifyFragment"
+            android:label="fragment_life_check_diet_modify"
+            tools:layout="@layout/fragment_life_check_diet_modify">
+            <action
+                android:id="@+id/action_lifeCheckDietModifyFragment_to_lifeCheckHomeFragment"
+                app:destination="@+id/lifeCheckHomeFragment" />
+            <action
+                android:id="@+id/action_lifeCheckDietModifyFragment_to_lifeCheckMenuSearchFragment"
+                app:destination="@id/lifeCheckMenuSearchFragment" />
+            <argument
+                android:name="mealLogId"
+                app:argType="long" />
+            <argument
+                android:name="mealId"
+                app:argType="long" />
+        </fragment>
+        <fragment
             android:id="@+id/lifeCheckDietAddFragment"
             android:name="com.project.veganlife.lifecheck.ui.view.LifeCheckDietAddFragment"
             android:label="fragment_life_check_diet_add"
@@ -335,6 +353,13 @@
             <action
                 android:id="@+id/action_lifeCheckMenuSearchFragment_to_lifeCheckMenuModifyFragment"
                 app:destination="@+id/lifeCheckMenuModifyFragment" />
+            <action
+                android:id="@+id/action_lifeCheckMenuSearchFragment_to_lifeCheckDietModifyFragment"
+                app:destination="@+id/lifeCheckDietModifyFragment" />
+            <argument
+                android:name="sourceFragment"
+                app:argType="string"
+                app:nullable="false" />
         </fragment>
         <fragment
             android:id="@+id/lifeCheckDietDetailFragment"
@@ -344,6 +369,9 @@
             <action
                 android:id="@+id/action_lifeCheckDietDetailFragment_to_lifeCheckHomeFragment"
                 app:destination="@id/lifeCheckHomeFragment" />
+            <action
+                android:id="@+id/action_lifeCheckDietDetailFragment_to_lifeCheckDietModifyFragment"
+                app:destination="@id/lifeCheckDietModifyFragment"/>
             <argument
                 android:name="mealLogId"
                 app:argType="long" />
