@@ -77,7 +77,7 @@ interface CommunityApi {
     @DELETE("posts/{postId}")
     suspend fun deletePost(
         @Path("postId") postId: Int
-    ): Response<String>
+    ): Response<String?>
 
     @Multipart
     @PUT("posts/{postId}")
@@ -85,5 +85,5 @@ interface CommunityApi {
         @Path("postId") postId: Int,
         @Part("request") postDTO: RequestBody,
         @Part images: List<MultipartBody.Part>
-    ): Response<String>
+    ): Response<Unit>
 }

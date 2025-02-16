@@ -247,6 +247,7 @@ class CommunityRepositoryImpl @Inject constructor(
 
         return try {
             val updatePostResponse = communityApi.updatePost(postId, postDTO, images)
+            Log.i("##INFO", "updatePost: $updatePostResponse")
             if (updatePostResponse.isSuccessful == true) {
                 ApiResult.Success(true)
             } else {
