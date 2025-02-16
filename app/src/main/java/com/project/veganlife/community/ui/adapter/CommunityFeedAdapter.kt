@@ -1,7 +1,6 @@
 package com.project.veganlife.community.ui.adapter
 
 import android.os.Build
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
@@ -13,9 +12,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.project.veganlife.R
 import com.project.veganlife.community.data.model.PostPreview
 import com.project.veganlife.databinding.ItemRecyclerviewCommunityHomeFeedBinding
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-import java.util.Locale
+import com.project.veganlife.utils.formatDateTime
 
 @RequiresApi(Build.VERSION_CODES.O)
 class CommunityFeedAdapter(
@@ -38,7 +35,7 @@ class CommunityFeedAdapter(
                     .into(ivCommunityhomefeed)
                 tvCommunityhomefeedTitle.text = item.title
                 tvCommunityhomefeedDescription.text = item.content
-                tvCommunityhomefeedDatetime.text = parseDateTime(item.createdAt)
+                tvCommunityhomefeedDatetime.text = formatDateTime(item.createdAt)
 
                 root.setOnClickListener {
                     feedItemClickListener.onItemClicked(item)
@@ -48,20 +45,19 @@ class CommunityFeedAdapter(
         }
 
 
-        private fun parseDateTime(input: String): String {
-            // 마이크로초 부분 제거 ('.' 이후 부분 제거)
-            val trimmedInput = input.substringBefore('.')
-
-            // 입력 문자열을 LocalDateTime으로 파싱 (마이크로초 제외)
-            val inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
-            val dateTime = LocalDateTime.parse(trimmedInput, inputFormatter).plusHours(9)
-            Log.d("##DEBUG", "parseDateTime: $dateTime")
-
-            // 원하는 형식으로 포맷 (한국어 로케일 설정)
-            val outputFormatter =
-                DateTimeFormatter.ofPattern("yyyy-MM-dd a hh:mm", Locale("ko", "KR"))
-            return dateTime.format(outputFormatter)
-        }
+//        private fun parseDateTime(input: String): String {
+//            // 마이크로초 부분 제거 ('.' 이후 부분 제거)
+//            val trimmedInput = input.substringBefore('.')
+//
+//            // 입력 문자열을 LocalDateTime으로 파싱 (마이크로초 제외)
+//            val inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
+//            val dateTime = LocalDateTime.parse(trimmedInput, inputFormatter).plusHours(9)
+//
+//            // 원하는 형식으로 포맷 (한국어 로케일 설정)
+//            val outputFormatter =
+//                DateTimeFormatter.ofPattern("yyyy-MM-dd a hh:mm", Locale("ko", "KR"))
+//            return dateTime.format(outputFormatter)
+//        }
     }
 
     override fun onCreateViewHolder(
