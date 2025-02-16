@@ -1,6 +1,7 @@
 package com.project.veganlife.community.ui.adapter
 
 import android.os.Build
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
@@ -53,7 +54,8 @@ class CommunityFeedAdapter(
 
             // 입력 문자열을 LocalDateTime으로 파싱 (마이크로초 제외)
             val inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
-            val dateTime = LocalDateTime.parse(trimmedInput, inputFormatter)
+            val dateTime = LocalDateTime.parse(trimmedInput, inputFormatter).plusHours(9)
+            Log.d("##DEBUG", "parseDateTime: $dateTime")
 
             // 원하는 형식으로 포맷 (한국어 로케일 설정)
             val outputFormatter =
