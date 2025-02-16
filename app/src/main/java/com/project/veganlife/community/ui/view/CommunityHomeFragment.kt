@@ -93,7 +93,7 @@ class CommunityHomeFragment : Fragment(), CommunityFeedAdapter.OnItemClickListen
         binding.toolbarCommunityhome.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.community_notification -> {
-                    //todo: notification
+                    findNavController().navigate(R.id.action_communityHomeFragment_to_alarmFragment)
                     true
                 }
 
