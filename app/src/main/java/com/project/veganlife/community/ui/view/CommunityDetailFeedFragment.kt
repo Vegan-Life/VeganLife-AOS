@@ -180,6 +180,7 @@ class CommunityDetailFeedFragment : Fragment(), OnReplyCommentClickListener {
         } else {
             postViewModel.createComment(postId, commentId, comment) {
                 if (it is ApiResult.Success) {
+                    //얘는 subcomment가 아닌 일반 comment만 해당하는 것 같은디
                     createCommentLocally(comment, it.data)
                 } else {
                     Log.e("##ERROR", "createComment: 댓글 작성 실패")
@@ -240,7 +241,11 @@ class CommunityDetailFeedFragment : Fragment(), OnReplyCommentClickListener {
                 if (comment.isNotBlank()) {
                     Log.i("##INFO", "댓글 id: $commentId")
                     createComment(post?.id, commentId, comment)
+
+                    binding.tvCommunityDetailFeedComments
                     editText.setText("")
+                    hideSoftInput()
+                    binding.layoutReplayToWho.visibility = View.GONE
                 }
 
                 true
@@ -387,5 +392,10 @@ class CommunityDetailFeedFragment : Fragment(), OnReplyCommentClickListener {
         editText.requestFocus()
         val imm = getSystemService(requireContext(), InputMethodManager::class.java)
         imm?.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT)
+    }
+
+    private fun hideSoftInput() {
+        val imm = getSystemService(requireContext(), InputMethodManager::class.java)
+        imm?.hideSoftInputFromWindow(requireView().windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
     }
 }
