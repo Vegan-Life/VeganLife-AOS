@@ -102,6 +102,7 @@ class CommunityDetailFeedFragment : Fragment(), OnReplyCommentClickListener {
         // ViewPager 어댑터 및 콜백 등록
         viewPagerAdapter = PostImagesViewPagerAdapter()
         binding.vpCommunityDetailFeedImage.adapter = viewPagerAdapter
+        binding.diCommunityDetailFeed.attachTo(binding.vpCommunityDetailFeedImage)
 
         //댓글 어댑터 설정
         commentListAdapter = CommentsAdapter(this)
@@ -308,11 +309,13 @@ class CommunityDetailFeedFragment : Fragment(), OnReplyCommentClickListener {
     private fun setImageViewPager(imageUrls: List<String>) {
         if (imageUrls.isEmpty()) {
             binding.vpCommunityDetailFeedImage.visibility = View.GONE
+            binding.diCommunityDetailFeed.visibility = View.GONE
         } else {
             binding.vpCommunityDetailFeedImage.visibility = View.VISIBLE
             viewPagerAdapter.submitList(imageUrls)
 //            //todo????
 //            adjustViewPagerHeight(0) // 첫 번째 페이지의 높이 조정
+            binding.diCommunityDetailFeed.visibility = View.VISIBLE
         }
 
     }
