@@ -3,23 +3,21 @@ package com.project.veganlife.lifecheck.data.datasource
 import com.google.gson.GsonBuilder
 import com.project.veganlife.data.model.ApiResult
 import com.project.veganlife.data.model.ConflictResponse
-import com.project.veganlife.data.model.DailyIntakeResponse
-import com.project.veganlife.data.remote.IntakeGetApi
+import com.project.veganlife.lifecheck.data.model.LifeCheckMealLogListResponse
+import com.project.veganlife.lifecheck.data.remote.LifeCheckApi
 import javax.inject.Inject
 
-class LifeCheckDailyIntakeDataSourceImpl @Inject constructor(
-    private val lifeCheckDailyIntakeApi: IntakeGetApi,
+class LifeCheckMealLogListDataSourceImpl @Inject constructor(
+    private val lifeCheckApi: LifeCheckApi
 ) {
-    suspend fun getDailyIntake(date: String): ApiResult<DailyIntakeResponse> {
+    suspend fun getMealLogList(date: String): ApiResult<List<LifeCheckMealLogListResponse>> {
         val gson = GsonBuilder().create()
         return try {
-            val response = lifeCheckDailyIntakeApi.getDailyIntake(
-                date
-            )
-            if (response?.isSuccessful == true) {
+            val response = lifeCheckApi.getMealLogList(date)
+            if (response.isSuccessful) {
                 ApiResult.Success(response.body()!!)
             } else {
-                val errorBodyString = response?.errorBody()?.string()
+                val errorBodyString = response.errorBody()?.string()
                 val conflictResponse =
                     gson.fromJson(errorBodyString, ConflictResponse::class.java)
                 ApiResult.Error(conflictResponse.errorCode, conflictResponse.description)

@@ -10,12 +10,16 @@ import android.view.ViewGroup
 import android.widget.NumberPicker
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.tabs.TabLayoutMediator
 import com.project.veganlife.R
 import com.project.veganlife.data.model.ApiResult
 import com.project.veganlife.databinding.FragmentLifecheckHomeBinding
 import com.project.veganlife.databinding.PickerLifecheckYearMonthBinding
+import com.project.veganlife.lifecheck.ui.adapter.LifeCheckMealLogListAdapter
 import com.project.veganlife.lifecheck.ui.viewmodel.LifeCheckViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
@@ -30,6 +34,8 @@ class LifeCheckHomeFragment : Fragment() {
 
     private val viewModel: LifeCheckViewModel by viewModels()
 
+    private lateinit var mealLogAdapter: LifeCheckMealLogListAdapter
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
@@ -39,6 +45,8 @@ class LifeCheckHomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        setupRecyclerView()
         setToolbarMoveToAlarm()
         setupViewPager()
         setupDateSelection()
@@ -48,6 +56,7 @@ class LifeCheckHomeFragment : Fragment() {
         setupDateButtons()
         observeSelectedDate()
         observeDailyIntakeData()
+        observeMealLogList()
         setupDietAddButton()
     }
 
@@ -82,6 +91,19 @@ class LifeCheckHomeFragment : Fragment() {
         })
     }
 
+    private fun setupRecyclerView() {
+        mealLogAdapter = LifeCheckMealLogListAdapter{
+            findNavController().navigate(
+                LifeCheckHomeFragmentDirections.actionLifeCheckHomeFragmentToLifeCheckDietDetailFragment(it)
+            )
+        }
+        binding.rvLifecheckHomeDietList.apply {
+            layoutManager = GridLayoutManager(requireContext(), 2)
+            adapter = mealLogAdapter
+            visibility = View.GONE
+        }
+    }
+
     // 일별 탭 UI
     private fun showDailyViews() {
         binding.run {
@@ -90,6 +112,7 @@ class LifeCheckHomeFragment : Fragment() {
             tvLifecheckHomeCalorie.visibility = View.VISIBLE
             tvLifecheckHomeKcal.visibility = View.VISIBLE
             tvLifecheckHomePeriod.visibility = View.GONE
+            rvLifecheckHomeDietList.visibility = View.VISIBLE
         }
     }
 
@@ -101,11 +124,15 @@ class LifeCheckHomeFragment : Fragment() {
             tvLifecheckHomeCalorie.visibility = View.INVISIBLE
             tvLifecheckHomeKcal.visibility = View.INVISIBLE
             tvLifecheckHomePeriod.visibility = View.VISIBLE
+            rvLifecheckHomeDietList.visibility = View.GONE
         }
     }
 
     private fun observeSelectedDate() {
-        viewModel.selectedDate.observe(viewLifecycleOwner) {
+        viewModel.selectedDate.observe(viewLifecycleOwner) { date ->
+            date?.let {
+                viewModel.fetchMealLogList(it)
+            }
             updateRightButtonState()
         }
     }
@@ -127,6 +154,16 @@ class LifeCheckHomeFragment : Fragment() {
                     )
             }
         }
+    }
+
+    private fun observeMealLogList() {
+        viewModel.mealLogList.observe(viewLifecycleOwner, Observer { event ->
+            event.getContentIfNotHandled()?.let { result ->
+                if (result is ApiResult.Success) {
+                    mealLogAdapter.submitList(result.data)
+                }
+            }
+        })
     }
 
     // 날짜 선택 버튼 설정

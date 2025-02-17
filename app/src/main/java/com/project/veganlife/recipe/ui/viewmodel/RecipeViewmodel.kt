@@ -18,20 +18,20 @@ class RecipeViewmodel @Inject constructor(
     private val recipeUsecase: RecipeUsecase,
 ) : ViewModel() {
     // 레시피 수정
-    private val _recipeModifyResponse = MutableLiveData<Any>()
-    private val recipeModifyResponse: LiveData<Any> get() = _recipeModifyResponse
+    private val _recipeModifyResponse = MutableLiveData<String>()
+    val recipeModifyResponse: LiveData<String> get() = _recipeModifyResponse
 
     // 레시피 삭제
-    private val _recipeDeleteResponse = MutableLiveData<Any>()
-    private val recipeDeleteResponse: LiveData<Any> get() = _recipeDeleteResponse
+    private val _recipeDeleteResponse = MutableLiveData<String>()
+    val recipeDeleteResponse: LiveData<String> get() = _recipeDeleteResponse
 
     // 레시피 좋아요
-    private val _recipeLikeResponse = MutableLiveData<Any>()
-    private val recipeLikeResponse: LiveData<Any> get() = _recipeLikeResponse
+    private val _recipeLikeResponse = MutableLiveData<String>()
+    val recipeLikeResponse: LiveData<String> get() = _recipeLikeResponse
 
     // 레시피 좋아요 취소
-    private val _recipeLikeCancelResponse = MutableLiveData<Any>()
-    private val recipeLikeCancelResponse: LiveData<Any> get() = _recipeLikeCancelResponse
+    private val _recipeLikeCancelResponse = MutableLiveData<String>()
+    val recipeLikeCancelResponse: LiveData<String> get() = _recipeLikeCancelResponse
 
     fun modifyRecipe(id: Long, recipeRequetDTO: RequestBody, recipePhotoMultipart: MultipartBody.Part) {
         viewModelScope.launch {
@@ -50,7 +50,7 @@ class RecipeViewmodel @Inject constructor(
                 }
 
                 is ApiResult.Success -> {
-                    _recipeModifyResponse.value = response.data
+                    _recipeModifyResponse.value = "레시피 수정"
                 }
             }
         }
@@ -73,7 +73,7 @@ class RecipeViewmodel @Inject constructor(
                 }
 
                 is ApiResult.Success -> {
-                    _recipeDeleteResponse.value = response.data.toString()
+                    _recipeDeleteResponse.value = "레시피 삭제"
                 }
             }
         }
@@ -96,7 +96,7 @@ class RecipeViewmodel @Inject constructor(
                 }
 
                 is ApiResult.Success -> {
-                    _recipeLikeResponse.value = response.data
+                    _recipeLikeResponse.value = "레시피 좋아요"
                 }
             }
         }
@@ -119,7 +119,7 @@ class RecipeViewmodel @Inject constructor(
                 }
 
                 is ApiResult.Success -> {
-                    _recipeLikeCancelResponse.value = response.data
+                    _recipeLikeCancelResponse.value = "레시피 취소"
                 }
             }
         }
