@@ -1,16 +1,22 @@
 package com.project.veganlife.community.data.remote
 
 import com.project.veganlife.community.data.model.CommentRequest
-import com.project.veganlife.community.data.model.CommentResponse
+import com.project.veganlife.community.data.model.CreateResponse
 import com.project.veganlife.community.data.model.PopularTagsResponse
 import com.project.veganlife.community.data.model.Post
 import com.project.veganlife.community.data.model.PostPreview
+import com.project.veganlife.community.data.model.PostResponse
 import com.project.veganlife.data.model.PagingResponse
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.Multipart
 import retrofit2.http.POST
+import retrofit2.http.PUT
+import retrofit2.http.Part
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -34,6 +40,12 @@ interface CommunityApi {
     suspend fun getPopularTags(
     ): Response<PopularTagsResponse>
 
+    @GET("posts/complete/search")
+    suspend fun keywordAutoComplete(
+        @Query("keyword") keyword: String,
+        @Query("size") size: Int = 10,
+    ): Response<List<String>>
+
     @GET("posts/{postId}")
     suspend fun getPost(
         @Path("postId") postId: Int,
@@ -53,5 +65,25 @@ interface CommunityApi {
     suspend fun createComment(
         @Path("postId") postId: Long,
         @Body commentRequest: CommentRequest
-    ): Response<CommentResponse>
+    ): Response<CreateResponse>
+
+    @Multipart
+    @POST("posts")
+    suspend fun createPost(
+        @Part("request") postDTO: RequestBody,
+        @Part images: List<MultipartBody.Part>
+    ): Response<PostResponse>
+
+    @DELETE("posts/{postId}")
+    suspend fun deletePost(
+        @Path("postId") postId: Int
+    ): Response<String?>
+
+    @Multipart
+    @PUT("posts/{postId}")
+    suspend fun updatePost(
+        @Path("postId") postId: Int,
+        @Part("request") postDTO: RequestBody,
+        @Part images: List<MultipartBody.Part>
+    ): Response<Unit>
 }

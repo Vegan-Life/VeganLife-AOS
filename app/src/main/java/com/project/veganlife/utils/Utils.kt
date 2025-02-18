@@ -10,7 +10,7 @@ import java.util.Locale
 fun formatDateTime(input: String): String {
     val dateTimePart = input.substring(0, 16)
     val inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm", Locale.getDefault())
-    val dateTime = LocalDateTime.parse(dateTimePart, inputFormatter)
+    val dateTime = LocalDateTime.parse(dateTimePart, inputFormatter).plusHours(9)
     val outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd a hh:mm", Locale.getDefault())
     return dateTime.format(outputFormatter)
 }

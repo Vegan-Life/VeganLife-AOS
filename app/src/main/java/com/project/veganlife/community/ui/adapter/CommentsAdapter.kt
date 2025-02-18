@@ -62,7 +62,7 @@ class CommentsAdapter(
                 oldItem: Comment,
                 newItem: Comment,
             ): Boolean {
-                return oldItem.id == newItem.id
+                return oldItem == newItem
             }
         }
     }

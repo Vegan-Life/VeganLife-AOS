@@ -7,6 +7,7 @@ import android.graphics.Matrix
 import android.media.ExifInterface
 import android.net.Uri
 import android.os.Build
+import android.provider.OpenableColumns
 import android.util.Log
 import androidx.annotation.RequiresApi
 import com.google.gson.Gson
@@ -195,11 +196,71 @@ class PhotoUtils {
         }
 
         /**
+         * 이미지 파일을 MultipartBody.Part로 변환합니다. (name = images)
+         * @param imagePath 최적화된 이미지 파일 경로
+         * @return MultipartBody.Part로 변환된 이미지 파일
+         */
+        fun createImagesMultipart(imagePath: String?): MultipartBody.Part? {
+            if (imagePath == null) return null
+
+            val file = File(imagePath)
+            val mimeType = file.extension.let {
+                when (it.lowercase()) {
+                    "png" -> "image/png"
+                    "jpg", "jpeg" -> "image/jpeg"
+                    "webp" -> "image/webp"
+                    else -> "image/jpeg"
+                }
+            }
+            val requestFile = file.asRequestBody(mimeType.toMediaTypeOrNull())
+            return MultipartBody.Part.createFormData("images", file.name, requestFile)
+        }
+
+        /**
+         * uri로부터 파일 이름을 추출하는 함수
+         */
+        private fun getFileNameFromUri(context: Context, uri: Uri): String? {
+            var fileName: String? = null
+            val cursor = context.contentResolver.query(uri, null, null, null, null)
+            cursor?.use {
+                if (it.moveToFirst()) {
+                    val nameIndex = it.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+                    if (nameIndex != -1) {
+                        fileName = it.getString(nameIndex)
+                    }
+                }
+            }
+            return fileName
+        }
+
+        /**
+         * uri를 Multipart로 변환하는 함수
+         */
+        fun uriToMultipart(uri: Uri, context: Context): MultipartBody.Part? {
+            var part: MultipartBody.Part? = null
+
+            val fileName = getFileNameFromUri(context, uri)
+            // ContentResolver를 사용해 InputStream 열기
+            val inputStream = context.contentResolver.openInputStream(uri)
+            val bytes = inputStream?.readBytes()
+
+            if (bytes != null) {
+                val requestBody = bytes.toRequestBody("image/*".toMediaTypeOrNull())
+                part = MultipartBody.Part.createFormData(
+                    "image", fileName, requestBody
+                )
+
+            }
+            return part
+        }
+
+
+        /**
          * ProfileModifyInfo 객체를 JSON으로 변환하여 RequestBody로 반환합니다.
          * @param profileModifyInfo 서버에 보낼 프로필 정보
          * @return RequestBody로 변환된 프로필 정보
          */
-        fun createProfileRequestBody(contentDTO: Any): RequestBody {
+        fun createRequestBody(contentDTO: Any): RequestBody {
             val gson = Gson()
             val json = gson.toJson(contentDTO)
             return json.toRequestBody("application/json".toMediaTypeOrNull())

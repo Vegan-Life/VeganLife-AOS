@@ -1,5 +1,6 @@
 package com.project.veganlife.community.ui.view
 
+import android.app.AlertDialog
 import android.os.Build
 import android.os.Bundle
 import android.text.Spannable
@@ -14,10 +15,11 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat.getSystemService
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
@@ -25,7 +27,7 @@ import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.project.veganlife.R
 import com.project.veganlife.community.data.model.Comment
-import com.project.veganlife.community.data.model.CommentResponse
+import com.project.veganlife.community.data.model.CreateResponse
 import com.project.veganlife.community.data.model.Post
 import com.project.veganlife.community.ui.adapter.CommentsAdapter
 import com.project.veganlife.community.ui.adapter.OnReplyCommentClickListener
@@ -53,21 +55,15 @@ class CommunityDetailFeedFragment : Fragment(), OnReplyCommentClickListener {
 
     private var commentId: Long? = null
 
-    // ViewPager2 콜백 변수
-    private val viewPagerCallback = object : ViewPager2.OnPageChangeCallback() {
-        override fun onPageSelected(position: Int) {
-            super.onPageSelected(position)
-            adjustViewPagerHeight(position)
-        }
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         // postId를 arguments에서 가져와 데이터 로드
         val postId = arguments?.getInt("postId") ?: -1
-        getPost(postId)
+        postViewModel.getPost(postId)
+        postViewModel.getMyProfile()
+
 
         return binding.root
     }
@@ -85,8 +81,6 @@ class CommunityDetailFeedFragment : Fragment(), OnReplyCommentClickListener {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        // ViewPager2 콜백 해제
-        binding.vpCommunityDetailFeedImage.unregisterOnPageChangeCallback(viewPagerCallback)
     }
 
     private fun init() {
@@ -96,7 +90,9 @@ class CommunityDetailFeedFragment : Fragment(), OnReplyCommentClickListener {
         binding.contentScrollView.visibility = View.GONE
 
         // 태그 리스트 어댑터 설정
-        tagListAdapter = TagListAdapter()
+        tagListAdapter = TagListAdapter { popularTag: String ->
+
+        }
         binding.rvCommunityDetailFeedKeyword.adapter = tagListAdapter
         binding.rvCommunityDetailFeedKeyword.layoutManager =
             FlexboxLayoutManager(requireContext()).apply {
@@ -106,19 +102,51 @@ class CommunityDetailFeedFragment : Fragment(), OnReplyCommentClickListener {
         // ViewPager 어댑터 및 콜백 등록
         viewPagerAdapter = PostImagesViewPagerAdapter()
         binding.vpCommunityDetailFeedImage.adapter = viewPagerAdapter
-        binding.vpCommunityDetailFeedImage.registerOnPageChangeCallback(viewPagerCallback)
+        binding.diCommunityDetailFeed.attachTo(binding.vpCommunityDetailFeedImage)
 
         //댓글 어댑터 설정
         commentListAdapter = CommentsAdapter(this)
         binding.rvCommunityDetailFeedComments.adapter = commentListAdapter
+
+        //내 게시글인 경우 나오는 메뉴 클릭 리스너 등록
+        binding.toolbarCommunityDetailFeed.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.item_edit -> {
+                    Log.i("##INFO", "수정, $post")
+                    findNavController().navigate(
+                        R.id.action_communityDetailFeedFragment_to_communityWriteFeedFragment,
+                        bundleOf("post" to post!!)
+                    )
+                }
+
+                R.id.item_delete -> {
+                    Log.i("##INFO", "삭제")
+                    AlertDialog.Builder(requireContext()).apply {
+                        setTitle("삭제")
+                        setMessage("게시글을 삭제하시겠습니까?")
+                        setPositiveButton("확인") { _, i ->
+                            findNavController().navigateUp()
+                            if (post != null) {
+                                postViewModel.deletePost(post!!.id.toInt())
+                            }
+                        }
+                        setNegativeButton("취소") { _, _ -> }
+
+                        show()
+                    }
+                }
+            }
+            true
+        }
     }
 
-    private fun createCommentLocally(commentText: String, commentResponse: CommentResponse) {
+
+    private fun createCommentLocally(commentText: String, createResponse: CreateResponse) {
         val newComment = Comment(
-            id = commentResponse.commentId.toLong(),
+            id = createResponse.commentId.toLong(),
             author = getMyNickname(), // 현재 로그인된 사용자 이름
             content = commentText,
-            createdAt = commentResponse.createdAt, // 현재 시간 문자열
+            createdAt = createResponse.createdAt, // 현재 시간 문자열
             subComments = null
         )
 
@@ -152,6 +180,7 @@ class CommunityDetailFeedFragment : Fragment(), OnReplyCommentClickListener {
         } else {
             postViewModel.createComment(postId, commentId, comment) {
                 if (it is ApiResult.Success) {
+                    //얘는 subcomment가 아닌 일반 comment만 해당하는 것 같은디
                     createCommentLocally(comment, it.data)
                 } else {
                     Log.e("##ERROR", "createComment: 댓글 작성 실패")
@@ -173,6 +202,9 @@ class CommunityDetailFeedFragment : Fragment(), OnReplyCommentClickListener {
     }
 
     private fun event() {
+        binding.toolbarCommunityDetailFeed.setNavigationOnClickListener {
+            findNavController().navigateUp()
+        }
         // 좋아요 버튼 클릭 시
         binding.ivCommunityDetailFeedLikes.setOnClickListener { view ->
             post?.let { post ->
@@ -209,7 +241,11 @@ class CommunityDetailFeedFragment : Fragment(), OnReplyCommentClickListener {
                 if (comment.isNotBlank()) {
                     Log.i("##INFO", "댓글 id: $commentId")
                     createComment(post?.id, commentId, comment)
+
+                    binding.tvCommunityDetailFeedComments
                     editText.setText("")
+                    hideSoftInput()
+                    binding.layoutReplayToWho.visibility = View.GONE
                 }
 
                 true
@@ -230,47 +266,44 @@ class CommunityDetailFeedFragment : Fragment(), OnReplyCommentClickListener {
         }
     }
 
-    private fun getPost(postId: Int) {
-        postViewModel.getPost(postId)
-    }
-
     private fun observePostData() {
-        // ViewModel의 LiveData를 관찰하여 데이터 업데이트
-        postViewModel.post.observe(viewLifecycleOwner) { postApiResult ->
-            when (postApiResult) {
-                is ApiResult.Error -> {
-                    Log.d("daily Error", postApiResult.description)
-                }
 
-                is ApiResult.Exception -> {
-                    Log.d("daily Exception", postApiResult.e.message ?: "No message available")
-                }
+        postViewModel.combinedLiveData.observe(viewLifecycleOwner) { (profile, post) ->
+            if (profile != null && post != null) {
 
-                is ApiResult.Success -> {
-                    binding.layoutContentLoading.visibility = View.GONE
-                    binding.contentLoading.hide()
-                    binding.contentScrollView.visibility = View.VISIBLE
+                binding.layoutContentLoading.visibility = View.GONE
+                binding.contentLoading.hide()
+                binding.contentScrollView.visibility = View.VISIBLE
 
-                    post = postApiResult.data
-                    updateUIWithPostData()
-                }
+                this.post = post
+                Log.i("##INFO", "observePostData: $post")
+
+                updateUIWithPostData(post, profile.nickname)
             }
         }
+
     }
 
-    private fun updateUIWithPostData() {
-        post?.let { post ->
-            binding.tvCommunityDetailFeedTitle.text = post.title
-            binding.tvCommunityDetailFeedDescription.text = post.content
-            binding.tvCommunityDetailFeedDateTime.text = formatDateTime(post.createdAt)
-            binding.tvCommunityDetailFeedLikes.text = post.likeCount.toString()
-            binding.tvCommunityDetailFeedComments.text = post.commentCount.toString()
-            binding.ivCommunityDetailFeedLikes.isSelected = post.isLike
+    private fun updateUIWithPostData(post: Post, nickname: String) {
+        binding.tvCommunityDetailFeedTitle.text = post.title
+        binding.tvCommunityDetailFeedDescription.text = post.content
+        binding.tvCommunityDetailFeedDateTime.text = formatDateTime(post.createdAt)
+        binding.tvCommunityDetailFeedLikes.text = post.likeCount.toString()
+        binding.tvCommunityDetailFeedComments.text = post.commentCount.toString()
+        binding.ivCommunityDetailFeedLikes.isSelected = post.isLike
 
-            setImageViewPager(post.imageUrls)
-            setTags(post.tags)
-            setAuthorDetail(post)
-            setComments(post.comments)
+        setImageViewPager(post.imageUrls)
+        setTags(post.tags)
+        setAuthorDetail(post)
+        setComments(post.comments)
+
+        //내 게시물일 경우 수정 및 삭제 메뉴 보여주기
+        if (nickname == post.author) {
+            Log.i("##INFO", "내 게시물 -> 메뉴 보여주기")
+            binding.toolbarCommunityDetailFeed.menu.clear()
+            binding.toolbarCommunityDetailFeed.inflateMenu(R.menu.menu_community_detail)
+        } else {
+            binding.toolbarCommunityDetailFeed.menu.clear()
         }
     }
 
@@ -281,11 +314,13 @@ class CommunityDetailFeedFragment : Fragment(), OnReplyCommentClickListener {
     private fun setImageViewPager(imageUrls: List<String>) {
         if (imageUrls.isEmpty()) {
             binding.vpCommunityDetailFeedImage.visibility = View.GONE
+            binding.diCommunityDetailFeed.visibility = View.GONE
         } else {
             binding.vpCommunityDetailFeedImage.visibility = View.VISIBLE
             viewPagerAdapter.submitList(imageUrls)
-            //todo????
-            adjustViewPagerHeight(0) // 첫 번째 페이지의 높이 조정
+//            //todo????
+//            adjustViewPagerHeight(0) // 첫 번째 페이지의 높이 조정
+            binding.diCommunityDetailFeed.visibility = View.VISIBLE
         }
 
     }
@@ -357,5 +392,10 @@ class CommunityDetailFeedFragment : Fragment(), OnReplyCommentClickListener {
         editText.requestFocus()
         val imm = getSystemService(requireContext(), InputMethodManager::class.java)
         imm?.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT)
+    }
+
+    private fun hideSoftInput() {
+        val imm = getSystemService(requireContext(), InputMethodManager::class.java)
+        imm?.hideSoftInputFromWindow(requireView().windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
     }
 }

@@ -5,31 +5,30 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import com.project.veganlife.databinding.ItemRecyclerviewCommunitySearchPopularityTagBinding
+import com.project.veganlife.databinding.ItemRecyclerviewCommunityWriteEditKeywordAutoCompleteBinding
 
-class TagListAdapter(private val onTagClicked: ((String) -> Unit)? = null) : ListAdapter<String, TagListAdapter.TagViewHolder>(diffUtil) {
-
-    inner class TagViewHolder(private val binding: ItemRecyclerviewCommunitySearchPopularityTagBinding) :
+class KeywordAutoCompleteAdapter(val onTagClicked: (String) -> Unit) : ListAdapter<String, KeywordAutoCompleteAdapter.KeywordViewHolder>(diffUtil) {
+    inner class KeywordViewHolder(private val binding: ItemRecyclerviewCommunityWriteEditKeywordAutoCompleteBinding) :
         ViewHolder(binding.root) {
         fun bind(item: String) {
-            binding.tvCommunitySearchPopularityTag.text = item
+            binding.tvAutoComplete.text = item
 
             binding.root.setOnClickListener {
-                onTagClicked?.let { it1 -> it1(item) }
+                onTagClicked(item)
             }
         }
 
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TagViewHolder {
-        return TagViewHolder(
-            ItemRecyclerviewCommunitySearchPopularityTagBinding.inflate(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): KeywordViewHolder {
+        return KeywordViewHolder(
+            ItemRecyclerviewCommunityWriteEditKeywordAutoCompleteBinding.inflate(
                 LayoutInflater.from(parent.context), parent, false
             )
         )
     }
 
-    override fun onBindViewHolder(holder: TagViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: KeywordViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
 

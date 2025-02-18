@@ -1,6 +1,6 @@
 package com.project.veganlife.community.data.model
 
-data class CommentResponse(
-    val commentId: Int,
+data class PostResponse(
+    val postId: Int,
     val createdAt: String
 )

@@ -5,6 +5,8 @@
     android:layout_height="wrap_content"
     android:layout_marginEnd="8dp"
     android:background="@drawable/all_rect_gray1_base3_r35"
+    android:clickable="true"
+    android:focusable="true"
     android:includeFontPadding="false"
     android:paddingHorizontal="8dp"
     android:paddingVertical="2dp"
