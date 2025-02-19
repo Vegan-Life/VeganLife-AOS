@@ -5,7 +5,9 @@
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 
-    <style name="Theme.VeganLife" parent="Base.Theme.VeganLife" />
+    <style name="Theme.VeganLife" parent="Base.Theme.VeganLife" >
+        <item name="android:windowBackground">@color/white</item>
+    </style>
 
 <!--  fab의 코너가 완벽한 원이 되도록 shape 재정의함  -->
     <style name="OverrideRoundedButton">

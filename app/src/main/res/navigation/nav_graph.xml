@@ -201,7 +201,10 @@
                 app:destination="@id/communitySearchFragment" />
             <action
                 android:id="@+id/action_communityHomeFragment_to_communityWriteFeedFragment"
-                app:destination="@id/communityWriteFeedFragment" />
+                app:destination="@id/communityWriteFeedFragment"
+                app:enterAnim="@anim/slide_in_right_no_alpha"
+                app:exitAnim="@anim/stay_still"
+                app:popExitAnim="@android:anim/slide_out_right"/>
             <action
                 android:id="@+id/action_communityHomeFragment_to_communityDetailFeedFragment"
                 app:destination="@id/communityDetailFeedFragment"
@@ -229,6 +232,27 @@
             <action
                 android:id="@+id/action_communityWriteFeedFragment_to_communityHomeFragment"
                 app:destination="@id/communityHomeFragment" />
+            <argument
+                android:name="post"
+                app:argType="com.project.veganlife.community.data.model.Post" />
+        </fragment>
+        <fragment
+            android:id="@+id/communityDetailFeedFragment"
+            android:name="com.project.veganlife.community.ui.view.CommunityDetailFeedFragment"
+            android:label="fragment_community_detail_feed"
+            tools:layout="@layout/fragment_community_detail_feed">
+            <action
+                android:id="@+id/action_communityDetailFeedFragment_to_communityHomeFragment"
+                app:destination="@id/communityHomeFragment" />
+            <action
+                android:id="@+id/action_communityDetailFeedFragment_to_communityEditFeedFragment"
+                app:destination="@id/communityEditFeedFragment" />
+            <argument
+                android:name="postId"
+                app:argType="integer" />
+            <action
+                android:id="@+id/action_communityDetailFeedFragment_to_communityWriteFeedFragment"
+                app:destination="@id/communityWriteFeedFragment" />
         </fragment>
         <fragment
             android:id="@+id/communityEditFeedFragment"
@@ -394,6 +418,9 @@
             <action
                 android:id="@+id/action_lifeCheckDietDetailFragment_to_lifeCheckHomeFragment"
                 app:destination="@id/lifeCheckHomeFragment" />
+            <argument
+                android:name="mealLogId"
+                app:argType="long" />
         </fragment>
         <fragment
             android:id="@+id/lifeCheckMenuAddFragment"

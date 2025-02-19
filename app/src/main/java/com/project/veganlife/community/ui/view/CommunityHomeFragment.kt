@@ -1,13 +1,11 @@
 package com.project.veganlife.community.ui.view
 
-import android.animation.ObjectAnimator
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -21,7 +19,6 @@ import com.project.veganlife.community.data.model.PostPreview
 import com.project.veganlife.community.ui.adapter.CommunityFeedAdapter
 import com.project.veganlife.community.ui.viewmodel.FeedsGetViewModel
 import com.project.veganlife.databinding.FragmentCommunityHomeBinding
-import com.project.veganlife.utils.ui.DisplayUtils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -67,8 +64,10 @@ class CommunityHomeFragment : Fragment(), CommunityFeedAdapter.OnItemClickListen
             }
         })
 
-        // Toggle write FAB buttons
-        binding.efabCommunityhomeWrite.setOnClickListener { toggleFabButtons() }
+        // 글쓰기 버튼
+        binding.efabCommunityhomeWrite.setOnClickListener {
+            findNavController().navigate(R.id.action_communityHomeFragment_to_communityWriteFeedFragment)
+        }
 
         // Tag button filter
         binding.radioGroupCommunityHomeTag.setOnCheckedChangeListener { _, i ->
@@ -94,7 +93,7 @@ class CommunityHomeFragment : Fragment(), CommunityFeedAdapter.OnItemClickListen
         binding.toolbarCommunityhome.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.community_notification -> {
-                    //todo: notification
+                    findNavController().navigate(R.id.action_communityHomeFragment_to_alarmFragment)
                     true
                 }
 
@@ -109,29 +108,6 @@ class CommunityHomeFragment : Fragment(), CommunityFeedAdapter.OnItemClickListen
         }
 
 
-    }
-
-    private fun toggleFabButtons() {
-        if (fabOpen) {
-            closeButton(binding.efabCommunityhomeWriteFeed)
-            closeButton(binding.efabCommunityhomeWriteRecipe)
-        } else {
-            openButton(binding.efabCommunityhomeWriteFeed, 96f)
-            openButton(binding.efabCommunityhomeWriteRecipe, 52f)
-        }
-        fabOpen = !fabOpen
-    }
-
-    private fun closeButton(button: Button) {
-        ObjectAnimator.ofFloat(button, "translationY", 0f).apply { start() }
-    }
-
-    private fun openButton(button: Button, transitionY: Float) {
-        ObjectAnimator.ofFloat(
-            button,
-            "translationY",
-            -1 * DisplayUtils.dpToPx(requireContext(), transitionY)
-        ).apply { start() }
     }
 
     private fun rvScrollToTop() {

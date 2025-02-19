@@ -1,11 +1,14 @@
 package com.project.veganlife.community.ui.viewmodel
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.project.veganlife.community.data.model.CommentResponse
+import com.project.veganlife.community.data.model.CreateResponse
 import com.project.veganlife.community.data.model.Post
 import com.project.veganlife.community.domain.usecase.CreateCommentUseCase
+import com.project.veganlife.community.domain.usecase.DeletePostUseCase
 import com.project.veganlife.community.domain.usecase.GetPostDataUseCase
 import com.project.veganlife.community.domain.usecase.LikePostUseCase
 import com.project.veganlife.community.domain.usecase.UnlikePostUseCase
@@ -22,15 +25,31 @@ class PostViewModel @Inject constructor(
     private val likePostUseCase: LikePostUseCase,
     private val unlikePostUseCase: UnlikePostUseCase,
     private val createCommentUseCase: CreateCommentUseCase,
-    private val profileGetUseCase: ProfileGetUsecase
+    private val profileGetUseCase: ProfileGetUsecase,
+    private val deletePostUseCase: DeletePostUseCase
 ) : ViewModel() {
     val post = MutableLiveData<ApiResult<Post>>()
     val myProfile = MutableLiveData<ApiResult<ProfileResponse>>()
+
+    // 결합된 데이터를 제공하는 LiveData
+    val combinedLiveData: LiveData<Pair<ProfileResponse?, Post?>> = MediatorLiveData<Pair<ProfileResponse?, Post?>>().apply {
+        addSource(myProfile) { profileResult ->
+            value = Pair((profileResult as? ApiResult.Success)?.data, (post.value as? ApiResult.Success)?.data)
+        }
+        addSource(post) { postResult ->
+            value = Pair((myProfile.value as? ApiResult.Success)?.data, (postResult as? ApiResult.Success)?.data)
+        }
+    }
 
 
     fun getPost(postId: Int) {
         viewModelScope.launch {
             post.value = getPostDataUseCase.execute(postId)
+        }
+    }
+
+    fun getMyProfile() {
+        viewModelScope.launch {
             myProfile.value = profileGetUseCase.invoke()
         }
     }
@@ -47,7 +66,7 @@ class PostViewModel @Inject constructor(
         }
     }
 
-    fun createComment(postId: Long, commentId: Long?, comment: String, onCommentCreated: (ApiResult<CommentResponse>) -> Unit) {
+    fun createComment(postId: Long, commentId: Long?, comment: String, onCommentCreated: (ApiResult<CreateResponse>) -> Unit) {
         //직접 댓글이면 commentId는 -1
         // 대댓글이면 commentId는 > 0
         viewModelScope.launch {
@@ -62,5 +81,11 @@ class PostViewModel @Inject constructor(
 
     fun deleteComment(postId: Long, commentId: Long) {
 
+    }
+
+    fun deletePost(postId: Int) {
+        viewModelScope.launch {
+            deletePostUseCase.execute(postId)
+        }
     }
 }
