@@ -387,7 +387,7 @@ class LifeCheckDietAddFragment : Fragment() {
                 }
 
             if (filePath != null) {
-                val imagePart = PhotoUtils.createImageMultipart(filePath)
+                val imagePart = PhotoUtils.createImagesMultipart(filePath)
                 if (imagePart != null) {
                     imageParts.add(imagePart)
                 }
