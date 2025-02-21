@@ -57,7 +57,9 @@ class CommunitySearchFragment : Fragment() {
     }
 
     private fun setPopularTag() {
-        val adapter = TagListAdapter()
+        val adapter = TagListAdapter { popularTag: String ->
+
+        }
         binding.includeCommunitySearchToolbar.rvCommunitySearchToolbarPopularityTag.adapter = adapter
 
         communitySearchViewModel.popularTagList.observe(viewLifecycleOwner) { apiResult ->
