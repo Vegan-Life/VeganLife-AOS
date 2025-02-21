@@ -22,6 +22,7 @@ import com.project.veganlife.lifecheck.util.EventWrapper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
@@ -120,12 +121,27 @@ class LifeCheckViewModel @Inject constructor(
     val selectedPhotos: MutableLiveData<MutableList<Uri>> = _selectedPhotos
 
     // 식사 기록 목록
-    private val _mealLogList = MutableLiveData<EventWrapper<ApiResult<List<LifeCheckMealLogListResponse>>>>()
-    val mealLogList: LiveData<EventWrapper<ApiResult<List<LifeCheckMealLogListResponse>>>> = _mealLogList
+    private val _mealLogList =
+        MutableLiveData<EventWrapper<ApiResult<List<LifeCheckMealLogListResponse>>>>()
+    val mealLogList: LiveData<EventWrapper<ApiResult<List<LifeCheckMealLogListResponse>>>> =
+        _mealLogList
 
     // 식사 기록 상세 조회
-    private val _mealLogDetail = MutableLiveData<EventWrapper<ApiResult<LifeCheckMealLogDetailResponse>>>()
-    val mealLogDetail: LiveData<EventWrapper<ApiResult<LifeCheckMealLogDetailResponse>>> = _mealLogDetail
+    private val _mealLogDetail =
+        MutableLiveData<EventWrapper<ApiResult<LifeCheckMealLogDetailResponse>>>()
+    val mealLogDetail: LiveData<EventWrapper<ApiResult<LifeCheckMealLogDetailResponse>>> =
+        _mealLogDetail
+
+    // 서버에서 불러온 사진 리스트
+    private val _serverPhotoList = MutableStateFlow<List<Uri>>(emptyList())
+    val serverPhotoList: StateFlow<List<Uri>> = _serverPhotoList.asStateFlow()
+
+    // 사용자가 추가한 사진 리스트
+    private val _userPhotoList = MutableStateFlow<List<Uri>>(emptyList())
+    val userPhotoList: StateFlow<List<Uri>> = _userPhotoList.asStateFlow()
+
+    private val _modifyMealLogResult = MutableLiveData<EventWrapper<ApiResult<Unit>>>()
+    val modifyMealLogResult: LiveData<EventWrapper<ApiResult<Unit>>> = _modifyMealLogResult
 
     // 일일 섭취량 조회
     fun fetchDailyIntake(date: String) {
@@ -285,6 +301,36 @@ class LifeCheckViewModel @Inject constructor(
     fun fetchMealLogDetail(mealLogId: Long) {
         viewModelScope.launch {
             _mealLogDetail.value = EventWrapper(lifeCheckUseCase.getMealLogDetail(mealLogId))
+        }
+    }
+
+    // 서버 사진 리스트 업데이트
+    fun setServerPhotoList(list: List<Uri>) {
+        _serverPhotoList.value = list
+    }
+
+    // 사용자 사진 리스트 업데이트
+    fun setUserPhotoList(list: List<Uri>) {
+        _userPhotoList.value = list
+    }
+
+    // 특정 사진 삭제
+    fun removePhoto(uri: Uri) {
+        if (_serverPhotoList.value.contains(uri)) {
+            _serverPhotoList.value = _serverPhotoList.value - uri
+        } else if (_userPhotoList.value.contains(uri)) {
+            _userPhotoList.value = _userPhotoList.value - uri
+        }
+    }
+
+    fun modifyMealLog(
+        mealLogId: Long,
+        mealLogRequest: RequestBody,
+        images: List<MultipartBody.Part>
+    ) {
+        viewModelScope.launch {
+            _modifyMealLogResult.value =
+                EventWrapper(lifeCheckUseCase.modifyMealLog(mealLogId, mealLogRequest, images))
         }
     }
 }

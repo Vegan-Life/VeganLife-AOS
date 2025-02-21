@@ -1,6 +1,7 @@
 package com.project.veganlife.lifecheck.ui.view
 
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,17 +15,27 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.gson.Gson
 import com.project.veganlife.R
 import com.project.veganlife.data.model.ApiResult
 import com.project.veganlife.databinding.FragmentLifeCheckDietModifyBinding
 import com.project.veganlife.databinding.LayoutLifecheckDietAddBinding
 import com.project.veganlife.lifecheck.data.model.LifeCheckMealDataDetail
+import com.project.veganlife.lifecheck.data.model.LifeCheckMealLogDTO
 import com.project.veganlife.lifecheck.ui.adapter.LifeCheckDietAddAdapter
 import com.project.veganlife.lifecheck.ui.viewmodel.LifeCheckViewModel
+import com.project.veganlife.utils.PhotoUtils
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.toRequestBody
 
 @AndroidEntryPoint
 class LifeCheckDietModifyFragment : Fragment() {
@@ -92,7 +103,7 @@ class LifeCheckDietModifyFragment : Fragment() {
 
             includeLifecheckDietModify.btnLifecheckDietAddImport.apply {
                 setOnClickListener {
-
+//                    modifyMealLog()
                 }
                 text = getString(R.string.all_button_modify)
             }
@@ -116,6 +127,11 @@ class LifeCheckDietModifyFragment : Fragment() {
         if (mealId != -1L) {
             viewModel.fetchMealDataById(mealId)
         }
+
+        // ViewModel에서 저장된 사진 리스트 불러오기
+        viewModel.serverPhotoList.value.let { serverPhotoList.addAll(it) }
+        viewModel.userPhotoList.value.let { userPhotoList.addAll(it) }
+        updatePhotoUI()
     }
 
     private fun setupObservers() {
@@ -138,7 +154,8 @@ class LifeCheckDietModifyFragment : Fragment() {
 
                         viewModel.addMealDataList(mappedMeals)
 
-                        serverPhotoList.addAll(mealDetail.imageUrls.map { Uri.parse(it) })
+                        viewModel.setServerPhotoList(mealDetail.imageUrls.map { Uri.parse(it) })
+//                        serverPhotoList.addAll(mealDetail.imageUrls.map { Uri.parse(it) })
 
                         updatePhotoUI()
                     }
@@ -173,6 +190,51 @@ class LifeCheckDietModifyFragment : Fragment() {
 
                     is ApiResult.Exception -> {
                         Log.e("LifeCheckDietModify", "Exception fetching mealData", result.e)
+                    }
+                }
+            }
+        }
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.serverPhotoList.collect { list ->
+                    serverPhotoList.clear()
+                    serverPhotoList.addAll(list)
+                    updatePhotoUI()
+                }
+            }
+        }
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.userPhotoList.collect { list ->
+                    userPhotoList.clear()
+                    userPhotoList.addAll(list)
+                    updatePhotoUI()
+                }
+            }
+        }
+
+        viewModel.modifyMealLogResult.observe(viewLifecycleOwner) { event ->
+            event.getContentIfNotHandled()?.let { result ->
+                when (result) {
+                    is ApiResult.Success -> {
+                        Log.d("DietModifyFragment_modifyMealLogResult", "식사 기록 수정 성공")
+                        viewModel.clearDynamicMealList()
+                        findNavController().navigate(
+                            R.id.action_lifeCheckDietModifyFragment_to_lifeCheckHomeFragment
+                        )
+                    }
+
+                    is ApiResult.Error -> {
+                        Log.d(
+                            "DietModifyFragment_modifyMealLogResult",
+                            "오류 발생: ${result.description}"
+                        )
+                    }
+
+                    is ApiResult.Exception -> {
+                        Log.d("DietModifyFragment_modifyMealLogResult", "예외 발생: ${result.e.message}")
                     }
                 }
             }
@@ -337,9 +399,10 @@ class LifeCheckDietModifyFragment : Fragment() {
                 if (uris.isNotEmpty()) {
                     val maxSelect = 5 - userPhotoList.size
                     val photo = uris.take(maxSelect)
-                    userPhotoList.addAll(photo)
 
-                    updatePhotoUI()
+                    val updatedList = userPhotoList.toMutableList().apply { addAll(photo) }
+
+                    viewModel.setUserPhotoList(updatedList)
                 }
             }
     }
@@ -352,7 +415,7 @@ class LifeCheckDietModifyFragment : Fragment() {
             // 사용자가 추가한 사진 삭제
             userPhotoList.remove(uri)
         }
-
+        viewModel.removePhoto(uri)
         updatePhotoUI()
     }
 
@@ -374,6 +437,53 @@ class LifeCheckDietModifyFragment : Fragment() {
         val maxCount = 5
         binding.includeLifecheckDietModify.tvLiffecheckDietAddPhotoCount.text =
             "(${currentCount}/${maxCount})"
+    }
+
+    private fun modifyMealLog() {
+        val mealLogId = args.mealLogId
+        val mealLogList = viewModel.getMealDataList().map { mealData ->
+            val intakeValue = viewModel.getIntakeValue(mealData.id)
+            LifeCheckMealLogDTO(
+                intake = (mealData.amountPerServe * intakeValue).toInt(),
+                calorie = (mealData.amountPerServe * mealData.caloriePerUnit * intakeValue).toInt(),
+                carbs = (mealData.amountPerServe * mealData.carbsPerUnit * intakeValue).toInt(),
+                protein = (mealData.amountPerServe * mealData.proteinPerUnit * intakeValue).toInt(),
+                fat = (mealData.amountPerServe * mealData.fatPerUnit * intakeValue).toInt(),
+                mealDataId = mealData.id
+            )
+        }
+
+        if (mealLogList.isEmpty()) {
+            Toast.makeText(context, "추가된 음식이 없습니다.", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val gson = Gson()
+        val requestBody = gson.toJson(
+            mapOf(
+                "meals" to mealLogList,
+                "existingImageUrls" to serverPhotoList
+            )
+        ).toRequestBody("application/json".toMediaTypeOrNull())
+
+        val imageParts = mutableListOf<MultipartBody.Part>()
+        for (uri in userPhotoList) {
+            val filePath =
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                    PhotoUtils.optimizeBitmap(requireContext(), uri)
+                } else {
+                    null
+                }
+
+            if (filePath != null) {
+                val imagePart = PhotoUtils.createImageMultipart(filePath)
+                if (imagePart != null) {
+                    imageParts.add(imagePart)
+                }
+            }
+        }
+
+        viewModel.modifyMealLog(mealLogId,requestBody, imageParts)
     }
 
     override fun onDestroy() {

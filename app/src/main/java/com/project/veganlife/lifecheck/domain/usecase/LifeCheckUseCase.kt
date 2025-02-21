@@ -79,4 +79,12 @@ class LifeCheckUseCase @Inject constructor(
     suspend fun getMealLogDetail(mealLogId: Long): ApiResult<LifeCheckMealLogDetailResponse> {
         return lifeCheckRepository.getMealLogDetail(mealLogId)
     }
+
+    suspend fun modifyMealLog(
+        mealLogId: Long,
+        mealLogRequest: RequestBody,
+        images: List<MultipartBody.Part>?
+    ): ApiResult<Unit> {
+        return lifeCheckRepository.modifyMealLog(mealLogId, mealLogRequest, images)
+    }
 }
