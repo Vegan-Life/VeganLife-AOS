@@ -103,7 +103,7 @@ class LifeCheckDietModifyFragment : Fragment() {
 
             includeLifecheckDietModify.btnLifecheckDietAddImport.apply {
                 setOnClickListener {
-//                    modifyMealLog()
+                    modifyMealLog()
                 }
                 text = getString(R.string.all_button_modify)
             }
@@ -118,8 +118,12 @@ class LifeCheckDietModifyFragment : Fragment() {
     }
 
     private fun initData() {
-        val mealLogId = args.mealLogId
-        if (mealLogId != -1L) {
+        val argsMealLogId = args.mealLogId
+        val mealLogId = viewModel.mealLogId.value ?: argsMealLogId
+
+        viewModel.setMealLogId(mealLogId)
+
+        if (argsMealLogId != -1L) {
             viewModel.fetchMealLogDetail(mealLogId)
         }
 
@@ -397,7 +401,7 @@ class LifeCheckDietModifyFragment : Fragment() {
         pickImagesLauncher =
             registerForActivityResult(ActivityResultContracts.PickMultipleVisualMedia(5)) { uris ->
                 if (uris.isNotEmpty()) {
-                    val maxSelect = 5 - userPhotoList.size
+                    val maxSelect = 5 - serverPhotoList.size + userPhotoList.size
                     val photo = uris.take(maxSelect)
 
                     val updatedList = userPhotoList.toMutableList().apply { addAll(photo) }
@@ -440,7 +444,8 @@ class LifeCheckDietModifyFragment : Fragment() {
     }
 
     private fun modifyMealLog() {
-        val mealLogId = args.mealLogId
+        val mealLogId = viewModel.mealLogId.value ?: -1
+        val existingImageUrls = serverPhotoList.map { it.toString() }
         val mealLogList = viewModel.getMealDataList().map { mealData ->
             val intakeValue = viewModel.getIntakeValue(mealData.id)
             LifeCheckMealLogDTO(
@@ -462,7 +467,7 @@ class LifeCheckDietModifyFragment : Fragment() {
         val requestBody = gson.toJson(
             mapOf(
                 "meals" to mealLogList,
-                "existingImageUrls" to serverPhotoList
+                "existingImageUrls" to existingImageUrls
             )
         ).toRequestBody("application/json".toMediaTypeOrNull())
 
@@ -476,7 +481,7 @@ class LifeCheckDietModifyFragment : Fragment() {
                 }
 
             if (filePath != null) {
-                val imagePart = PhotoUtils.createImageMultipart(filePath)
+                val imagePart = PhotoUtils.createImagesMultipart(filePath)
                 if (imagePart != null) {
                     imageParts.add(imagePart)
                 }
