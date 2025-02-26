@@ -88,4 +88,7 @@ interface LifeCheckApi {
         @Part("request") request: RequestBody,
         @Part images: List<MultipartBody.Part>?
     ): Response<Unit>
+
+    @DELETE("meal-log/{mealLogId}")
+    suspend fun deleteMealLog(@Path("mealLogId") mealLogId: Long): Response<Unit>
 }

@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -124,6 +125,23 @@ class LifeCheckDietDetailFragment : Fragment() {
                 }
             }
         }
+
+        viewModel.mealLogDeleteResult.observe(viewLifecycleOwner) { event ->
+            event.getContentIfNotHandled()?.let { result ->
+                when (result) {
+                    is ApiResult.Success -> {
+                        Toast.makeText(context, "식사기록이 삭제되었습니다.", Toast.LENGTH_SHORT).show()
+                        findNavController().popBackStack()
+                    }
+                    is ApiResult.Error -> {
+                        Log.d("DietDetailFragment_deleteMealLogResult", "오류 발생: ${result.description}")
+                    }
+                    is ApiResult.Exception -> {
+                        Log.d("DietDetailFragment_deleteMealLogResult", "예외 발생: ${result.e.message}")
+                    }
+                }
+            }
+        }
     }
 
     private fun setupClickListeners() {
@@ -137,7 +155,22 @@ class LifeCheckDietDetailFragment : Fragment() {
                         )
                 )
             }
+
+            btnLifecheckDietDetailDelete.setOnClickListener {
+                val dialog = LifeCheckCustomDialogFragment.newInstance(-1, LifeCheckCustomDialogFragment.MODE_DELETE)
+                dialog.setDialogResultListener(object : LifeCheckCustomDialogFragment.DialogResultListener {
+                    override fun onConfirm() {
+                        deleteMealLog()
+                    }
+                })
+                dialog.show(parentFragmentManager, "LifeCheckCustomDialogFragment")
+            }
         }
+    }
+
+    private fun deleteMealLog() {
+        val mealLogId = args.mealLogId
+        viewModel.deleteMealLog(mealLogId)
     }
 
     override fun onDestroyView() {

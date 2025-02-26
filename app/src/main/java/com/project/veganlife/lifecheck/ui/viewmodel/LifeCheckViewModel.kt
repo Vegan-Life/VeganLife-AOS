@@ -146,6 +146,11 @@ class LifeCheckViewModel @Inject constructor(
     private val _mealLogId = savedStateHandle.getLiveData<Long>("mealLogId")
     val mealLogId: LiveData<Long> = _mealLogId
 
+    // 식사기록 삭제
+    private val _mealLogDeleteResult =
+        MutableLiveData<EventWrapper<ApiResult<Unit>>>()
+    val mealLogDeleteResult: LiveData<EventWrapper<ApiResult<Unit>>> = _mealLogDeleteResult
+
     // 일일 섭취량 조회
     fun fetchDailyIntake(date: String) {
         viewModelScope.launch {
@@ -341,6 +346,12 @@ class LifeCheckViewModel @Inject constructor(
         if (_mealLogId.value == null) {
             _mealLogId.value = id
             savedStateHandle["mealLogId"] = id
+        }
+    }
+
+    fun deleteMealLog(mealLogId: Long) {
+        viewModelScope.launch {
+            _mealLogDeleteResult.value = EventWrapper(lifeCheckUseCase.deleteMealLog(mealLogId))
         }
     }
 }

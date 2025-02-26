@@ -56,4 +56,6 @@ interface LifeCheckRepository {
         mealLogRequest: RequestBody,
         images: List<MultipartBody.Part>?
     ): ApiResult<Unit>
+
+    suspend fun deleteMealLog(mealLogId: Long): ApiResult<Unit>
 }

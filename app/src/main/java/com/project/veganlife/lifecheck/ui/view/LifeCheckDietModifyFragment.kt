@@ -110,7 +110,7 @@ class LifeCheckDietModifyFragment : Fragment() {
 
             includeLifecheckDietModify.btnLifecheckDietAddCancel.apply {
                 setOnClickListener {
-
+                    findNavController().popBackStack()
                 }
                 text = getString(R.string.all_dialog_cancel)
             }
@@ -159,7 +159,6 @@ class LifeCheckDietModifyFragment : Fragment() {
                         viewModel.addMealDataList(mappedMeals)
 
                         viewModel.setServerPhotoList(mealDetail.imageUrls.map { Uri.parse(it) })
-//                        serverPhotoList.addAll(mealDetail.imageUrls.map { Uri.parse(it) })
 
                         updatePhotoUI()
                     }

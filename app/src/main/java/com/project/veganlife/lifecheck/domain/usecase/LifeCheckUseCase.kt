@@ -87,4 +87,8 @@ class LifeCheckUseCase @Inject constructor(
     ): ApiResult<Unit> {
         return lifeCheckRepository.modifyMealLog(mealLogId, mealLogRequest, images)
     }
+
+    suspend fun deleteMealLog(mealLogId: Long): ApiResult<Unit> {
+        return lifeCheckRepository.deleteMealLog(mealLogId)
+    }
 }
