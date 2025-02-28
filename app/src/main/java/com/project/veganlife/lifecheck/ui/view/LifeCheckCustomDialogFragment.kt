@@ -35,6 +35,7 @@ class LifeCheckCustomDialogFragment : DialogFragment() {
         private const val ARG_MEAL_ID = "meal_id"
         private const val ARG_ACTION_MODE = "action_mode"
         const val MODE_DELETE = "delete"
+        const val MODE_LOG_DELETE = "log_delete"
         const val MODE_MODIFY = "modify"
 
         fun newInstance(mealId: Long, actionMode: String): LifeCheckCustomDialogFragment {
@@ -63,6 +64,7 @@ class LifeCheckCustomDialogFragment : DialogFragment() {
         when (actionMode) {
             MODE_DELETE -> setupDeleteMode(mealId)
             MODE_MODIFY -> setupModifyMode(mealId)
+            MODE_LOG_DELETE -> setupLogDeleteMode()
         }
     }
 
@@ -70,6 +72,22 @@ class LifeCheckCustomDialogFragment : DialogFragment() {
         binding.run {
             tvLifecheckTitle.text = getString(R.string.lifecheck_menu_delete)
             tvLifecheckContent.text = getString(R.string.lifecheck_dialog_menu_delete_content)
+
+            btnLifecheckCancel.setOnClickListener {
+                dismiss()
+            }
+
+            btnLifecheckConfirm.setOnClickListener {
+                dialogResultListener?.onConfirm()
+                dismiss()
+            }
+        }
+    }
+
+    private fun setupLogDeleteMode() {
+        binding.run {
+            tvLifecheckTitle.text = getString(R.string.lifecheck_meal_log_delete)
+            tvLifecheckContent.text = getString(R.string.lifecheck_dialog_mealLog_delete_content)
 
             btnLifecheckCancel.setOnClickListener {
                 dismiss()

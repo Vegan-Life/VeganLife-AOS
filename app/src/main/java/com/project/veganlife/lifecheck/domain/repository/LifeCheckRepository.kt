@@ -50,4 +50,12 @@ interface LifeCheckRepository {
     suspend fun getMealLogList(date: String): ApiResult<List<LifeCheckMealLogListResponse>>
 
     suspend fun getMealLogDetail(mealLogId: Long): ApiResult<LifeCheckMealLogDetailResponse>
+
+    suspend fun modifyMealLog(
+        id: Long,
+        mealLogRequest: RequestBody,
+        images: List<MultipartBody.Part>?
+    ): ApiResult<Unit>
+
+    suspend fun deleteMealLog(mealLogId: Long): ApiResult<Unit>
 }

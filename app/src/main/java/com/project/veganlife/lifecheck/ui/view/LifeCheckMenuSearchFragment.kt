@@ -15,6 +15,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.project.veganlife.R
 import com.project.veganlife.databinding.FragmentLifeCheckMenuSearchBinding
@@ -32,6 +33,7 @@ class LifeCheckMenuSearchFragment : Fragment() {
 
     private val viewModel: LifeCheckViewModel by activityViewModels()
     private lateinit var adapter: LifeCheckMealDataAdapter
+    private val args: LifeCheckMenuSearchFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -66,23 +68,35 @@ class LifeCheckMenuSearchFragment : Fragment() {
         adapter =
             LifeCheckMealDataAdapter(
                 longClickListener = object : LifeCheckMealDataAdapter.OnItemLongClickListener {
-                override fun onItemLongClicked(id: Long) {
-                    val dialog = LifeCheckCustomDialogFragment.newInstance(
-                        id,
-                        LifeCheckCustomDialogFragment.MODE_MODIFY
-                    )
-                    dialog.show(parentFragmentManager, "LifeCheckCustomDialogFragment")
-                }
-            },
+                    override fun onItemLongClicked(id: Long) {
+                        val dialog = LifeCheckCustomDialogFragment.newInstance(
+                            id,
+                            LifeCheckCustomDialogFragment.MODE_MODIFY
+                        )
+                        dialog.show(parentFragmentManager, "LifeCheckCustomDialogFragment")
+                    }
+                },
                 clickListener = object : LifeCheckMealDataAdapter.OnItemClickListener {
                     override fun onItemClicked(id: Long) {
                         val bundle = Bundle().apply {
                             putLong("mealId", id)
                         }
-                        findNavController().navigate(
-                            R.id.action_lifeCheckMenuSearchFragment_to_lifeCheckDietAddFragment,
-                            bundle
-                        )
+                        when (args.sourceFragment) {
+                            "dietAdd" -> findNavController().navigate(
+                                R.id.action_lifeCheckMenuSearchFragment_to_lifeCheckDietAddFragment,
+                                bundle
+                            )
+
+                            "dietModify" -> findNavController().navigate(
+                                LifeCheckMenuSearchFragmentDirections
+                                    .actionLifeCheckMenuSearchFragmentToLifeCheckDietModifyFragment(
+                                        mealLogId = -1,
+                                        mealId = id
+                                    )
+                            )
+
+                            else -> return
+                        }
                     }
                 })
         binding.rvLifecheckMenuSearch.layoutManager = LinearLayoutManager(context)

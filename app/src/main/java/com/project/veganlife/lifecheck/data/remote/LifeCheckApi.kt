@@ -80,4 +80,15 @@ interface LifeCheckApi {
     suspend fun getMealLogDetail(
         @Path("mealLogId") mealLogId: Long
     ): Response<LifeCheckMealLogDetailResponse>
+
+    @Multipart
+    @PUT("meal-log/{mealLogId}")
+    suspend fun modifyMealLog(
+        @Path("mealLogId") mealLogId: Long,
+        @Part("request") request: RequestBody,
+        @Part images: List<MultipartBody.Part>?
+    ): Response<Unit>
+
+    @DELETE("meal-log/{mealLogId}")
+    suspend fun deleteMealLog(@Path("mealLogId") mealLogId: Long): Response<Unit>
 }
