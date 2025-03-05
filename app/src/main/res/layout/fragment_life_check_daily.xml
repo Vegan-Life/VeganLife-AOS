@@ -101,7 +101,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:includeFontPadding="false"
-        android:text="@string/all_fat"
+        android:text="@string/all_protein"
         android:textAppearance="@style/Bold.Body4"
         android:textColor="@color/gray1"
         app:layout_constraintBottom_toBottomOf="@id/anychart_lifecheck_daily_protein"
