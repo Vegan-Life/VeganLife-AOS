@@ -559,6 +559,9 @@ class LifeCheckHomeFragment : Fragment() {
     // 미래 날짜로 이동을 제한
     private fun updateRightButtonState() {
         val today = getCurrentDateString()
+        val todayCalendar = Calendar.getInstance()
+        val currentYear = todayCalendar.get(Calendar.YEAR)
+        val currentMonth = todayCalendar.get(Calendar.MONTH) + 1
 
         when (binding.vpLifecheckHome.currentItem) {
             0 -> {
@@ -567,7 +570,6 @@ class LifeCheckHomeFragment : Fragment() {
             }
 
             1 -> {
-                val todayCalendar = Calendar.getInstance()
                 val selectedStartDate = viewModel.selectedWeeklyStartDate.value
                 if (selectedStartDate != null) {
                     val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
@@ -577,44 +579,34 @@ class LifeCheckHomeFragment : Fragment() {
                     val todayWeekOfYear = todayCalendar.get(Calendar.WEEK_OF_YEAR)
                     val selectedWeekOfYear = calendar.get(Calendar.WEEK_OF_YEAR)
 
-                    // 선택된 주가 오늘 주와 같다면 오른쪽 버튼 비활성화
-                    binding.btnLifecheckHomeDateRight.isEnabled =
-                        selectedWeekOfYear != todayWeekOfYear
+                    binding.btnLifecheckHomeDateRight.isEnabled = selectedWeekOfYear != todayWeekOfYear
                 }
             }
 
             2 -> {
-                val todayCalendar = Calendar.getInstance()
-                val selectedDate = binding.tvLifecheckHomePeriod.text.toString()
-                if (selectedDate.isNotEmpty()) {
-                    val sdf = SimpleDateFormat("yyyy-MM", Locale.getDefault())
-                    val calendar = Calendar.getInstance()
-                    calendar.time = sdf.parse(selectedDate)!!
+                var selectedDate = binding.tvLifecheckHomePeriod.text.toString()
 
-                    val todayYear = todayCalendar.get(Calendar.YEAR)
-                    val todayMonth = todayCalendar.get(Calendar.MONTH)
-                    val selectedYear = calendar.get(Calendar.YEAR)
-                    val selectedMonth = calendar.get(Calendar.MONTH)
-
-                    // 선택된 달이 이번 달과 같다면 오른쪽 버튼 비활성화
-                    binding.btnLifecheckHomeDateRight.isEnabled =
-                        !(selectedYear == todayYear && selectedMonth == todayMonth)
+                if (selectedDate.length == 4) {
+                    selectedDate = "$selectedDate-${String.format("%02d", currentMonth)}"
+                    binding.tvLifecheckHomePeriod.text = selectedDate
                 }
+
+                val sdf = SimpleDateFormat("yyyy-MM", Locale.getDefault())
+                val calendar = Calendar.getInstance()
+                calendar.time = sdf.parse(selectedDate)!!
+
+                val selectedYear = calendar.get(Calendar.YEAR)
+                val selectedMonth = calendar.get(Calendar.MONTH) + 1
+
+                binding.btnLifecheckHomeDateRight.isEnabled =
+                    !(selectedYear == currentYear && selectedMonth == currentMonth)
             }
 
             3 -> {
-                val todayCalendar = Calendar.getInstance()
                 val selectedDate = binding.tvLifecheckHomePeriod.text.toString()
-                if (selectedDate.isNotEmpty()) {
-                    val sdf = SimpleDateFormat("yyyy", Locale.getDefault())
-                    val calendar = Calendar.getInstance()
-                    calendar.time = sdf.parse(selectedDate)!!
-
-                    val todayYear = todayCalendar.get(Calendar.YEAR)
-                    val selectedYear = calendar.get(Calendar.YEAR)
-
-                    // 선택된 년이 이번 년과 같다면 오른쪽 버튼 비활성화
-                    binding.btnLifecheckHomeDateRight.isEnabled = selectedYear != todayYear
+                if (selectedDate.length == 4) {
+                    val selectedYear = selectedDate.toInt()
+                    binding.btnLifecheckHomeDateRight.isEnabled = selectedYear != currentYear
                 }
             }
         }
