@@ -9,7 +9,9 @@ import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commit
@@ -58,7 +60,13 @@ class CommunitySearchFragment : Fragment() {
 
     private fun setPopularTag() {
         val adapter = TagListAdapter { popularTag: String ->
-
+            val editText =
+                binding.includeCommunitySearchToolbar.etCommunitySearchToolbarSearchBox
+            editText.setText(popularTag)
+            editText.requestFocus()
+            editText.setSelection(popularTag.length)
+            val imm = getSystemService(requireContext(), InputMethodManager::class.java)
+            imm?.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT)
         }
         binding.includeCommunitySearchToolbar.rvCommunitySearchToolbarPopularityTag.adapter = adapter
 
