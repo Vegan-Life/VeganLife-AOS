@@ -234,6 +234,7 @@
     <string name="recipe_all">전체</string>
 
     <string name="recipe_empty_feed">Vegan LIFE의\n첫 레시피를 작성해주세요</string>
+    <string name="recipe_empty_search">검색어를 입력해주세요</string>
 
     <string name="recipe_button_recipe">레시피 작성</string>
 

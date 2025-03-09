@@ -28,6 +28,14 @@
         <action
             android:id="@+id/action_homeFragment_to_alarmFragment"
             app:destination="@id/alarmFragment" />
+        <action
+            android:id="@+id/action_recipeHomeFragment_to_recipeDetailInfoFragment"
+            app:destination="@+id/recipeDetailInfoFragment" >
+            <argument
+                android:name="recipe"
+                app:argType="com.project.veganlife.recipe.data.model.RecipeFeedContent" />
+
+        </action>
     </fragment>
     <fragment
         android:id="@+id/alarmFragment"
@@ -186,6 +194,9 @@
         <argument
             android:name="postId"
             app:argType="integer" />
+        <action
+            android:id="@+id/action_communityDetailFeedFragment_to_communityWriteFeedFragment"
+            app:destination="@id/communityWriteFeedFragment" />
     </fragment>
 
     <navigation
@@ -265,6 +276,36 @@
     </navigation>
 
     <fragment
+        android:id="@+id/recipeHomeFragment"
+        android:name="com.project.veganlife.recipe.ui.view.RecipeHomeFragment"
+        android:label="fragment_recipe_home"
+        tools:layout="@layout/fragment_recipe_home">
+        <action
+            android:id="@+id/action_recipeHomeFragment_to_recipeDetailInfoFragment"
+            app:destination="@id/recipeDetailInfoFragment">
+            <argument
+                android:name="recipe"
+                app:argType="com.project.veganlife.recipe.data.model.RecipeFeedContent" />
+        </action>
+
+        <action
+            android:id="@+id/action_recipeHomeFragment_to_recipeWriteFragment"
+            app:destination="@id/recipeWriteFragment">
+            <argument
+                android:name="isEditing"
+                android:defaultValue="false"
+                app:argType="boolean" />
+        </action>
+
+        <action
+            android:id="@+id/action_recipeHomeFragment_to_recipeSearchFragment"
+            app:destination="@id/recipeSearchFragment" />
+        <action
+            android:id="@+id/action_recipeHomeFragment_to_alarmFragment"
+            app:destination="@id/alarmFragment" />
+    </fragment>
+
+    <fragment
         android:id="@+id/recipeDetailInfoFragment"
         android:name="com.project.veganlife.recipe.ui.view.RecipeDetailInfoFragment"
         android:label="fragment_recipe_detail_info"
@@ -275,9 +316,6 @@
         <action
             android:id="@+id/action_recipeDetailInfoFragment_to_recipeHomeFragment"
             app:destination="@id/recipeHomeFragment" />
-        <action
-            android:id="@+id/action_recipeDetailInfoFragment_to_alarmFragment"
-            app:destination="@id/alarmFragment" />
         <action
             android:id="@+id/action_recipeDetailInfoFragment_to_recipeWriteFragment"
             app:destination="@id/recipeWriteFragment">
@@ -322,6 +360,26 @@
         <action
             android:id="@+id/action_recipeWriteFragment_to_recipeHomeFragment"
             app:destination="@id/recipeHomeFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/recipeSearchFragment"
+        android:name="com.project.veganlife.recipe.ui.view.RecipeSearchFragment"
+        android:label="fragment_recipe_search"
+        tools:layout="@layout/fragment_recipe_search">
+        <action
+            android:id="@+id/action_recipeSearchFragment_to_recipeHomeFragment"
+            app:destination="@id/recipeHomeFragment" />
+        <action
+            android:id="@+id/action_recipeSearchFragment_to_alarmFragment"
+            app:destination="@id/alarmFragment" />
+        <action
+            android:id="@+id/action_recipeSearchFragment_to_recipeDetailInfoFragment"
+            app:destination="@id/recipeDetailInfoFragment" >
+            <argument
+                android:name="recipe"
+                app:argType="com.project.veganlife.recipe.data.model.RecipeFeedContent" />
+        </action>
     </fragment>
 
     <navigation
@@ -370,7 +428,11 @@
                 app:destination="@id/alarmFragment" />
             <action
                 android:id="@+id/action_recipeSearchFragment_to_recipeDetailInfoFragment"
-                app:destination="@id/recipeDetailInfoFragment" />
+                app:destination="@id/recipeDetailInfoFragment" >
+                <argument
+                    android:name="recipe"
+                    app:argType="com.project.veganlife.recipe.data.model.RecipeFeedContent" />
+            </action>
         </fragment>
     </navigation>
 
