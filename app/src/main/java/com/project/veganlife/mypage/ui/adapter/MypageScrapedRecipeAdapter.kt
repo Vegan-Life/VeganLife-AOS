@@ -2,6 +2,7 @@ package com.project.veganlife.mypage.ui.adapter
 
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.paging.PagingDataAdapter
@@ -61,13 +62,19 @@ class MypageScrapedRecipeAdapter(
                     }
                 }
 
-                typeTwo?.let {
-                    tvRecipeAbleVeganTypeTwo.apply {
-                        text = changeVeganType(it)
-                        setTextColor(ContextCompat.getColor(itemView.context, changeVeganTypeTextColor(it)))
-                        setBackgroundResource(changeBackground(it))
+                if(typeTwo != null) {
+                    typeTwo.let {
+                        tvRecipeAbleVeganTypeTwo.apply {
+                            text = changeVeganType(it)
+                            setTextColor(ContextCompat.getColor(itemView.context, changeVeganTypeTextColor(it)))
+                            setBackgroundResource(changeBackground(it))
+                            visibility = View.VISIBLE
+                        }
                     }
+                } else {
+                    tvRecipeAbleVeganTypeTwo.visibility = View.INVISIBLE
                 }
+
 
                 root.setOnClickListener {
                     mypageScrapedRecipeItemClickListener.onItemCLicked(item)

@@ -10,6 +10,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.project.veganlife.R
@@ -91,6 +92,7 @@ class RecipeHomeFragment : Fragment(), RecipeHomeAdapter.OnItemClickListener {
 
     private fun goToTopScroll() {
         binding.rvRecipeRecipeList.smoothScrollToPosition(0)
+//        binding.rvRecipeRecipeList.layoutManager?.scrollToPosition(0)
     }
 
     private fun hideGoToScroll() {
@@ -110,6 +112,8 @@ class RecipeHomeFragment : Fragment(), RecipeHomeAdapter.OnItemClickListener {
     private fun getRecipeList() {
         viewmodel.apply {
             binding.rgRecipeVeganType.setOnCheckedChangeListener { _, i ->
+                recipeHomeAdapter.submitData(lifecycle, PagingData.empty()) // 기존 리스트 초기화
+                goToTopScroll()
                 when (i) {
                     R.id.rb_recipe_home_all_type -> getAllRecipeFeedsList()
 
@@ -123,7 +127,6 @@ class RecipeHomeFragment : Fragment(), RecipeHomeAdapter.OnItemClickListener {
 
                     R.id.rb_recipe_home_pesco -> getRecipeFeedByTypeList("PESCO")
                 }
-                goToTopScroll()
             }
         }
     }

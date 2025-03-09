@@ -47,7 +47,7 @@ interface RecipeApi {
         @Path("id") id: Long,
         @Part("request") RecipeRequestDTO: RequestBody,
         @Part images: List<MultipartBody.Part>
-    ): Response<Any>
+    ): Response<Unit>
 
     @POST("recipes/{id}/likes")
     suspend fun likeRecipe(
@@ -64,5 +64,17 @@ interface RecipeApi {
     suspend fun registerRecipe(
         @Part("request") RecipeRequestDTO: RequestBody,
         @Part images: List<MultipartBody.Part?>
-    ): Response<Any>
+    ): Response<Unit>
+
+    @GET("recipes/recommend")
+    suspend fun getRecommendRecipe(
+    ): Response<List<RecipeFeedContent>>
+
+    @GET("recipes/search")
+    suspend fun getSearchRecipe(
+        @Query("keyword") keyword: String,
+        @Query("page") page: Int,
+        @Query("size") size: Int,
+        @Query("sort") sort: String,
+    ): Response<PagingResponse<RecipeFeedContent>>
 }

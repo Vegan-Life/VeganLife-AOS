@@ -10,7 +10,10 @@ import com.project.veganlife.recipe.data.datasource.RecipeDetailContentDataSourc
 import com.project.veganlife.recipe.data.datasource.RecipeFeedByTypePagingSource
 import com.project.veganlife.recipe.data.datasource.RecipeLikeDataSourceImpl
 import com.project.veganlife.recipe.data.datasource.RecipeModifyDataSourceImpl
+import com.project.veganlife.recipe.data.datasource.RecipeRecommendGetDataSourceImpl
 import com.project.veganlife.recipe.data.datasource.RecipeRegisterDataSourceImpl
+import com.project.veganlife.recipe.data.datasource.RecipeSearchRecipePagingSource
+import com.project.veganlife.recipe.data.local.RecipeRecentSearchDataStoreManager
 import com.project.veganlife.recipe.data.model.RecipeDetailContent
 import com.project.veganlife.recipe.data.model.RecipeFeedContent
 import com.project.veganlife.recipe.data.remote.RecipeApi
@@ -27,6 +30,8 @@ class RecipeRepositoryImpl @Inject constructor(
     private val recipeModifyDataSourceImpl: RecipeModifyDataSourceImpl,
     private val recipeLikeDataSourceImpl: RecipeLikeDataSourceImpl,
     private val recipeRegisterDataSourceImpl: RecipeRegisterDataSourceImpl,
+    private val recipeRecommendGetDataSourceImpl: RecipeRecommendGetDataSourceImpl,
+    private val recipeRecentSearchDataStoreManager: RecipeRecentSearchDataStoreManager,
 ) : RecipeRepository {
     override suspend fun getAllRecipeFeeds(): Flow<PagingData<RecipeFeedContent>> {
         return Pager(
@@ -80,5 +85,29 @@ class RecipeRepositoryImpl @Inject constructor(
         recipePhotoMultipart: List<MultipartBody.Part>
     ): ApiResult<Any> {
         return recipeRegisterDataSourceImpl.registerRecipe(recipeRequestDTO, recipePhotoMultipart)
+    }
+
+    override suspend fun getRecommendRecipe(): ApiResult<List<RecipeFeedContent>> {
+        return recipeRecommendGetDataSourceImpl.getRecipeRecommend()
+    }
+
+    override suspend fun getSearchRecipe(keyword: String): Flow<PagingData<RecipeFeedContent>> {
+        return Pager(
+            config = PagingConfig(pageSize = 20, enablePlaceholders = false),
+            pagingSourceFactory = {
+                RecipeSearchRecipePagingSource(
+                    keyword,
+                    recipeApi
+                )
+            }
+        ).flow
+    }
+
+    override suspend fun saveRecentSearches(recentSearches: List<String>) {
+        recipeRecentSearchDataStoreManager.saveRecentSearch(recentSearches)
+    }
+
+    override fun getRecentSearches(): Flow<List<String>> {
+        return recipeRecentSearchDataStoreManager.recentSearch
     }
 }

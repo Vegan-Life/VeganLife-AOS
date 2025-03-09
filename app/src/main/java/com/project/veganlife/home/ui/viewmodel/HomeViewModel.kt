@@ -1,5 +1,6 @@
 package com.project.veganlife.home.ui.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
@@ -12,6 +13,8 @@ import com.project.veganlife.data.model.ProfileResponse
 import com.project.veganlife.data.model.RecommendedIntakeResponse
 import com.project.veganlife.domain.usecase.ProfileGetUsecase
 import com.project.veganlife.home.domain.usecase.HomeUsecase
+import com.project.veganlife.recipe.data.model.RecipeFeedContent
+import com.project.veganlife.recipe.domain.usecase.RecipeUsecase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -20,6 +23,7 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val profileGetUsecase: ProfileGetUsecase,
     private val homeUsecase: HomeUsecase,
+    private val recipeUsecase: RecipeUsecase,
 ) : ViewModel() {
     private val _profile = MutableLiveData<ApiResult<ProfileResponse>>()
     val profile: LiveData<ApiResult<ProfileResponse>> get() = _profile
@@ -146,6 +150,10 @@ class HomeViewModel @Inject constructor(
     private val _fatBackgroundColor = MutableLiveData<Int>()
     val fatBackgroundColor: LiveData<Int> get() = _fatBackgroundColor
 
+    // 추천 프로필 Response
+    private val _recommendRecipeResponse = MutableLiveData<List<RecipeFeedContent>?>()
+    val recommendRecipeResponse: LiveData<List<RecipeFeedContent>?> get() = _recommendRecipeResponse
+
     fun getNickname_Photo(profile: ProfileResponse) {
         _nickname.value = profile.nickname + "님,"
         _recipeNickname.value = profile.nickname
@@ -242,6 +250,30 @@ class HomeViewModel @Inject constructor(
                 _fatBackgroundColor.value = R.color.no
             } else {
                 _fatBackgroundColor.value = R.color.point1
+            }
+        }
+    }
+
+    fun getRecommendRecipe() {
+        viewModelScope.launch {
+            val response  = recipeUsecase.getRecommendRecipe()
+            when(response) {
+                is ApiResult.Error -> {
+                    val responseDescription = response.description
+                    Log.d("recipe delete Error", responseDescription)
+                    _recommendRecipeResponse.value = null
+                }
+
+                is ApiResult.Exception -> {
+                    Log.d(
+                        "home recommend Exception",
+                        response.e.message ?: "No message available"
+                    )
+                    _recommendRecipeResponse.value = null
+                }
+                is ApiResult.Success -> {
+                    _recommendRecipeResponse.value = response.data
+                }
             }
         }
     }

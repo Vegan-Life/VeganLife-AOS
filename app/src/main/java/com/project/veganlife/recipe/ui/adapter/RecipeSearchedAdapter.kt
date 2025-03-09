@@ -1,10 +1,10 @@
-package com.project.veganlife.mypage.ui.adapter
+package com.project.veganlife.recipe.ui.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.widget.TextViewCompat
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -18,14 +18,14 @@ import com.project.veganlife.utils.ui.VeganTypeChange.Companion.changeBackground
 import com.project.veganlife.utils.ui.VeganTypeChange.Companion.changeVeganType
 import com.project.veganlife.utils.ui.VeganTypeChange.Companion.changeVeganTypeTextColor
 
-class MypageWrotedRecipeAdapter(
-    private val mypageWrotedRecipeItemClickListener: OnItemClickListener
-) : PagingDataAdapter<RecipeFeedContent, MypageWrotedRecipeAdapter.MypageWrotedRecipeViewHolder>(diffUtil) {
+class RecipeSearchedAdapter(
+    private val recipeFeedItemClickListener: OnItemClickListener
+) : PagingDataAdapter<RecipeFeedContent, RecipeSearchedAdapter.RecipeFeedsViewHolder>(diffUtil) {
     interface OnItemClickListener {
         fun onItemCLicked(item: RecipeFeedContent)
     }
 
-    inner class MypageWrotedRecipeViewHolder(private val binding: ItemRecyclerviewRecipeListBinding) :
+    inner class RecipeFeedsViewHolder(private val binding: ItemRecyclerviewRecipeListBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: RecipeFeedContent) {
             binding.apply {
@@ -59,61 +59,62 @@ class MypageWrotedRecipeAdapter(
                     }
                 }
 
-                if(typeTwo != null) {
-                    typeTwo.let {
-                        tvRecipeAbleVeganTypeTwo.apply {
-                            text = changeVeganType(it)
-                            setTextColor(ContextCompat.getColor(itemView.context, changeVeganTypeTextColor(it)))
-                            setBackgroundResource(changeBackground(it))
-                            visibility = View.VISIBLE
-                        }
+                if (typeTwo != null) {
+                    tvRecipeAbleVeganTypeTwo.apply {
+                        text = changeVeganType(typeTwo)
+                        setTextColor(ContextCompat.getColor(itemView.context, changeVeganTypeTextColor(typeTwo)))
+                        setBackgroundResource(changeBackground(typeTwo))
+                        visibility = View.VISIBLE  // 값이 있으면 보여주기
                     }
                 } else {
-                    tvRecipeAbleVeganTypeTwo.visibility = View.INVISIBLE
+                    tvRecipeAbleVeganTypeTwo.visibility = View.INVISIBLE  // 값이 없으면 숨기기
                 }
 
+                updateLikeBackground(item.isLiked)
+
                 root.setOnClickListener {
-                    mypageWrotedRecipeItemClickListener.onItemCLicked(item)
+                    recipeFeedItemClickListener.onItemCLicked(item)
                 }
             }
+        }
+
+        private fun updateLikeBackground(isLike: Boolean) {
+            if (isLike) binding.btnRecipeLike.setImageResource(R.drawable.all_like_full_recipe)
+            else binding.btnRecipeLike.setImageDrawable(null)
         }
     }
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): MypageWrotedRecipeViewHolder {
+    ): RecipeFeedsViewHolder {
         val binding = ItemRecyclerviewRecipeListBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false
         )
-        return MypageWrotedRecipeViewHolder(binding)
+        return RecipeFeedsViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: MypageWrotedRecipeViewHolder, position: Int) {
-        val postedFeed = getItem(position)
-        if (postedFeed != null) {
-            holder.bind(postedFeed)
-        } else {
-            Log.d("Adapter", "Bind position: $position, Data: null")
-        }
+    override fun onBindViewHolder(holder: RecipeFeedsViewHolder, position: Int) {
+        getItem(position)?.let { holder.bind(it) }
     }
-
 
     companion object {
-        private val diffUtil = object : DiffUtil.ItemCallback<RecipeFeedContent>() {
+        val diffUtil = object : DiffUtil.ItemCallback<RecipeFeedContent>() {
             override fun areItemsTheSame(
                 oldItem: RecipeFeedContent,
                 newItem: RecipeFeedContent
-            ): Boolean =
-                oldItem.id == newItem.id
+            ): Boolean {
+                return oldItem.id == newItem.id
+            }
 
             override fun areContentsTheSame(
                 oldItem: RecipeFeedContent,
                 newItem: RecipeFeedContent
-            ): Boolean =
-                oldItem == newItem
+            ): Boolean {
+                return oldItem == newItem
+            }
         }
     }
 }

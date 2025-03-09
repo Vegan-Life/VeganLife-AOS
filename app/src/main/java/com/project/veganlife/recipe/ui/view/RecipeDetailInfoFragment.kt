@@ -168,19 +168,22 @@ class RecipeDetailInfoFragment : Fragment() {
                     }
                 }
 
-                typeTwo?.let {
-                    tvRecipeAbleVeganTypeTwo.apply {
-                        text = changeVeganType(it)
-                        setTextColor(
-                            ContextCompat.getColor(
-                                requireContext(),
-                                changeVeganTypeTextColor(it)
+                if(typeTwo != null) {
+                    typeTwo.let {
+                        tvRecipeAbleVeganTypeTwo.apply {
+                            text = changeVeganType(it)
+                            setTextColor(
+                                ContextCompat.getColor(
+                                    requireContext(),
+                                    changeVeganTypeTextColor(it)
+                                )
                             )
-                        )
-                        setBackgroundResource(changeBackground(it))
+                            setBackgroundResource(changeBackground(it))
+                        }
                     }
+                } else {
+                    tvRecipeAbleVeganTypeTwo.visibility = View.INVISIBLE
                 }
-
             }
         }
         // rv 셋팅

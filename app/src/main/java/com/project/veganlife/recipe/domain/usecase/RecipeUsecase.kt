@@ -48,4 +48,20 @@ class RecipeUsecase @Inject constructor(
     suspend fun registerRecipe(recipeRequestDTO: RequestBody, recipePhotoMultipart: List<MultipartBody.Part>): ApiResult<Any>{
         return recipeRepository.registerRecipe(recipeRequestDTO, recipePhotoMultipart)
     }
+
+    suspend fun getRecommendRecipe(): ApiResult<List<RecipeFeedContent>> {
+        return recipeRepository.getRecommendRecipe()
+    }
+
+    suspend fun getSearchRecipe(keyword: String): Flow<PagingData<RecipeFeedContent>> {
+        return recipeRepository.getSearchRecipe(keyword)
+    }
+
+    suspend fun saveResentSearchRecipe(recentSearches: List<String>) {
+        recipeRepository.saveRecentSearches(recentSearches)
+    }
+
+    fun getResentSearchRecipe(): Flow<List<String>> {
+        return recipeRepository.getRecentSearches()
+    }
 }
