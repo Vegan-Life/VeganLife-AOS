@@ -8,11 +8,13 @@ import com.project.veganlife.data.model.DailyIntakeResponse
 import com.project.veganlife.data.model.RecommendedIntakeResponse
 import com.project.veganlife.lifecheck.data.datasource.LifeCheckDailyIntakeDataSourceImpl
 import com.project.veganlife.lifecheck.data.datasource.LifeCheckDeleteMealDataDataSourceImpl
+import com.project.veganlife.lifecheck.data.datasource.LifeCheckDeleteMealLogDataSourceImpl
 import com.project.veganlife.lifecheck.data.datasource.LifeCheckMealDataByIdDataSourceImpl
 import com.project.veganlife.lifecheck.data.datasource.LifeCheckMealDataPagingSource
 import com.project.veganlife.lifecheck.data.datasource.LifeCheckMealLogDetailDataSourceImpl
 import com.project.veganlife.lifecheck.data.datasource.LifeCheckMealLogListDataSourceImpl
 import com.project.veganlife.lifecheck.data.datasource.LifeCheckModifyMealDataSourceImpl
+import com.project.veganlife.lifecheck.data.datasource.LifeCheckModifyMealLogDataSourceImpl
 import com.project.veganlife.lifecheck.data.datasource.LifeCheckMonthlyCalorieDataSourceImpl
 import com.project.veganlife.lifecheck.data.datasource.LifeCheckRecommendedIntakeDataSourceImpl
 import com.project.veganlife.lifecheck.data.datasource.LifeCheckRegisterMealDataDataSourceImpl
@@ -47,6 +49,8 @@ class LifeCheckRepositoryImpl @Inject constructor(
     private val lifeCheckRegisterMealLogDataSource: LifeCheckRegisterMealLogDataSourceImpl,
     private val lifeCheckMealLogListDataSource: LifeCheckMealLogListDataSourceImpl,
     private val lifeCheckMealLogDetailDataSource: LifeCheckMealLogDetailDataSourceImpl,
+    private val lifeCheckModifyMealLogDataSource: LifeCheckModifyMealLogDataSourceImpl,
+    private val lifeCheckDeleteMealLogDataSource: LifeCheckDeleteMealLogDataSourceImpl,
 ) : LifeCheckRepository {
     override suspend fun getDailyIntake(date: String): ApiResult<DailyIntakeResponse> {
         return lifeCheckDailyDataSource.getDailyIntake(date)
@@ -119,5 +123,17 @@ class LifeCheckRepositoryImpl @Inject constructor(
 
     override suspend fun getMealLogDetail(mealLogId: Long): ApiResult<LifeCheckMealLogDetailResponse> {
         return lifeCheckMealLogDetailDataSource.getMealLogDetail(mealLogId)
+    }
+
+    override suspend fun modifyMealLog(
+        id: Long,
+        mealLogRequest: RequestBody,
+        images: List<MultipartBody.Part>?
+    ): ApiResult<Unit> {
+        return lifeCheckModifyMealLogDataSource.modifyMealLog(id, mealLogRequest, images)
+    }
+
+    override suspend fun deleteMealLog(mealLogId: Long): ApiResult<Unit> {
+        return lifeCheckDeleteMealLogDataSource.deleteMealLog(mealLogId)
     }
 }

@@ -52,7 +52,10 @@ class LifeCheckDietSelectDialogFragment : DialogFragment() {
                         else -> ""
                     }
                 viewModel.setSelectedDietType(selectDietType)
-                findNavController().navigate(R.id.action_lifeCheckHomeFragment_to_lifeCheckMenuSearchFragment)
+                findNavController().navigate(
+                    LifeCheckHomeFragmentDirections
+                        .actionLifeCheckHomeFragmentToLifeCheckMenuSearchFragment("dietAdd")
+                )
                 dismiss()
             }
         }

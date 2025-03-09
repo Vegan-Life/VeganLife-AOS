@@ -15,12 +15,16 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
 import com.project.veganlife.R
 import com.project.veganlife.data.model.ApiResult
-import com.project.veganlife.databinding.FragmentLifeCheckDietAddBinding
+import com.project.veganlife.databinding.FragmentLifeCheckDietModifyBinding
 import com.project.veganlife.databinding.LayoutLifecheckDietAddBinding
 import com.project.veganlife.lifecheck.data.model.LifeCheckMealDataDetail
 import com.project.veganlife.lifecheck.data.model.LifeCheckMealLogDTO
@@ -28,40 +32,48 @@ import com.project.veganlife.lifecheck.ui.adapter.LifeCheckDietAddAdapter
 import com.project.veganlife.lifecheck.ui.viewmodel.LifeCheckViewModel
 import com.project.veganlife.utils.PhotoUtils
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.toRequestBody
 
 @AndroidEntryPoint
-class LifeCheckDietAddFragment : Fragment() {
+class LifeCheckDietModifyFragment : Fragment() {
 
-    private var _binding: FragmentLifeCheckDietAddBinding? = null
+    private var _binding: FragmentLifeCheckDietModifyBinding? = null
     private val binding get() = _binding!!
+
+    private val args: LifeCheckDietModifyFragmentArgs by navArgs()
     private val viewModel: LifeCheckViewModel by activityViewModels()
 
     private val photoAdapter = LifeCheckDietAddAdapter { uri ->
         removePhoto(uri)
     }
-    private val photoList = mutableListOf<Uri>()
+    private val serverPhotoList = mutableListOf<Uri>()
+    private val userPhotoList = mutableListOf<Uri>()
     private lateinit var pickImagesLauncher: ActivityResultLauncher<PickVisualMediaRequest>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentLifeCheckDietAddBinding.inflate(inflater, container, false)
-
-        initLauncher()
-        setupToolbar()
-        setupObservers()
-        setupClickListeners()
-        setupRecyclerView()
-
+        _binding = FragmentLifeCheckDietModifyBinding.inflate(inflater, container, false)
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        initData()
+        initLauncher()
+        setupObservers()
+        setupRecyclerView()
+        setupClickListeners()
+        setupToolbar()
+    }
+
     private fun setupToolbar() {
-        binding.toolbarLifecheckDietAdd.apply {
+        binding.includeLifecheckDietModify.toolbarLifecheckDietAdd.apply {
             setNavigationOnClickListener {
                 viewModel.clearDynamicMealList()
                 findNavController().popBackStack()
@@ -69,51 +81,95 @@ class LifeCheckDietAddFragment : Fragment() {
         }
     }
 
-    private fun initLauncher() {
-        pickImagesLauncher =
-            registerForActivityResult(ActivityResultContracts.PickMultipleVisualMedia(5)) { uris ->
-                if (uris.isNotEmpty()) {
-                    val maxSelect = 5 - photoList.size
-                    val photo = uris.take(maxSelect)
-                    photoList.addAll(photo)
-                    photoAdapter.submitList(photoList.toList())
-                    binding.rvLifecheckDietAddPhoto.visibility = View.VISIBLE
-                    updatePhotoCount()
+    private fun setupClickListeners() {
+        binding.apply {
+            includeLifecheckDietModify.clLifecheckDietAddDietPlus.setOnClickListener {
+                findNavController().navigate(
+                    LifeCheckDietModifyFragmentDirections
+                        .actionLifeCheckDietModifyFragmentToLifeCheckMenuSearchFragment("dietModify")
+                )
+            }
+
+            includeLifecheckDietModify.ibLifecheckDietAddUploadPhoto.setOnClickListener {
+                val maxSelect = 5 - (serverPhotoList.size + userPhotoList.size)
+                if (maxSelect > 0) {
+                    pickImagesLauncher.launch(
+                        PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                    )
+                } else {
+                    Toast.makeText(context, "최대 5장까지 첨부 가능합니다.", Toast.LENGTH_SHORT).show()
                 }
             }
-    }
 
-    private fun setupRecyclerView() {
-        binding.rvLifecheckDietAddPhoto.apply {
-            adapter = photoAdapter
-            layoutManager =
-                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            includeLifecheckDietModify.btnLifecheckDietAddImport.apply {
+                setOnClickListener {
+                    modifyMealLog()
+                }
+                text = getString(R.string.all_button_modify)
+            }
+
+            includeLifecheckDietModify.btnLifecheckDietAddCancel.apply {
+                setOnClickListener {
+                    findNavController().popBackStack()
+                }
+                text = getString(R.string.all_dialog_cancel)
+            }
         }
     }
 
-    private fun removePhoto(uri: Uri) {
-        photoList.remove(uri)
-        photoAdapter.submitList(photoList.toList())
-        if (photoList.isEmpty()) {
-            binding.rvLifecheckDietAddPhoto.visibility = View.GONE
+    private fun initData() {
+        val argsMealLogId = args.mealLogId
+        val mealLogId = viewModel.mealLogId.value ?: argsMealLogId
+
+        viewModel.setMealLogId(mealLogId)
+
+        if (argsMealLogId != -1L) {
+            viewModel.fetchMealLogDetail(mealLogId)
         }
-        updatePhotoCount()
-    }
 
-    private fun updatePhotoCount() {
-        val currentCount = photoList.size
-        val maxCount = 5
-        binding.tvLiffecheckDietAddPhotoCount.text = "(${currentCount}/${maxCount})"
-    }
-
-    private fun setupObservers() {
-        val mealId = arguments?.getLong("mealId") ?: -1
+        val mealId = args.mealId
         if (mealId != -1L) {
             viewModel.fetchMealDataById(mealId)
         }
 
+        // ViewModel에서 저장된 사진 리스트 불러오기
+        viewModel.serverPhotoList.value.let { serverPhotoList.addAll(it) }
+        viewModel.userPhotoList.value.let { userPhotoList.addAll(it) }
+        updatePhotoUI()
+    }
+
+    private fun setupObservers() {
         viewModel.dynamicMealList.observe(viewLifecycleOwner) { mealDataList ->
             updateDynamicViews(mealDataList)
+        }
+
+        viewModel.mealLogDetail.observe(viewLifecycleOwner) { event ->
+            event.getContentIfNotHandled()?.let { result ->
+                when (result) {
+                    is ApiResult.Success -> {
+                        val mealDetail = result.data
+                        val mappedMeals = mealDetail.meals.map { meal ->
+                            viewModel.setIntakeValue(
+                                meal.mealData.id,
+                                meal.intake.toDouble() / meal.mealData.amountPerServe
+                            )
+                            meal.mealData.copy(amount = meal.intake)
+                        }
+
+                        viewModel.addMealDataList(mappedMeals)
+
+                        viewModel.setServerPhotoList(mealDetail.imageUrls.map { Uri.parse(it) })
+
+                        updatePhotoUI()
+                    }
+
+                    is ApiResult.Error -> Log.e("LifeCheckDietModify", result.description)
+                    is ApiResult.Exception -> Log.e(
+                        "LifeCheckDietModify",
+                        result.e.message ?: "Unknown error"
+                    )
+                }
+            }
         }
 
         viewModel.mealDataById.observe(viewLifecycleOwner) { event ->
@@ -129,71 +185,61 @@ class LifeCheckDietAddFragment : Fragment() {
                     }
 
                     is ApiResult.Error -> {
-                        Log.e("LifeCheckDietAdd", "Error fetching mealData: ${result.description}")
+                        Log.e(
+                            "LifeCheckDietModify",
+                            "Error fetching mealData: ${result.description}"
+                        )
                     }
 
                     is ApiResult.Exception -> {
-                        Log.e("LifeCheckDietAdd", "Exception fetching mealData", result.e)
+                        Log.e("LifeCheckDietModify", "Exception fetching mealData", result.e)
                     }
                 }
             }
         }
 
-        viewModel.registerMealLogResult.observe(viewLifecycleOwner) { event ->
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.serverPhotoList.collect { list ->
+                    serverPhotoList.clear()
+                    serverPhotoList.addAll(list)
+                    updatePhotoUI()
+                }
+            }
+        }
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.userPhotoList.collect { list ->
+                    userPhotoList.clear()
+                    userPhotoList.addAll(list)
+                    updatePhotoUI()
+                }
+            }
+        }
+
+        viewModel.modifyMealLogResult.observe(viewLifecycleOwner) { event ->
             event.getContentIfNotHandled()?.let { result ->
                 when (result) {
                     is ApiResult.Success -> {
-                        Log.d("DietAddFragment_registerMealLogResult", "식사 기록 등록 성공")
+                        Log.d("DietModifyFragment_modifyMealLogResult", "식사 기록 수정 성공")
                         viewModel.clearDynamicMealList()
                         findNavController().navigate(
-                            R.id.action_lifeCheckDietAddFragment_to_lifeCheckHomeFragment
+                            R.id.action_lifeCheckDietModifyFragment_to_lifeCheckHomeFragment
                         )
                     }
 
                     is ApiResult.Error -> {
                         Log.d(
-                            "DietAddFragment_registerMealLogResult",
+                            "DietModifyFragment_modifyMealLogResult",
                             "오류 발생: ${result.description}"
                         )
                     }
 
                     is ApiResult.Exception -> {
-                        Log.d("DietAddFragment_registerMealLogResult", "예외 발생: ${result.e.message}")
+                        Log.d("DietModifyFragment_modifyMealLogResult", "예외 발생: ${result.e.message}")
                     }
                 }
-            }
-        }
-    }
-
-    private fun setupClickListeners() {
-        binding.apply {
-            clLifecheckDietAddDietPlus.setOnClickListener {
-                findNavController().navigate(
-                    LifeCheckDietAddFragmentDirections
-                        .actionLifeCheckDietAddFragmentToLifeCheckMenuSearchFragment("dietAdd")
-                )
-            }
-
-            ibLifecheckDietAddUploadPhoto.setOnClickListener {
-                val maxSelect = 5 - photoList.size
-                if (maxSelect > 0) {
-                    pickImagesLauncher.launch(
-                        PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
-                    )
-                } else {
-                    Toast.makeText(context, "최대 5장까지 첨부 가능합니다.", Toast.LENGTH_SHORT).show()
-                }
-            }
-
-            btnLifecheckDietAddImport.setOnClickListener {
-                registerMealLog()
-            }
-
-            btnLifecheckDietAddCancel.setOnClickListener {
-                viewModel.clearDynamicMealList()
-                findNavController().navigate(
-                    R.id.action_lifeCheckDietAddFragment_to_lifeCheckHomeFragment
-                )
             }
         }
     }
@@ -276,7 +322,8 @@ class LifeCheckDietAddFragment : Fragment() {
 
         setupUI(newDietBinding, intakeValue, mealData)
 
-        val index = parentLayout.indexOfChild(binding.clLifecheckDietAddDietPlus)
+        val index =
+            parentLayout.indexOfChild(binding.includeLifecheckDietModify.clLifecheckDietAddDietPlus)
         newDietBinding.root.tag = mealData.id
         parentLayout.addView(newDietBinding.root, index)
         updateTotalCalories()
@@ -341,17 +388,63 @@ class LifeCheckDietAddFragment : Fragment() {
         totalKcalTextView.text = String.format("%.2f", totalCalories)
     }
 
-    private fun registerMealLog() {
-        val mealType = when (viewModel.selectedDietType.value) {
-            getString(R.string.lifecheck_morning) -> "BREAKFAST"
-            getString(R.string.lifecheck_lunch) -> "LUNCH"
-            getString(R.string.lifecheck_dinner) -> "DINNER"
-            getString(R.string.lifecheck_morning_snack) -> "BREAKFAST_SNACK"
-            getString(R.string.lifecheck_afternoon_snack) -> "LUNCH_SNACK"
-            getString(R.string.lifecheck_dinner_snack) -> "DINNER_SNACK"
-            else -> "UNKNOWN"
+    private fun setupRecyclerView() {
+        binding.includeLifecheckDietModify.rvLifecheckDietAddPhoto.apply {
+            adapter = photoAdapter
+            layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        }
+    }
+
+    private fun initLauncher() {
+        pickImagesLauncher =
+            registerForActivityResult(ActivityResultContracts.PickMultipleVisualMedia(5)) { uris ->
+                if (uris.isNotEmpty()) {
+                    val maxSelect = 5 - serverPhotoList.size + userPhotoList.size
+                    val photo = uris.take(maxSelect)
+
+                    val updatedList = userPhotoList.toMutableList().apply { addAll(photo) }
+
+                    viewModel.setUserPhotoList(updatedList)
+                }
+            }
+    }
+
+    private fun removePhoto(uri: Uri) {
+        if (serverPhotoList.contains(uri)) {
+            // 서버에서 불러온 사진 삭제
+            serverPhotoList.remove(uri)
+        } else if (userPhotoList.contains(uri)) {
+            // 사용자가 추가한 사진 삭제
+            userPhotoList.remove(uri)
+        }
+        viewModel.removePhoto(uri)
+        updatePhotoUI()
+    }
+
+    private fun updatePhotoUI() {
+        val mergedPhotoList = serverPhotoList + userPhotoList // 두 리스트를 합침
+
+        if (mergedPhotoList.isEmpty()) {
+            binding.includeLifecheckDietModify.rvLifecheckDietAddPhoto.visibility = View.GONE
+        } else {
+            binding.includeLifecheckDietModify.rvLifecheckDietAddPhoto.visibility = View.VISIBLE
         }
 
+        photoAdapter.submitList(mergedPhotoList)
+        updatePhotoCount()
+    }
+
+    private fun updatePhotoCount() {
+        val currentCount = serverPhotoList.size + userPhotoList.size
+        val maxCount = 5
+        binding.includeLifecheckDietModify.tvLiffecheckDietAddPhotoCount.text =
+            "(${currentCount}/${maxCount})"
+    }
+
+    private fun modifyMealLog() {
+        val mealLogId = viewModel.mealLogId.value ?: -1
+        val existingImageUrls = serverPhotoList.map { it.toString() }
         val mealLogList = viewModel.getMealDataList().map { mealData ->
             val intakeValue = viewModel.getIntakeValue(mealData.id)
             LifeCheckMealLogDTO(
@@ -372,13 +465,13 @@ class LifeCheckDietAddFragment : Fragment() {
         val gson = Gson()
         val requestBody = gson.toJson(
             mapOf(
-                "mealType" to mealType,
-                "meals" to mealLogList
+                "meals" to mealLogList,
+                "existingImageUrls" to existingImageUrls
             )
         ).toRequestBody("application/json".toMediaTypeOrNull())
 
         val imageParts = mutableListOf<MultipartBody.Part>()
-        for (uri in photoList) {
+        for (uri in userPhotoList) {
             val filePath =
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                     PhotoUtils.optimizeBitmap(requireContext(), uri)
@@ -394,11 +487,11 @@ class LifeCheckDietAddFragment : Fragment() {
             }
         }
 
-        viewModel.registerMealLog(requestBody, imageParts)
+        viewModel.modifyMealLog(mealLogId,requestBody, imageParts)
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
+    override fun onDestroy() {
+        super.onDestroy()
         _binding = null
     }
 }
