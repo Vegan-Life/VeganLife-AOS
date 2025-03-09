@@ -26,12 +26,17 @@
         android:layout_marginTop="4dp"
         android:background="@color/sub_gray1"
         android:drawableEnd="@drawable/all_search"
+        android:hint="레시피 및 작성자를 검색해주세요"
+        android:imeOptions="actionDone"
+        android:inputType="text"
+        android:maxLines="1"
+        android:paddingStart="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar_recipe_search_toolbar" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_recipe_related_list"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_recipe_empty"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="16dp"
@@ -39,8 +44,38 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/et_recipe_search_toolbar_search_box">
+
+        <include layout="@layout/item_recyclerview_recipe_empty" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_recipe_related_list"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/sub_gray1"
+        android:visibility="invisible"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/et_recipe_search_toolbar_search_box"
-        tools:listitem="@layout/item_recyclerview_recipe_empty" />
+        tools:listitem="@layout/item_recyclerview_recipe_search_recent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_recipe_searched_list"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/sub_gray1"
+        android:visibility="invisible"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/et_recipe_search_toolbar_search_box"
+        tools:listitem="@layout/item_recyclerview_recipe_list" />
 
     <androidx.appcompat.widget.AppCompatImageView
         android:layout_width="wrap_content"
