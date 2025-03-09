@@ -45,11 +45,24 @@ class RecentSearchesViewModel @Inject constructor(
         }
     }
 
-    fun loadStringList() {
+    private fun loadStringList() {
         viewModelScope.launch {
             getRecentSearchesUseCase.execute().collect {
                 _recentSearchList.value = it
             }
+        }
+    }
+
+    fun delete(position: Int) {
+        // 현재 값이 null인 경우 빈 리스트를 반환
+        val currentList = recentSearchList.value ?: emptyList()
+
+        // 새로운 값을 추가한 새로운 리스트 생성
+        val updatedList = currentList.toMutableList().apply {
+            removeAt(position)
+        }
+        viewModelScope.launch {
+            saveRecentSearchesUseCase.execute(updatedList)
         }
     }
 }

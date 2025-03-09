@@ -33,7 +33,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @RequiresApi(Build.VERSION_CODES.O)
 @AndroidEntryPoint
 class CommunitySearchFragment : Fragment() {
-    private lateinit var binding: FragmentCommunitySearchBinding
+    lateinit var searchBinding: FragmentCommunitySearchBinding
     private val recentSearchesViewModel: RecentSearchesViewModel by activityViewModels()
     private val communitySearchViewModel: CommunitySearchViewModel by activityViewModels()
     private val feedsGetViewModel: FeedsGetViewModel by activityViewModels()
@@ -42,8 +42,8 @@ class CommunitySearchFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentCommunitySearchBinding.inflate(layoutInflater)
-        return binding.root
+        searchBinding = FragmentCommunitySearchBinding.inflate(layoutInflater)
+        return searchBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -61,14 +61,14 @@ class CommunitySearchFragment : Fragment() {
     private fun setPopularTag() {
         val adapter = TagListAdapter { popularTag: String ->
             val editText =
-                binding.includeCommunitySearchToolbar.etCommunitySearchToolbarSearchBox
+                searchBinding.includeCommunitySearchToolbar.etCommunitySearchToolbarSearchBox
             editText.setText(popularTag)
             editText.requestFocus()
             editText.setSelection(popularTag.length)
             val imm = getSystemService(requireContext(), InputMethodManager::class.java)
             imm?.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT)
         }
-        binding.includeCommunitySearchToolbar.rvCommunitySearchToolbarPopularityTag.adapter = adapter
+        searchBinding.includeCommunitySearchToolbar.rvCommunitySearchToolbarPopularityTag.adapter = adapter
 
         communitySearchViewModel.popularTagList.observe(viewLifecycleOwner) { apiResult ->
             when (apiResult) {
@@ -98,14 +98,14 @@ class CommunitySearchFragment : Fragment() {
     }
 
     private fun setToolbarBackstack() {
-        binding.includeCommunitySearchToolbar.toolbarCommunitySearchToolbar.setNavigationOnClickListener {
+        searchBinding.includeCommunitySearchToolbar.toolbarCommunitySearchToolbar.setNavigationOnClickListener {
             findNavController().popBackStack()
         }
     }
 
 
     private fun setSearchEditText() {
-        binding.includeCommunitySearchToolbar.etCommunitySearchToolbarSearchBox.addTextChangedListener(
+        searchBinding.includeCommunitySearchToolbar.etCommunitySearchToolbarSearchBox.addTextChangedListener(
             object : TextWatcher {
                 override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
 
@@ -135,7 +135,7 @@ class CommunitySearchFragment : Fragment() {
             })
 
         //todo: 검색 시
-        binding.includeCommunitySearchToolbar.etCommunitySearchToolbarSearchBox.setOnEditorActionListener { textView, i, keyEvent ->
+        searchBinding.includeCommunitySearchToolbar.etCommunitySearchToolbarSearchBox.setOnEditorActionListener { textView, i, keyEvent ->
             if (keyEvent == null || keyEvent.action != KeyEvent.ACTION_DOWN) {
                 false
             } else {
