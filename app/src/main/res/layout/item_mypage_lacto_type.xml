@@ -10,10 +10,10 @@
         android:id="@+id/iv_mypage_image"
         android:layout_width="48dp"
         android:layout_height="48dp"
+        android:src="@drawable/mypage_vegan_type_lacto_gray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:src="@drawable/mypage_vegan_type_lacto_gray" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tv_mypage_vegan_type"

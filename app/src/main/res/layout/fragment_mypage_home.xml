@@ -110,7 +110,7 @@
                 app:layout_constraintTop_toTopOf="@id/btn_mypage_modify_info" />
 
             <TextView
-                android:id="@+id/btn_mypage_wrote_feed"
+                android:id="@+id/btn_mypage_wroted_feed"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
@@ -129,7 +129,7 @@
                 app:layout_constraintTop_toBottomOf="@id/btn_mypage_modify_info" />
 
             <TextView
-                android:id="@+id/btn_mypage_wrote_comments"
+                android:id="@+id/btn_mypage_wroted_comments"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
@@ -145,7 +145,26 @@
                 android:textColor="@color/gray5"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/btn_mypage_wrote_feed" />
+                app:layout_constraintTop_toBottomOf="@id/btn_mypage_wroted_feed" />
+
+            <TextView
+                android:id="@+id/btn_mypage_wroted_recipe"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:background="@color/gray1"
+                android:clickable="true"
+                android:gravity="start|center_vertical"
+                android:includeFontPadding="false"
+                android:paddingStart="24dp"
+                android:paddingTop="13dp"
+                android:paddingBottom="13dp"
+                android:text="@string/mypage_wroted_recipe"
+                android:textAppearance="@style/Medium.Body3"
+                android:textColor="@color/gray5"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btn_mypage_wroted_comments" />
 
             <TextView
                 android:id="@+id/btn_mypage_picked_recipe"
@@ -164,7 +183,7 @@
                 android:textColor="@color/gray5"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/btn_mypage_wrote_comments" />
+                app:layout_constraintTop_toBottomOf="@id/btn_mypage_wroted_recipe" />
 
             <TextView
                 android:id="@+id/btn_mypage_notice"

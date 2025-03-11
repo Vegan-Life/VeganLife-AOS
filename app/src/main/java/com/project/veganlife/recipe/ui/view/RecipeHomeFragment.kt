@@ -10,8 +10,10 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.project.veganlife.MainActivity
 import com.project.veganlife.R
 import com.project.veganlife.databinding.FragmentRecipeHomeBinding
 import com.project.veganlife.recipe.data.model.RecipeFeedContent
@@ -41,7 +43,7 @@ class RecipeHomeFragment : Fragment(), RecipeHomeAdapter.OnItemClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        (activity as? MainActivity)?.activityMainBinding?.bnvMainNavigation?.selectedItemId = R.id.recipeHomeFragment
         // 툴바 설정
         setToolbarMove()
 
@@ -65,7 +67,12 @@ class RecipeHomeFragment : Fragment(), RecipeHomeAdapter.OnItemClickListener {
         getRecipeList()
 
         binding.btnRecipeWrite.setOnClickListener {
-            findNavController().navigate(R.id.action_recipeHomeFragment_to_recipeWriteFragment)
+            val action = RecipeHomeFragmentDirections.actionRecipeHomeFragmentToRecipeWriteFragment(
+                recipeId = null,
+                isEditing = false,
+                recipeIngredientDescription = null
+            )
+            findNavController().navigate(action)
         }
     }
 
@@ -86,6 +93,7 @@ class RecipeHomeFragment : Fragment(), RecipeHomeAdapter.OnItemClickListener {
 
     private fun goToTopScroll() {
         binding.rvRecipeRecipeList.smoothScrollToPosition(0)
+//        binding.rvRecipeRecipeList.layoutManager?.scrollToPosition(0)
     }
 
     private fun hideGoToScroll() {
@@ -105,6 +113,8 @@ class RecipeHomeFragment : Fragment(), RecipeHomeAdapter.OnItemClickListener {
     private fun getRecipeList() {
         viewmodel.apply {
             binding.rgRecipeVeganType.setOnCheckedChangeListener { _, i ->
+                recipeHomeAdapter.submitData(lifecycle, PagingData.empty()) // 기존 리스트 초기화
+                goToTopScroll()
                 when (i) {
                     R.id.rb_recipe_home_all_type -> getAllRecipeFeedsList()
 
@@ -118,14 +128,15 @@ class RecipeHomeFragment : Fragment(), RecipeHomeAdapter.OnItemClickListener {
 
                     R.id.rb_recipe_home_pesco -> getRecipeFeedByTypeList("PESCO")
                 }
-                goToTopScroll()
             }
         }
     }
 
     override fun onItemCLicked(item: RecipeFeedContent) {
         val action =
-            RecipeHomeFragmentDirections.actionRecipeHomeFragmentToRecipeDetailInfoFragment(item)
+            RecipeHomeFragmentDirections.actionRecipeHomeFragmentToRecipeDetailInfoFragment(
+                recipe = item
+            )
         findNavController().navigate(action)
     }
 
@@ -135,7 +146,6 @@ class RecipeHomeFragment : Fragment(), RecipeHomeAdapter.OnItemClickListener {
 
         recipeHomeAdapter.addLoadStateListener { loadState ->
             val isEndOfPaginationReached = loadState.append.endOfPaginationReached
-            Log.d("itemCnt", recipeHomeAdapter.itemCount.toString())
             if (isEndOfPaginationReached) {
                 binding.llRecipeNoContents.isVisible = recipeHomeAdapter.itemCount == 0
             } else {

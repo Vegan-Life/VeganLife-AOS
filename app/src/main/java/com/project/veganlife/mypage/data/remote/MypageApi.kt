@@ -3,7 +3,7 @@ package com.project.veganlife.mypage.data.remote
 import com.project.veganlife.data.model.PagingResponse
 import com.project.veganlife.data.model.ProfileResponse
 import com.project.veganlife.mypage.data.model.MyPostedContent
-import com.project.veganlife.mypage.data.model.ScrapedRecipeContent
+import com.project.veganlife.recipe.data.model.RecipeFeedContent
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Response
@@ -33,7 +33,7 @@ interface MypageApi {
     suspend fun getMyScrapedRecipeList(
         @Query("page") page: Int,
         @Query("size") size: Int,
-    ): Response<PagingResponse<ScrapedRecipeContent>>
+    ): Response<PagingResponse<RecipeFeedContent>>
 
     @DELETE("members")
     suspend fun deleteWithdrawal(
@@ -45,4 +45,10 @@ interface MypageApi {
         @Part("request") ProfileRequestDTO: RequestBody,
         @Part image: MultipartBody.Part?
     ): Response<ProfileResponse>
+
+    @GET("members/me/recipes")
+    suspend fun getWrotedRecipe(
+        @Query("page") page: Int,
+        @Query("size") size: Int,
+    ): Response<PagingResponse<RecipeFeedContent>>
 }

@@ -53,7 +53,6 @@ class RecipeDetailViewModel @Inject constructor(
                     }
 
                     is ApiResult.Success -> {
-                        Log.d("recipe", "레시피 아이템 받기 성공")
                         _recipeDetailContent.value = response.data
                     }
                 }

@@ -32,7 +32,7 @@ class RecipeUsecase @Inject constructor(
     suspend fun modifyRecipe(
         id: Long,
         recipeRequetDTO: RequestBody,
-        recipePhotoMultipart: MultipartBody.Part
+        recipePhotoMultipart: List<MultipartBody.Part>
     ): ApiResult<Any> {
         return recipeRepository.modifyRecipe(id, recipeRequetDTO, recipePhotoMultipart)
     }
@@ -43,5 +43,25 @@ class RecipeUsecase @Inject constructor(
 
     suspend fun likeCancelRecipe(id: Long): ApiResult<Any> {
         return recipeRepository.likeCancelRecipe(id)
+    }
+
+    suspend fun registerRecipe(recipeRequestDTO: RequestBody, recipePhotoMultipart: List<MultipartBody.Part>): ApiResult<Any>{
+        return recipeRepository.registerRecipe(recipeRequestDTO, recipePhotoMultipart)
+    }
+
+    suspend fun getRecommendRecipe(): ApiResult<List<RecipeFeedContent>> {
+        return recipeRepository.getRecommendRecipe()
+    }
+
+    suspend fun getSearchRecipe(keyword: String): Flow<PagingData<RecipeFeedContent>> {
+        return recipeRepository.getSearchRecipe(keyword)
+    }
+
+    suspend fun saveResentSearchRecipe(recentSearches: List<String>) {
+        recipeRepository.saveRecentSearches(recentSearches)
+    }
+
+    fun getResentSearchRecipe(): Flow<List<String>> {
+        return recipeRepository.getRecentSearches()
     }
 }
