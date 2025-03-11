@@ -19,6 +19,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.project.veganlife.MainActivity
 import com.project.veganlife.R
 import com.project.veganlife.data.model.ApiResult
 import com.project.veganlife.databinding.FragmentRecipeWriteBinding
@@ -407,6 +408,7 @@ class RecipeWriteFragment : Fragment() {
                             .setPopUpTo(R.id.recipeWriteFragment, true) // 등록 화면을 백스택에서 제거
                             .build()
                     )
+                    (activity as? MainActivity)?.activityMainBinding?.bnvMainNavigation?.selectedItemId = R.id.recipe_graph
                     messageToast("레시피가 ${result}되었습니다.")
                 }
 

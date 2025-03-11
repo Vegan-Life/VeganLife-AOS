@@ -13,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.project.veganlife.MainActivity
 import com.project.veganlife.R
 import com.project.veganlife.databinding.FragmentRecipeHomeBinding
 import com.project.veganlife.recipe.data.model.RecipeFeedContent
@@ -42,7 +43,7 @@ class RecipeHomeFragment : Fragment(), RecipeHomeAdapter.OnItemClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        (activity as? MainActivity)?.activityMainBinding?.bnvMainNavigation?.selectedItemId = R.id.recipeHomeFragment
         // 툴바 설정
         setToolbarMove()
 

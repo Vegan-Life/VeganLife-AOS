@@ -37,7 +37,7 @@ class HomeRecommendRecipeAdapter(
                     .apply(
                         RequestOptions()
                             .diskCacheStrategy(DiskCacheStrategy.NONE)
-                            .fitCenter()
+                            .centerCrop()
                             .placeholder(R.color.sub_gray2) // 로드 전 기본 이미지/색상
                             .error(R.color.sub_gray2) // 로딩 실패 시 기본 색상
                     ).into(ivHomeThumbnail)
