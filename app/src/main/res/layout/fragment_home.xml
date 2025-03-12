@@ -23,7 +23,7 @@
         app:titleTextAppearance="@style/Light.Body9"
         app:titleTextColor="@color/base1" />
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -95,6 +95,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
+                    android:layout_marginEnd="4dp"
                     android:includeFontPadding="false"
                     android:textAppearance="@style/Regular.Body5"
                     android:textColor="@color/gray4"
@@ -102,7 +103,6 @@
                     app:layout_constraintHorizontal_chainStyle="packed"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    android:layout_marginEnd="4dp"
                     tools:text="@string/all_rest_kcal" />
 
                 <TextView
@@ -122,6 +122,7 @@
                     android:id="@+id/tv_home_rest_kcal_back"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
                     android:layout_marginTop="16dp"
                     android:includeFontPadding="false"
                     android:textAppearance="@style/Regular.Body5"
@@ -129,7 +130,6 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/tv_home_rest_kcal"
                     app:layout_constraintTop_toTopOf="parent"
-                    android:layout_marginStart="4dp"
                     tools:text="@string/all_rest_kcal_is" />
 
                 <include
@@ -224,17 +224,42 @@
                 app:layout_constraintStart_toEndOf="@id/tv_home_recipe_recommend"
                 app:layout_constraintTop_toTopOf="@id/tv_home_recipe_recommend" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_home_recommend_recipe"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_home_empty"
                 android:layout_width="0dp"
                 android:layout_height="424dp"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="18dp"
                 android:layout_marginEnd="24dp"
+                android:paddingBottom="32dp"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toTopOf="@id/cl_home_notice"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_home_recipe_recommend"
-                tools:listitem="@layout/item_home_empty_recipe" />
+                tools:visibility="visible">
+
+                <include layout="@layout/item_home_empty_recipe" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_home_recommend_recipe"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:clipToPadding="true"
+                android:nestedScrollingEnabled="false"
+                android:paddingBottom="32dp"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:layout_constraintBottom_toTopOf="@id/cl_home_notice"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_home_recipe_recommend"
+                app:spanCount="2"
+                tools:listitem="@layout/item_recyclerview_home_recommend"
+                tools:visibility="visible" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cl_home_notice"
@@ -245,8 +270,7 @@
                 android:paddingBottom="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/rv_home_recommend_recipe">
+                app:layout_constraintStart_toStartOf="parent">
 
                 <TextView
                     android:id="@+id/tv_home_recipe_information_notice"
@@ -265,6 +289,6 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

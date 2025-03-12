@@ -8,8 +8,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.paging.cachedIn
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.project.veganlife.databinding.FragmentMypagePostedCommentsBinding
+import com.project.veganlife.databinding.FragmentMypageWrotedCommentsBinding
 import com.project.veganlife.mypage.ui.adapter.MypagePostedCommentAdapter
 import com.project.veganlife.mypage.ui.viewmodel.MypagePostedPagingViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -17,8 +18,8 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class MypagePostedCommentsFragment : Fragment() {
-    private var _binding: FragmentMypagePostedCommentsBinding? = null
+class MypageWrotedCommentsFragment : Fragment() {
+    private var _binding: FragmentMypageWrotedCommentsBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var adapter: MypagePostedCommentAdapter
@@ -28,7 +29,7 @@ class MypagePostedCommentsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentMypagePostedCommentsBinding.inflate(inflater, container, false)
+        _binding = FragmentMypageWrotedCommentsBinding.inflate(inflater, container, false)
 
         return binding.root
     }
@@ -46,7 +47,7 @@ class MypagePostedCommentsFragment : Fragment() {
     private fun setToolbarListener() {
         binding.toolbarMypageToolbar.run {
             setNavigationOnClickListener {
-                findNavController().popBackStack()
+                findNavController().navigateUp()
             }
         }
     }
@@ -63,12 +64,11 @@ class MypagePostedCommentsFragment : Fragment() {
             binding.rvMypageComment.layoutManager = LinearLayoutManager(requireContext())
             binding.rvMypageComment.adapter = adapter
 
-            viewModel.posted.collectLatest { pagingData ->
-                pagingData?.let {
-                    adapter.submitData(it)
-
+            viewModel.posted
+                .cachedIn(viewLifecycleOwner.lifecycleScope)
+                .collectLatest { pagingData ->
+                    adapter.submitData(pagingData)
                 }
-            }
         }
     }
 

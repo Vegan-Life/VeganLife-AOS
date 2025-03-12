@@ -20,15 +20,21 @@ import com.project.veganlife.R
 import com.project.veganlife.alarm.ui.viewmodel.AlarmViewModel
 import com.project.veganlife.data.model.ApiResult
 import com.project.veganlife.databinding.FragmentHomeBinding
+import com.project.veganlife.home.GridSpacingItemDecoration
+import com.project.veganlife.home.dpToPx
+import com.project.veganlife.home.ui.adapter.HomeRecommendRecipeAdapter
 import com.project.veganlife.home.ui.viewmodel.HomeViewModel
+import com.project.veganlife.recipe.data.model.RecipeFeedContent
+import com.project.veganlife.recipe.ui.view.RecipeHomeFragmentDirections
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), HomeRecommendRecipeAdapter.OnItemClickListener {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
     private val homeViewModel: HomeViewModel by viewModels()
     private val alarmViewModel: AlarmViewModel by activityViewModels()
+    private lateinit var homeRecommendRecipeAdapter: HomeRecommendRecipeAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -69,8 +75,13 @@ class HomeFragment : Fragment() {
         setDailyIntakeUi()
 
         setRestKcalUi()
-    }
 
+        // 추천 레시피
+        getRecommendRecipe()
+        // 추천 레시피 ui
+        setRecommendRecipeUi()
+
+    }
     private fun setToolbarMoveToAlarm() {
         binding.tbHomeToolbar.setOnMenuItemClickListener { menu ->
             when(menu.itemId) {
@@ -436,6 +447,44 @@ class HomeFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun getRecommendRecipe() {
+        homeViewModel.getRecommendRecipe()
+    }
+
+    private fun setRecommendRecipeUi() {
+        binding.apply {
+            rvHomeRecommendRecipe.addItemDecoration(
+                GridSpacingItemDecoration(
+                    spacing = 16.dpToPx(requireContext()),
+                    includeEdge = false
+                )
+            )
+
+            homeRecommendRecipeAdapter = HomeRecommendRecipeAdapter(this@HomeFragment)
+            rvHomeRecommendRecipe.adapter = homeRecommendRecipeAdapter
+
+            homeViewModel.recommendRecipeResponse.observe(viewLifecycleOwner) { recipeList ->
+                if(!recipeList.isNullOrEmpty()) {
+                    rvHomeRecommendRecipe.visibility = View.VISIBLE
+                    clHomeEmpty.visibility = View.INVISIBLE
+                    homeRecommendRecipeAdapter.submitList(recipeList)
+                } else {
+                    rvHomeRecommendRecipe.visibility = View.INVISIBLE
+                    clHomeEmpty.visibility = View.VISIBLE
+                }
+            }
+
+        }
+    }
+
+    override fun onItemCLicked(item: RecipeFeedContent) {
+        val action =
+            HomeFragmentDirections.actionRecipeHomeFragmentToRecipeDetailInfoFragment(
+                recipe = item
+            )
+        findNavController().navigate(action)
     }
 
     override fun onDestroyView() {

@@ -2,11 +2,11 @@ package com.project.veganlife.community.ui.view.search
 
 import android.os.Build
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -62,6 +62,6 @@ class CommunitySearchAfterFragment : Fragment(), CommunityFeedAdapter.OnItemClic
         val bundle = Bundle().apply {
             putInt("postId", item.id)
         }
-        findNavController().navigate(R.id.action_communityHomeFragment_to_communityDetailFeedFragment, bundle)
+        findNavController().navigate(R.id.communityDetailFeedFragment, bundle)
     }
 }

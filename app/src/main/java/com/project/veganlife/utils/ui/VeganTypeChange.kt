@@ -23,5 +23,12 @@ class VeganTypeChange {
                 else -> R.drawable.all_vegan_type_lacto_ovo_background
             }
         }
+
+        fun changeVeganTypeTextColor(type: String): Int {
+            return when(type) {
+                "VEGAN" -> R.color.base3
+                else -> R.color.sub_gray1
+            }
+        }
     }
 }

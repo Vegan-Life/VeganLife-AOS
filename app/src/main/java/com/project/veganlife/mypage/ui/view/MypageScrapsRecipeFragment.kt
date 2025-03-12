@@ -8,16 +8,18 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.paging.cachedIn
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.project.veganlife.databinding.FragmentMypageScrapsRecipeBinding
 import com.project.veganlife.mypage.ui.adapter.MypageScrapedRecipeAdapter
 import com.project.veganlife.mypage.ui.viewmodel.MypageScrapedRecipeViewModel
+import com.project.veganlife.recipe.data.model.RecipeFeedContent
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class MypageScrapsRecipeFragment : Fragment() {
+class MypageScrapsRecipeFragment : Fragment(), MypageScrapedRecipeAdapter.OnItemClickListener {
     private var _binding: FragmentMypageScrapsRecipeBinding? = null
     private val binding get() = _binding!!
 
@@ -47,7 +49,7 @@ class MypageScrapsRecipeFragment : Fragment() {
     private fun setToolbarListener() {
         binding.toolbarMypageToolbar.run {
             setNavigationOnClickListener {
-                findNavController().popBackStack()
+                findNavController().navigateUp()
             }
         }
     }
@@ -57,23 +59,28 @@ class MypageScrapsRecipeFragment : Fragment() {
     }
 
     private fun setScrapedRecipe() {
-        lifecycleScope.launch {
-            adapter = MypageScrapedRecipeAdapter(viewModel)
-            binding.apply {
-                rvMypageRecipe.layoutManager = LinearLayoutManager(requireContext())
-                rvMypageRecipe.adapter = adapter
-            }
+        adapter = MypageScrapedRecipeAdapter(this)
+        binding.rvMypageRecipe.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvMypageRecipe.adapter = adapter
 
-            viewModel.scrapedRecipe.collectLatest { pagingData ->
-                pagingData?.let {
-                    adapter.submitData(it)
+        lifecycleScope.launch {
+            viewModel.scrapedRecipe
+                .cachedIn(viewLifecycleOwner.lifecycleScope)
+                .collectLatest { pagingData ->
+                    adapter.submitData(pagingData)
                 }
-            }
         }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onItemCLicked(item: RecipeFeedContent) {
+        val action = MypageScrapsRecipeFragmentDirections.actionGlobalToRecipeDetailInfoFragment(
+            recipe = item
+        )
+        findNavController().navigate(action)
     }
 }

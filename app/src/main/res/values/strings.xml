@@ -211,6 +211,7 @@
     <string name="mypage_modify_information">회원 정보 수정</string>
     <string name="mypage_posted_feed">내가 쓴 피드</string>
     <string name="mypage_wroted_comments">내가 쓴 댓글</string>
+    <string name="mypage_wroted_recipe">내가 쓴 레시피</string>
     <string name="mypage_picked_recipe">찜한 레시피</string>
     <string name="mypage_notice">공지사항</string>
     <string name="mypage_logout">로그아웃</string>
@@ -235,6 +236,7 @@
     <string name="recipe_all">전체</string>
 
     <string name="recipe_empty_feed">Vegan LIFE의\n첫 레시피를 작성해주세요</string>
+    <string name="recipe_empty_search">검색어를 입력해주세요</string>
 
     <string name="recipe_button_recipe">레시피 작성</string>
 

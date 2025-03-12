@@ -1,10 +1,12 @@
 package com.project.veganlife.recipe.ui.view
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -15,12 +17,13 @@ import com.project.veganlife.R
 import com.project.veganlife.databinding.FragmentRecipeDetailInfoBinding
 import com.project.veganlife.recipe.data.model.RecipeDetailDescription
 import com.project.veganlife.recipe.ui.adapter.RecipeDetailDescriptionAdapter
+import com.project.veganlife.recipe.ui.adapter.RecipeDetailInfoImageViewAdapter
 import com.project.veganlife.recipe.ui.adapter.RecipeDetailIngredientAdapter
-import com.project.veganlife.recipe.ui.adapter.RecipeFeedImagesViewPagerAdapter
 import com.project.veganlife.recipe.ui.viewmodel.RecipeDetailViewModel
 import com.project.veganlife.recipe.ui.viewmodel.RecipeViewmodel
 import com.project.veganlife.utils.ui.VeganTypeChange.Companion.changeBackground
 import com.project.veganlife.utils.ui.VeganTypeChange.Companion.changeVeganType
+import com.project.veganlife.utils.ui.VeganTypeChange.Companion.changeVeganTypeTextColor
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -31,7 +34,7 @@ class RecipeDetailInfoFragment : Fragment() {
 
     private lateinit var ingredientAdapter: RecipeDetailIngredientAdapter
     private lateinit var descriptionAdapter: RecipeDetailDescriptionAdapter
-    private lateinit var viewPagerAdapter: RecipeFeedImagesViewPagerAdapter
+    private lateinit var viewPagerAdapter: RecipeDetailInfoImageViewAdapter
 
     private val recipeDetailViewModel: RecipeDetailViewModel by viewModels()
     private val recipeViewModel: RecipeViewmodel by viewModels()
@@ -50,6 +53,7 @@ class RecipeDetailInfoFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         isLikeState = args.recipe.isLiked
+
     }
 
     override fun onCreateView(
@@ -70,7 +74,7 @@ class RecipeDetailInfoFragment : Fragment() {
 
         // Indicator & viewPager2 연결
         recipeDetailViewModel.recipeDetailContent.observe(viewLifecycleOwner) { data ->
-            if(data.imageUrls.size == 1) binding.diRecipeIndicator.visibility = View.INVISIBLE
+            if (data.imageUrls.size == 1) binding.diRecipeIndicator.visibility = View.INVISIBLE
             else binding.diRecipeIndicator.attachTo(binding.vpRecipeImage)
         }
 
@@ -79,7 +83,9 @@ class RecipeDetailInfoFragment : Fragment() {
             tvRecipeModify.setOnClickListener {
                 val action =
                     RecipeDetailInfoFragmentDirections.actionRecipeDetailInfoFragmentToRecipeWriteFragment(
-                        recipe = args.recipe
+                        recipeId = args.recipe,
+                        isEditing = true,
+                        recipeIngredientDescription = recipeDetailViewModel.recipeDetailContent.value!!
                     )
                 findNavController().navigate(action)
             }
@@ -109,7 +115,7 @@ class RecipeDetailInfoFragment : Fragment() {
                     "recipe_updated", true
                 )
 
-                findNavController().popBackStack()
+                findNavController().navigateUp()
             }
         }
     }
@@ -121,34 +127,62 @@ class RecipeDetailInfoFragment : Fragment() {
                 val userNickname = recipeDetailViewModel.getValue()
                 val recipeAuthor = author.nickname
 
-                if (userNickname == recipeAuthor) {
-                    tvRecipeModify.visibility = View.GONE
-                    tvRecipeDelete.visibility = View.GONE
-                } else {
+                if (userNickname.trim() == recipeAuthor.trim()) {
                     tvRecipeModify.visibility = View.VISIBLE
                     tvRecipeDelete.visibility = View.VISIBLE
+                } else {
+                    tvRecipeModify.visibility = View.GONE
+                    tvRecipeDelete.visibility = View.GONE
                 }
 
                 tvRecipeRecipeName.text = recipeTitle
                 tvRecipeNickname.text = author.nickname
-                tvRecipeVeganType.text = author.vegetarianType
+
+                tvRecipeVeganType.apply {
+                    text = changeVeganType(author.vegetarianType)
+                    setTextColor(
+                        ContextCompat.getColor(
+                            requireContext(),
+                            changeVeganTypeTextColor(author.vegetarianType)
+                        )
+                    )
+                    setBackgroundResource(changeBackground(author.vegetarianType))
+                }
 
                 if (isLiked) btnRecipeLike.setImageResource(R.drawable.all_like_full_recipe)
                 else btnRecipeLike.setImageResource(R.drawable.all_like_empty_recipe)
 
-                when (args.recipe.recipeTypes.size) {
-                    1 -> {
-                        tvRecipeAbleVeganTypeOne.text = changeVeganType(recipeTypes[0])
-                        tvRecipeAbleVeganTypeOne.setBackgroundResource(changeBackground(recipeTypes[0]))
-                    }
+                val typeOne = args.recipe.recipeTypes.getOrNull(0)
+                val typeTwo = args.recipe.recipeTypes.getOrNull(1)
 
-                    2 -> {
-                        tvRecipeAbleVeganTypeOne.text = changeVeganType(recipeTypes[0])
-                        tvRecipeAbleVeganTypeOne.setBackgroundResource(changeBackground(recipeTypes[0]))
-
-                        tvRecipeAbleVeganTypeTwo.text = changeVeganType(recipeTypes[1])
-                        tvRecipeAbleVeganTypeTwo.setBackgroundResource(changeBackground(recipeTypes[1]))
+                typeOne?.let {
+                    tvRecipeAbleVeganTypeOne.apply {
+                        text = changeVeganType(it)
+                        setTextColor(
+                            ContextCompat.getColor(
+                                requireContext(),
+                                changeVeganTypeTextColor(it)
+                            )
+                        )
+                        setBackgroundResource(changeBackground(it))
                     }
+                }
+
+                if(typeTwo != null) {
+                    typeTwo.let {
+                        tvRecipeAbleVeganTypeTwo.apply {
+                            text = changeVeganType(it)
+                            setTextColor(
+                                ContextCompat.getColor(
+                                    requireContext(),
+                                    changeVeganTypeTextColor(it)
+                                )
+                            )
+                            setBackgroundResource(changeBackground(it))
+                        }
+                    }
+                } else {
+                    tvRecipeAbleVeganTypeTwo.visibility = View.INVISIBLE
                 }
             }
         }
@@ -162,7 +196,7 @@ class RecipeDetailInfoFragment : Fragment() {
     private fun setRecyclerviewAdpater() {
         ingredientAdapter = RecipeDetailIngredientAdapter()
         descriptionAdapter = RecipeDetailDescriptionAdapter()
-        viewPagerAdapter = RecipeFeedImagesViewPagerAdapter()
+        viewPagerAdapter = RecipeDetailInfoImageViewAdapter()
 
         binding.apply {
             rvRecipeIngredient.adapter = ingredientAdapter
@@ -197,7 +231,7 @@ class RecipeDetailInfoFragment : Fragment() {
 
     private fun setImageViewPager(imageUrls: List<String>) {
         if (imageUrls.isEmpty()) {
-            binding.vpRecipeImage.visibility = View.GONE
+            binding.vpRecipeImage.visibility = View.INVISIBLE
         } else {
             binding.vpRecipeImage.visibility = View.VISIBLE
             viewPagerAdapter.submitList(imageUrls)

@@ -1,11 +1,10 @@
 package com.project.veganlife.mypage.ui.adapter
 
-import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.findNavController
+import androidx.core.content.ContextCompat
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -14,69 +13,71 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.project.veganlife.R
 import com.project.veganlife.databinding.ItemRecyclerviewRecipeListBinding
-import com.project.veganlife.mypage.data.model.ScrapedRecipeContent
-import com.project.veganlife.mypage.ui.viewmodel.MypageScrapedRecipeViewModel
-import com.project.veganlife.utils.ui.VeganTypeChange
+import com.project.veganlife.recipe.data.model.RecipeFeedContent
+import com.project.veganlife.utils.ui.VeganTypeChange.Companion.changeBackground
+import com.project.veganlife.utils.ui.VeganTypeChange.Companion.changeVeganType
+import com.project.veganlife.utils.ui.VeganTypeChange.Companion.changeVeganTypeTextColor
 
-class MypageScrapedRecipeAdapter(private val viewModel: MypageScrapedRecipeViewModel) :
-    PagingDataAdapter<ScrapedRecipeContent, MypageScrapedRecipeAdapter.ScrapedRecipeViewHolder>(
+class MypageScrapedRecipeAdapter(
+    private val mypageScrapedRecipeItemClickListener: OnItemClickListener,
+) :
+    PagingDataAdapter<RecipeFeedContent, MypageScrapedRecipeAdapter.MypageScrapedRecipeViewHolder>(
         diffUtil
     ) {
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ScrapedRecipeViewHolder {
-        val binding = ItemRecyclerviewRecipeListBinding.inflate(
-            LayoutInflater.from(parent.context),
-            parent,
-            false
-        )
-        return ScrapedRecipeViewHolder(binding, viewModel)
+    interface OnItemClickListener {
+        fun onItemCLicked(item: RecipeFeedContent)
     }
 
-    override fun onBindViewHolder(holder: ScrapedRecipeViewHolder, position: Int) {
-        val postedFeed = getItem(position)
-        if (postedFeed != null) {
-            holder.bind(postedFeed)
-        } else {
-            Log.d("Adapter", "Bind position: $position, Data: null")
-        }
-    }
-
-    class ScrapedRecipeViewHolder(
-        private val binding: ItemRecyclerviewRecipeListBinding,
-        private val viewModel: MypageScrapedRecipeViewModel
-    ) :
+    inner class MypageScrapedRecipeViewHolder(private val binding: ItemRecyclerviewRecipeListBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(scrapedRecipe: ScrapedRecipeContent) {
+        fun bind(item: RecipeFeedContent) {
             binding.apply {
-                tvRecipeName.text = scrapedRecipe.recipeName
-                tvRecipeNickname.text = scrapedRecipe.author.nickname
-                tvRecipeVeganType.text =
-                    VeganTypeChange.changeVeganType(scrapedRecipe.author.vegetarianType)
+                Glide.with(itemView)
+                    .load(item.thumbnailUrl)
+                    .apply(
+                        RequestOptions()
+                            .diskCacheStrategy(DiskCacheStrategy.NONE)
+                            .fitCenter()
+                            .placeholder(R.color.sub_gray2) // 로드 전 기본 이미지/색상
+                            .error(R.color.sub_gray2) // 로딩 실패 시 기본 색상
+                    ).into(ivRecipeThumbnail)
 
-                tvRecipeAbleVeganTypeOne.text =
-                    VeganTypeChange.changeVeganType(scrapedRecipe.recipeTypes.get(0))
+                tvRecipeName.text = item.recipeTitle
+                tvRecipeNickname.text = item.author.nickname
 
-                if (scrapedRecipe.recipeTypes.size == 2) {
-                    tvRecipeAbleVeganTypeTwo.text =
-                        VeganTypeChange.changeVeganType(scrapedRecipe.recipeTypes.get(1))
+                tvRecipeVeganType.apply {
+                    text = changeVeganType(item.author.vegetarianType)
+                    setTextColor(ContextCompat.getColor(itemView.context, changeVeganTypeTextColor(item.author.vegetarianType)))
+                    setBackgroundResource(changeBackground(item.author.vegetarianType))
+                }
+
+                val typeOne = item.recipeTypes.getOrNull(0)
+                val typeTwo = item.recipeTypes.getOrNull(1)
+
+                typeOne?.let {
+                    tvRecipeAbleVeganTypeOne.apply {
+                        text = changeVeganType(it)
+                        setTextColor(ContextCompat.getColor(itemView.context, changeVeganTypeTextColor(it)))
+                        setBackgroundResource(changeBackground(it))
+                    }
+                }
+
+                if(typeTwo != null) {
+                    typeTwo.let {
+                        tvRecipeAbleVeganTypeTwo.apply {
+                            text = changeVeganType(it)
+                            setTextColor(ContextCompat.getColor(itemView.context, changeVeganTypeTextColor(it)))
+                            setBackgroundResource(changeBackground(it))
+                            visibility = View.VISIBLE
+                        }
+                    }
                 } else {
                     tvRecipeAbleVeganTypeTwo.visibility = View.INVISIBLE
                 }
 
-                Glide.with(binding.root)
-                    .load(scrapedRecipe.thumbnailUrl)
-                    .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE))
-                    .into(ivRecipeThumbnail)
 
-                updateLikeBackground(scrapedRecipe.isLiked)
-
-                clMypageLayout.setOnClickListener {
-                    val bundle = Bundle()
-                    bundle.putLong("recipeId", scrapedRecipe.recipeId)
-                    itemView.findNavController().navigate(
-                        R.id.action_mypageScrapsRecipeFragment_to_recipeDetailInfoFragment,
-                        bundle
-                    )
+                root.setOnClickListener {
+                    mypageScrapedRecipeItemClickListener.onItemCLicked(item)
                 }
             }
         }
@@ -92,17 +93,35 @@ class MypageScrapedRecipeAdapter(private val viewModel: MypageScrapedRecipeViewM
         }
     }
 
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MypageScrapedRecipeViewHolder {
+        val binding = ItemRecyclerviewRecipeListBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
+        return MypageScrapedRecipeViewHolder(binding)
+    }
+
+    override fun onBindViewHolder(holder: MypageScrapedRecipeViewHolder, position: Int) {
+        val postedFeed = getItem(position)
+        if (postedFeed != null) {
+            holder.bind(postedFeed)
+        } else {
+            Log.d("Adapter", "Bind position: $position, Data: null")
+        }
+    }
+
     companion object {
-        private val diffUtil = object : DiffUtil.ItemCallback<ScrapedRecipeContent>() {
+        private val diffUtil = object : DiffUtil.ItemCallback<RecipeFeedContent>() {
             override fun areItemsTheSame(
-                oldItem: ScrapedRecipeContent,
-                newItem: ScrapedRecipeContent
+                oldItem: RecipeFeedContent,
+                newItem: RecipeFeedContent
             ): Boolean =
-                oldItem.recipeId == newItem.recipeId
+                oldItem.id == newItem.id
 
             override fun areContentsTheSame(
-                oldItem: ScrapedRecipeContent,
-                newItem: ScrapedRecipeContent
+                oldItem: RecipeFeedContent,
+                newItem: RecipeFeedContent
             ): Boolean =
                 oldItem == newItem
         }

@@ -16,8 +16,13 @@ interface RecipeRepository {
     suspend fun modifyRecipe(
         id: Long,
         recipeRequestDTO: RequestBody,
-        recipePhotoMultipart: MultipartBody.Part
+        recipePhotoMultipart: List<MultipartBody.Part>
         ): ApiResult<Any>
     suspend fun likeRecipe(id: Long): ApiResult<Any>
     suspend fun likeCancelRecipe(id: Long): ApiResult<Any>
+    suspend fun registerRecipe(recipeRequestDTO: RequestBody, recipePhotoMultipart: List<MultipartBody.Part>): ApiResult<Any>
+    suspend fun getRecommendRecipe(): ApiResult<List<RecipeFeedContent>>
+    suspend fun getSearchRecipe(keyword: String): Flow<PagingData<RecipeFeedContent>>
+    suspend fun saveRecentSearches(recentSearches: List<String>)
+    fun getRecentSearches(): Flow<List<String>>
 }

@@ -7,14 +7,24 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.project.veganlife.databinding.ItemRecyclerviewCommunitySearchRecentBinding
 
-class RecentSearchAdapter :
+class RecentSearchAdapter(
+    private val onDeleteClicked: OnItemClickedListener,
+    private val onItemClicked: OnItemClickedListener
+) :
     ListAdapter<String, RecentSearchAdapter.RecentSearchViewHolder>(diffUtil) {
     inner class RecentSearchViewHolder(val binding: ItemRecyclerviewCommunitySearchRecentBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-            fun bind(item: String) {
-                binding.tvCommunitySearchRecentSearchTerms.text = item
+        fun bind(item: String) {
+            binding.tvCommunitySearchRecentSearchTerms.text = item
+            binding.ibCommunitySearchRecentDelete.setOnClickListener {
+                onDeleteClicked.onItemClicked(currentList.size - 1 - bindingAdapterPosition, item)
+
             }
+            binding.tvCommunitySearchRecentSearchTerms.setOnClickListener {
+                onItemClicked.onItemClicked(currentList.size - 1 - bindingAdapterPosition, item)
+            }
+        }
 
     }
 

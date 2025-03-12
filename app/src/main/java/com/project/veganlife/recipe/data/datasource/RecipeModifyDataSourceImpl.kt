@@ -15,7 +15,7 @@ class RecipeModifyDataSourceImpl @Inject constructor(
     suspend fun modifyRecipe(
         id: Long,
         recipeRequestDTO: RequestBody,
-        recipePhotoMultipart: MultipartBody.Part
+        recipePhotoMultipart: List<MultipartBody.Part>
     ): ApiResult<Any> {
         val gson = GsonBuilder().create()
 
