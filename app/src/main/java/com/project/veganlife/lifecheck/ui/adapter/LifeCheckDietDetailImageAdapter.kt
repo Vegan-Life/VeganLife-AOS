@@ -2,6 +2,7 @@ package com.project.veganlife.lifecheck.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -9,12 +10,13 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.project.veganlife.R
 import com.project.veganlife.databinding.ItemImageBinding
+import com.project.veganlife.databinding.ItemLifecheckImageBinding
 
 class LifeCheckDietDetailImageAdapter :
     ListAdapter<String, LifeCheckDietDetailImageAdapter.ViewPagerViewHolder>(ImageDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewPagerViewHolder {
-        val binding = ItemImageBinding.inflate(
+        val binding = ItemLifecheckImageBinding.inflate(
             LayoutInflater.from(parent.context), parent, false
         )
         return ViewPagerViewHolder(binding)
@@ -34,26 +36,27 @@ class LifeCheckDietDetailImageAdapter :
         super.submitList(photoList)
     }
 
-    class ViewPagerViewHolder(private val binding: ItemImageBinding) :
+    class ViewPagerViewHolder(private val binding: ItemLifecheckImageBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(imageUrl: String) {
-            if (imageUrl == "null_image") {
-                Glide.with(binding.imageView1.context)
-                    .load(R.drawable.all_logo_gray)
-                    .placeholder(R.drawable.all_logo_gray)
-                    .error(R.color.sub_gray2)
-                    .centerCrop()
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .into(binding.imageView1)
-            } else {
-                Glide.with(binding.imageView1.context)
-                    .load(imageUrl)
-                    .placeholder(R.drawable.all_logo_gray) // 로드 전 기본 이미지
-                    .error(R.color.sub_gray2) // 로딩 실패 시 기본 색상
-                    .centerCrop()
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .into(binding.imageView1)
+            binding.apply {
+                if (imageUrl == "null_image") {
+                    Glide.with(ivLifecheckImage.context)
+                        .load(R.drawable.all_logo_gray)
+                        .placeholder(R.drawable.all_logo_gray)
+                        .centerInside()
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .into(ivLifecheckImage)
+                } else {
+                    Glide.with(ivLifecheckImage.context)
+                        .load(imageUrl)
+                        .placeholder(R.drawable.all_logo_gray) // 로드 전 기본 이미지
+                        .error(R.color.sub_gray2) // 로딩 실패 시 기본 색상
+                        .centerCrop()
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .into(ivLifecheckImage)
+                }
             }
         }
     }

@@ -16,6 +16,7 @@ import com.anychart.AnyChart
 import com.anychart.AnyChartView
 import com.anychart.chart.common.dataentry.DataEntry
 import com.anychart.chart.common.dataentry.ValueDataEntry
+import com.anychart.charts.Pie
 import com.project.veganlife.R
 import com.project.veganlife.data.model.ApiResult
 import com.project.veganlife.data.model.DailyIntakeResponse
@@ -32,6 +33,14 @@ class LifeCheckDailyFragment : Fragment() {
 
     private val viewModel: LifeCheckViewModel by viewModels({ requireParentFragment() })
 
+    private lateinit var carbohydrateChart: AnyChartView
+    private lateinit var proteinChart: AnyChartView
+    private lateinit var fatChart: AnyChartView
+
+    private val carbohydratePie: Pie by lazy { AnyChart.pie() }
+    private val proteinPie: Pie by lazy { AnyChart.pie() }
+    private val fatPie: Pie by lazy { AnyChart.pie() }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -43,6 +52,9 @@ class LifeCheckDailyFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupCarbohydrateChart()
+        setupProteinChart()
+        setupFatChart()
         observeSelectedDate()
         observeDailyIntakeData()
     }
@@ -50,6 +62,27 @@ class LifeCheckDailyFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         binding.root.requestLayout()
+    }
+
+    private fun setupCarbohydrateChart() {
+        carbohydrateChart = binding.anychartLifecheckDailyCarbohydrate
+        APIlib.getInstance().setActiveAnyChartView(carbohydrateChart)
+
+        initializeAnyChart(carbohydrateChart, carbohydratePie, R.color.gredient_end)
+    }
+
+    private fun setupProteinChart() {
+        proteinChart = binding.anychartLifecheckDailyProtein
+        APIlib.getInstance().setActiveAnyChartView(proteinChart)
+
+        initializeAnyChart(proteinChart, proteinPie, R.color.base1)
+    }
+
+    private fun setupFatChart() {
+        fatChart = binding.anychartLifecheckDailyFat
+        APIlib.getInstance().setActiveAnyChartView(fatChart)
+
+        initializeAnyChart(fatChart, fatPie, R.color.point1)
     }
 
     private fun observeSelectedDate() {
@@ -84,9 +117,28 @@ class LifeCheckDailyFragment : Fragment() {
             when (result) {
                 is ApiResult.Success -> {
                     updateRecommendedIntakeTextView(result.data)
-                    setupCarbohydrateChart(dailyIntake, result.data)
-                    setupProteinChart(dailyIntake, result.data)
-                    setupFatChart(dailyIntake, result.data)
+                    updateAnyChartData(
+                        carbohydrateChart,
+                        carbohydratePie,
+                        dailyIntake.carbs,
+                        result.data.dailyCarbs,
+                        R.color.gredient_end
+                    )
+                    updateAnyChartData(
+                        proteinChart,
+                        proteinPie,
+                        dailyIntake.protein,
+                        result.data.dailyProtein,
+                        R.color.base1
+                    )
+                    updateAnyChartData(
+                        fatChart,
+                        fatPie,
+                        dailyIntake.fat,
+                        result.data.dailyFat,
+                        R.color.point1
+                    )
+                    updateCalorieStatus(dailyIntake, result.data)
                     updateCalorieStatus(dailyIntake, result.data)
                 }
 
@@ -114,64 +166,22 @@ class LifeCheckDailyFragment : Fragment() {
         binding.tvLifecheckDailyFatRecommend.text = "/${recommendData.dailyFat}g"
     }
 
-    private fun setupCarbohydrateChart(
-        dailyIntake: DailyIntakeResponse,
-        recommendedIntake: RecommendedIntakeResponse
-    ) {
-        setupAnyChart(
-            binding.anychartLifecheckDailyCarbohydrate,
-            dailyIntake.carbs,
-            recommendedIntake.dailyCarbs,
-            R.color.gredient_end
-        )
-    }
-
-    private fun setupProteinChart(
-        dailyIntake: DailyIntakeResponse,
-        recommendedIntake: RecommendedIntakeResponse
-    ) {
-        setupAnyChart(
-            binding.anychartLifecheckDailyProtein,
-            dailyIntake.protein,
-            recommendedIntake.dailyProtein,
-            R.color.base1
-        )
-    }
-
-    private fun setupFatChart(
-        dailyIntake: DailyIntakeResponse,
-        recommendedIntake: RecommendedIntakeResponse
-    ) {
-        setupAnyChart(
-            binding.anychartLifecheckDailyFat,
-            dailyIntake.fat,
-            recommendedIntake.dailyFat,
-            R.color.point1
-        )
-    }
-
     // AnyChart 속성 설정
-    private fun setupAnyChart(chartView: AnyChartView, intake: Int, recommend: Int, color: Int) {
-        APIlib.getInstance().setActiveAnyChartView(chartView)
+    private fun initializeAnyChart(chartView: AnyChartView, pieChart: Pie, color: Int) {
 
         val dataEntries = mutableListOf<DataEntry>().apply {
-            add(ValueDataEntry("현재 섭취량", intake.toFloat()))
-            add(ValueDataEntry("남은 섭취량", recommend.toFloat() - intake.toFloat()))
+            add(ValueDataEntry("현재 섭취량", 0))
+            add(ValueDataEntry("남은 섭취량", 100))
         }
 
-        // 초과 색상
-        val exceedColor = resources.getColor(R.color.no, null)
         // 기본 색상
         val normalColor = resources.getColor(color, null)
         val backgroundColor =
             String.format("#%06X", 0xFFFFFF and resources.getColor(R.color.gray3, null))
         // 권장 섭취량 초과인 경우
-        val fillColor = if (intake > recommend) String.format(
-            "#%06X",
-            0xFFFFFF and exceedColor
-        ) else String.format("#%06X", 0xFFFFFF and normalColor)
+        val fillColor = String.format("#%06X", 0xFFFFFF and normalColor)
 
-        val pieChart = AnyChart.pie().apply {
+        pieChart.apply {
             // 차트 배경색
             background().fill("#E8E8EA")
             // 차트 패딩 제거
@@ -189,6 +199,36 @@ class LifeCheckDailyFragment : Fragment() {
         }
 
         chartView.setChart(pieChart)
+        chartView.invalidate()
+    }
+
+    private fun updateAnyChartData(
+        chartView: AnyChartView,
+        pieChart: Pie,
+        intake: Int,
+        recommend: Int,
+        color: Int
+    ) {
+        APIlib.getInstance().setActiveAnyChartView(chartView)
+        val exceedColor = resources.getColor(R.color.no, null)
+        val normalColor = resources.getColor(color, null)
+        val backgroundColor =
+            String.format("#%06X", 0xFFFFFF and resources.getColor(R.color.gray3, null))
+
+        val fillColor = if (intake > recommend) String.format(
+            "#%06X",
+            0xFFFFFF and exceedColor
+        ) else String.format("#%06X", 0xFFFFFF and normalColor)
+
+        val newData = listOf(
+            ValueDataEntry("현재 섭취량", intake.toFloat()),
+            ValueDataEntry("남은 섭취량", maxOf(recommend - intake, 0).toFloat())
+        )
+
+        pieChart.apply {
+            data(newData)
+            palette(arrayOf(fillColor, backgroundColor))
+        }
     }
 
     private fun updateCalorieStatus(

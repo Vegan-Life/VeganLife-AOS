@@ -75,10 +75,11 @@
         app:layout_constraintStart_toStartOf="@id/tv_lifecheck_diet_add_menu_name"
         app:layout_constraintTop_toBottomOf="@id/tv_lifecheck_diet_add_menu_one_serving">
 
-        <de.hdodenhof.circleimageview.CircleImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/civ_lifecheck_diet_add_menu_carbohydrate"
             android:layout_width="12dp"
             android:layout_height="12dp"
+            android:adjustViewBounds="true"
             android:src="@drawable/lifecheck_carbohydrate_white" />
 
     </FrameLayout>
@@ -132,10 +133,11 @@
         app:layout_constraintStart_toStartOf="@id/tv_lifecheck_diet_add_menu_name"
         app:layout_constraintTop_toBottomOf="@id/fl_lifecheck_diet_add_menu_carbohydrate">
 
-        <de.hdodenhof.circleimageview.CircleImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/civ_lifecheck_diet_add_menu_protein"
             android:layout_width="12dp"
             android:layout_height="12dp"
+            android:adjustViewBounds="true"
             android:src="@drawable/lifecheck_protein_white" />
 
     </FrameLayout>
@@ -188,10 +190,11 @@
         app:layout_constraintStart_toStartOf="@id/tv_lifecheck_diet_add_menu_name"
         app:layout_constraintTop_toBottomOf="@id/fl_lifecheck_diet_add_menu_protein">
 
-        <de.hdodenhof.circleimageview.CircleImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/civ_lifecheck_diet_add_menu_fat"
             android:layout_width="12dp"
             android:layout_height="12dp"
+            android:adjustViewBounds="true"
             android:src="@drawable/lifecheck_fat_white" />
 
     </FrameLayout>

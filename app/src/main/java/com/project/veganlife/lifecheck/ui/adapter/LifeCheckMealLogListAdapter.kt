@@ -56,7 +56,7 @@ class LifeCheckMealLogListAdapter(
                     Glide.with(ivLifecheckhomediet.context)
                         .load(R.drawable.all_logo_gray)
                         .placeholder(R.drawable.all_logo_gray)
-                        .centerCrop()
+                        .fitCenter()
                         .diskCacheStrategy(DiskCacheStrategy.NONE)
                         .into(ivLifecheckhomediet)
                 }

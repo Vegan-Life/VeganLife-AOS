@@ -44,6 +44,15 @@ class LifeCheckMenuAddFragment : Fragment() {
         addTextWatchers()
         observeMealDataRegister()
         setupButton()
+        setupToolbar()
+    }
+
+    private fun setupToolbar() {
+        binding.toolbarLifecheckMenuAdd.run {
+            setNavigationOnClickListener {
+                findNavController().popBackStack()
+            }
+        }
     }
 
     private fun observeMealDataRegister() {

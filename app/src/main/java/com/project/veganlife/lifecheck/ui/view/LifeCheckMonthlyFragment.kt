@@ -190,7 +190,7 @@ class LifeCheckMonthlyFragment : Fragment() {
             setFitBars(true)
             // 배경색 변경
             setBackgroundColor(
-                ContextCompat.getColor(context, R.color.white)
+                ContextCompat.getColor(context, R.color.gray1)
             )
             // 차트 새로고침
             invalidate()
