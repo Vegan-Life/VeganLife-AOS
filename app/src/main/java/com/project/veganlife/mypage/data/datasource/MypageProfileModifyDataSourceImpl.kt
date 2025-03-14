@@ -15,7 +15,7 @@ class MypageProfileModifyDataSourceImpl @Inject constructor(
 ) {
     suspend fun modifyProfile(
         profileRequestDTO: RequestBody,
-        profilePhotoMultipart: MultipartBody.Part
+        profilePhotoMultipart: MultipartBody.Part?
     ): ApiResult<ProfileResponse> {
         val gson = GsonBuilder().create()
 

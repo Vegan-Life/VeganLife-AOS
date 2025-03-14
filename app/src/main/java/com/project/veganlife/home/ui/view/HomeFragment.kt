@@ -105,14 +105,16 @@ class HomeFragment : Fragment(), HomeRecommendRecipeAdapter.OnItemClickListener 
                 }
 
                 profilePhoto.observe(viewLifecycleOwner) { photo ->
-                    if (photo != null) {
+                    if (photo.isNotEmpty()) {
                         Log.d("photo", profilePhoto.value.toString())
                         Glide.with(requireContext()).load(profilePhoto.value).apply(
                             RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE)
                         ) // 캐시 사용하지 않도록 설정
                             .into(ivHomeProfile)
                     } else {
-                        ivHomeProfile.setBackgroundResource(R.drawable.all_profile_basic)
+                        Glide.with(requireContext()).load(R.drawable.all_profile_basic)
+                            .diskCacheStrategy(DiskCacheStrategy.NONE)
+                            .into(ivHomeProfile)
                         ivHomeProfile.borderWidth = 0
                     }
                 }
