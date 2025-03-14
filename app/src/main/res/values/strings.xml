@@ -218,6 +218,8 @@
     <string name="mypage_withdrawal_membership">회원탈퇴</string>
 
     <string name="mypage_id">ID</string>
+    <string name="mypage_profile_select">프로필 사진 선택</string>
+    <string name="mypage_profile_delete">프로필 사진 삭제</string>
     <string name="mypage_vegan_type">채식타입</string>
     <string name="mypage_button_modify">수정</string>
     <string name="mypage_popup_modify_content">수정되었습니다</string>
