@@ -17,6 +17,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
+import com.project.veganlife.MainActivity
 import com.project.veganlife.R
 import com.project.veganlife.databinding.DialogRecipeDeleteBinding
 import com.project.veganlife.recipe.ui.viewmodel.RecipeViewmodel
@@ -63,6 +64,7 @@ class RecipeDeleteDialogFragment(id: Long) : DialogFragment() {
                             NavOptions.Builder().setPopUpTo(R.id.recipeDetailInfoFragment, true)
                                 .build()
                         )
+                        (activity as? MainActivity)?.activityMainBinding?.bnvMainNavigation?.selectedItemId = R.id.recipe_graph
                     }
                 }
             }
