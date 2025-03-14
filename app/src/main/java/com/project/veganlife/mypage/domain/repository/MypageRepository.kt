@@ -18,7 +18,7 @@ interface MypageRepository {
 
     suspend fun modifyProfile(
         profileRequestDTO: RequestBody,
-        profilePhotoMultipart: MultipartBody.Part
+        profilePhotoMultipart: MultipartBody.Part?
     ): ApiResult<ProfileResponse>
 
     suspend fun getWrotedRecipe(): Flow<PagingData<RecipeFeedContent>>

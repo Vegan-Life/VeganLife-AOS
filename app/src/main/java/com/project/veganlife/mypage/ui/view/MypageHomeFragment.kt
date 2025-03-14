@@ -99,7 +99,7 @@ class MypageHomeFragment : Fragment() {
                 profileInfoResponse.observe(viewLifecycleOwner) { profile ->
                     tvMypageNickname.text = profile.nickname
                     tvMypageEmail.text = profile.email
-                    if(profile.imageUrl != null) {
+                    if(profile.imageUrl.isNotEmpty()) {
                         Glide.with(requireContext())
                             .load(profile.imageUrl)
                             .apply(RequestOptions()
@@ -110,7 +110,9 @@ class MypageHomeFragment : Fragment() {
                             .into(binding.ivMypageProfile)
 
                     } else {
-                        Glide.with(requireContext()).load(R.drawable.all_profile_basic).into(ivMypageProfile)
+                        Glide.with(requireContext()).load(R.drawable.all_profile_basic)
+                            .diskCacheStrategy(DiskCacheStrategy.NONE)
+                            .into(ivMypageProfile)
                     }
                 }
             }

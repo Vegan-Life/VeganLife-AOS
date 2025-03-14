@@ -28,7 +28,7 @@ class MypageUsecase @Inject constructor(
 
     suspend fun modifyProfile(
         profileModifyDTO: RequestBody,
-        profilePhotoMultipart: MultipartBody.Part
+        profilePhotoMultipart: MultipartBody.Part?
     ): ApiResult<ProfileResponse> {
         return mypageRepository.modifyProfile(profileModifyDTO, profilePhotoMultipart)
     }

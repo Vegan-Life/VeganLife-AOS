@@ -59,7 +59,7 @@ class MypageRepositoryImpl @Inject constructor(
 
     override suspend fun modifyProfile(
         profileRequestDTO: RequestBody,
-        profilePhotoMultipart: MultipartBody.Part
+        profilePhotoMultipart: MultipartBody.Part?
     ): ApiResult<ProfileResponse> {
         return mypageProfileModifyDataSourceImpl.modifyProfile(profileRequestDTO, profilePhotoMultipart)
     }

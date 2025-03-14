@@ -1,6 +1,10 @@
 package com.project.veganlife.mypage.ui.viewmodel
 
+import android.content.Context
+import android.net.Uri
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,12 +12,11 @@ import androidx.lifecycle.viewModelScope
 import com.project.veganlife.data.model.ApiResult
 import com.project.veganlife.data.model.ProfileResponse
 import com.project.veganlife.domain.usecase.ProfileGetUsecase
-import com.project.veganlife.data.model.ProfileRequestDTO
+import com.project.veganlife.mypage.data.model.MypageModifyRequestDTO
 import com.project.veganlife.mypage.domain.usecase.MypageUsecase
+import com.project.veganlife.utils.PhotoUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import javax.inject.Inject
 
 @HiltViewModel
@@ -29,14 +32,6 @@ class MypageViewmodel @Inject constructor(
     private val _responseCode = MutableLiveData<String?>()
     val responseCode: LiveData<String?> get() = _responseCode
 
-    // 프로필 사진 MultiPart
-    private val _profilePhotoMultipart = MutableLiveData<MultipartBody.Part>()
-    val profilePhotoMultipart: LiveData<MultipartBody.Part> get() = _profilePhotoMultipart
-
-    // 프로필 수정 정보 RequestBody
-    private val _profileModifyRequestBody = MutableLiveData<RequestBody>()
-    val profileModifyRequestBody: LiveData<RequestBody> get() = _profileModifyRequestBody
-
     // 닉네임 허용 패턴
     private val NICKNAME_PATTERN = "[가-힣]{2,10}".toRegex()
 
@@ -51,7 +46,7 @@ class MypageViewmodel @Inject constructor(
 
                 is ApiResult.Exception -> {
                     Log.d(
-                        "recommended Exception",
+                        "getProfile Exception",
                         response.e.message ?: "No message available"
                     )
                 }
@@ -63,11 +58,38 @@ class MypageViewmodel @Inject constructor(
         }
     }
 
-    fun getProfileModifyInfo() {
-        val profileModifyDTO = profileModifyRequestBody.value ?: return
-        val profilePhoto = profilePhotoMultipart.value ?: return
+    @RequiresApi(Build.VERSION_CODES.R)
+    fun modifyProfile(
+        context: Context,
+        nickname: String,
+        vegetarianType: String,
+        gender: String,
+        birthYear: Int,
+        height: Int,
+        weight: Int,
+        existingImageUrl: String?,
+        profileUris: Uri?
+    ) {
+        val requestDTO = PhotoUtils.createRequestBody(
+            MypageModifyRequestDTO(
+                nickname = nickname,
+                vegetarianType = vegetarianType,
+                gender = gender,
+                birthYear = birthYear,
+                height = height,
+                weight = weight,
+                existingImageUrl = existingImageUrl
+            )
+        )
+
+        val imagePath = profileUris?.let { PhotoUtils.optimizeBitmap(context, it) }
+        Log.d("### url", "imagePath: $imagePath")
+
+        val imageMultipart = PhotoUtils.createImageMultipart(imagePath)
+        Log.d("### url", "imageMultipart: $imageMultipart, size: ${imageMultipart?.body?.contentLength()}")
+
         viewModelScope.launch {
-            val response = mypageUsecase.modifyProfile(profileModifyDTO, profilePhoto)
+            val response = mypageUsecase.modifyProfile(requestDTO, imageMultipart)
             when (response) {
                 is ApiResult.Error -> {
                     val responseDescription = response.description
@@ -124,21 +146,11 @@ class MypageViewmodel @Inject constructor(
         return value != null && value > 0 && value <= 150
     }
 
-    fun isUserInfoStateCheck(userInfo: ProfileRequestDTO): Boolean {
-        val isNicknameValid = isNicknameValid(userInfo.nickname)
-        val isHeightValid = isHeightValid(userInfo.height)
-        val isWeightValid = isWeightValid(userInfo.weight)
+    fun isUserInfoStateCheck(nickname:String, height: Int, weight: Int): Boolean {
+        val isNicknameValid = isNicknameValid(nickname)
+        val isHeightValid = isHeightValid(height)
+        val isWeightValid = isWeightValid(weight)
 
         return isNicknameValid && isHeightValid && isWeightValid
-    }
-
-    // 프로필 이미지
-    fun putProfilePhotoMultipart(photo: MultipartBody.Part) {
-        _profilePhotoMultipart.value = photo
-    }
-
-    // 프로필 정보
-    fun putProfileRequestBody(profile: RequestBody) {
-        _profileModifyRequestBody.value = profile
     }
 }
