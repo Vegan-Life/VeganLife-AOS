@@ -14,6 +14,7 @@ import android.view.ViewGroup.MarginLayoutParams
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
@@ -38,7 +39,9 @@ import com.project.veganlife.community.ui.viewmodel.PostViewModel
 import com.project.veganlife.data.model.ApiResult
 import com.project.veganlife.databinding.FragmentCommunityDetailFeedBinding
 import com.project.veganlife.utils.formatDateTime
+import com.project.veganlife.utils.ui.VeganTypeChange.Companion.changeBackground
 import com.project.veganlife.utils.ui.VeganTypeChange.Companion.changeVeganType
+import com.project.veganlife.utils.ui.VeganTypeChange.Companion.changeVeganTypeTextColor
 import dagger.hilt.android.AndroidEntryPoint
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -349,7 +352,16 @@ class CommunityDetailFeedFragment : Fragment(), OnReplyCommentClickListener {
         }
 
 
-        binding.tvCommunityDetailFeedVeganType.text = changeVeganType(post.vegetarianType)
+        binding.tvCommunityDetailFeedVeganType.apply {
+            text = changeVeganType(post.vegetarianType)
+            setTextColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    changeVeganTypeTextColor(post.vegetarianType)
+                )
+            )
+            setBackgroundResource(changeBackground(post.vegetarianType))
+        }
     }
 
     private fun adjustViewPagerHeight(position: Int) {
