@@ -14,6 +14,7 @@ import android.view.ViewGroup.MarginLayoutParams
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
@@ -23,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.signature.ObjectKey
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.project.veganlife.R
@@ -37,6 +39,9 @@ import com.project.veganlife.community.ui.viewmodel.PostViewModel
 import com.project.veganlife.data.model.ApiResult
 import com.project.veganlife.databinding.FragmentCommunityDetailFeedBinding
 import com.project.veganlife.utils.formatDateTime
+import com.project.veganlife.utils.ui.VeganTypeChange.Companion.changeBackground
+import com.project.veganlife.utils.ui.VeganTypeChange.Companion.changeVeganType
+import com.project.veganlife.utils.ui.VeganTypeChange.Companion.changeVeganTypeTextColor
 import dagger.hilt.android.AndroidEntryPoint
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -331,12 +336,32 @@ class CommunityDetailFeedFragment : Fragment(), OnReplyCommentClickListener {
 
     private fun setAuthorDetail(post: Post) {
         binding.tvCommunityDetailFeedNickname.text = post.author
-        Glide.with(requireContext())
-            .load(post.profileImageUrl)
-            .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE))
-            .into(binding.civCommunityDetailFeedProfile)
+        //[2025-03-16] 가연 : 프사 이미지 null일시 기본 이미지로 표시하기
+        if (!post.profileImageUrl.isNullOrEmpty()) {
+            Glide.with(requireContext())
+                .load(post.profileImageUrl)
+                .apply(
+                    RequestOptions
+                        .diskCacheStrategyOf(DiskCacheStrategy.NONE)
+                        .skipMemoryCache(true)
+                        .signature(ObjectKey(System.currentTimeMillis().toString()))
+                )
+                .into(binding.civCommunityDetailFeedProfile)
+        } else {
+            binding.civCommunityDetailFeedProfile.setImageResource(R.drawable.all_profile_basic)
+        }
 
-        binding.tvCommunityDetailFeedVeganType.text = post.vegetarianType
+
+        binding.tvCommunityDetailFeedVeganType.apply {
+            text = changeVeganType(post.vegetarianType)
+            setTextColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    changeVeganTypeTextColor(post.vegetarianType)
+                )
+            )
+            setBackgroundResource(changeBackground(post.vegetarianType))
+        }
     }
 
     private fun adjustViewPagerHeight(position: Int) {
