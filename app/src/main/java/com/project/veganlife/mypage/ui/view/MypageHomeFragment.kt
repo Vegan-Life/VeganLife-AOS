@@ -99,7 +99,7 @@ class MypageHomeFragment : Fragment() {
                 profileInfoResponse.observe(viewLifecycleOwner) { profile ->
                     tvMypageNickname.text = profile.nickname
                     tvMypageEmail.text = profile.email
-                    if(profile.imageUrl.isNotEmpty()) {
+                    if(!profile.imageUrl.isNullOrEmpty()) {
                         Glide.with(requireContext())
                             .load(profile.imageUrl)
                             .apply(RequestOptions()

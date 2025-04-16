@@ -105,7 +105,7 @@ class HomeFragment : Fragment(), HomeRecommendRecipeAdapter.OnItemClickListener 
                 }
 
                 profilePhoto.observe(viewLifecycleOwner) { photo ->
-                    if (photo.isNotEmpty()) {
+                    if (!photo.isNullOrEmpty()) {
                         Log.d("photo", profilePhoto.value.toString())
                         Glide.with(requireContext()).load(profilePhoto.value).apply(
                             RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE)
