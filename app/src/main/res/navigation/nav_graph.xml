@@ -62,16 +62,12 @@
         android:label="fragment_mypage_posted_feed"
         tools:layout="@layout/fragment_mypage_wroted_feed">
         <action
-            android:id="@+id/action_mypageWrotedFeedFragment_to_mypageHomeFragment"
-            app:destination="@id/mypageHomeFragment" />
-
-        <action
             android:id="@+id/action_mypageWrotedFeedFragment_to_communityDetailFeedFragment"
-            app:destination="@id/communityDetailFeedFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+            app:destination="@id/communityDetailFeedFragment" >
+            <argument
+                android:name="postId"
+                app:argType="integer" />
+        </action>
     </fragment>
     <fragment
         android:id="@+id/mypageWrotedCommentsFragment"
@@ -79,11 +75,12 @@
         android:label="fragment_mypage_posted_comments"
         tools:layout="@layout/fragment_mypage_wroted_comments">
         <action
-            android:id="@+id/action_mypagePostedCommentsFragment_to_mypageHomeFragment"
-            app:destination="@id/mypageHomeFragment" />
-        <action
             android:id="@+id/action_mypagePostedCommentsFragment_to_communityDetailFeedFragment"
-            app:destination="@+id/communityDetailFeedFragment" />
+            app:destination="@+id/communityDetailFeedFragment" >
+            <argument
+                android:name="postId"
+                app:argType="integer" />
+        </action>
     </fragment>
 
     <fragment
@@ -91,9 +88,6 @@
         android:name="com.project.veganlife.mypage.ui.view.MypageWrotedRecipeFragment"
         android:label="MypageWrotedRecipeFragment"
         tools:layout="@layout/fragment_mypage_wroted_recipe">
-        <action
-            android:id="@+id/action_mypageWrotedRecipeFragment_to_mypageHomeFragment"
-            app:destination="@id/mypageHomeFragment" />
     </fragment>
 
     <fragment
@@ -101,9 +95,6 @@
         android:name="com.project.veganlife.mypage.ui.view.MypageScrapsRecipeFragment"
         android:label="fragment_mypage_scraps_recipe"
         tools:layout="@layout/fragment_mypage_scraps_recipe">
-        <action
-            android:id="@+id/action_mypageScrapsRecipeFragment_to_mypageHomeFragment"
-            app:destination="@id/mypageHomeFragment" />
     </fragment>
 
     <action

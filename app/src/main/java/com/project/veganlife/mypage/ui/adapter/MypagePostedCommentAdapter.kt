@@ -55,7 +55,7 @@ class MypagePostedCommentAdapter :
 
                 clMypageLayout.setOnClickListener {
                     val bundle = Bundle()
-                    bundle.putLong("feedId", postedFeed.id)
+                    bundle.putInt("postId", postedFeed.id.toInt())
                     itemView.findNavController().navigate(
                         R.id.action_mypagePostedCommentsFragment_to_communityDetailFeedFragment,
                         bundle

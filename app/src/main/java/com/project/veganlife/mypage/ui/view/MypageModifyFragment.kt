@@ -52,6 +52,7 @@ class MypageModifyFragment : Fragment() {
     // 새 프로필 사진
     private var profileImageUri: Uri? = null
 
+    private var vegetarianType = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -327,22 +328,27 @@ class MypageModifyFragment : Fragment() {
             binding.apply {
                 veganType.clVeganTypeLayout.setOnClickListener {
                     setVeganTypeUi("VEGAN")
+                    vegetarianType = "VEGAN"
                 }
 
                 lactoType.clLactoLayout.setOnClickListener {
                     setVeganTypeUi("LACTO")
+                    vegetarianType = "LACTO"
                 }
 
                 ovoType.clOvoLayout.setOnClickListener {
                     setVeganTypeUi("OVO")
+                    vegetarianType = "OVO"
                 }
 
                 lactoOvoType.clLactoOvoLayout.setOnClickListener {
                     setVeganTypeUi("LACTO_OVO")
+                    vegetarianType = "LACTO_OVO"
                 }
 
                 pescoType.clPescoLayout.setOnClickListener {
                     setVeganTypeUi("PESCO")
+                    vegetarianType = "PESCO"
                 }
             }
         }
@@ -364,7 +370,7 @@ class MypageModifyFragment : Fragment() {
                                 mypageViewmodel.modifyProfile(
                                     context = requireContext(),
                                     nickname = tietMypageNickname.text.toString(),
-                                    vegetarianType = profileInfoResponse.value!!.vegetarianType,
+                                    vegetarianType = vegetarianType,
                                     gender = profileInfoResponse.value!!.gender,
                                     birthYear = tietMypageAge.text.toString().toInt(),
                                     height = tietMypageHeight.text.toString().toInt(),
@@ -389,7 +395,7 @@ class MypageModifyFragment : Fragment() {
 
     private fun updateUIWithProfile(profile: ProfileResponse) {
         binding.apply {
-            if (profile.imageUrl.isNotEmpty()) {
+            if (!profile.imageUrl.isNullOrEmpty()) {
                 existingImageUrl = profile.imageUrl
 
                 Glide.with(requireContext())
@@ -420,6 +426,7 @@ class MypageModifyFragment : Fragment() {
             tietMypageAge.setText(profile.birthYear.toString())
 
             setVeganTypeUi(profile.vegetarianType)
+            vegetarianType = profile.vegetarianType
             setGenderUi(profile.gender)
         }
     }
