@@ -64,7 +64,7 @@ class AppModule {
     ): OkHttpClient {
         val builder = OkHttpClient.Builder()
         val loggingInterceptor = HttpLoggingInterceptor()
-        loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
+        loggingInterceptor.level = HttpLoggingInterceptor.Level.BASIC
         builder.apply {
             addInterceptor(loggingInterceptor)
             addInterceptor(authorizationInterceptor)

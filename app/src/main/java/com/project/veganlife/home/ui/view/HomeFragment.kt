@@ -51,7 +51,7 @@ class HomeFragment : Fragment(), HomeRecommendRecipeAdapter.OnItemClickListener 
         // logic
         setToolbarMoveToAlarm()
         // SSE 구독
-        alarmViewModel.checkAlarm()
+//        alarmViewModel.checkAlarm()
 
         // 프로필 정보 Get
         getProfileInfo()
