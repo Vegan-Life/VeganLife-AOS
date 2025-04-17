@@ -7,8 +7,8 @@ import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.setupWithNavController
 import com.project.veganlife.databinding.ActivityMainBinding
+import com.project.veganlife.splash.SplashFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -31,6 +31,7 @@ class MainActivity : AppCompatActivity() {
         requestPermissions(permissionList, 0)
         initNavController()
         handleOnBackPressed()
+        initSplash()
 
     }
 
@@ -165,6 +166,15 @@ class MainActivity : AppCompatActivity() {
 
     fun resetBottomNavigationToHome() {
         activityMainBinding.bnvMainNavigation.selectedItemId = R.id.homeFragment
+    }
+
+    private fun initSplash() {
+        activityMainBinding.apply {
+            supportFragmentManager.beginTransaction()
+                .setReorderingAllowed(true)
+                .replace(flSplashContainer.id, SplashFragment())
+                .commit()
+        }
     }
 
 }
