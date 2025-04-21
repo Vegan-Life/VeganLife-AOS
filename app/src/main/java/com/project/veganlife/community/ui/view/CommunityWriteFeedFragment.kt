@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -75,6 +76,7 @@ class CommunityWriteFeedFragment : Fragment() {
         return binding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.R)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -85,7 +87,7 @@ class CommunityWriteFeedFragment : Fragment() {
     private fun init() {
         // 버튼 텍스트 다르게
         binding.btnFeedUpload.text = if (isEditMode) "수정하기" else "업로드"
-        binding.toolbarCommunityWriteEditFeed.title = if (isEditMode) "피드 작성" else "피드 수정"
+        binding.toolbarCommunityWriteEditFeed.title = if (!isEditMode) "피드 작성" else "피드 수정"
 
         // 수정으로 넘어온 post데이터 넣어주기
         viewModel.oldPost.observe(viewLifecycleOwner) {
@@ -246,6 +248,7 @@ class CommunityWriteFeedFragment : Fragment() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.R)
     private fun event() {
         binding.apply {
             ibCommunityWriteEditFeedUploadPhoto.setOnClickListener {
