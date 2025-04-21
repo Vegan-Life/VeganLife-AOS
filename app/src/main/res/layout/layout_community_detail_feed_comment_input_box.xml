@@ -6,16 +6,6 @@
     android:background="@color/white"
     android:paddingHorizontal="24dp">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/civ_community_detail_feed_comment_input_box_profile"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginVertical="13dp"
-        android:src="@color/sub_gray2"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <EditText
         android:id="@+id/et_community_detail_feed_comment_input_box"
         android:layout_width="0dp"
@@ -29,13 +19,14 @@
         android:inputType="text"
         android:maxLines="1"
         android:padding="8dp"
+        android:layout_marginVertical="11dp"
         android:paddingHorizontal="14dp"
         android:paddingVertical="8dp"
         android:paddingStart="12dp"
         android:textAppearance="@style/Regular.Body5"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/civ_community_detail_feed_comment_input_box_profile"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
