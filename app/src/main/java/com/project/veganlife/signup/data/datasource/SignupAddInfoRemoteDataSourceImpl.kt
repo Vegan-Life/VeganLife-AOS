@@ -1,6 +1,5 @@
 package com.project.veganlife.signup.data.datasource
 
-import android.content.SharedPreferences
 import com.google.gson.GsonBuilder
 import com.project.veganlife.data.model.ApiResult
 import com.project.veganlife.data.model.ConflictResponse
@@ -12,7 +11,6 @@ import javax.inject.Inject
 
 class SignupAddInfoRemoteDataSourceImpl @Inject constructor(
     private val signupApi: SignupApi,
-    private val accessToken: SharedPreferences,
 )  {
     suspend fun signupAddInfo(
         signupRequestDTO: RequestBody
@@ -20,14 +18,7 @@ class SignupAddInfoRemoteDataSourceImpl @Inject constructor(
         val gson = GsonBuilder().create()
 
         return try {
-            val token = accessToken.getString("ApiAccessToken", null)
-
-            if (token == null) {
-                return ApiResult.Error("signupDataSourceImpl", "AccessToken Null")
-            }
-
             val profileInfoGetResponse = signupApi.signupAddInfo(
-                token,
                 signupRequestDTO
             )
 

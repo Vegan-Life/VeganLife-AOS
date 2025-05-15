@@ -12,7 +12,6 @@ interface SignupApi {
     @Multipart
     @PUT("members/profile")
     suspend fun signupAddInfo(
-        @Header("Authorization") accessToken: String?,
         @Part("request") signupRequestDTO: RequestBody,
     ): Response<ProfileResponse>
 }
