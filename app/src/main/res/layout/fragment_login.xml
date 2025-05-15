@@ -62,7 +62,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="84dp"
-            android:visibility="invisible"
             android:background="@drawable/login_naver"
             app:layout_constraintEnd_toEndOf="@id/iv_login_life"
             app:layout_constraintStart_toStartOf="@id/iv_login_life"

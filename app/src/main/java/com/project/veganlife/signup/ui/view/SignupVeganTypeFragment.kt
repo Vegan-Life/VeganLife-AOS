@@ -1,6 +1,7 @@
 package com.project.veganlife.signup.ui.view
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -77,7 +78,10 @@ class SignupVeganTypeFragment : Fragment() {
     private fun moveToFragment() {
         val selectedVeganName = signupVeganTypeViewModel.veganTypeSelected.value
         if (!selectedVeganName.isNullOrEmpty()) {
-            findNavController().navigate(R.id.action_signupVeganTypeFragment_to_signupAddInfoFragment)
+            val action = SignupVeganTypeFragmentDirections.actionSignupVeganTypeFragmentToSignupAddInfoFragment(
+                veganType = signupVeganTypeViewModel.veganTypeSelected.value ?: ""
+            )
+            findNavController().navigate(action)
         } else {
             makeToast("비건 타입을 선택해주세요")
         }
@@ -88,11 +92,9 @@ class SignupVeganTypeFragment : Fragment() {
     }
 
     private fun setToolbarListener() {
-        binding.toolbarSignupToolbar.run {
-            setNavigationOnClickListener {
-                findNavController().popBackStack()
+        binding.toolbarSignupToolbar.setNavigationOnClickListener {
+                findNavController().navigate(R.id.action_signupVeganTypeFragment_to_loginFragment)
             }
-        }
     }
 
     override fun onDestroyView() {

@@ -24,9 +24,6 @@ class SignupVeganTypeViewModel @Inject constructor(
     private val _btnBackgroundColor = MutableLiveData<Int>()
     val btnBackgroundColor: LiveData<Int> get() = _btnBackgroundColor
 
-    private val _signupVeganTypeInfo = MutableLiveData<String>()
-    val signupVeganTypeInfo: LiveData<String> get() = _signupVeganTypeInfo
-
     fun setVeganList() {
         viewModelScope.launch {
             val result = signupUsecase.saveVeganTypeList()
@@ -35,8 +32,14 @@ class SignupVeganTypeViewModel @Inject constructor(
     }
 
     fun setSelectedVeganName(name: String) {
-        _veganTypeSelected.value = name
-        _signupVeganTypeInfo.value = name
+        _veganTypeSelected.value = when(name) {
+            "비건" -> "VEGAN"
+            "락토" -> "LACTO"
+            "오보" -> "OVO"
+            "락토오보" -> "LACTO_OVO"
+            "페스코" -> "PESCO"
+            else -> ""
+        }
         // 선택한 아이템이 있을 때는 배경색을 base3로, 없을 때는 gray3로 설정
         _btnBackgroundColor.value = if (!veganTypeSelected.value.isNullOrEmpty()) {
             R.color.base3

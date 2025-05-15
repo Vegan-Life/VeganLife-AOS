@@ -29,9 +29,9 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        manifestPlaceholders["KAKAO_API_KEY"] = properties.getProperty("TEST_KAKAO_NATIVE_KEY")
+        manifestPlaceholders["KAKAO_API_KEY"] = properties.getProperty("KAKAO_NATIVE_KEY")
 
-        buildConfigField("String", "KAKAO_API_KEY", properties.getProperty("TEST_KAKAO_API_KEY"))
+        buildConfigField("String", "KAKAO_API_KEY", properties.getProperty("KAKAO_API_KEY"))
         buildConfigField("String", "NAVER_CLIENT_ID", properties.getProperty("NAVER_CLIENT_ID"))
         buildConfigField(
             "String",
@@ -117,10 +117,10 @@ dependencies {
     implementation("com.github.AnyChart:AnyChart-Android:1.1.5")
 
     // Kakao Login
-    implementation("com.kakao.sdk:v2-user:2.19.0")
+    implementation("com.kakao.sdk:v2-user:2.21.2")
 
     // Naver Login
-    implementation("com.navercorp.nid:oauth:5.1.0") // jdk 11
+    implementation("com.navercorp.nid:oauth:5.1.1") // jdk 11
 
     // Expandable Layout
     implementation("com.github.skydoves:expandablelayout:1.0.7")

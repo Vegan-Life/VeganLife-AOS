@@ -9,23 +9,26 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.project.veganlife.R
+import com.project.veganlife.data.model.UiState
 import com.project.veganlife.databinding.FragmentSignupAddInfoBinding
 import com.project.veganlife.signup.ui.viewmodel.SignupAddInfoViewModel
-import com.project.veganlife.signup.ui.viewmodel.SignupVeganTypeViewModel
 import dagger.hilt.android.AndroidEntryPoint
-
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class SignupAddInfoFragment : Fragment() {
     private var _binding: FragmentSignupAddInfoBinding? = null
     private val binding get() = _binding!!
 
-    private val signupVeganTypeViewModel: SignupVeganTypeViewModel by activityViewModels()
-    private val signupAddInfoViewModel: SignupAddInfoViewModel by viewModels()
+    private val args: SignupAddInfoFragmentArgs by navArgs()
+    private val viewModel: SignupAddInfoViewModel by viewModels()
 
 
     override fun onCreateView(
@@ -38,197 +41,149 @@ class SignupAddInfoFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        // SignupveganTypeFragment에서 넘긴 vegan Type
+        initVeganType()
         // 툴바 설정
         setToolbarListener()
+        setupInputListeners()
+        setupGenderButtons()
+        setupNextButton()
+        observeStates()
 
-        // SignupVeganTypeFragment에서 비건 타입 입력 받기
-        getVeganType()
+    }
 
-        // 입력란 설정
-        setNickname()
-        setHeight()
-        setWeight()
-        setBirthyear()
+    private fun initVeganType() {
+        viewModel.setVeganType(args.veganType)
+    }
 
-        // 성별 버튼 색상
-        setGenderButtonColor()
-
-        // 전체 상태 체크 후 다음 버튼 색상 변경
-        setNextButtonBackgorundColor()
-
+    private fun setupInputListeners() {
         binding.apply {
-            btnSignupFemale.setOnClickListener {
-                signupAddInfoViewModel.apply {
-                    onFemaleSelected()
-                    isAllStateValid()
+            // 닉네임 입력 리스너
+            tietSignupNickname.addTextChangedListener(object : TextWatcher {
+                override fun afterTextChanged(s: Editable?) {
+                    viewModel.updateInfo { copy(nickname = s.toString()) }
                 }
+                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            })
 
-            }
+            // 출생연도 입력 리스너
+            tietSignupAge.addTextChangedListener(object : TextWatcher {
+                override fun afterTextChanged(s: Editable?) {
+                    s?.toString()?.toIntOrNull()?.let { year ->
+                        viewModel.updateInfo { copy(birthYear = year) }
+                    }
+                }
+                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            })
 
+            // 키 입력 리스너 (height)
+            tietSignupHeight.addTextChangedListener(object : TextWatcher {
+                override fun afterTextChanged(s: Editable?) {
+                    s?.toString()?.toIntOrNull()?.let { height ->
+                        viewModel.updateInfo { copy(height = height) }
+                    }
+                }
+                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            })
+
+            // 몸무게 입력 리스너 (weight)
+            tietSignupWeight.addTextChangedListener(object : TextWatcher {
+                override fun afterTextChanged(s: Editable?) {
+                    s?.toString()?.toIntOrNull()?.let { weight ->
+                        viewModel.updateInfo { copy(weight = weight) }
+                    }
+                }
+                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            })
+        }
+    }
+
+    private fun setupGenderButtons() {
+        binding.apply {
             btnSignupMale.setOnClickListener {
-                signupAddInfoViewModel.apply {
-                    onMaleSelected()
-                    isAllStateValid()
-                }
+                viewModel.updateInfo { copy(gender = "M") }
+                updateGenderButtonUI(isMaleSelected = true)
             }
 
-            btnSignupNext.setOnClickListener {
-                moveNextFragment()
-            }
-        }
-    }
-
-    private fun getVeganType() {
-        signupAddInfoViewModel.setVeganType(signupVeganTypeViewModel.signupVeganTypeInfo.value.toString())
-    }
-
-    private fun setNickname() {
-        binding.tietSignupNickname.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-
-            override fun afterTextChanged(p0: Editable?) {
-                val enteredText = p0.toString()
-                signupAddInfoViewModel.apply {
-                    setNickname(enteredText)
-                    isAllStateValid()
-                }
-            }
-        })
-    }
-
-    private fun setHeight() {
-        binding.tietSignupHeight.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-
-            override fun afterTextChanged(p0: Editable?) {
-                try {
-                    val enteredText = p0.toString().toInt()
-                    signupAddInfoViewModel.apply {
-                        setHeight(enteredText)
-                        isAllStateValid()
-                    }
-                } catch (e: NumberFormatException) {
-                    makeToast("정수만 입력 가능 합니다")
-                }
-            }
-        })
-    }
-
-    private fun setWeight() {
-        binding.tietSignupWeight.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-
-            override fun afterTextChanged(p0: Editable?) {
-                try {
-                    val enteredText = p0.toString().toInt()
-                    signupAddInfoViewModel.apply {
-                        setWeight(enteredText)
-                        isAllStateValid()
-                    }
-                } catch (e: NumberFormatException) {
-                    makeToast("정수만 입력 가능 합니다")
-                }
-            }
-
-        })
-    }
-
-    private fun setBirthyear() {
-        binding.tietSignupAge.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-
-            override fun afterTextChanged(p0: Editable?) {
-                try {
-                    val enteredText = p0.toString().toInt()
-                    signupAddInfoViewModel.apply {
-                        setBirthyear(enteredText)
-                        isAllStateValid()
-                    }
-                } catch (e: NumberFormatException) {
-                    makeToast("정수만 입력 가능 합니다")
-                }
-            }
-        })
-
-    }
-
-    private fun setGenderButtonColor() {
-        signupAddInfoViewModel.apply {
-            femaleBackgroundColor.observe(viewLifecycleOwner) { backgroundColorResId ->
-                binding.btnSignupFemale.setBackgroundResource(
-                    backgroundColorResId
-                )
-            }
-
-            femaleTextColor.observe(viewLifecycleOwner) { textColorResId ->
-                binding.btnSignupFemale.setTextColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        textColorResId
-                    )
-                )
-            }
-
-            maleBackgroundColor.observe(viewLifecycleOwner) { backgroundColorResId ->
-                binding.btnSignupMale.setBackgroundResource(
-                    backgroundColorResId
-                )
-            }
-
-            maleTextColor.observe(viewLifecycleOwner) { textColorResId ->
-                binding.btnSignupMale.setTextColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        textColorResId
-                    )
-                )
+            btnSignupFemale.setOnClickListener {
+                viewModel.updateInfo { copy(gender = "F") }
+                updateGenderButtonUI(isMaleSelected = false)
             }
         }
     }
 
-    private fun setNextButtonBackgorundColor() {
-        signupAddInfoViewModel.apply {
-            allStateCheck.observe(viewLifecycleOwner) { allState ->
-                binding.btnSignupNext.setBackgroundColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        setNextButtonBackgroundColor(allState)
-                    )
-                )
-            }
+    private fun updateGenderButtonUI(isMaleSelected: Boolean) {
+        binding.apply {
+            val maleColor = if (isMaleSelected) R.drawable.signup_vegan_type_selected else R.drawable.signup_vegan_type
+            val maleTextColor = if(isMaleSelected) R.color.white else R.color.gray3
+            val femaleColor = if (!isMaleSelected) R.drawable.signup_vegan_type_selected else R.drawable.signup_vegan_type
+            val femaleTextColor = if(!isMaleSelected) R.color.white else R.color.gray3
+
+            btnSignupMale.setBackgroundResource(maleColor)
+            btnSignupMale.setTextColor(ContextCompat.getColor(requireContext(), maleTextColor))
+            btnSignupFemale.setBackgroundResource(femaleColor)
+            btnSignupFemale.setTextColor(ContextCompat.getColor(requireContext(), femaleTextColor))
         }
     }
 
-    private fun moveNextFragment() {
-        signupAddInfoViewModel.apply {
-            setSignupRequest(allStateCheck.value)
-
-            response.observe(viewLifecycleOwner) { response ->
-                response?.let { handleSignupResponse(it) }
-            }
-        }
-    }
-
-    private fun handleSignupResponse(response: String) {
-        signupAddInfoViewModel.apply {
-            when (response) {
-                nickname.value -> {
-                    findNavController().navigate(R.id.action_signupAddInfoFragment_to_signupCompleteFragment)
+    private fun observeStates() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.isAllValid.collect { isValid ->
+                    updateNextButtonUI(isValid)
                 }
+            }
+        }
 
-                "중복된 닉네임입니다.", "모든 정보를 올바르게 입력해주세요" -> {
-                    makeToast(response)
-                    setSignupResponse("")
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.signupState.collect { state ->
+                    handleSignupState(state)
                 }
             }
         }
     }
 
+    private fun updateNextButtonUI(shouldEnable: Boolean) {
+        binding.btnSignupNext.apply {
+            setBackgroundColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    if (shouldEnable) R.color.base3 else R.color.gray3
+                )
+            )
+            isEnabled = shouldEnable
+        }
+    }
+
+    private fun setupNextButton() {
+        binding.btnSignupNext.setOnClickListener {
+            viewModel.submitSignup()
+        }
+    }
+
+    private fun handleSignupState(state: UiState) {
+        when (state) {
+            is UiState.Success -> {
+                navigateToComplete()
+            }
+            is UiState.Error -> {
+                state.message?.let { makeToast(it) }
+            }
+            UiState.Loading -> {
+                // 로딩 UI 처리
+            }
+            UiState.Idle -> Unit
+        }
+    }
+
+    private fun navigateToComplete() {
+        findNavController().navigate(R.id.action_signupAddInfoFragment_to_signupCompleteFragment)
+    }
 
     private fun makeToast(message: String) {
         if (message.isNotEmpty()) {
@@ -242,10 +197,8 @@ class SignupAddInfoFragment : Fragment() {
     }
 
     private fun setToolbarListener() {
-        binding.toolbarSignupToolbar.run {
-            setNavigationOnClickListener {
-                findNavController().popBackStack()
-            }
+        binding.toolbarSignupToolbar.setNavigationOnClickListener {
+            findNavController().popBackStack()
         }
     }
 }
