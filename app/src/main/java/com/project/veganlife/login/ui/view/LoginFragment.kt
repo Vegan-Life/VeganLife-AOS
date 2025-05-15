@@ -39,9 +39,9 @@ class LoginFragment : Fragment() {
         }
 
         // 네이버 로그인 시 튕기는 현상 발생 -> 임시 비활성화
-        /*binding.btnLoginNaver.setOnClickListener {
+        binding.btnLoginNaver.setOnClickListener {
             login("naver")
-        }*/
+        }
 
         loginAfterMoveFragment()
     }
