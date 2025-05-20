@@ -11,7 +11,7 @@ data class SignupAddInfo(
     companion object {
         private const val MIN_NICKNAME_LENGTH = 2
         private const val MAX_NICKNAME_LENGTH = 10
-        private val NICKNAME_REGEX = "[가-힣a-zA-Z]+".toRegex()
+        private val NICKNAME_REGEX = "[가-힣a-zA-Z0-9]+".toRegex()
     }
 
     fun validate(): Map<Field, String?> {
