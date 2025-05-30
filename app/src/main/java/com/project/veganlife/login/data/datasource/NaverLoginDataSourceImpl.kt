@@ -24,8 +24,8 @@ class NaverLoginDataSourceImpl @Inject constructor(@ApplicationContext val conte
                         errorCode: Int,
                         message: String,
                     ) {
-                        onFailure(errorCode, message)
-                        it.resume(null.toString(), {})
+                        Log.e("Login-naver", "Error: $message")
+                        it.resume("ERROR:$errorCode", {})
                     }
 
                     override fun onFailure(
@@ -38,7 +38,7 @@ class NaverLoginDataSourceImpl @Inject constructor(@ApplicationContext val conte
                             "Login-naver",
                             "errorCode:$errorCode errorDescription:$errorDescription"
                         )
-                        it.resume(null.toString(), {})
+                        it.resume("FAILURE:$httpStatus MESSAGE:$message", {})
                     }
 
                     override fun onSuccess() {
@@ -46,9 +46,10 @@ class NaverLoginDataSourceImpl @Inject constructor(@ApplicationContext val conte
                         it.resume(NaverIdLoginSDK.getAccessToken().toString(), {})
                     }
                 }
-            NaverIdLoginSDK.logout()
             CoroutineScope(Dispatchers.Main).launch {
+                NaverIdLoginSDK.logout()
                 // UI 스레드에서 호출되어야 하는 작업
+                NaverIdLoginSDK.isRequiredCustomTabsReAuth = true
                 NaverIdLoginSDK.authenticate(context, oauthLoginCallback)
             }
         }
