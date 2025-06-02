@@ -3,6 +3,9 @@
   <img src="https://github.com/Vegan-Life/VeganLife-Backend/assets/47537803/f3ef4db1-6709-4f32-ae51-f491aad3f9ef" />
 </p>
 
+# Download
+- [GooglePlay - Vegan Life](https://play.google.com/store/apps/details?id=com.project.veganlife&hl=ko)
+
 ### 목차
 - [🌿 비건 라이프: VeganLife](#비건-라이프-veganlife) <br/>
     - [⏲️ 개발 기간](#개발-기간) <br/>
