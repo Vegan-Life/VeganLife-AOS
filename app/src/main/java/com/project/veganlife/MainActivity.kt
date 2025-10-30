@@ -1,12 +1,24 @@
 package com.project.veganlife
 
 import android.Manifest
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.NavHostFragment
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.shape.CornerFamily
+import com.google.android.material.shape.MaterialShapeDrawable
+import com.google.android.material.shape.ShapeAppearanceModel
 import com.project.veganlife.databinding.ActivityMainBinding
 import com.project.veganlife.splash.SplashFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -24,9 +36,16 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // ✅ Android 15 Edge-to-Edge 대응
+        enableEdgeToEdge()
+
+        // ✅ 시스템 바 영역을 직접 처리하도록 설정
+        WindowCompat.setDecorFitsSystemWindows(window, false)
 
         activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(activityMainBinding.root)
+
+        styleBottomNav(activityMainBinding.bnvMainNavigation)
 
         requestPermissions(permissionList, 0)
         initNavController()
@@ -176,5 +195,31 @@ class MainActivity : AppCompatActivity() {
                 .commit()
         }
     }
+
+    private fun styleBottomNav(bnv: BottomNavigationView) {
+        val r = resources.getDimensionPixelSize(R.dimen.bottom_nav_radius_28).toFloat()
+        val shape = ShapeAppearanceModel.Builder()
+            .setTopLeftCorner(CornerFamily.ROUNDED, r)
+            .setTopRightCorner(CornerFamily.ROUNDED, r)
+            .setBottomLeftCorner(CornerFamily.ROUNDED, 0f)
+            .setBottomRightCorner(CornerFamily.ROUNDED, 0f)
+            .build()
+
+        val bg = MaterialShapeDrawable(shape).apply {
+            fillColor = ColorStateList.valueOf(ContextCompat.getColor(bnv.context, android.R.color.white))
+            elevation = resources.getDimension(R.dimen.bottom_nav_elevation_8)
+            shadowCompatibilityMode = MaterialShapeDrawable.SHADOW_COMPAT_MODE_ALWAYS
+            initializeElevationOverlay(bnv.context)
+        }
+
+        bnv.background = bg
+        bnv.elevation = resources.getDimension(R.dimen.bottom_nav_elevation_8)
+
+        (bnv.parent as? ViewGroup)?.apply {
+            clipToPadding = false
+            clipChildren = false
+        }
+    }
+
 
 }

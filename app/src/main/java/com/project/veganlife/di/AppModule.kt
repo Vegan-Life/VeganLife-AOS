@@ -64,7 +64,14 @@ class AppModule {
     ): OkHttpClient {
         val builder = OkHttpClient.Builder()
         val loggingInterceptor = HttpLoggingInterceptor()
-        loggingInterceptor.level = HttpLoggingInterceptor.Level.BASIC
+
+        // 🔍 디버그 모드일 때만 전체 로그 출력
+        loggingInterceptor.level = if (BuildConfig.DEBUG) {
+            HttpLoggingInterceptor.Level.BODY
+        } else {
+            HttpLoggingInterceptor.Level.BASIC
+        }
+
         builder.apply {
             addInterceptor(loggingInterceptor)
             addInterceptor(authorizationInterceptor)
