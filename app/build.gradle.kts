@@ -24,8 +24,8 @@ android {
         applicationId = "com.project.veganlife"
         minSdk = 26
         targetSdk = 35
-        versionCode = 8
-        versionName = "1.1.1"
+        versionCode = 9
+        versionName = "1.1.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -39,6 +39,18 @@ android {
             properties.getProperty("NAVER_CLIENT_SECRET_KEY")
         )
         buildConfigField("String", "BASEURL", properties.getProperty("BASE_URL"))
+
+        ndk {
+            // ✅ Android 15 16KB page 지원
+            abiFilters += listOf("armeabi-v7a", "arm64-v8a", "x86", "x86_64")
+        }
+
+        // ✅ 16KB 페이지 정렬 반영
+        packaging {
+            jniLibs {
+                useLegacyPackaging = false
+            }
+        }
     }
 
     buildTypes {
@@ -72,8 +84,15 @@ dependencies {
     implementation("com.google.android.material:material:1.11.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+
+    // UI Test
+    androidTestImplementation("androidx.test:core-ktx:1.5.0")
+    androidTestImplementation("androidx.test.ext:junit:1.2.1")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
+    androidTestImplementation("androidx.test:rules:1.6.1")
+    androidTestImplementation("androidx.test:runner:1.6.2")
+
+
 
     // Retrofit2
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
@@ -84,8 +103,8 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp-sse:4.9.3")
 
     // Hilt
-    implementation("com.google.dagger:hilt-android:2.46")
-    kapt("com.google.dagger:hilt-android-compiler:2.46")
+    implementation("com.google.dagger:hilt-android:2.51.1")
+    kapt("com.google.dagger:hilt-android-compiler:2.51.1")
 
     // ViewModel
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
