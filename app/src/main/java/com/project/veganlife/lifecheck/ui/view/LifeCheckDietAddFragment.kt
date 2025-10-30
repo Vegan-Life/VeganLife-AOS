@@ -27,6 +27,7 @@ import com.project.veganlife.lifecheck.data.model.LifeCheckMealLogDTO
 import com.project.veganlife.lifecheck.ui.adapter.LifeCheckDietAddAdapter
 import com.project.veganlife.lifecheck.ui.viewmodel.LifeCheckViewModel
 import com.project.veganlife.utils.PhotoUtils
+import com.project.veganlife.utils.getCurrentTimestamp
 import dagger.hilt.android.AndroidEntryPoint
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -373,6 +374,7 @@ class LifeCheckDietAddFragment : Fragment() {
         val requestBody = gson.toJson(
             mapOf(
                 "mealType" to mealType,
+                "date" to getCurrentTimestamp().substring(0,10),
                 "meals" to mealLogList
             )
         ).toRequestBody("application/json".toMediaTypeOrNull())
